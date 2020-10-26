@@ -2,7 +2,9 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import plotly.graph_objs as go
 from dash.dependencies import Input, Output
+import plotly.express as px
 from pages import (
     overview,
     pricePerformance,
@@ -10,6 +12,7 @@ from pages import (
     feesMins,
     distributions,
     newsReviews,
+    country,
 )
 
 app = dash.Dash(
@@ -33,7 +36,7 @@ def display_page(pathname):
     elif pathname == "/SimulationDashBoard/performance":
         return feesMins.create_layout(app)
     elif pathname == "/SimulationDashBoard/by-country":
-        return distributions.create_layout(app)
+        return country.create_layout(app)
     elif pathname == "/SimulationDashBoard/simulation":
         return newsReviews.create_layout(app)
     elif pathname == "/SimulationDashBoard/full-view":
@@ -49,5 +52,145 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
+import pandas as pd
+data = pd.read_csv('data/GGGI/GGIs_2015_2020.csv')
+ISO_options = data[['ISO', 'Country']].drop_duplicates().values
+
+
+@app.callback(
+    dash.dependencies.Output('Description', 'children'),
+    [dash.dependencies.Input('ISO_select', 'value')],
+    suppress_callback_exceptions=True)
+def update_HTML(ISO):
+    data_plot = data[(data.ISO.isin([ISO]))]
+
+    if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
+        data_plot = data_plot[data_plot.Aggregation == 'Index']
+        Country = data_plot['Country'].values[0]
+        Index = data_plot['Value'].values[0]
+
+    else:
+        Country = data_plot.Country.unique()[0]
+        Index = 'Not available'
+
+    return html.Div([
+                    html.Div(
+                        [
+                            html.H5(f"{Country}: {Index}"),
+                            html.Br([]),
+                            html.P(
+                                f"{Country} has a Green Growth Index of {Index}.",
+                                style={"color": "#ffffff"},
+                                className="row",
+                            ),
+                        ],
+                        className="product",
+                    )
+                ],
+                className="row",
+            )
+
+
+@app.callback(
+    dash.dependencies.Output('Perf_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_polar(ISO):
+
+    data_plot = data[(data.ISO.isin([ISO])) & (data.Year == 2020)].fillna(0)
+
+    cats = data_plot[(data_plot.Aggregation == 'Category')]
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatterpolargl(
+          r = cats.Value,
+          theta = cats.Variable,
+          name = "Trial 6",
+          marker=dict(size=10, color = "#14ac9c"),
+          ))
+    fig.update_traces(fill='toself')
+    fig.update_traces(mode="markers", marker=dict(opacity=0.7))
+    fig.update_layout(margin={"r": 0.1, "t": 0.1, "l": 0.1, "b": 0.1})
+    return fig
+
+@app.callback(
+    dash.dependencies.Output('Dim_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    data_plot = data[(data.ISO.isin([ISO])) & (data.Year == 2020)].fillna(0)
+
+    dims = data_plot[(data_plot.Aggregation == 'Dimension')]
+
+    fig = px.scatter(dims,
+                    x='Variable',
+                    y='Value',
+                    size=[8 for i in range(4)],
+                    color=['blue', 'blue', 'blue', 'blue'],
+                     labels={
+                         "Variable": "Dimension",
+                     },
+                    )
+
+    fig.update_traces(marker=dict(size=12,
+                                  line=dict(width=12,
+                                            color='#14ac9c')),
+                      selector=dict(mode='markers'))
+
+
+    fig.add_trace(go.Bar(y=dims['Value'], x=dims['Variable'],
+                         width=[5e-2 for i in range(4)],
+                        marker_color=['#14ac9c', '#14ac9c', '#14ac9c', '#14ac9c']))
+
+    fig.update_layout(showlegend=False,hovermode=False)
+    fig.update_yaxes(range=[0, 100])
+
+    fig.update_xaxes(showgrid=False)
+
+    return fig
+
+
+@app.callback(
+    dash.dependencies.Output('dim_time_series', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_ts(ISO):
+    data_ISO = data[(data.ISO.isin([ISO])) & (data.Aggregation.isin(['Dimension']))]
+    fig = px.line(data_ISO,
+                  facet_row="Variable",
+                  color='Variable',
+                  x='Year',
+                  y='Value',
+                  facet_row_spacing=0.01,
+                  labels = {
+                     'Value': ''
+                  },
+                  height=600)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_yaxes(visible=True, fixedrange=True)
+    fig.update_layout(showlegend=False)
+    fig.update_traces(mode='lines+markers')
+    return fig
+
+
+@app.callback(
+    dash.dependencies.Output('index_time_series', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_ts_ind(ISO):
+    data_ISO = data[(data.ISO.isin([ISO])) & (data.Aggregation.isin(['Index']))]
+    fig = px.line(data_ISO,
+                  x='Year',
+                  y='Value',
+                  labels = {
+                     'Value': ''
+                  },
+                 height=300)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_yaxes(visible=True, fixedrange=True)
+    fig.update_traces(mode='lines+markers', line_color="#14ac9c")
+
+    return fig
+
+
 if __name__ == "__main__":
-    app.run_server(debug=True, host='localhost')
+    app.run_server(debug=True, host='localhost',
+                   dev_tools_ui=False,
+                   dev_tools_props_check=False)

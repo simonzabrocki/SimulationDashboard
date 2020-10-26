@@ -57,12 +57,14 @@ table = dash_table.DataTable(id='table',
                              style_as_list_view=True,
                              style_header={'backgroundColor': 'white',
                                            'fontWeight': 'bold',
+                                           'text_align': 'left'
                                            },
                              style_cell={'font_family': 'roboto',
                                          'font_size': '12px',
-                                         'text_align': 'right'},
+                                         'text_align': 'left'},
                              style_data_conditional=[{'if': {'row_index': 'odd'},
-                                                      'backgroundColor': 'lightgrey'}]
+                                                      'backgroundColor': 'rgb(0, 0, 0, 0.2)',
+                                                      }]
                             )
 
 
