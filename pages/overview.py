@@ -27,7 +27,7 @@ fig_map = px.choropleth(map_df,
                         locations="ISO",
                         color="Value",
                         hover_name="Country",
-                        color_continuous_scale=px.colors.diverging.RdYlGn,
+                        color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
                         labels={'Value': 'Index'},
                         range_color=[0, 100],
                         )
@@ -36,13 +36,14 @@ fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
                                showcoastlines=False,
                                ),
                       )
+fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
+
 
 fig_map.update_layout(coloraxis_colorbar=dict(title="",
                                               thicknessmode="pixels", thickness=20,
                                               lenmode="pixels", len=200,
-                                              dtick=20
+                                              dtick=50
                                               ))
-
 # table
 
 table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
@@ -57,13 +58,18 @@ table = dash_table.DataTable(id='table',
                              style_as_list_view=True,
                              style_header={'backgroundColor': 'white',
                                            'fontWeight': 'bold',
-                                           'text_align': 'left'
+                                           'text_align': 'left',
+                                           'font_size': '13px',
+                                           'border': '1px solid rgb(0, 0, 0, 0.1)',
                                            },
                              style_cell={'font_family': 'roboto',
                                          'font_size': '12px',
-                                         'text_align': 'left'},
+                                         'text_align': 'left',
+                                         'border': '0px solid rgb(0, 0, 0, 0.1)',
+                                         'opacity': '0.7',
+                                         },
                              style_data_conditional=[{'if': {'row_index': 'odd'},
-                                                      'backgroundColor': 'rgb(0, 0, 0, 0.2)',
+                                                      'backgroundColor': 'rgb(0, 0, 0, 0.1)',
                                                       }]
                             )
 
@@ -89,7 +95,7 @@ def create_layout(app):
                                     Sustainable Development Goals, Paris Climate Agreement, and Aichi Biodiversity Targets \
                                     for four green growth dimensions: efficient and sustainable resource use,\
                                     natural capital protection, green economic opportunities and social inclusion.",
-                                        style={"color": "#ffffff"},
+                                        style={"color": "#ffffff", 'font-size': '13px'},
                                         className="row",
                                     ),
                                 ],

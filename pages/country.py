@@ -27,30 +27,10 @@ def create_layout(app):
                              style={'width': '100%',
                                     'display': 'inline-block',
                                     'align-items': 'center',
-                                    'justify-content': 'center'}
+                                    'justify-content': 'center',
+                                    'font-size': '20px'}
                              ),
                     html.Div(id='Description'),
-
-                    # ROW 1
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.H6(["Dimensions"], className="subtitle padded"),
-                                    dcc.Graph(id='Dim_ISO'),
-                                ],
-                                className="six columns",
-                            ),
-                            html.Div(
-                                [
-                                    html.H6(["Categories"], className="subtitle padded"),
-                                    dcc.Graph(id='Perf_ISO'),
-                                ],
-                                className="six columns",
-                            ),
-                        ],
-                        className="row",
-                    ),
                     html.Div(
                         [
                             html.Div(
@@ -59,11 +39,34 @@ def create_layout(app):
                                         "Index over time",
                                         className="subtitle padded",
                                     ),
-                                    dcc.Graph(id='index_time_series')
-
+                                    dcc.Graph(id='index_time_series',
+                                              config={'displayModeBar': False}
+                                              )
                                 ],
                                 className="twelve columns",
                             )
+                        ],
+                        className="row",
+                    ),
+                    # ROW 1
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.H6(["Dimensions"], className="subtitle padded"),
+                                    dcc.Graph(id='Dim_ISO',
+                                              config={'displayModeBar': False}),
+                                ],
+                                className="six columns",
+                            ),
+                            html.Div(
+                                [
+                                    html.H6(["Categories"], className="subtitle padded"),
+                                    dcc.Graph(id='Perf_ISO',
+                                              config={'displayModeBar': False}),
+                                ],
+                                className="six columns",
+                            ),
                         ],
                         className="row",
                     ),
@@ -75,7 +78,8 @@ def create_layout(app):
                                         "Dimensions over time",
                                         className="subtitle padded",
                                     ),
-                                    dcc.Graph(id='dim_time_series'),
+                                    dcc.Graph(id='dim_time_series',
+                                              config={'displayModeBar': False}),
 
 
                                 ],

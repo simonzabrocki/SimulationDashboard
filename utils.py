@@ -62,8 +62,8 @@ def get_menu():
                 className="tab",
             ),
             dcc.Link(
-                "Historical Performance",
-                href="/SimulationDashBoard/performance",
+                "World Outlook",
+                href="/SimulationDashBoard/world-outlouk",
                 className="tab",
             ),
             dcc.Link(

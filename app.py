@@ -13,11 +13,16 @@ from pages import (
     distributions,
     newsReviews,
     country,
+    world
 )
+import pandas as pd
+
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+app.title = 'GreenGrowthReport'
+
 server = app.server
 
 # Describe the layout/ UI of the app
@@ -33,8 +38,8 @@ def display_page(pathname):
         return pricePerformance.create_layout(app)
     elif pathname == "/SimulationDashBoard/data":
         return portfolioManagement.create_layout(app)
-    elif pathname == "/SimulationDashBoard/performance":
-        return feesMins.create_layout(app)
+    elif pathname == "/SimulationDashBoard/world-outlouk":
+        return world.create_layout(app)
     elif pathname == "/SimulationDashBoard/by-country":
         return country.create_layout(app)
     elif pathname == "/SimulationDashBoard/simulation":
@@ -52,9 +57,12 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
-import pandas as pd
 data = pd.read_csv('data/GGGI/GGIs_2015_2020.csv')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
+
+Income_region_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
+Income_region_group['ISO'] = 'AVG' + '_' + Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+data = pd.concat([data, Income_region_group])
 
 
 @app.callback(
@@ -68,9 +76,12 @@ def update_HTML(ISO):
         data_plot = data_plot[data_plot.Aggregation == 'Index']
         Country = data_plot['Country'].values[0]
         Index = data_plot['Value'].values[0]
-
+        Continent = data_plot['Continent'].values[0]
+        Status = data_plot['IncomeLevel'].values[0]
     else:
         Country = data_plot.Country.unique()[0]
+        Continent = data_plot['Continent'].values[0]
+        Status = data_plot['IncomeLevel'].values[0]
         Index = 'Not available'
 
     return html.Div([
@@ -79,8 +90,8 @@ def update_HTML(ISO):
                             html.H5(f"{Country}: {Index}"),
                             html.Br([]),
                             html.P(
-                                f"{Country} has a Green Growth Index of {Index}.",
-                                style={"color": "#ffffff"},
+                                f"{Country} is a {Status} country located in {Continent}. Its Green Growth index is {Index}.",
+                                style={"color": "#ffffff", 'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -106,11 +117,11 @@ def update_polar(ISO):
           r = cats.Value,
           theta = cats.Variable,
           name = "Trial 6",
-          marker=dict(size=10, color = "#14ac9c"),
+          marker=dict(size=10, color="#14ac9c"),
           ))
     fig.update_traces(fill='toself')
     fig.update_traces(mode="markers", marker=dict(opacity=0.7))
-    fig.update_layout(margin={"r": 0.1, "t": 0.1, "l": 0.1, "b": 0.1})
+    fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20})
     return fig
 
 @app.callback(
@@ -175,22 +186,32 @@ def update_ts(ISO):
     dash.dependencies.Output('index_time_series', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_ts_ind(ISO):
-    data_ISO = data[(data.ISO.isin([ISO])) & (data.Aggregation.isin(['Index']))]
-    fig = px.line(data_ISO,
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
+
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Index')]
+
+    fig = px.line(df,
                   x='Year',
                   y='Value',
-                  labels = {
-                     'Value': ''
-                  },
-                 height=300)
+                  color='ISO',
+                  line_dash='ISO',
+                  color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+                  height=300)
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)
-    fig.update_traces(mode='lines+markers', line_color="#14ac9c")
-
+    fig.update_traces(mode='lines+markers')
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
 if __name__ == "__main__":
     app.run_server(debug=True, host='localhost',
-                   dev_tools_ui=False,
-                   dev_tools_props_check=False)
+                   #dev_tools_ui=False,
+                   #dev_tools_props_check=False
+                   )
