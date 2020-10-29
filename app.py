@@ -57,7 +57,7 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
-data = pd.read_csv('data/GGGI/GGIs_2015_2020.csv')
+data = pd.read_csv('data/GGGI/GGIs_2000_2020.csv')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 Income_region_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
@@ -65,11 +65,7 @@ Income_region_group['ISO'] = 'AVG' + '_' + Income_region_group["IncomeLevel"] + 
 data = pd.concat([data, Income_region_group])
 
 
-@app.callback(
-    dash.dependencies.Output('Description', 'children'),
-    [dash.dependencies.Input('ISO_select', 'value')],
-    suppress_callback_exceptions=True)
-def update_HTML(ISO):
+def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
 
     if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
@@ -97,95 +93,52 @@ def update_HTML(ISO):
                         ],
                         className="product",
                     )
-                ],
-                className="row",
-            )
-
-
-@app.callback(
-    dash.dependencies.Output('Perf_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_polar(ISO):
-
-    data_plot = data[(data.ISO.isin([ISO])) & (data.Year == 2020)].fillna(0)
-
-    cats = data_plot[(data_plot.Aggregation == 'Category')]
-
-    fig = go.Figure()
-
-    fig.add_trace(go.Scatterpolargl(
-          r = cats.Value,
-          theta = cats.Variable,
-          name = "Trial 6",
-          marker=dict(size=10, color="#14ac9c"),
-          ))
-    fig.update_traces(fill='toself')
-    fig.update_traces(mode="markers", marker=dict(opacity=0.7))
-    fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20})
-    return fig
-
-@app.callback(
-    dash.dependencies.Output('Dim_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_loliplot(ISO):
-    data_plot = data[(data.ISO.isin([ISO])) & (data.Year == 2020)].fillna(0)
-
-    dims = data_plot[(data_plot.Aggregation == 'Dimension')]
-
-    fig = px.scatter(dims,
-                    x='Variable',
-                    y='Value',
-                    size=[8 for i in range(4)],
-                    color=['blue', 'blue', 'blue', 'blue'],
-                     labels={
-                         "Variable": "Dimension",
-                     },
+                    ],
+                    className="row",
                     )
 
-    fig.update_traces(marker=dict(size=12,
-                                  line=dict(width=12,
-                                            color='#14ac9c')),
-                      selector=dict(mode='markers'))
 
+def polar(ISO):
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
 
-    fig.add_trace(go.Bar(y=dims['Value'], x=dims['Variable'],
-                         width=[5e-2 for i in range(4)],
-                        marker_color=['#14ac9c', '#14ac9c', '#14ac9c', '#14ac9c']))
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Category') & (data.Year == 2020)].fillna(0)
 
-    fig.update_layout(showlegend=False,hovermode=False)
-    fig.update_yaxes(range=[0, 100])
+    fig = go.Figure()
+    cats = ['EE', 'EW', 'SL', 'ME',
+            'EQ', 'GE', 'BE', 'CV',
+            'AB', 'GB', 'SE', 'SP',
+            'GV', 'GT', 'GJ', 'GN']
+    df = df.set_index('Variable').T[cats].T.reset_index()
 
-    fig.update_xaxes(showgrid=False)
+    fig = px.line_polar(df, r="Value", theta="Variable", color="ISO", line_close=True,
+                        color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},)
 
+    fig.update_traces(fill='toself')
+    fig.update_traces(mode="markers", marker=dict(opacity=0.7))
+    fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+                      showlegend=False)
     return fig
 
 
-@app.callback(
-    dash.dependencies.Output('dim_time_series', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_ts(ISO):
-    data_ISO = data[(data.ISO.isin([ISO])) & (data.Aggregation.isin(['Dimension']))]
-    fig = px.line(data_ISO,
-                  facet_row="Variable",
-                  color='Variable',
-                  x='Year',
-                  y='Value',
-                  facet_row_spacing=0.01,
-                  labels = {
-                     'Value': ''
-                  },
-                  height=600)
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_yaxes(visible=True, fixedrange=True)
-    fig.update_layout(showlegend=False)
-    fig.update_traces(mode='lines+markers')
+def loliplot(ISO):
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
+
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Dimension') & (data.Year == 2020)].fillna(0)
+
+    fig = px.scatter(df, y="Value",
+                     x="Variable",
+                     color='ISO',
+                     labels={"Variable": 'Dimension'},
+                     color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+                     )
+    fig.update_traces(marker=dict(size=25, opacity=0.6))
+    fig.update_yaxes(showgrid=False, range=[0, 100])
+    fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+                      showlegend=False)
     return fig
 
 
-@app.callback(
-    dash.dependencies.Output('index_time_series', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_ts_ind(ISO):
+def time_series_Index(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Index')]
@@ -210,8 +163,37 @@ def update_ts_ind(ISO):
     return fig
 
 
+@app.callback(
+    dash.dependencies.Output('Description', 'children'),
+    [dash.dependencies.Input('ISO_select', 'value')],
+    suppress_callback_exceptions=True)
+def update_HTML(ISO):
+    return HTML_text(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('Perf_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_polar(ISO):
+    return polar(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('Dim_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    return loliplot(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('index_time_series', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_ts_ind(ISO):
+    return time_series_Index(ISO)
+
+
 if __name__ == "__main__":
     app.run_server(debug=True, host='localhost',
-                   #dev_tools_ui=False,
-                   #dev_tools_props_check=False
+                   dev_tools_ui=False,
+                   dev_tools_props_check=False
                    )

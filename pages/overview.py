@@ -1,77 +1,71 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
 import plotly.express as px
-
-from utils import Header, make_dash_table
 
 import pandas as pd
 import dash_table
 import pathlib
+from utils import Header
 
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("../data").resolve()
-
-
-df_fund_facts = pd.read_csv(DATA_PATH.joinpath("df_fund_facts.csv"))
-df_price_perf = pd.read_csv(DATA_PATH.joinpath("df_price_perf.csv"))
-
 data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2015_2020.csv'))
 
 
-# Map to put in sep scripts later
-map_df = data[(data.Year == 2020) & (data.Aggregation == 'Index')]
-
-fig_map = px.choropleth(map_df,
-                        locations="ISO",
-                        color="Value",
-                        hover_name="Country",
-                        color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
-                        labels={'Value': 'Index'},
-                        range_color=[0, 100],
-                        )
-fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
-                      geo=dict(showframe=False,
-                               showcoastlines=False,
-                               ),
-                      )
-fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
-
-
-fig_map.update_layout(coloraxis_colorbar=dict(title="",
-                                              thicknessmode="pixels", thickness=20,
-                                              lenmode="pixels", len=200,
-                                              dtick=50
-                                              ))
-# table
-
-table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
-table_df = table_df.reset_index()
-table = dash_table.DataTable(id='table',
-                             columns=[{"name": i, "id": i} for i in table_df.columns],
-                             data=table_df.to_dict('records'),
-                             sort_action="native",
-                             page_action="native",
-                             page_current=0,
-                             page_size=20,
-                             style_as_list_view=True,
-                             style_header={'backgroundColor': 'white',
-                                           'fontWeight': 'bold',
-                                           'text_align': 'left',
-                                           'font_size': '13px',
-                                           'border': '1px solid rgb(0, 0, 0, 0.1)',
-                                           },
-                             style_cell={'font_family': 'roboto',
-                                         'font_size': '12px',
-                                         'text_align': 'left',
-                                         'border': '0px solid rgb(0, 0, 0, 0.1)',
-                                         'opacity': '0.7',
-                                         },
-                             style_data_conditional=[{'if': {'row_index': 'odd'},
-                                                      'backgroundColor': 'rgb(0, 0, 0, 0.1)',
-                                                      }]
+def Map(data):
+    map_df = data[(data.Year == 2020) & (data.Aggregation == 'Index')]
+    fig_map = px.choropleth(map_df,
+                            locations="ISO",
+                            color="Value",
+                            hover_name="Country",
+                            color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
+                            labels={'Value': 'Index'},
+                            range_color=[0, 100],
                             )
+    fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                          geo=dict(showframe=False,
+                                   showcoastlines=False,
+                                   ),
+                          )
+    fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
+
+    fig_map.update_layout(coloraxis_colorbar=dict(title="",
+                                                  thicknessmode="pixels", thickness=20,
+                                                  lenmode="pixels", len=200,
+                                                  dtick=50
+                                                  ))
+    return fig_map
+
+
+def Table(data):
+    table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index()
+    table = dash_table.DataTable(id='table',
+                                 columns=[{"name": i, "id": i} for i in table_df.columns],
+                                 data=table_df.to_dict('records'),
+                                 sort_action="native",
+                                 page_action="native",
+                                 page_current=0,
+                                 page_size=20,
+                                 style_as_list_view=True,
+                                 style_header={'backgroundColor': 'white',
+                                               'fontWeight': 'bold',
+                                               'text_align': 'left',
+                                               'font_size': '13px',
+                                               'border': '1px solid rgb(0, 0, 0, 0.1)',
+                                               },
+                                 style_cell={'font_family': 'roboto',
+                                             'font_size': '12px',
+                                             'text_align': 'left',
+                                             'border': '0px solid rgb(0, 0, 0, 0.1)',
+                                             'opacity': '0.7',
+                                             },
+                                 style_data_conditional=[{'if': {'row_index': 'odd'},
+                                                          'backgroundColor': 'rgb(0, 0, 0, 0.1)',
+                                                          }]
+                                 )
+    return table
 
 
 def create_layout(app):
@@ -113,7 +107,7 @@ def create_layout(app):
                                         "Green Growth Index Map 2020",
                                         className="subtitle padded",
                                     ),
-                                    dcc.Graph(figure=fig_map)
+                                    dcc.Graph(figure=Map(data))
                                 ],
                                 className="twelve columns",
                             )
@@ -129,7 +123,7 @@ def create_layout(app):
                                         "Green Growth Index Table 2020",
                                         className="subtitle padded",
                                     ),
-                                    table,
+                                    Table(data),
                                 ],
                                 className="twelve columns",
                             )
