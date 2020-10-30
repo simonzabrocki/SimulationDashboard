@@ -57,11 +57,6 @@ def get_menu():
                 className="tab first",
             ),
             dcc.Link(
-                "Data",
-                href="/SimulationDashBoard/data",
-                className="tab",
-            ),
-            dcc.Link(
                 "World Outlook",
                 href="/SimulationDashBoard/world-outlouk",
                 className="tab",
