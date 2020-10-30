@@ -33,7 +33,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Index over time",
+                                        "Index trend",
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(id='index_time_series',

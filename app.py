@@ -57,12 +57,43 @@ def display_page(pathname):
         return overview.create_layout(app)
 
 
+#####
+# TO PUT SOMEWHERE ESLE
 data = pd.read_csv('data/GGGI/GGIs_2000_2020.csv')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 Income_region_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
 Income_region_group['ISO'] = 'AVG' + '_' + Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
 data = pd.concat([data, Income_region_group])
+variable_names = {
+    'ESRU': 'Efficient and sustainable resource use',
+    'NCP': 'Natural capital protection',
+    'GEO': 'Green economic opportunities',
+    'SI': 'Social inclusion',
+    'EE': 'Efficient and and sustainable energy',
+    'EW': 'Efficient and sustainable water use',
+    'SL': 'Sustainable land use',
+    'ME': 'Material use efficiency',
+    'EQ': 'Environmental quality',
+    'GE': 'Greenhouse gas emissions reductions',
+    'BE': 'Biodiversity and ecosystem protection',
+    'CV': 'Cultural and social value',
+    'GV': 'Green investment',
+    'GT': 'Green trade',
+    'GJ': 'Green employment',
+    'GN': 'Green innovation',
+    'AB': 'Access to basic services and resources',
+    'GB': 'Gender balance',
+    'SE': 'Social equity',
+    'SP': 'Social protection'
+}
+
+var_names = pd.DataFrame.from_dict(variable_names, orient='index')
+var_names.columns = ['Variable_name']
+data = data.set_index('Variable')
+data['Variable_name'] = var_names
+data = data.reset_index()
+######
 
 
 def HTML_text(ISO):
@@ -83,7 +114,7 @@ def HTML_text(ISO):
     return html.Div([
                     html.Div(
                         [
-                            html.H5(f"{Country}: {Index}"),
+                            html.H5(f"{Country}'s Green Growth Index is {Index}"),
                             html.Br([]),
                             html.P(
                                 f"{Country} is a {Status} country located in {Continent}. Its Green Growth index is {Index}.",
@@ -111,7 +142,9 @@ def polar(ISO):
     df = df.set_index('Variable').T[cats].T.reset_index()
 
     fig = px.line_polar(df, r="Value", theta="Variable", color="ISO", line_close=True,
-                        color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},)
+                        color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+                        hover_name='Variable_name',
+                        hover_data={'ISO': False, 'Variable': False})
 
     fig.update_traces(fill='toself')
     fig.update_traces(mode="markers", marker=dict(opacity=0.7))
@@ -124,17 +157,26 @@ def loliplot(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Dimension') & (data.Year == 2020)].fillna(0)
-
+    df = df.round(2)
     fig = px.scatter(df, y="Value",
                      x="Variable",
                      color='ISO',
-                     labels={"Variable": 'Dimension'},
+                     labels={"Variable": ''},
                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+                     hover_name='Variable_name',
+                     hover_data={'ISO': False, 'Variable': False}
                      )
     fig.update_traces(marker=dict(size=25, opacity=0.6))
     fig.update_yaxes(showgrid=False, range=[0, 100])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
-                      showlegend=False)
+                      showlegend=True)
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
@@ -149,7 +191,8 @@ def time_series_Index(ISO):
                   color='ISO',
                   line_dash='ISO',
                   color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
-                  height=300)
+                  height=300,
+                  hover_data={'ISO': False, 'Year': False})
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)
     fig.update_traces(mode='lines+markers')
@@ -160,6 +203,8 @@ def time_series_Index(ISO):
         xanchor="right",
         x=1
     ))
+    fig.update_layout(hovermode="x unified")
+
     return fig
 
 
