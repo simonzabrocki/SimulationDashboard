@@ -59,7 +59,7 @@ def display_page(pathname):
 
 #####
 # TO PUT SOMEWHERE ESLE
-data = pd.read_csv('data/GGGI/GGIs_2000_2020.csv')
+data = pd.read_csv('data/GGGI/GGIs_2005_2020.csv')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 Income_region_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
@@ -146,8 +146,8 @@ def polar(ISO):
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False})
 
-    fig.update_traces(fill='toself')
-    fig.update_traces(mode="markers", marker=dict(opacity=0.7))
+    #fig.update_traces(fill='toself')
+    fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=False)
     return fig

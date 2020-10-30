@@ -7,7 +7,7 @@ import pathlib
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("../data").resolve()
 
-data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2000_2020.csv'))
+data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2005_2020.csv'))
 
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
