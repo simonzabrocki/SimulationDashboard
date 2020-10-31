@@ -7,10 +7,6 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 from pages import (
     overview,
-    pricePerformance,
-    portfolioManagement,
-    feesMins,
-    distributions,
     newsReviews,
     country,
     world
@@ -34,25 +30,12 @@ app.layout = html.Div(
 # Update page
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/SimulationDashBoard/price-performance":
-        return pricePerformance.create_layout(app)
-    elif pathname == "/SimulationDashBoard/data":
-        return portfolioManagement.create_layout(app)
-    elif pathname == "/SimulationDashBoard/world-outlouk":
+    if pathname == "/SimulationDashBoard/world-outlouk":
         return world.create_layout(app)
     elif pathname == "/SimulationDashBoard/by-country":
         return country.create_layout(app)
     elif pathname == "/SimulationDashBoard/simulation":
         return newsReviews.create_layout(app)
-    elif pathname == "/SimulationDashBoard/full-view":
-        return (
-            overview.create_layout(app),
-            pricePerformance.create_layout(app),
-            portfolioManagement.create_layout(app),
-            feesMins.create_layout(app),
-            distributions.create_layout(app),
-            newsReviews.create_layout(app),
-        )
     else:
         return overview.create_layout(app)
 
@@ -146,7 +129,7 @@ def polar(ISO):
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False})
 
-    #fig.update_traces(fill='toself')
+    # fig.update_traces(fill='toself')
     fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=False)

@@ -70,11 +70,6 @@ def get_menu():
                 href="/SimulationDashBoard/simulation",
                 className="tab",
             ),
-            # dcc.Link(
-            #     "News & Reviews",
-            #     href="/dash-financial-report/news-and-reviews",
-            #     className="tab",
-            # ),
         ],
         className="row all-tabs",
     )
