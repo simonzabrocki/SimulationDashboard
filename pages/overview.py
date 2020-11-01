@@ -10,7 +10,7 @@ from utils import Header
 # get relative data folder
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("../data").resolve()
-data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2015_2020.csv'))
+data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2005_2020.csv'))
 variable_names = {
     'ESRU': 'Efficient and sustainable resource use',
     'NCP': 'Natural capital protection',

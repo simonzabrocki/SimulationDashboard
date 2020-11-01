@@ -85,7 +85,7 @@ def HTML_text(ISO):
     if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
         data_plot = data_plot[data_plot.Aggregation == 'Index']
         Country = data_plot['Country'].values[0]
-        Index = data_plot['Value'].values[0]
+        Index = data_plot['Value'].values[-1]
         Continent = data_plot['Continent'].values[0]
         Status = data_plot['IncomeLevel'].values[0]
     else:
