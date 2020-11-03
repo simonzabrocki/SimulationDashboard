@@ -15,7 +15,8 @@ data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2005_2020.csv'))
 
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
-cover = data[(data.Aggregation == 'Index') & (data.Year == 2020)].dropna().shape[0]
+cover = data[(data.Aggregation == 'Index') & (data.Year == 2020)].dropna(subset=['Value']).shape[0]
+
 variable_names = {
     'ESRU': 'Efficient and sustainable resource use',
     'NCP': 'Natural capital protection',
