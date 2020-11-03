@@ -72,15 +72,30 @@ def Index_Heatmap(data):
 
 
 def Index_trend(data):
-    df = data[(data.Aggregation == 'Index')].groupby('Year').mean().reset_index()
+    # df = data[(data.Aggregation == 'Index')].groupby('Year').mean().reset_index()
+    # fig = px.line(df,
+    #               x='Year',
+    #               y='Value',
+    #               labels={'Value': ''},
+    #               height=300)
+    # fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    # fig.update_yaxes(visible=True, fixedrange=True)
+    # fig.update_traces(mode='lines+markers', line_color="#14ac9c")
+
+    df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
     fig = px.line(df,
                   x='Year',
                   y='Value',
-                  labels={'Value': ''},
-                  height=300)
+                  facet_col='Continent',
+                  facet_col_wrap=2,
+                  labels = {
+                     'Value': ''
+                  },
+                 height=600)
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_yaxes(visible=True, fixedrange=True)
-    fig.update_traces(mode='lines+markers', line_color="#14ac9c")
+    fig.update_yaxes(visible=True)
+    fig.update_xaxes(showticklabels=True, col=2, row=2)
+    fig.update_traces(mode='lines', line_color='#14ac9c')
     return fig
 
 
@@ -235,7 +250,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Index World Trend",
+                                        "Index Regional Trend",
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=Index_trend(data),

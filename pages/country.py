@@ -45,12 +45,29 @@ def create_layout(app):
                         ],
                         className="row",
                     ),
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.H6(
+                                        "Regional Rank trend",
+                                        className="subtitle padded",
+                                    ),
+                                    dcc.Graph(id='rank_time_series',
+                                              config={'displayModeBar': False}
+                                              )
+                                ],
+                                className="twelve columns",
+                            )
+                        ],
+                        className="row",
+                    ),
                     # ROW 1
                     html.Div(
                         [
                             html.Div(
                                 [
-                                    html.H6(["Dimensions"], className="subtitle padded"),
+                                    html.H6(["Dimensions 2020"], className="subtitle padded"),
                                     dcc.Graph(id='Dim_ISO',
                                               config={'displayModeBar': False}),
                                 ],
@@ -58,7 +75,7 @@ def create_layout(app):
                             ),
                             html.Div(
                                 [
-                                    html.H6(["Categories"], className="subtitle padded"),
+                                    html.H6(["Categories 2020"], className="subtitle padded"),
                                     dcc.Graph(id='Perf_ISO',
                                               config={'displayModeBar': False}),
                                 ],

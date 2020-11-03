@@ -52,17 +52,17 @@ def get_menu():
     menu = html.Div(
         [
             dcc.Link(
-                "Overview",
+                "Global Overview",
                 href="/SimulationDashBoard/overview",
                 className="tab first",
             ),
             dcc.Link(
-                "World Outlook",
+                "Regional Outlook",
                 href="/SimulationDashBoard/world-outlouk",
                 className="tab",
             ),
             dcc.Link(
-                "Report by Country", href="/SimulationDashBoard/by-country",
+                "Country Profile", href="/SimulationDashBoard/by-country",
                 className="tab"
             ),
             dcc.Link(
