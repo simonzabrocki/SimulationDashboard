@@ -83,46 +83,39 @@ def Index_trend(data):
     # fig.update_traces(mode='lines+markers', line_color="#14ac9c")
 
     df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
+    df = df.round(2)
     fig = px.line(df,
                   x='Year',
                   y='Value',
                   facet_col='Continent',
                   facet_col_wrap=2,
-                  labels = {
-                     'Value': ''
-                  },
-                 height=600)
+                  hover_name='Year',
+                  hover_data={'Value': True, 'Year': False, 'Continent': False},
+                  labels={'Value': 'Score'},
+                  height=600)
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
+    fig.update_xaxes(range=[2005, 2021])
+
     fig.update_xaxes(showticklabels=True, col=2, row=2)
     fig.update_traces(mode='lines', line_color='#14ac9c')
+
+    dots = px.scatter(df[df.Year == 2020],
+                      x='Year',
+                      y='Value',
+                      facet_col='Continent',
+                      facet_col_wrap=2,
+                      hover_name='Year',
+                      hover_data={'Value': True, 'Year': False, 'Continent': False},
+                      labels={'Value': 'Score'},
+                      )
+    dots.update_traces(marker_color='#14ac9c', marker_size=10)
+    fig.add_traces(dots.data)
+
     return fig
 
 
 def dimension_trend(data):
-    # df = data[(data.Aggregation.isin(['Dimension']))].groupby(
-    #     ["Variable_name", 'Variable', 'Year']).mean().reset_index()
-    # df['Value'] = df['Value'].round(1)
-    #
-    # fig = px.line(df,
-    #               x='Year',
-    #               y='Value',
-    #               labels={'Year': '', 'Value': ''},
-    #               facet_col='Variable',
-    #               facet_col_wrap=2,
-    #               height=300,
-    #               width=700,
-    #               facet_col_spacing=0.04,
-    #               hover_name='Variable_name',
-    #               hover_data={'Variable': False, 'Year': False, 'Value': False})
-    # fig.update_traces(mode='lines+markers', line_color="#14ac9c")
-    # fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    # fig.update_xaxes(showgrid=False)
-    # fig.update_yaxes(showgrid=False)
-    #
-    # fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    #
-    # fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25})
     df = data[(data.Aggregation.isin(['Dimension']))].groupby(
         ["Variable_name", 'Variable', 'Year', 'Continent']).mean().reset_index()
     df['Value'] = df['Value'].round(1)
@@ -130,7 +123,7 @@ def dimension_trend(data):
     fig = px.line(df,
                   x='Year',
                   y='Value',
-                  labels={'Year': '', 'Value': ''},
+                  labels={'Year': 'Year', 'Value': 'Score', 'Variable_name': 'Dimension'},
                   facet_col='Continent',
                   color='Variable_name',
                   facet_col_wrap=2,
@@ -138,24 +131,21 @@ def dimension_trend(data):
                   facet_col_spacing=0.04,
                   hover_name='Variable_name',
                   hover_data={'Variable': False,
-                              'Year': False,
-                              'Value': False,
+                              'Year': True,
+                              'Value': True,
                               'Continent': False,
                               'Variable_name': False},
                   height=600,
                   color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
-                 )
+                  )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
     fig.update_xaxes(range=[2005, 2021])
 
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_xaxes(showticklabels=True, col=2, row=2)
-
     dots = px.scatter(df[df.Year == 2020],
                       x='Year',
                       y='Value',
-                      labels={'Year': '', 'Value': ''},
+                      labels={'Year': 'Year', 'Value': 'Score'},
                       facet_col='Continent',
                       color='Variable_name',
                       facet_col_wrap=2,
@@ -163,24 +153,28 @@ def dimension_trend(data):
                       facet_col_spacing=0.04,
                       hover_name='Variable_name',
                       hover_data={'Variable': False,
-                                  'Year': False,
-                                  'Value': False,
-                                  'Continent':False,
-                                  'Variable_name':False},
+                                  'Year': True,
+                                  'Value': True,
+                                  'Continent': False,
+                                  'Variable_name': False},
                       height=600,
                       color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
                       )
-    dots.update_traces(marker=dict(size=10, opacity=1))
     dots.update_layout(showlegend=False)
 
+    dots.update_traces(marker=dict(size=10, opacity=1))
+    for plot in dots.data:
+        plot['showlegend'] = False
     fig.add_traces(dots.data)
+
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_xaxes(showticklabels=True, col=2, row=2)
     fig.update_layout(legend=dict(
         yanchor="bottom",
         y=0.01,
         xanchor="right",
         x=1
     ))
-
     fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25})
     return fig
 
@@ -221,8 +215,8 @@ def cat_heatmap(data):
                      facet_col='Continent',
                      facet_col_spacing=0.05,
                      hover_name='Variable_name',
-                     hover_data={'Value': True, 'Continent': False},
-                     labels={'Variable': '', 'Value': ''},
+                     hover_data={'Value': True, 'Continent': False, 'Variable': False},
+                     labels={'Variable': 'Category', 'Value': 'Score'},
                      )
     fig.update_xaxes(showgrid=False, range=[0, 100])
     fig.update_traces(marker=dict(size=12, opacity=0.8, color='#14ac9c'))
@@ -254,6 +248,8 @@ def Table(data):
     df = df.reset_index().pivot(index=['Continent'], columns='Variable_name', values='Value')
     df.columns.name = None
     df = df.round(2).reset_index()
+    df = df.rename(columns={'Continent': 'Region'})
+
     table = dash_table.DataTable(id='table',
                                  columns=[{"name": i, "id": i} for i in df.columns],
                                  data=df.to_dict('records'),
@@ -308,7 +304,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Index Regional Trend",
+                                        "Index Regional Trends",
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=Index_trend(data),
@@ -325,7 +321,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Dimension World Trends",
+                                        "Dimension Regional Trends",
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=dimension_trend(data),
@@ -342,7 +338,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Dimensions by Continent",
+                                        "2020 Dimensions by Region",
                                         className="subtitle padded",
                                     ),
                                     Table(data),
@@ -359,7 +355,7 @@ def create_layout(app):
                             html.Div(
                                 [
                                     html.H6(
-                                        "Categories by Continent",
+                                        "2020 Categories by Region",
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=cat_heatmap(data),

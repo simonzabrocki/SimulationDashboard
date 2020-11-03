@@ -136,6 +136,7 @@ def polar(ISO):
     continent = df.Continent.values[0]
     inc_level = df.IncomeLevel.values[0]
 
+    df = df.round(2)
     fig = go.Figure()
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
@@ -148,17 +149,23 @@ def polar(ISO):
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False,
                                     'Continental_Rank': True,
-                                    'Income_Rank': True},
+                                    'Income_Rank': False},
                         labels={"Value": 'Score',
                                 'ISO': '',
                                 'Continental_Rank': f'Rank in {continent}',
-                                'Income_Rank': f'Rank in {inc_level} countries',
                                 })
 
     fig.update_traces(fill='toself')
     fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
-                      showlegend=False)
+                      showlegend=True)
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
@@ -176,12 +183,11 @@ def loliplot(ISO):
                      hover_data={'ISO': False,
                                  'Variable': False,
                                  'Continental_Rank': True,
-                                 'Income_Rank': True},
+                                 'Income_Rank': False},
                      labels={"Value": 'Score',
                              'Variable': '',
                              'ISO': '',
                              'Continental_Rank': f'Rank in {continent}',
-                             'Income_Rank': f'Rank in {inc_level} countries',
                              }
                      )
     fig.update_traces(marker=dict(size=25, opacity=0.6))
@@ -220,11 +226,11 @@ def time_series_Index(ISO):
                   hover_data={'ISO': False, 'Year': False,
                               'Continental_Rank': True,
                               'Income_Rank': True},
-                  hover_name='Value',
+                  hover_name='Year',
                   labels={"Value": 'Score',
                           'ISO': '',
                           'Continental_Rank': f'Rank in {continent}',
-                          'Income_Rank': f'Rank in {inc_level} countries',
+                          'Income_Rank': f'Rank in income group',
                           }
                   )
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))

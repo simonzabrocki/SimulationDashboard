@@ -47,6 +47,7 @@ def Map(data):
                             locations="ISO",
                             color="Value",
                             hover_name="Country",
+                            hover_data={"ISO": False},
                             color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
                             labels={'Value': 'Index'},
                             range_color=[0, 100],
@@ -135,7 +136,7 @@ def create_layout(app):
                                         "Green Growth Index Map 2020",
                                         className="subtitle padded",
                                     ),
-                                    dcc.Graph(figure=Map(data))
+                                    dcc.Graph(figure=Map(data), id='world_map')
                                 ],
                                 className="twelve columns",
                             )
