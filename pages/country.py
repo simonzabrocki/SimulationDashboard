@@ -45,23 +45,23 @@ def create_layout(app):
                         ],
                         className="row",
                     ),
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.H6(
-                                        "Regional Rank trend",
-                                        className="subtitle padded",
-                                    ),
-                                    dcc.Graph(id='rank_time_series',
-                                              config={'displayModeBar': False}
-                                              )
-                                ],
-                                className="twelve columns",
-                            )
-                        ],
-                        className="row",
-                    ),
+                    # html.Div(
+                    #     [
+                    #         html.Div(
+                    #             [
+                    #                 html.H6(
+                    #                     "Regional Rank trend",
+                    #                     className="subtitle padded",
+                    #                 ),
+                    #                 dcc.Graph(id='rank_time_series',
+                    #                           config={'displayModeBar': False}
+                    #                           )
+                    #             ],
+                    #             className="twelve columns",
+                    #         )
+                    #     ],
+                    #     className="row",
+                    # ),
                     # ROW 1
                     html.Div(
                         [
