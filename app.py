@@ -43,6 +43,7 @@ def display_page(pathname):
 #####
 # TO PUT SOMEWHERE ESLE
 data = pd.read_csv('data/GGGI/GGIs_2005_2020.csv')
+
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])["Value"].rank(method='dense', ascending=False)
@@ -224,31 +225,34 @@ def loliplot(ISO):
 
 
 def time_series_Index(ISO):
-    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel", 'Region']].drop_duplicates().values[0].tolist())
     REF_1 = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel"]].drop_duplicates().values[0].tolist())
     REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]].drop_duplicates().values[0].tolist())
 
     df = data[(data.ISO.isin([ISO, REF_1, REF_2])) & (data.Aggregation == 'Index')].fillna(0)
     df = df.round(2)
     continent = df.Continent.values[0]
-    inc_level = df.IncomeLevel.values[0]
 
-    fig = px.line(df[df.ISO == ISO],
-                  x='Year',
-                  y='Value',
-                  color='ISO',
-                  color_discrete_map={ISO: '#14ac9c'},
-                  height=300,
-                  hover_data={'ISO': False, 'Year': False,
-                              'Continental_Rank': True,
-                              'Income_Rank': True},
-                  hover_name='Year',
-                  labels={"Value": 'Score',
-                          'ISO': '',
-                          'Continental_Rank': f'Rank in {continent}',
-                          'Income_Rank': f'Rank in income group',
-                          }
-                  )
+    if df[df.ISO == ISO].shape[0] == 0:
+        fig = px.line(df[df.ISO == ISO],
+                      x='Year',
+                      y='Value')
+    else:
+        fig = px.line(df[df.ISO == ISO],
+                      x='Year',
+                      y='Value',
+                      color='ISO',
+                      color_discrete_map={ISO: '#14ac9c'},
+                      height=300,
+                      hover_data={'ISO': False, 'Year': False,
+                                  'Continental_Rank': True,
+                                  'Income_Rank': True},
+                      hover_name='Year',
+                      labels={"Value": 'Score',
+                              'ISO': '',
+                              'Continental_Rank': f'Rank in {continent}',
+                              'Income_Rank': 'Rank in income group',
+                              }
+                      )
     fig.update_traces(mode='lines+markers')
 
     fig.add_trace(go.Scatter(x=df[df.ISO == REF_1]['Year'],
