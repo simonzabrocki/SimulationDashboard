@@ -27,23 +27,9 @@ app.layout = html.Div(
 )
 
 
-# Update page
-@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
-def display_page(pathname):
-    if pathname == "/SimulationDashBoard/world-outlouk":
-        return world.create_layout(app)
-    elif pathname == "/SimulationDashBoard/by-country":
-        return country.create_layout(app)
-    elif pathname == "/SimulationDashBoard/simulation":
-        return newsReviews.create_layout(app)
-    else:
-        return overview.create_layout(app)
-
-
 #####
 # TO PUT SOMEWHERE ESLE
 data = pd.read_csv('data/GGGI/GGIs_2005_2020.csv')
-
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])["Value"].rank(method='dense', ascending=False)
@@ -135,7 +121,6 @@ def polar(ISO):
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Category') & (data.Year == 2020)].fillna(0)
     continent = df.Continent.values[0]
-    inc_level = df.IncomeLevel.values[0]
 
     df = df.round(2)
     fig = go.Figure()
@@ -158,15 +143,13 @@ def polar(ISO):
                                 })
     fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
 
-    fig.add_trace(go.Scatterpolar(
-            r = df[df.ISO == REF]['Value'],
-            theta = df[df.ISO == REF]['Variable'],
-            name=REF,
-            mode = 'markers',
-            marker=dict(color='darkgrey', size=0.1),
-            hoverinfo='skip')
-        )
-
+    fig.add_trace(go.Scatterpolar(r=df[df.ISO == REF]['Value'],
+                                  theta=df[df.ISO == REF]['Variable'],
+                                  name=REF,
+                                  mode='markers',
+                                  marker=dict(color='darkgrey', size=0.1),
+                                  hoverinfo='skip')
+                  )
 
     fig.update_traces(fill='toself')
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
@@ -186,7 +169,6 @@ def loliplot(ISO):
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Dimension') & (data.Year == 2020)].fillna(0)
     df = df.round(2)
     continent = df.Continent.values[0]
-    inc_level = df.IncomeLevel.values[0]
     fig = px.scatter(df[df.ISO == ISO],
                      y="Value",
                      x="Variable",
@@ -341,8 +323,21 @@ def update_ts_ind(ISO):
     return time_series_Index(ISO)
 
 
+# Update page
+@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
+def display_page(pathname):
+    if pathname == "/SimulationDashBoard/world-outlouk":
+        return world.create_layout(app, data)
+    elif pathname == "/SimulationDashBoard/by-country":
+        return country.create_layout(app, data)
+    elif pathname == "/SimulationDashBoard/simulation":
+        return newsReviews.create_layout(app)
+    else:
+        return overview.create_layout(app)
+
+
 if __name__ == "__main__":
     app.run_server(debug=True, host='localhost',
-                   dev_tools_ui=False,
-                   dev_tools_props_check=False
+                   #dev_tools_ui=False,
+                   #dev_tools_props_check=False
                    )

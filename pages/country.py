@@ -1,18 +1,10 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from utils import Header
-import pandas as pd
-import pathlib
-
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("../data").resolve()
-
-data = pd.read_csv(DATA_PATH.joinpath('GGGI/GGIs_2005_2020.csv'))
-
-ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 
 
-def create_layout(app):
+def create_layout(app, data):
+    ISO_options = data.dropna(subset=['Country'])[['ISO', 'Country']].drop_duplicates().values
     # Page layouts
     return html.Div(
         [
@@ -45,24 +37,6 @@ def create_layout(app):
                         ],
                         className="row",
                     ),
-                    # html.Div(
-                    #     [
-                    #         html.Div(
-                    #             [
-                    #                 html.H6(
-                    #                     "Regional Rank trend",
-                    #                     className="subtitle padded",
-                    #                 ),
-                    #                 dcc.Graph(id='rank_time_series',
-                    #                           config={'displayModeBar': False}
-                    #                           )
-                    #             ],
-                    #             className="twelve columns",
-                    #         )
-                    #     ],
-                    #     className="row",
-                    # ),
-                    # ROW 1
                     html.Div(
                         [
                             html.Div(
