@@ -219,7 +219,8 @@ def create_layout(app, data):
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=Index_trend(data),
-                                              config={'displayModeBar': False}),
+                                              config={'displayModeBar': False},
+                                              id='Index Regional Trends'),
 
                                 ],
                                 className="twelve columns",
@@ -236,7 +237,8 @@ def create_layout(app, data):
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=dimension_trend(data),
-                                              config={'displayModeBar': False}),
+                                              config={'displayModeBar': False},
+                                              id="Dimension Regional Trends"),
 
                                 ],
                                 className="twelve columns",
@@ -270,7 +272,8 @@ def create_layout(app, data):
                                         className="subtitle padded",
                                     ),
                                     dcc.Graph(figure=cat_heatmap(data),
-                                              config={'displayModeBar': False}),
+                                              config={'displayModeBar': False},
+                                              id="2020 Indicators by Region"),
 
                                 ],
                                 className="twelve columns",
