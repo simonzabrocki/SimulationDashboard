@@ -259,14 +259,14 @@ def time_series_Index(ISO):
                              y=df[df.ISO == REF_1]['Value'],
                              name=REF_1,
                              mode='lines',
-                             line=dict(color='darkgrey', width=1, dash='dash'),
+                             line=dict(color='darkgrey', width=2, dash='dash'),
                              hoverinfo='skip'))
 
     fig.add_trace(go.Scatter(x=df[df.ISO == REF_2]['Year'],
                              y=df[df.ISO == REF_2]['Value'],
-                             name=REF_1,
+                             name=REF_2,
                              mode='lines',
-                             line=dict(color='darkgrey', width=1, dash='dot'),
+                             line=dict(color='darkgrey', width=2, dash='dot'),
                              hoverinfo='skip'))
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)

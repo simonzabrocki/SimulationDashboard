@@ -67,7 +67,7 @@ def create_layout(app):
                         [
                             html.Div(
                                 [
-                                    html.H6(["Dimensions 2020"], className="subtitle padded"),
+                                    html.H6(["2020 Dimensions"], className="subtitle padded"),
                                     dcc.Graph(id='Dim_ISO',
                                               config={'displayModeBar': False}),
                                 ],
@@ -75,7 +75,7 @@ def create_layout(app):
                             ),
                             html.Div(
                                 [
-                                    html.H6(["Categories 2020"], className="subtitle padded"),
+                                    html.H6(["2020 Indicators"], className="subtitle padded"),
                                     dcc.Graph(id='Perf_ISO',
                                               config={'displayModeBar': False}),
                                 ],
