@@ -17,7 +17,7 @@ import numpy as np
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
-app.title = 'GreenGrowthReport'
+app.title = 'GreenGrowthIndex'
 
 server = app.server
 
@@ -144,7 +144,8 @@ def polar(ISO):
             'GV', 'GT', 'GJ', 'GN']
     df = df.set_index('Variable').T[cats].T.reset_index()
 
-    fig = px.line_polar(df, r="Value", theta="Variable", color="ISO", line_close=True,
+    fig = px.line_polar(df[df.ISO == ISO],
+                        r="Value", theta="Variable", color="ISO", line_close=True,
                         color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False,
@@ -154,9 +155,19 @@ def polar(ISO):
                                 'ISO': '',
                                 'Continental_Rank': f'Rank in {continent}',
                                 })
+    fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
+
+    fig.add_trace(go.Scatterpolar(
+            r = df[df.ISO == REF]['Value'],
+            theta = df[df.ISO == REF]['Variable'],
+            name=REF,
+            mode = 'markers',
+            marker=dict(color='darkgrey', size=0.1),
+            hoverinfo='skip')
+        )
+
 
     fig.update_traces(fill='toself')
-    fig.update_traces(mode="markers+lines", marker=dict(opacity=0.7, size=10))
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=True)
     fig.update_layout(legend=dict(
@@ -175,7 +186,8 @@ def loliplot(ISO):
     df = df.round(2)
     continent = df.Continent.values[0]
     inc_level = df.IncomeLevel.values[0]
-    fig = px.scatter(df, y="Value",
+    fig = px.scatter(df[df.ISO == ISO],
+                     y="Value",
                      x="Variable",
                      color='ISO',
                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
@@ -190,6 +202,13 @@ def loliplot(ISO):
                              'Continental_Rank': f'Rank in {continent}',
                              }
                      )
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF]['Variable'],
+                             y=df[df.ISO == REF]['Value'],
+                             name=REF,
+                             mode='markers',
+                             marker=dict(color='darkgrey', size=1),
+                             hoverinfo='skip'))
+
     fig.update_traces(marker=dict(size=25, opacity=0.6))
     fig.update_yaxes(showgrid=False, range=[0, 100])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
@@ -214,14 +233,11 @@ def time_series_Index(ISO):
     continent = df.Continent.values[0]
     inc_level = df.IncomeLevel.values[0]
 
-    fig = px.line(df,
+    fig = px.line(df[df.ISO == ISO],
                   x='Year',
                   y='Value',
                   color='ISO',
-                  line_dash='ISO',
-                  color_discrete_map={ISO: '#14ac9c',
-                                      REF_1: 'darkgrey',
-                                      REF_2: 'darkgrey'},
+                  color_discrete_map={ISO: '#14ac9c'},
                   height=300,
                   hover_data={'ISO': False, 'Year': False,
                               'Continental_Rank': True,
@@ -233,9 +249,23 @@ def time_series_Index(ISO):
                           'Income_Rank': f'Rank in income group',
                           }
                   )
+    fig.update_traces(mode='lines+markers')
+
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF_1]['Year'],
+                             y=df[df.ISO == REF_1]['Value'],
+                             name=REF_1,
+                             mode='lines',
+                             line=dict(color='darkgrey', width=1, dash='dash'),
+                             hoverinfo='skip'))
+
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF_2]['Year'],
+                             y=df[df.ISO == REF_2]['Value'],
+                             name=REF_1,
+                             mode='lines',
+                             line=dict(color='darkgrey', width=1, dash='dot'),
+                             hoverinfo='skip'))
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)
-    fig.update_traces(mode='lines+markers')
     fig.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
@@ -243,8 +273,6 @@ def time_series_Index(ISO):
         xanchor="right",
         x=1
     ))
-    #fig.update_layout(hovermode="x unified")
-
     return fig
 
 
@@ -307,13 +335,6 @@ def update_loliplot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_ts_ind(ISO):
     return time_series_Index(ISO)
-
-
-# @app.callback(
-#     dash.dependencies.Output('rank_time_series', 'figure'),
-#     [dash.dependencies.Input('ISO_select', 'value')])
-# def update_ts_rank(ISO):
-#     return time_series_Rank(ISO)
 
 
 if __name__ == "__main__":

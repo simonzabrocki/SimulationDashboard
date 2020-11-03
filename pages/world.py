@@ -87,31 +87,27 @@ def Index_trend(data):
     fig = px.line(df,
                   x='Year',
                   y='Value',
-                  facet_col='Continent',
-                  facet_col_wrap=2,
-                  hover_name='Year',
-                  hover_data={'Value': True, 'Year': False, 'Continent': False},
+                  color='Continent',
+                  hover_data={'Value': True, 'Year': False, 'Continent': True},
                   labels={'Value': 'Score'},
-                  height=600)
+                  height=300)
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
     fig.update_xaxes(range=[2005, 2021])
-
-    fig.update_xaxes(showticklabels=True, col=2, row=2)
-    fig.update_traces(mode='lines', line_color='#14ac9c')
+    fig.update_traces(mode='lines')
 
     dots = px.scatter(df[df.Year == 2020],
                       x='Year',
                       y='Value',
-                      facet_col='Continent',
-                      facet_col_wrap=2,
-                      hover_name='Year',
-                      hover_data={'Value': True, 'Year': False, 'Continent': False},
+                      color='Continent',
+                      hover_data={'Value': False, 'Year': False, 'Continent': False},
                       labels={'Value': 'Score'},
                       )
-    dots.update_traces(marker_color='#14ac9c', marker_size=10)
+    for plot in dots.data:
+        plot['showlegend'] = False
+    dots.update_traces(marker_size=10)
     fig.add_traces(dots.data)
-
+    fig.update_layout(hovermode="x unified")
     return fig
 
 
@@ -129,7 +125,7 @@ def dimension_trend(data):
                   facet_col_wrap=2,
                   width=700,
                   facet_col_spacing=0.04,
-                  hover_name='Variable_name',
+                  #hover_name='Variable',
                   hover_data={'Variable': False,
                               'Year': True,
                               'Value': True,
@@ -151,16 +147,15 @@ def dimension_trend(data):
                       facet_col_wrap=2,
                       width=700,
                       facet_col_spacing=0.04,
-                      hover_name='Variable_name',
                       hover_data={'Variable': False,
-                                  'Year': True,
-                                  'Value': True,
+                                  'Year': False,
+                                  'Value': False,
                                   'Continent': False,
                                   'Variable_name': False},
                       height=600,
                       color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
                       )
-    dots.update_layout(showlegend=False)
+    dots.update_layout(showlegend=False, hovermode=False)
 
     dots.update_traces(marker=dict(size=10, opacity=1))
     for plot in dots.data:
@@ -176,6 +171,8 @@ def dimension_trend(data):
         x=1
     ))
     fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25})
+    fig.update_layout(hovermode="x unified")
+
     return fig
 
 

@@ -25,7 +25,7 @@ def get_header(app):
             html.Div(
                 [
                     html.Div(
-                        [html.H5("Green Growth Index Report")],
+                        [html.H5("Green Growth Index")],
                         className="seven columns main-title",
                     ),
                     html.Div(
