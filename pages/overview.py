@@ -70,6 +70,18 @@ def Map(data):
 def Table(data):
     table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index()
+
+    header_name = {'Index': 'Index',
+                   'ESRU': 'Efficient and sustainable resource use',
+                   'NCP': 'Natural capital protection',
+                   'SI': 'Social inclusion',
+                   'GEO': 'Green economic opportunities'
+                   }
+
+    tooltip = {key: {
+        'value': header_name[key],
+        'use_with': 'both'  # both refers to header & data cell
+    } for key in header_name}
     table = dash_table.DataTable(id='table',
                                  columns=[{"name": i, "id": i} for i in table_df.columns],
                                  data=table_df.to_dict('records'),
@@ -80,13 +92,17 @@ def Table(data):
                                  style_as_list_view=True,
                                  style_header={'backgroundColor': 'white',
                                                'fontWeight': 'bold',
-                                               'text_align': 'left',
+                                               'text_align': 'center',
                                                'font_size': '13px',
                                                'border': '1px solid rgb(0, 0, 0, 0.1)',
                                                },
+                                 #tooltip_header=header_name,
+                                 tooltip_header=header_name,
+                                 tooltip_delay=0,
+                                 tooltip_duration=None,
                                  style_cell={'font_family': 'roboto',
                                              'font_size': '12px',
-                                             'text_align': 'left',
+                                             'text_align': 'center',
                                              'border': '0px solid rgb(0, 0, 0, 0.1)',
                                              'opacity': '0.7',
                                              },

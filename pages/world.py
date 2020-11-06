@@ -15,11 +15,12 @@ def Index_trend(data):
                   color='Continent',
                   hover_data={'Value': True, 'Year': False, 'Continent': True},
                   labels={'Value': 'Score', 'Continent': 'Region'},
+                  color_discrete_sequence=px.colors.qualitative.Set2,
                   height=300)
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
     fig.update_xaxes(range=[2005, 2021])
-    fig.update_traces(mode='lines', hovertemplate="%{y}",)
+    fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
     dots = px.scatter(df[df.Year == 2020],
                       x='Year',
@@ -27,13 +28,13 @@ def Index_trend(data):
                       color='Continent',
                       hover_data={'Value': False, 'Year': False, 'Continent': False},
                       labels={'Value': 'Score', 'Continent': 'Region'},
+                      color_discrete_sequence=px.colors.qualitative.Set2,
                       )
     for plot in dots.data:
         plot['showlegend'] = False
     dots.update_traces(marker_size=10)
     fig.add_traces(dots.data)
-
-    fig.update_layout(hovermode="x unified")
+    fig.update_layout(hovermode="x")
     return fig
 
 
@@ -94,7 +95,7 @@ def dimension_trend(data):
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_xaxes(showticklabels=True, col=2, row=2)
     fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25},
-                      hovermode="x unified",
+                      hovermode="x",
                       legend=dict(yanchor="bottom",
                                   y=0.01,
                                   xanchor="right",
@@ -152,26 +153,37 @@ def cat_heatmap(data):
 
 def Table(data):
 
-    df = data[(data.Year == 2020) & (data.Aggregation.isin(['Dimension']))].groupby(['Variable_name', 'Continent']).mean()
-    df = df.reset_index().pivot(index=['Continent'], columns='Variable_name', values='Value')
+    df = data[(data.Year == 2020) & (data.Aggregation.isin(['Dimension']))].groupby(['Variable', 'Continent']).mean()
+    df = df.reset_index().pivot(index=['Continent'], columns='Variable', values='Value')
     df.columns.name = None
     df = df.round(2).reset_index()
     df = df.rename(columns={'Continent': 'Region'})
+    header_name = {
+                   'ESRU': 'Efficient and sustainable resource use',
+                   'NCP': 'Natural capital protection',
+                   'SI': 'Social inclusion',
+                   'GEO': 'Green economic opportunities'
+                   }
 
+    tooltip = {key: {
+        'value': header_name[key],
+        'use_with': 'both'  # both refers to header & data cell
+    } for key in header_name}
     table = dash_table.DataTable(id='table',
                                  columns=[{"name": i, "id": i} for i in df.columns],
                                  data=df.to_dict('records'),
                                  style_as_list_view=True,
                                  sort_action="native",
+                                 tooltip=tooltip,
                                  style_header={'backgroundColor': 'white',
                                                'fontWeight': 'bold',
-                                               'text_align': 'left',
+                                               'text_align': 'center',
                                                'font_size': '12px',
                                                'border': '1px solid rgb(0, 0, 0, 0.1)',
                                                },
                                  style_cell={'font_family': 'roboto',
                                              'font_size': '12px',
-                                             'text_align': 'left',
+                                             'text_align': 'center',
                                              'border': '0px solid rgb(0, 0, 0, 0.1)',
                                              'opacity': '0.7',
                                              },
