@@ -42,7 +42,30 @@ data = data.reset_index()
 
 
 def Map(data):
-    map_df = data[(data.Year == 2020) & (data.Aggregation == 'Index')]
+    # map_df = data[(data.Year == 2020) & (data.Aggregation == 'Index')]
+    # fig_map = px.choropleth(map_df,
+    #                         locations="ISO",
+    #                         color="Value",
+    #                         hover_name="Country",
+    #                         hover_data={"ISO": False},
+    #                         color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
+    #                         labels={'Value': 'Index'},
+    #                         range_color=[0, 100],
+    #                         )
+    # fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+    #                       geo=dict(showframe=False,
+    #                                showcoastlines=False,
+    #                                ),
+    #                       )
+    # fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
+    #
+    # fig_map.update_layout(coloraxis_colorbar=dict(title="",
+    #                                               thicknessmode="pixels", thickness=20,
+    #                                               lenmode="pixels", len=200,
+    #                                               dtick=50
+    #                                               ))
+    map_df = data[(data.Aggregation == 'Index')].sort_values(by='Year')
+    map_df['Year'] = map_df['Year'].astype(int)
     fig_map = px.choropleth(map_df,
                             locations="ISO",
                             color="Value",
@@ -51,6 +74,7 @@ def Map(data):
                             color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
                             labels={'Value': 'Index'},
                             range_color=[0, 100],
+                            animation_frame="Year",
                             )
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
                           geo=dict(showframe=False,

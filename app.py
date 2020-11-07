@@ -203,6 +203,7 @@ def loliplot(ISO):
         xanchor="right",
         x=1
     ))
+
     return fig
 
 
