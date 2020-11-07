@@ -71,7 +71,10 @@ def Map(data):
                             color="Value",
                             hover_name="Country",
                             hover_data={"ISO": False},
-                            color_continuous_scale=[(0, "#fc8d59"), (0.6, "#ffffbf"), (1, "#14ac9c")],
+                            color_continuous_scale=[(0, "#f14326"),
+                                                (0.25, "#fc8d59"),
+                                                (0.5, "#ffffbf"),
+                                                (1, "#14ac9c")],
                             labels={'Value': 'Index'},
                             range_color=[0, 100],
                             animation_frame="Year",
@@ -84,15 +87,23 @@ def Map(data):
     fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
 
     fig_map.update_layout(coloraxis_colorbar=dict(title="",
-                                                  thicknessmode="pixels", thickness=20,
+                                                  thicknessmode="pixels", thickness=10,
                                                   lenmode="pixels", len=200,
-                                                  dtick=50
+                                                  dtick=25
                                                   ))
+
+    curr_val = {"font": {"size": 20, 'family': 'roboto'},
+                "prefix": "Year: ",
+                "visible": True,
+                "xanchor": "right"}
+    trans = {"duration": 300, "easing": "cubic-in-out"}
+    fig_map.layout['sliders'][0]['currentvalue'] = curr_val
     return fig_map
 
 
 def Table(data):
-    table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = data[(data.Year == 2020) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
+        index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index()
 
     header_name = {'Index': 'Index',
@@ -120,7 +131,7 @@ def Table(data):
                                                'font_size': '13px',
                                                'border': '1px solid rgb(0, 0, 0, 0.1)',
                                                },
-                                 #tooltip_header=header_name,
+                                 # tooltip_header=header_name,
                                  tooltip_header=header_name,
                                  tooltip_delay=0,
                                  tooltip_duration=None,
