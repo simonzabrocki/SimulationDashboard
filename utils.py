@@ -1,5 +1,39 @@
 import dash_html_components as html
 import dash_core_components as dcc
+import pandas as pd
+
+
+def format_data(data):
+    data = data.copy()
+    variable_names = {
+        'ESRU': 'Efficient and sustainable resource use',
+        'NCP': 'Natural capital protection',
+        'GEO': 'Green economic opportunities',
+        'SI': 'Social inclusion',
+        'EE': 'Efficient and and sustainable energy',
+        'EW': 'Efficient and sustainable water use',
+        'SL': 'Sustainable land use',
+        'ME': 'Material use efficiency',
+        'EQ': 'Environmental quality',
+        'GE': 'Greenhouse gas emissions reductions',
+        'BE': 'Biodiversity and ecosystem protection',
+        'CV': 'Cultural and social value',
+        'GV': 'Green investment',
+        'GT': 'Green trade',
+        'GJ': 'Green employment',
+        'GN': 'Green innovation',
+        'AB': 'Access to basic services and resources',
+        'GB': 'Gender balance',
+        'SE': 'Social equity',
+        'SP': 'Social protection'
+    }
+    var_names = pd.DataFrame.from_dict(variable_names, orient='index')
+    var_names.columns = ['Variable_name']
+    data = data.set_index('Variable')
+    data['Variable_name'] = var_names
+    data = data.reset_index()
+
+    return data
 
 
 def Header(app):
@@ -53,16 +87,16 @@ def get_menu():
         [
             dcc.Link(
                 "Global Overview",
-                href="/SimulationDashBoard/overview",
+                href="/SimulationDashBoard/global-overview",
                 className="tab first",
             ),
             dcc.Link(
                 "Regional Outlook",
-                href="/SimulationDashBoard/world-outlouk",
+                href="/SimulationDashBoard/regional-outlouk",
                 className="tab",
             ),
             dcc.Link(
-                "Country Profile", href="/SimulationDashBoard/by-country",
+                "Country Profile", href="/SimulationDashBoard/country-profile",
                 className="tab"
             ),
             dcc.Link(
@@ -74,14 +108,3 @@ def get_menu():
         className="row all-tabs",
     )
     return menu
-
-
-def make_dash_table(df):
-    """ Return a dash definition of an HTML table for a Pandas dataframe """
-    table = []
-    for index, row in df.iterrows():
-        html_row = []
-        for i in range(len(row)):
-            html_row.append(html.Td([row[i]]))
-        table.append(html.Tr(html_row))
-    return table
