@@ -1,49 +1,9 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
-
 import dash_table
 from utils import Header
-
 from app import app, data
-import pathlib
-import pandas as pd
-
-
-# get relative data folder
-
-# PATH = pathlib.Path(__file__).parent
-# DATA_PATH = PATH.joinpath("../data").resolve()
-# data = pd.read_csv(DATA_PATH.joinpath('GGIs_2005_2020.csv'))
-#
-# variable_names = {
-#     'ESRU': 'Efficient and sustainable resource use',
-#     'NCP': 'Natural capital protection',
-#     'GEO': 'Green economic opportunities',
-#     'SI': 'Social inclusion',
-#     'EE': 'Efficient and and sustainable energy',
-#     'EW': 'Efficient and sustainable water use',
-#     'SL': 'Sustainable land use',
-#     'ME': 'Material use efficiency',
-#     'EQ': 'Environmental quality',
-#     'GE': 'Greenhouse gas emissions reductions',
-#     'BE': 'Biodiversity and ecosystem protection',
-#     'CV': 'Cultural and social value',
-#     'GV': 'Green investment',
-#     'GT': 'Green trade',
-#     'GJ': 'Green employment',
-#     'GN': 'Green innovation',
-#     'AB': 'Access to basic services and resources',
-#     'GB': 'Gender balance',
-#     'SE': 'Social equity',
-#     'SP': 'Social protection'
-# }
-#
-# var_names = pd.DataFrame.from_dict(variable_names, orient='index')
-# var_names.columns = ['Variable_name']
-# data = data.set_index('Variable')
-# data['Variable_name'] = var_names
-# data = data.reset_index()
 
 
 def Map(data):
