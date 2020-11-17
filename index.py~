@@ -14,7 +14,6 @@ app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
 )
 
-server = app.server
 
 # Update page
 @app.callback(Output("page-content", "children"),

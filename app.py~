@@ -19,7 +19,6 @@ ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 data = format_data(data)
 
 
-
 # data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])["Value"].rank(method='dense', ascending=False)
 # data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])["Value"].rank(method='dense', ascending=False)
 #
