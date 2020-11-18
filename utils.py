@@ -100,6 +100,10 @@ def get_menu():
                 className="tab"
             ),
             dcc.Link(
+                "Data", href="/SimulationDashBoard/data",
+                className="tab"
+            ),
+            dcc.Link(
                 "Simulation",
                 href="/SimulationDashBoard/simulation",
                 className="tab",

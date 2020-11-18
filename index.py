@@ -7,7 +7,8 @@ from pages import (
     global_overview,
     simulation,
     country_profile,
-    regional_outlook
+    regional_outlook,
+    data_viz
 )
 
 app.layout = html.Div(
@@ -26,6 +27,8 @@ def display_page(pathname):
         return country_profile.layout
     elif pathname == "/SimulationDashBoard/simulation":
         return simulation.layout
+    elif pathname == "/SimulationDashBoard/data":
+        return data_viz.layout
     else:
         return global_overview.layout
 

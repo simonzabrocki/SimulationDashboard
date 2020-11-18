@@ -18,6 +18,14 @@ data = pd.read_csv('data/GGIs_2005_2020.csv')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 data = format_data(data)
 
+indicator_data = pd.read_csv('data/indicators/data.csv', index_col=0)
+indicator_data['From'] = indicator_data['From'] + ' ' + indicator_data['Imputed From'].fillna('') + ' ' + indicator_data['Imputed from Year'].fillna('').astype(str)
+indicator_data['Source'] = indicator_data['Source'].apply(lambda x: x[0:50] + ' [...]')  # to be changed lol !
+
+
+indicator_properties = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
+
+dimension_properties = pd.read_csv('data/indicators/dimension_properties.csv', index_col=0)
 
 
 # data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])["Value"].rank(method='dense', ascending=False)

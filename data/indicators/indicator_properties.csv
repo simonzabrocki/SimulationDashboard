@@ -1,0 +1,37 @@
+,Indicator,Description,Unit,Dimension,Impact,minYear,maxYear
+,GE1,Ratio CO2 emissions incl LUCF to population,Tons CO2e per Capita,Natural Capital Protection,negative,1960,2020
+1,GE3,"Ratio non-CO2 emissions (CH4, N2O and F-gas) in Agriculture and LUCF to population",Tons CO2e per Capita,Natural Capital Protection,negative,1961,2020
+2,SE1,Palma Ratio,Ratio,Social Inclusion,negative,1967,2020
+3,ME1,Total domestic material consumption (DMC) per unit of GDP,kg per constant 2005 GDP,Efficient and Sustainable Resource Use,negative,1970,2020
+4,GB3,"Getting paid, laws and regulations for equal gender pay score",Score (0-100),Social Inclusion,positive,1971,2020
+5,GN1,Share of patent publications in environmental technology to total patents,Percent,Green Economic Opportunities,positive,1980,2020
+6,CV3,Share of terrestrial and marine protected areas to total territorial areas,Percent,Natural Capital Protection,positive,1990,2020
+7,EE2,Renewable energy share in the total final energy consumption,Percent,Efficient and Sustainable Resource Use,positive,1990,2020
+8,GE2,"Ratio non-CO2 emissions (CH4, N2O and F-gas) excluding Agriculture and LUCF to population",Tons CO2e per Capita,Natural Capital Protection,negative,1990,2020
+9,EE1,Energy intensity level of primary energy,Megajoules per constant 2011 purchasing power parity GDP,Efficient and Sustainable Resource Use,negative,1990,2020
+10,BE2,Forest area as a proportion of total land area,Percent,Natural Capital Protection,positive,1990,2020
+11,EQ1,"PM2.5 air pollution, mean annual exposure",micrograms per cubic meter,Natural Capital Protection,negative,1990,2020
+12,EQ2,DALY rate due to unsafe water sources,"Age-standardized Disability-Adjusted Life Years lost per 100,000 persons",Natural Capital Protection,negative,1990,2020
+13,SE2,"Ratio Urban-rural access to basic services (water, sanitation and electricity)",Ratio,Social Inclusion,negative,1990,2020
+14,SP2,Healthcare access and quality index,Index,Social Inclusion,positive,1990,2020
+15,ME2,total Material Footprint (MF) per Capita,MF tonnes per capita,Efficient and Sustainable Resource Use,negative,1990,2020
+16,GB1,Proportion of seats held by women in national parliaments,Percent,Social Inclusion,positive,1990,2020
+17,GV1,Adjusted net savings minus natural resources depletion,Percent of GNI,Green Economic Opportunities,positive,1990,2020
+18,SP3,Proportion of urban population living in slums,Percent,Social Inclusion,negative,1990,2020
+19,SE3,"Proportion of youth not in education, employment or training",Percent,Social Inclusion,negative,1990,2020
+20,CV1,Red List Index,Index,Natural Capital Protection,positive,1993,2020
+21,SP1,Proportion of population above statutory pensionable age receiving a pension,Percent,Social Inclusion,positive,1996,2020
+22,AB3,Mobile and broadband subscriptions,no. of subscriptions per 100 peple,Social Inclusion,positive,1998,2020
+23,BE1,"Proportion terrestrial, freshwater, marine and mountain KBAs in PAs",Percent,Natural Capital Protection,positive,2000,2020
+24,BE3,Above-ground biomass stock in forest,tonnes per hectare,Natural Capital Protection,positive,2000,2020
+25,GT1,Share environmental export to total export,Percent,Green Economic Opportunities,positive,2000,2020
+26,AB2,Population with access to electricity and clean fuels,Percent,Social Inclusion,positive,2000,2020
+27,EW1,Water use efficiency,United States dollars per cubic meter,Efficient and Sustainable Resource Use,positive,2000,2020
+28,EW2,Water stress: freshwater withdrawal as a proportion of available freshwater resources,Percent,Efficient and Sustainable Resource Use,negative,2000,2020
+29,AB1,Population with access to safely managed water and sanitation,Percent,Social Inclusion,positive,2000,2020
+30,SL2,Proportion of agriculture organic to total agriculture land area,Percent,Efficient and Sustainable Resource Use,positive,2004,2020
+31,GJ1,Share of green employment in total manufacturing employment,Percent,Green Economic Opportunities,positive,2005,2020
+32,GB2,"Maximum of ratio female-male, male-female with account in financial institution",Ratio,Social Inclusion,negative,2011,2020
+33,CV2,Tourism and recreation in coastal and marine areas score,Source (0-100),Natural Capital Protection,positive,2012,2020
+34,EQ3,Municipal solid waste (MSW) generated per Capita,Tons per Capita,Natural Capital Protection,negative,2018,2020
+35,SL1,Average soil organic carbon content,Tons per hectare,Efficient and Sustainable Resource Use,positive,2019,2020
