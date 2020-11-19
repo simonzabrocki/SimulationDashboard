@@ -28,7 +28,8 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                                  'Year': False,
                                  'Country': True,
                                  'Source': True,
-                                 'From': True},
+                                 'From': True,
+                                 'URL': True},
                      height=400,
                      )
     fig.update_layout(title=title, yaxis_title=xaxis_title)

@@ -51,7 +51,7 @@ def get_header(app):
                     ),
                     html.A(
                         html.Button("Learn More", id="learn-more-button"),
-                        href="http://greengrowthindex.gggi.org/",
+                        href="https://gggi.org/",
                     ),
                 ],
                 className="row",
