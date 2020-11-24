@@ -30,8 +30,8 @@ data = pd.concat([custom_country, data])
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 data = format_data(data)
 
-indicator_data = pd.read_csv('data/indicators/data.csv', index_col=0)
-indicator_data['From'] = indicator_data['From'] + ' ' + indicator_data['Imputed From'].fillna('') + ' ' + indicator_data['Imputed from Year'].fillna('').astype(str)
+indicator_data = pd.read_csv('data/indicators/data.csv')
+#indicator_data['From'] = indicator_data['From'] + ' ' + indicator_data['Imputed From'].fillna('') + ' ' + indicator_data['Imputed from Year'].fillna('').astype(str)
 indicator_data['Source'] = indicator_data['Source'].apply(lambda x: x[0:50] + ' [...]')  # to be changed lol !
 
 

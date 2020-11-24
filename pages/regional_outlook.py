@@ -123,6 +123,7 @@ def cat_heatmap(data):
             'AB', 'GB', 'SE', 'SP',
             'GV', 'GT', 'GJ', 'GN']
 
+
     df = df.set_index('Variable').T[cats].T.reset_index()
 
     fig = px.scatter(df,
