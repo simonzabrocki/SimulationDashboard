@@ -26,7 +26,7 @@ def Index_trend(data):
     fig.update_xaxes(range=[2005, 2021])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
-    dots = px.scatter(df[df.Year == 2020],
+    dots = px.scatter(df[df.Year == 2019],
                       x='Year',
                       y='Value',
                       color='Continent',
@@ -72,7 +72,7 @@ def dimension_trend(data):
     fig.update_xaxes(range=[2005, 2021])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
-    dots = px.scatter(df[df.Year == 2020],
+    dots = px.scatter(df[df.Year == 2019],
                       x='Year',
                       y='Value',
                       labels={'Year': 'Year', 'Value': 'Score'},
@@ -114,7 +114,7 @@ def dimension_trend(data):
 
 def cat_heatmap(data):
 
-    df = data[(data.Aggregation == 'Category') & (data.Year == 2020)]
+    df = data[(data.Aggregation == 'Category') & (data.Year == 2019)]
     df = df.dropna().groupby(['Variable', 'Continent', 'Variable_name']).mean().reset_index()
     df = df.round(2)
 
@@ -165,7 +165,7 @@ def cat_heatmap(data):
 
 def Table(data):
 
-    df = data[(data.Year == 2020) & (data.Aggregation.isin(['Dimension']))].groupby(['Variable', 'Continent']).mean()
+    df = data[(data.Year == 2019) & (data.Aggregation.isin(['Dimension']))].groupby(['Variable', 'Continent']).mean()
     df = df.reset_index().pivot(index=['Continent'], columns='Variable', values='Value')
     df.columns.name = None
     df = df.round(2).reset_index()
@@ -205,7 +205,7 @@ def Table(data):
     return table
 
 
-cover = data[(data.Aggregation == 'Index') & (data.Year == 2020)].dropna(subset=['Value']).shape[0]
+cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=['Value']).shape[0]
 
 
 layout = html.Div(
@@ -273,7 +273,7 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H6(
-                                    "2020 Dimensions by Region",
+                                    "2019 Dimensions by Region",
                                     className="subtitle padded",
                                 ),
                                 Table(data),
@@ -290,12 +290,12 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H6(
-                                    "2020 Indicators by Region",
+                                    "2019 Indicators by Region",
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=cat_heatmap(data),
                                           config={'displayModeBar': False},
-                                          id="2020 Indicators by Region"),
+                                          id="2019 Indicators by Region"),
 
                             ],
                             className="twelve columns",

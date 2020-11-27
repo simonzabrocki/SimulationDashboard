@@ -52,6 +52,17 @@ def update_indicator_select(dimension):
 
 
 @app.callback(
+    dash.dependencies.Output('indicator_select', 'value'),
+    [dash.dependencies.Input('dimension_select', 'value')])
+def update_indicator_select(dimension):
+    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
+
+    indicator_options = props[['Indicator', 'display_name']].values
+
+    return indicator_options[0][0]
+
+
+@app.callback(
     dash.dependencies.Output('indicator_line_charts', 'figure'),
     [dash.dependencies.Input('indicator_select', 'value'),
      dash.dependencies.Input('ISO_select', 'value')])
@@ -65,15 +76,6 @@ layout = html.Div(
         # page 1
         html.Div(
             [
-
-
-                # html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value=['DEU', 'FRA'], multi=True)],
-                #          style={'width': '100%',
-                #                 'display': 'inline-block',
-                #                 'align-items': 'right',
-                #                 'justify-content': 'right',
-                #                 'font-size': '12px'}
-                #          ),
                 html.Div(
                     [
                         html.Div(
@@ -103,12 +105,12 @@ layout = html.Div(
                                     "Indicator",
                                     className="subtitle padded",
                                 ),
-                                html.Div([dcc.Dropdown(id="indicator_select")],
+                                html.Div([dcc.Dropdown(id="indicator_select", value='EE1')],
                                          style={'width': '100%',
                                                 'display': 'inline-block',
                                                 'align-items': 'center',
                                                 'justify-content': 'center',
-                                                'font-size': '12px'}
+                                                'font-size': '12px'},
                                          ),
                             ],
                             className="twelve columns",
