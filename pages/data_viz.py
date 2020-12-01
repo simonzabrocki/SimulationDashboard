@@ -30,6 +30,7 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                                  'Source': True,
                                  'From': True,
                                  'Imputed': True,
+                                 'Corrected': True,
                                  },
                      height=400,
                      )

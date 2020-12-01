@@ -12,7 +12,7 @@
 10,BE2,Forest area as a proportion of total land area,Percent,Natural Capital Protection,positive,1990,2020
 11,EQ1,"PM2.5 air pollution, mean annual exposure",micrograms per cubic meter,Natural Capital Protection,negative,1990,2020
 12,EQ2,DALY rate due to unsafe water sources,"Age-standardized Disability-Adjusted Life Years lost per 100,000 persons",Natural Capital Protection,negative,1990,2020
-13,SE2,"Ratio Urban-rural access to basic services (water, sanitation and electricity)",Ratio,Social Inclusion,negative,1990,2020
+13,SE2,Ratio Urban-rural access to electricity,Ratio,Social Inclusion,negative,1990,2020
 14,SP2,Healthcare access and quality index,Index,Social Inclusion,positive,1990,2020
 15,ME2,total Material Footprint (MF) per Capita,MF tonnes per capita,Efficient and Sustainable Resource Use,negative,1990,2020
 16,GB1,Proportion of seats held by women in national parliaments,Percent,Social Inclusion,positive,1990,2020
