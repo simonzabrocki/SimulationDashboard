@@ -119,7 +119,7 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H6(
-                                    "2019 Green Growth Index Map",
+                                    "2005-2019 Green Growth Index Map",
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=Map(data), id='world_map')
