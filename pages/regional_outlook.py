@@ -118,6 +118,7 @@ def cat_heatmap(data):
     df = df.dropna().groupby(['Variable', 'Continent', 'Variable_name']).mean().reset_index()
     df = df.round(2)
 
+
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
             'AB', 'GB', 'SE', 'SP',
