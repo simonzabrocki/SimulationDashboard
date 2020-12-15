@@ -32,7 +32,7 @@ def Map(data):
     fig_map.update_layout(coloraxis_colorbar=dict(title="",
                                                   thicknessmode="pixels", thickness=10,
                                                   lenmode="pixels", len=200,
-                                                  dtick=20
+                                                  dtick=25
                                                   ))
 
     curr_val = {"font": {"size": 20, 'family': 'roboto'},
