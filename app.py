@@ -15,7 +15,7 @@ server = app.server
 # TO PUT SOMEWHERE ESLE
 data = pd.read_csv('data/GGIs_2005_2020.csv')
 data = data[data.Year < 2020]
-data = data.replace('America', 'The Americas')
+data = data.replace('America', 'Americas')
 # #### REQUEST TO REMOVE LATER !!!!!!!
 # ISOs = ['TKM', 'KAZ', 'KGZ', 'TJK', 'UZB']
 # custom_country = data[data.ISO.isin(ISOs)].groupby(['Aggregation', 'Year', 'Variable', 'Continent', 'UNregion', 'Region']).mean().reset_index()
