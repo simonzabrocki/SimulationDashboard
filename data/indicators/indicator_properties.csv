@@ -1,4 +1,3 @@
-,Indicator,Description,Unit,Dimension,Impact,minYear,maxYear
 ,GE1,Ratio CO2 emissions incl LUCF to population,Tons CO2e per Capita,Natural Capital Protection,negative,1960,2020
 1,GE3,"Ratio non-CO2 emissions (CH4, N2O and F-gas) in Agriculture and LUCF to population",Tons CO2e per Capita,Natural Capital Protection,negative,1961,2020
 2,SE1,Palma Ratio,Ratio,Social Inclusion,negative,1967,2020
@@ -13,7 +12,7 @@
 11,EQ1,"PM2.5 air pollution, mean annual exposure",micrograms per cubic meter,Natural Capital Protection,negative,1990,2020
 12,EQ2,DALY rate due to unsafe water sources,"Age-standardized Disability-Adjusted Life Years lost per 100,000 persons",Natural Capital Protection,negative,1990,2020
 13,SE2,Ratio Urban-rural access to electricity,Ratio,Social Inclusion,negative,1990,2020
-14,SP2,Healthcare access and quality index,Index,Social Inclusion,positive,1990,2020
+14,SP2,Universal health coverage,Index,Social Inclusion,positive,1990,2020
 15,ME2,total Material Footprint (MF) per Capita,MF tonnes per capita,Efficient and Sustainable Resource Use,negative,1990,2020
 16,GB1,Proportion of seats held by women in national parliaments,Percent,Social Inclusion,positive,1990,2020
 17,GV1,Adjusted net savings minus natural resources depletion,Percent of GNI,Green Economic Opportunities,positive,1990,2020
