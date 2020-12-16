@@ -1,4 +1,4 @@
-,GE1,Ratio CO2 emissions incl LUCF to population,Tons CO2e per Capita,Natural Capital Protection,negative,1960,2020
+,Indicator,Description,Unit,Dimension,Impact,minYear,maxYear
 1,GE3,"Ratio non-CO2 emissions (CH4, N2O and F-gas) in Agriculture and LUCF to population",Tons CO2e per Capita,Natural Capital Protection,negative,1961,2020
 2,SE1,Palma Ratio,Ratio,Social Inclusion,negative,1967,2020
 3,ME1,Total domestic material consumption (DMC) per unit of GDP,kg per constant 2005 GDP,Efficient and Sustainable Resource Use,negative,1970,2020
