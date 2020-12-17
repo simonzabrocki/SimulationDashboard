@@ -205,6 +205,17 @@ def Table(data):
     return table
 
 
+def dcc_config(file_name):
+    return {'toImageButtonOptions': {'format': 'png',
+                                     'filename': f'{file_name}.png',
+                                     'scale': 2,
+                                     },
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['zoom2d', 'pan2d',
+                                       'select2d', 'lasso2d',
+                                       'zoomIn2d', 'zoomOut2d', 'toggleSpikelines', 'autoScale2d']}
+
+
 cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=['Value']).shape[0]
 
 
@@ -241,9 +252,8 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=Index_trend(data),
-                                          #config={'displayModeBar': False},
+                                          config=dcc_config('Index_Regional_Trends'),
                                           id='Index Regional Trends'),
-
                             ],
                             className="twelve columns",
                         )
@@ -259,7 +269,7 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=dimension_trend(data),
-                                          #config={'displayModeBar': False},
+                                          config=dcc_config('Dimension_Regional_Trends'),
                                           id="Dimension Regional Trends"),
 
                             ],
@@ -294,7 +304,7 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=cat_heatmap(data),
-                                          #config={'displayModeBar': False},
+                                          config=dcc_config('Indicators_Regional_DotPlot'),
                                           id="2019 Indicators by Region"),
 
                             ],
