@@ -118,7 +118,6 @@ def cat_heatmap(data):
     df = df.dropna().groupby(['Variable', 'Continent', 'Variable_name']).mean().reset_index()
     df = df.round(2)
 
-
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
             'AB', 'GB', 'SE', 'SP',
@@ -242,7 +241,7 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=Index_trend(data),
-                                          config={'displayModeBar': False},
+                                          #config={'displayModeBar': False},
                                           id='Index Regional Trends'),
 
                             ],
@@ -260,7 +259,7 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=dimension_trend(data),
-                                          config={'displayModeBar': False},
+                                          #config={'displayModeBar': False},
                                           id="Dimension Regional Trends"),
 
                             ],
@@ -295,7 +294,7 @@ layout = html.Div(
                                     className="subtitle padded",
                                 ),
                                 dcc.Graph(figure=cat_heatmap(data),
-                                          config={'displayModeBar': False},
+                                          #config={'displayModeBar': False},
                                           id="2019 Indicators by Region"),
 
                             ],
