@@ -8,7 +8,6 @@ from app import app, data
 
 
 def Index_trend(data):
-
     df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
     df = df.round(2)
 
@@ -122,7 +121,6 @@ def cat_heatmap(data):
             'EQ', 'GE', 'BE', 'CV',
             'AB', 'GB', 'SE', 'SP',
             'GV', 'GT', 'GJ', 'GN']
-
 
     df = df.set_index('Variable').T[cats].T.reset_index()
 
