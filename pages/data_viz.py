@@ -25,7 +25,7 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                      y='Value',
                      color='ISO',
                      hover_data={'Value': True,
-                                 'Year': False,
+                                 'Year': True,
                                  'Country': True,
                                  'Source': True,
                                  'From': True,
