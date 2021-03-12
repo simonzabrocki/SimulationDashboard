@@ -8,7 +8,7 @@ Simulation Dashboard (name to be changed) regroups dashboards on the index and i
 ```
 $ git clone https://github.com/simonzabrocki/SimulationDashboard.git
 
-$ python app.py
+$ python index.py
 ```
 
 # Deploy

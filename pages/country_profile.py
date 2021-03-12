@@ -9,12 +9,18 @@ from app import app, data, ISO_options
 
 import numpy as np
 import pandas as pd
-data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])["Value"].rank(method='dense', ascending=False)
-data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])["Value"].rank(method='dense', ascending=False)
+
+# TO improve, must be put in a function somewhere !
+data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])[
+    "Value"].rank(method='dense', ascending=False)
+data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])[
+    "Value"].rank(method='dense', ascending=False)
 
 
-Income_region_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
-Income_region_group['ISO'] = 'AVG' + '_' + Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+Income_region_group = data.groupby(
+    ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
+Income_region_group['ISO'] = 'AVG' + '_' + \
+    Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
 
 Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Aggregation']).mean().reset_index()
 Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
@@ -64,9 +70,11 @@ def HTML_text(ISO):
 
 
 def polar(ISO):
-    REF = 'AVG_' + "_".join(data[data.ISO == ISO][['Continent']].drop_duplicates().values[0].tolist())
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][['Continent']
+                                                  ].drop_duplicates().values[0].tolist())
 
-    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Category') & (data.Year == 2019)]#.fillna(0)
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
+                                             'Category') & (data.Year == 2019)]  # .fillna(0)
     continent = df.Continent.values[0]
 
     df = df.round(2)
@@ -120,8 +128,10 @@ def polar(ISO):
 
 
 def loliplot(ISO):
-    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]].drop_duplicates().values[0].tolist())
-    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Dimension') & (data.Year == 2019)]#.fillna(0)
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+                                                  ].drop_duplicates().values[0].tolist())
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
+                                             'Dimension') & (data.Year == 2019)]  # .fillna(0)
     df = df.round(2)
     continent = df.Continent.values[0]
 
@@ -166,11 +176,12 @@ def loliplot(ISO):
 
 
 def loliplot_2(ISO):
-    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]].drop_duplicates().values[0].tolist())
-    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation == 'Category') & (data.Year == 2019)]#.fillna(0)
+    REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+                                                  ].drop_duplicates().values[0].tolist())
+    df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
+                                             'Category') & (data.Year == 2019)]  # .fillna(0)
     df = df.round(2)
     continent = df.Continent.values[0]
-
 
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
@@ -219,8 +230,10 @@ def loliplot_2(ISO):
 
 
 def time_series_Index(ISO):
-    REF_1 = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel"]].drop_duplicates().values[0].tolist())
-    REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]].drop_duplicates().values[0].tolist())
+    REF_1 = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel"]
+                                                    ].drop_duplicates().values[0].tolist())
+    REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+                                                    ].drop_duplicates().values[0].tolist())
 
     df = data[(data.ISO.isin([ISO, REF_1, REF_2])) & (data.Aggregation == 'Index')].fillna(0)
     df = df.round(2)
@@ -286,8 +299,9 @@ def update_HTML(ISO):
     dash.dependencies.Output('Perf_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
-    #return polar(ISO)
+    # return polar(ISO)
     return loliplot_2(ISO)
+
 
 @app.callback(
     dash.dependencies.Output('Dim_ISO', 'figure'),
