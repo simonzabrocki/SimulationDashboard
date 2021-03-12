@@ -41,6 +41,64 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
     return fig
 
 
+def HTML_text(Indicator):
+    From = indicator_data[indicator_data.Indicator == Indicator].From.unique()[0]
+    Source = indicator_data[indicator_data.Indicator == Indicator].Source.unique()[0]
+    Description = indicator_properties[indicator_properties.Indicator == Indicator].Description.unique()[0]
+    Impact = indicator_properties[indicator_properties.Indicator == Indicator].Impact.unique()[0]
+    Dimension = indicator_properties[indicator_properties.Indicator == Indicator].Dimension.unique()[0]
+    Unit = indicator_properties[indicator_properties.Indicator == Indicator].Unit.unique()[0]
+
+    return html.Div([
+                    html.H6(
+                        "Description",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+
+                            html.P(
+                                f"{Indicator} corresponds to {Description}. It has a {Impact} impact on {Dimension}.",
+                                style={"color": "#ffffff", 'font-size': '15px'},
+                                className="row",
+                            ),
+                        ],
+                        className="product",
+                    ),
+                    html.H6(
+                        "Unit",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+
+                            html.P(
+                                f"{Indicator} is expressed in {Unit}.",
+                                style={"color": "#ffffff", 'font-size': '15px'},
+                                className="row",
+                            ),
+                        ],
+                        className="product",
+                    ),
+                    html.H6(
+                        "Origin & Source",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+
+                            html.P(
+                                f"{Indicator} comes from {From} download. Its source is {Source}.",
+                                style={"color": "#ffffff", 'font-size': '15px'},
+                                className="row",
+                            ),
+                        ],
+                        className="product",
+                    )
+                    ],
+                    className="row",
+                    )
+
 @app.callback(
     dash.dependencies.Output('indicator_select', 'options'),
     [dash.dependencies.Input('dimension_select', 'value')])
@@ -61,6 +119,13 @@ def update_indicator_select(dimension):
     indicator_options = props[['Indicator', 'display_name']].values
 
     return indicator_options[0][0]
+
+
+@app.callback(
+    dash.dependencies.Output('source_text', 'children'),
+    [dash.dependencies.Input('indicator_select', 'value')])
+def update_indicator_source(Indicator):
+    return HTML_text(Indicator)
 
 
 @app.callback(
@@ -103,6 +168,12 @@ layout = html.Div(
                                                 'justify-content': 'center',
                                                 'font-size': '12px'},
                                          ),
+                                html.Div(id='source_text'),
+                            ],
+                            className='pretty_container four columns'
+                        ),
+                        html.Div(
+                            [
                                 html.H6(
                                     "Countries",
                                     className="subtitle padded",
@@ -114,11 +185,6 @@ layout = html.Div(
                                                 'justify-content': 'right',
                                                 'font-size': '12px'}
                                          ),
-                            ],
-                            className='pretty_container four columns'
-                        ),
-                        html.Div(
-                            [
                                 html.H6(
                                     "Line chart",
                                     className="subtitle padded",

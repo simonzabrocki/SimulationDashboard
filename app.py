@@ -30,7 +30,7 @@ ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 data = format_data(data)
 
 indicator_data = pd.read_csv('data/indicators/data.csv')
-indicator_data['Source'] = indicator_data['Source'].apply(lambda x: x[0:50] + ' [...]')  # to be changed lol !
+#indicator_data['Source'] = indicator_data['Source'].apply(lambda x: x[0:50] + ' [...]')  # to be changed lol !
 
 
 indicator_properties = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)

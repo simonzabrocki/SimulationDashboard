@@ -5,6 +5,14 @@ import dash_table
 from utils import Header
 from app import app, data
 
+def map_dcc_config(file_name):
+    return {'toImageButtonOptions': {'format': 'png',
+                                     'filename': f'{file_name}.png',
+                                     'scale': 2,
+                                     },
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['select2d', 'lasso2d',
+                                        'toggleSpikelines', 'autoScale2d']}
 
 def Map(data):
     map_df = data[(data.Aggregation == 'Index')].sort_values(by='Year')
@@ -124,7 +132,7 @@ layout = html.Div(
                             "2005-2019 Green Growth Index Map",
                             className="subtitle padded",
                         ),
-                        dcc.Graph(figure=Map(data), id='world_map'),
+                        dcc.Graph(figure=Map(data), id='world_map', config=map_dcc_config('GGI_world_map')),
                         html.H6(
                             "2019 Green Growth Index Table",
                             className="subtitle padded",

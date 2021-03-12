@@ -90,7 +90,8 @@ def circular_plot(ISO):
     for dim in df.Dimension.unique():
         df = df.append({'Variable': f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
 
-    index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index') & (data.Year == 2019)].Value.unique()
+    index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
+                    & (data.Year == 2019)].Value.unique()
 
     # degueux à revoir
     if index_df.shape[0] > 0:
@@ -112,6 +113,7 @@ def circular_plot(ISO):
                        },
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},
+                       height=600,
                        )
 
     fig.update_traces(offset=-4 / 12)
@@ -135,15 +137,16 @@ def circular_plot(ISO):
                                                  10, 11, 12, 13, 15, 16, 17, 18],
                                        ))
 
-    fig.update_layout(annotations=[dict(text=f'{index}', x=0.5, y=0.5, font_size=20, showarrow=False, font_color='green'),
-                                                                      ])
+    fig.update_layout(annotations=[dict(
+        text=f'{index}', x=0.5, y=0.5, font_size=20, showarrow=False, font_color='green'), ])
 
     fig.update_layout(legend=dict(
         orientation="h",
         yanchor="top",
-        y=-0.03,
-        xanchor="right",
-        x=1
+        y=-0.05,
+        xanchor="center",
+        x=0,
+        title='',
     ))
     return fig
 
@@ -205,6 +208,54 @@ def polar(ISO):
     ))
     return fig
 
+#
+# def loliplot(ISO):
+#     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+#                                                   ].drop_duplicates().values[0].tolist())
+#     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
+#                                              'Dimension') & (data.Year == 2019)]  # .fillna(0)
+#     df = df.round(2)
+#     continent = df.Continent.values[0]
+#
+#     fig = px.scatter(df[df.ISO == ISO],
+#                      x="Value",
+#                      y="Variable",
+#                      color='ISO',
+#                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+#                      hover_name='Variable_name',
+#                      hover_data={'ISO': False,
+#                                  'Variable': False,
+#                                  'Continental_Rank': True,
+#                                  'Income_Rank': False},
+#
+#                      labels={"Value": 'Score',
+#                              'Variable': '',
+#                              'ISO': '',
+#                              'Continental_Rank': f'Rank in {continent}',
+#                              }
+#                      )
+#
+#     fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
+#                              x=df[df.ISO == REF]['Value'],
+#                              name=REF,
+#                              mode='markers',
+#                              marker=dict(color='darkgrey', size=1),
+#                              hoverinfo='skip'))
+#
+#     fig.update_traces(marker=dict(size=15, opacity=0.6))
+#     fig.update_xaxes(showgrid=False, range=[0, 100])
+#     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+#                       showlegend=True)
+#     fig.update_layout(legend=dict(
+#         orientation="h",
+#         yanchor="bottom",
+#         y=1.02,
+#         xanchor="right",
+#         x=1
+#     ))
+#
+#     return fig
+
 
 def loliplot(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
@@ -215,43 +266,106 @@ def loliplot(ISO):
     continent = df.Continent.values[0]
 
     fig = px.scatter(df[df.ISO == ISO],
-                     x="Value",
-                     y="Variable",
-                     color='ISO',
-                     color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
-                     hover_name='Variable_name',
-                     hover_data={'ISO': False,
-                                 'Variable': False,
-                                 'Continental_Rank': True,
-                                 'Income_Rank': False},
+                     y="Value",
+                     x="Variable",
+                     color='Variable',
+                     color_discrete_map={
+                         ISO: '#14ac9c',
+                         "SI": "#d9b5c9",
+                         "NCP": "#f7be49",
+                         "ESRU": "#8fd1e7",
+                         "GEO": "#9dcc93",
+    },
+        hover_name='Variable_name',
+        hover_data={'ISO': False,
+                    'Variable': False,
+                    'Continental_Rank': True,
+                    'Income_Rank': False},
 
-                     labels={"Value": 'Score',
-                             'Variable': '',
-                             'ISO': '',
-                             'Continental_Rank': f'Rank in {continent}',
-                             }
-                     )
+        labels={"Value": 'Score',
+                'Variable': '',
+                'ISO': '',
+                'Continental_Rank': f'Rank in {continent}',
+                }
 
-    fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
-                             x=df[df.ISO == REF]['Value'],
+    )
+
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF]['Variable'],
+                             y=df[df.ISO == REF]['Value'],
                              name=REF,
                              mode='markers',
                              marker=dict(color='darkgrey', size=1),
                              hoverinfo='skip'))
 
-    fig.update_traces(marker=dict(size=15, opacity=0.6))
-    fig.update_xaxes(showgrid=False, range=[0, 100])
+    fig.update_traces(marker=dict(size=20, opacity=0.8))
+    fig.update_yaxes(showgrid=False, range=[0, 100], tickvals=[20, 40, 60, 80])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+
                       showlegend=True)
+
     fig.update_layout(legend=dict(
         orientation="h",
-        yanchor="bottom",
-        y=1.02,
+        yanchor="top",
+        y=-0.05,
         xanchor="right",
-        x=1
+        x=1, title='',
     ))
 
     return fig
+
+
+#
+# def loliplot_2(ISO):
+#     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+#                                                   ].drop_duplicates().values[0].tolist())
+#     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
+#                                              'Category') & (data.Year == 2019)]  # .fillna(0)
+#     df = df.round(2)
+#     continent = df.Continent.values[0]
+#
+#     cats = ['EE', 'EW', 'SL', 'ME',
+#             'EQ', 'GE', 'BE', 'CV',
+#             'AB', 'GB', 'SE', 'SP',
+#             'GV', 'GT', 'GJ', 'GN']
+#
+#     df = df.set_index('Variable').T[cats].T.reset_index()
+#     fig = px.scatter(df[df.ISO == ISO],
+#                      x="Value",
+#                      y="Variable",
+#                      color='ISO',
+#                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+#                      hover_name='Variable_name',
+#                      hover_data={'ISO': False,
+#                                  'Variable': False,
+#                                  'Continental_Rank': True,
+#                                  'Income_Rank': False},
+#
+#                      labels={"Value": 'Score',
+#                              'Variable': '',
+#                              'ISO': '',
+#                              'Continental_Rank': f'Rank in {continent}',
+#                              },
+#                      )
+#
+#     fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
+#                              x=df[df.ISO == REF]['Value'],
+#                              name=REF,
+#                              mode='markers',
+#                              marker=dict(color='darkgrey', size=1),
+#                              hoverinfo='skip'))
+#
+#     fig.update_traces(marker=dict(size=10, opacity=0.6))
+#     fig.update_xaxes(showgrid=False, range=[0, 100])
+#     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
+#                       showlegend=True)
+#     fig.update_layout(legend=dict(
+#         orientation="h",
+#         yanchor="bottom",
+#         y=1.02,
+#         xanchor="right",
+#         x=1
+#     ))
+#     return fig
 
 
 def loliplot_2(ISO):
@@ -262,47 +376,48 @@ def loliplot_2(ISO):
     df = df.round(2)
     continent = df.Continent.values[0]
 
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
-            'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
+    fig = px.bar(df[df.ISO == ISO],
+                 y="Value",
+                 x="Variable",
+                 color='Dimension',
+                 color_discrete_map={
+        ISO: '#14ac9c',
+        "Social Inclusion": "#d9b5c9",
+        "Natural Capital Protection": "#f7be49",
+        "Efficient and Sustainable Resource Use": "#8fd1e7",
+        "Green Economic Opportunities": "#9dcc93",
+    },
+        hover_name='Variable_name',
+        hover_data={'ISO': False,
+                    'Variable': False,
+                    'Continental_Rank': True,
+                    'Income_Rank': False},
 
-    df = df.set_index('Variable').T[cats].T.reset_index()
-    fig = px.scatter(df[df.ISO == ISO],
-                     x="Value",
-                     y="Variable",
-                     color='ISO',
-                     color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
-                     hover_name='Variable_name',
-                     hover_data={'ISO': False,
-                                 'Variable': False,
-                                 'Continental_Rank': True,
-                                 'Income_Rank': False},
+        labels={"Value": 'Score',
+                         'Variable': '',
+                'ISO': '',
+                'Continental_Rank': f'Rank in {continent}',
+                },
 
-                     labels={"Value": 'Score',
-                             'Variable': '',
-                             'ISO': '',
-                             'Continental_Rank': f'Rank in {continent}',
-                             },
-                     )
+    )
+    fig.update_traces(opacity=0.7)
 
-    fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
-                             x=df[df.ISO == REF]['Value'],
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF]['Variable'],
+                             y=df[df.ISO == REF]['Value'],
                              name=REF,
                              mode='markers',
-                             marker=dict(color='darkgrey', size=1),
+                             marker=dict(color='darkgrey', size=10, symbol='square'),
                              hoverinfo='skip'))
 
-    fig.update_traces(marker=dict(size=10, opacity=0.6))
-    fig.update_xaxes(showgrid=False, range=[0, 100])
+    fig.update_yaxes(showgrid=False, range=[0, 100], tickvals=[20, 40, 60, 80])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=True)
     fig.update_layout(legend=dict(
         orientation="h",
-        yanchor="bottom",
-        y=1.02,
+        yanchor="top",
+        y=-0.05,
         xanchor="right",
-        x=1
+        x=1, title='',
     ))
     return fig
 
