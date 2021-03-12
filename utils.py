@@ -50,7 +50,7 @@ def get_header(app):
                         className="logo",
                     ),
                     html.A(
-                        html.Button("Learn More", id="learn-more-button"),
+                        html.Button("About GGGI", id="learn-more-button"),
                         href="https://gggi.org/",
                     ),
                 ],
@@ -65,8 +65,8 @@ def get_header(app):
                     html.Div(
                         [
                             dcc.Link(
-                                "Full View",
-                                href="/SimulationDashBoard/full-view",
+                                "About the Index",
+                                href="https://greengrowthindex.gggi.org/",
                                 className="full-view-link",
                             )
                         ],

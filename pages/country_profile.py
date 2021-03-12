@@ -11,29 +11,44 @@ import numpy as np
 import pandas as pd
 
 # TO improve, must be put in a function somewhere !
-data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])[
-    "Value"].rank(method='dense', ascending=False)
-data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])[
-    "Value"].rank(method='dense', ascending=False)
 
 
-Income_region_group = data.groupby(
-    ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
-Income_region_group['ISO'] = 'AVG' + '_' + \
-    Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+def add_reference_to_data(data):
 
-Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel', 'Aggregation']).mean().reset_index()
-Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
-Income_group['Continental_Rank'] = np.nan
-Income_group['Income_Rank'] = np.nan
+    data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])[
+        "Value"].rank(method='dense', ascending=False)
+
+    data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])[
+        "Value"].rank(method='dense', ascending=False)
+
+    Income_region_group = data.groupby(
+        ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
+    Income_region_group['ISO'] = 'AVG' + '_' + \
+        Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+
+    Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
+                                 'Aggregation']).mean().reset_index()
+    Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
+    Income_group['Continental_Rank'] = np.nan
+    Income_group['Income_Rank'] = np.nan
+
+    Region_group = data.groupby(['Variable', 'Year', 'Continent',
+                                 'Aggregation']).mean().reset_index()
+    Region_group['ISO'] = 'AVG' + '_' + Region_group["Continent"]
+    Region_group['Continental_Rank'] = np.nan
+    Region_group['Income_Rank'] = np.nan
+
+    data = pd.concat([data, Income_region_group, Region_group, Income_group])
+
+    indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
+    indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
+    data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(
+    ), left_on='Variable', right_on='Category', how='left')
+
+    return data
 
 
-Region_group = data.groupby(['Variable', 'Year', 'Continent', 'Aggregation']).mean().reset_index()
-Region_group['ISO'] = 'AVG' + '_' + Region_group["Continent"]
-Region_group['Continental_Rank'] = np.nan
-Region_group['Income_Rank'] = np.nan
-
-data = pd.concat([data, Income_region_group, Region_group, Income_group])
+data = add_reference_to_data(data)
 
 
 def HTML_text(ISO):
@@ -67,6 +82,70 @@ def HTML_text(ISO):
                     ],
                     className="row",
                     )
+
+
+def circular_plot(ISO):
+    df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
+                                        'Category') & (data.Year == 2019)].fillna(0)
+    for dim in df.Dimension.unique():
+        df = df.append({'Variable': f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
+
+    index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index') & (data.Year == 2019)].Value.unique()
+
+    # degueux à revoir
+    if index_df.shape[0] > 0:
+        index = index_df[0]
+    else:
+        index = 'NA'
+
+    fig = px.bar_polar(df,
+                       theta='Variable',
+                       r='Value',
+                       range_r=[-30, 100],
+                       color='Dimension',
+                       hover_data={'Variable_name': True, 'Variable': False},
+                       color_discrete_map={
+                           "Natural Capital Protection": "#89afc5",
+                           "Social Inclusion": "#c7829d",
+                           "Efficiant and Sustainable Resource Use": "#cc8608",
+                           "Green Economic Opportunities": "#93c186"
+                       },
+                       labels={'Year': 'Year', 'Value': 'Score',
+                               'Category': 'Dimension', 'Variable_name': 'Category'},
+                       )
+
+    fig.update_traces(offset=-4 / 12)
+    fig.update_polars(radialaxis=dict(gridcolor='white',
+                                      dtick=20,
+                                      gridwidth=3,
+                                      ticks='',
+                                      angle=0,
+                                      tickangle=0,
+                                      tickvals=[20, 40, 60, 80],
+                                      showline=True,
+                                      linewidth=0,
+                                      side='clockwise',
+                                      ),
+
+
+
+                      angularaxis=dict(showgrid=False, rotation=90 - 1 * 360 / 20, ticks='',
+                                       linewidth=1, linecolor='green',
+                                       tickvals=[0, 1, 2, 3, 5, 6, 7, 8,
+                                                 10, 11, 12, 13, 15, 16, 17, 18],
+                                       ))
+
+    fig.update_layout(annotations=[dict(text=f'{index}', x=0.5, y=0.5, font_size=20, showarrow=False, font_color='green'),
+                                                                      ])
+
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="top",
+        y=-0.03,
+        xanchor="right",
+        x=1
+    ))
+    return fig
 
 
 def polar(ISO):
@@ -204,7 +283,7 @@ def loliplot_2(ISO):
                              'Variable': '',
                              'ISO': '',
                              'Continental_Rank': f'Rank in {continent}',
-                             }
+                             },
                      )
 
     fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
@@ -225,7 +304,6 @@ def loliplot_2(ISO):
         xanchor="right",
         x=1
     ))
-
     return fig
 
 
@@ -249,7 +327,7 @@ def time_series_Index(ISO):
                       y='Value',
                       color='ISO',
                       color_discrete_map={ISO: '#14ac9c'},
-                      height=300,
+                      height=500,
                       hover_data={'ISO': False, 'Year': False,
                                   'Continental_Rank': True,
                                   'Income_Rank': True},
@@ -258,7 +336,7 @@ def time_series_Index(ISO):
                               'ISO': '',
                               'Continental_Rank': f'Rank in {continent}',
                               'Income_Rank': 'Rank in income group',
-                              }
+                              },
                       )
     fig.update_traces(mode='lines+markers')
 
@@ -299,7 +377,6 @@ def update_HTML(ISO):
     dash.dependencies.Output('Perf_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
-    # return polar(ISO)
     return loliplot_2(ISO)
 
 
@@ -317,61 +394,73 @@ def update_ts_ind(ISO):
     return time_series_Index(ISO)
 
 
+@app.callback(
+    dash.dependencies.Output('circular_plot', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_circular_plot(ISO):
+    return circular_plot(ISO)
+
+
 layout = html.Div(
     [
         html.Div([Header(app)]),
         # page 1
         html.Div(
             [
-                html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
-                         style={'width': '100%',
-                                'display': 'inline-block',
-                                'align-items': 'center',
-                                'justify-content': 'center',
-                                'font-size': '20px'}
-                         ),
-                html.Div(id='Description'),
                 html.Div(
                     [
+                        html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
+                                 style={'width': '100%',
+                                        'display': 'inline-block',
+                                        'align-items': 'center',
+                                        'justify-content': 'center',
+                                        'font-size': '20px'}
+                                 ),
+                        html.Div(id='Description'),
+                        html.H6(
+                            "Distances to Targets",
+                            className="subtitle padded",
+                        ),
+                        dcc.Graph(id='circular_plot',
+                                  config={'displayModeBar': False}),
+                    ],
+                    className='pretty_container four columns'),
+                html.Div(
+                    [
+
+                        html.H6(
+                            "Index trend",
+                            className="subtitle padded",
+                        ),
+                        dcc.Graph(id='index_time_series',
+                                  config={'displayModeBar': False}
+                                  ),
                         html.Div(
                             [
-                                html.H6(
-                                    "Index trend",
-                                    className="subtitle padded",
+                                html.Div(
+                                    [
+                                        html.H6(["2019 Dimensions"], className="subtitle padded"),
+                                        dcc.Graph(id='Dim_ISO',
+                                                  config={'displayModeBar': False}),
+                                    ],
+                                    className="six columns",
                                 ),
-                                dcc.Graph(id='index_time_series',
-                                          config={'displayModeBar': False}
-                                          )
+                                html.Div(
+                                    [
+                                        html.H6(["2019 Indicators"], className="subtitle padded"),
+                                        dcc.Graph(id='Perf_ISO',
+                                                  config={'displayModeBar': False}),
+                                    ],
+                                    className="six columns",
+                                ),
                             ],
-                            className="twelve columns",
-                        )
-                    ],
-                    className="row",
-                ),
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.H6(["2019 Dimensions"], className="subtitle padded"),
-                                dcc.Graph(id='Dim_ISO',
-                                          config={'displayModeBar': False}),
-                            ],
-                            className="six columns",
-                        ),
-                        html.Div(
-                            [
-                                html.H6(["2019 Indicators"], className="subtitle padded"),
-                                dcc.Graph(id='Perf_ISO',
-                                          config={'displayModeBar': False}),
-                            ],
-                            className="six columns",
+                            className="row",
                         ),
                     ],
-                    className="row",
-                ),
+                    className='pretty_container eight columns')
             ],
 
-            className="sub_page",
+            className="row",
         ),
     ],
     className="page",

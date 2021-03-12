@@ -92,16 +92,6 @@ layout = html.Div(
                                                 'justify-content': 'center',
                                                 'font-size': '12px'}
                                          ),
-                            ],
-                            className="twelve columns",
-                        )
-                    ],
-                    className="row",
-                ),
-                html.Div(
-                    [
-                        html.Div(
-                            [
                                 html.H6(
                                     "Indicator",
                                     className="subtitle padded",
@@ -113,14 +103,20 @@ layout = html.Div(
                                                 'justify-content': 'center',
                                                 'font-size': '12px'},
                                          ),
+                                html.H6(
+                                    "Countries",
+                                    className="subtitle padded",
+                                ),
+                                html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value=['DEU', 'FRA'], multi=True)],
+                                         style={'width': '100%',
+                                                'display': 'inline-block',
+                                                'align-items': 'right',
+                                                'justify-content': 'right',
+                                                'font-size': '12px'}
+                                         ),
                             ],
-                            className="twelve columns",
-                        )
-                    ],
-                    className="row",
-                ),
-                html.Div(
-                    [
+                            className='pretty_container four columns'
+                        ),
                         html.Div(
                             [
                                 html.H6(
@@ -130,23 +126,13 @@ layout = html.Div(
                                 dcc.Graph(id='indicator_line_charts',
                                           config={'displayModeBar': False}
                                           ),
-                                html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value=['DEU', 'FRA'], multi=True)],
-                                         style={'width': '100%',
-                                                'display': 'inline-block',
-                                                'align-items': 'right',
-                                                'justify-content': 'right',
-                                                'font-size': '12px'}
-                                         ),
                             ],
-                            className="twelve columns",
-                        )
+                            className='pretty_container eight columns'),
                     ],
-                    className="row",
+                    className='row'
                 ),
-
             ],
-
-            className="sub_page",
+            className="row",
         ),
     ],
     className="page",

@@ -21,12 +21,15 @@ def Map(data):
                             labels={'Value': 'Index'},
                             range_color=[0, 100],
                             animation_frame="Year",
+                            height=800,
                             )
+
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
                           geo=dict(showframe=False,
                                    showcoastlines=False,
                                    ),
                           )
+
     fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
 
     fig_map.update_layout(coloraxis_colorbar=dict(title="",
@@ -35,10 +38,13 @@ def Map(data):
                                                   dtick=20
                                                   ))
 
+    fig_map.update_layout(sliders=[dict(active=14)])
+
     curr_val = {"font": {"size": 20, 'family': 'roboto'},
                 "prefix": "Year: ",
                 "visible": True,
-                "xanchor": "right"}
+                "xanchor": "center",
+                }
     fig_map.layout['sliders'][0]['currentvalue'] = curr_val
     return fig_map
 
@@ -88,10 +94,8 @@ def Table(data):
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        # page 1
         html.Div(
             [
-                # Row 3
                 html.Div(
                     [
                         html.Div(
@@ -111,42 +115,27 @@ layout = html.Div(
                             className="product",
                         )
                     ],
-                    className="row",
+                    className="pretty_container four columns",
                 ),
-                # MAP
                 html.Div(
                     [
-                        html.Div(
-                            [
-                                html.H6(
-                                    "2005-2019 Green Growth Index Map",
-                                    className="subtitle padded",
-                                ),
-                                dcc.Graph(figure=Map(data), id='world_map')
-                            ],
-                            className="twelve columns",
-                        )
+
+                        html.H6(
+                            "2005-2019 Green Growth Index Map",
+                            className="subtitle padded",
+                        ),
+                        dcc.Graph(figure=Map(data), id='world_map'),
+                        html.H6(
+                            "2019 Green Growth Index Table",
+                            className="subtitle padded",
+                        ),
+                        Table(data),
                     ],
-                    className="row",
+                    className="pretty_container eight columns"
                 ),
-                # Table
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.H6(
-                                    "2019 Green Growth Index Table",
-                                    className="subtitle padded",
-                                ),
-                                Table(data),
-                            ],
-                            className="twelve columns",
-                        )
-                    ],
-                    className="row",
-                ),
+
             ],
-            className="sub_page",
+            className="row",
         ),
     ],
     className="page",
