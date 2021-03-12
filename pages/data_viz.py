@@ -4,12 +4,11 @@ import dash_html_components as html
 import plotly.express as px
 
 from utils import Header
-from app import app, ISO_options, indicator_data, indicator_properties, dimension_properties
+from app import app, indicator_data, indicator_properties, dimension_properties
 
 
 indicator_properties['display_name'] = indicator_properties['Indicator'] + \
     ': ' + indicator_properties['Description']
-
 
 dimension_options = dimension_properties.Dimension.values
 
@@ -27,8 +26,8 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                      hover_data={'Value': True,
                                  'Year': True,
                                  'Country': True,
-                                 'Source': True,
-                                 'From': True,
+                                 'Source': False,
+                                 'From': False,
                                  'Imputed': True,
                                  'Corrected': True,
                                  },
@@ -42,12 +41,14 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
 
 
 def HTML_text(Indicator):
-    From = indicator_data[indicator_data.Indicator == Indicator].From.unique()[0]
-    Source = indicator_data[indicator_data.Indicator == Indicator].Source.unique()[0]
-    Description = indicator_properties[indicator_properties.Indicator == Indicator].Description.unique()[0]
-    Impact = indicator_properties[indicator_properties.Indicator == Indicator].Impact.unique()[0]
-    Dimension = indicator_properties[indicator_properties.Indicator == Indicator].Dimension.unique()[0]
-    Unit = indicator_properties[indicator_properties.Indicator == Indicator].Unit.unique()[0]
+    indic_df = indicator_data[indicator_data.Indicator == Indicator]
+    From, Source = indic_df.From.unique()[0], indic_df.Source.unique()[0]
+
+    indic_prop_df = indicator_properties[indicator_properties.Indicator == Indicator]
+    Description = indic_prop_df.Description.unique()[0]
+    Impact = indic_prop_df.Impact.unique()[0]
+    Dimension = indic_prop_df.Dimension.unique()[0]
+    Unit = indic_prop_df.Unit.unique()[0]
 
     return html.Div([
                     html.H6(
@@ -99,6 +100,7 @@ def HTML_text(Indicator):
                     className="row",
                     )
 
+
 @app.callback(
     dash.dependencies.Output('indicator_select', 'options'),
     [dash.dependencies.Input('dimension_select', 'value')])
@@ -134,6 +136,17 @@ def update_indicator_source(Indicator):
      dash.dependencies.Input('ISO_select', 'value')])
 def update_indicator_line_charts(Indicator, ISO_list):
     return indicator_line_charts(indicator_data, indicator_properties, ISO_list, Indicator)
+
+
+@app.callback(
+    dash.dependencies.Output('ISO_select', 'options'),
+    [dash.dependencies.Input('indicator_select', 'value')])
+def update_ISO_select(Indicator):
+    df = indicator_data[indicator_data.Indicator == Indicator].dropna(subset=['Value'])
+    new_ISO_options = df[['ISO', 'Country']].drop_duplicates().values
+    options = [{'label': country, 'value': iso} for iso, country in new_ISO_options]
+    return options
+
 
 
 layout = html.Div(
@@ -178,7 +191,7 @@ layout = html.Div(
                                     "Countries",
                                     className="subtitle padded",
                                 ),
-                                html.Div([dcc.Dropdown(id="ISO_select", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value=['DEU', 'FRA'], multi=True)],
+                                html.Div([dcc.Dropdown(id="ISO_select", value=['DEU', 'FRA'], multi=True)],
                                          style={'width': '100%',
                                                 'display': 'inline-block',
                                                 'align-items': 'right',
