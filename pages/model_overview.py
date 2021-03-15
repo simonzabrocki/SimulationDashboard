@@ -163,6 +163,7 @@ def graph_display():
         maxZoom=3,
     )
     layout = html.Div([
+        html.Button('Reset', id='btn-reset', n_clicks=0),
         cy,
     ]
     )
@@ -331,8 +332,14 @@ def displayTapNodeData(data):
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("my-multi-dynamic-dropdown", "value"),
-               Input("my-dynamic-dropdown", "value")])
-def highlightpath(data, model_option, group_option):
+               Input("my-dynamic-dropdown", "value"),
+               Input("btn-reset", "n_clicks")])
+def highlightpath(data, model_option, group_option, n_clicks):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+
+    if 'btn-reset' in changed_id:
+        return STYLESHEET
+
     if not data:
         return STYLESHEET
     else:
@@ -340,7 +347,8 @@ def highlightpath(data, model_option, group_option):
         outputs = G.outputs_()
 
         res = STYLESHEET.copy()
-        for output in outputs:
-            if nx.has_path(G, data['id'], output):
-                res += highlighted_node_stylesheet(G, data['id'], output)
+        if data['id'] in G:
+            for output in outputs:
+                if nx.has_path(G, data['id'], output):
+                    res += highlighted_node_stylesheet(G, data['id'], output)
         return res
