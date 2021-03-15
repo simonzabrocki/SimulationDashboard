@@ -147,23 +147,47 @@ def info_boxes_display():
 
 
 def graph_display():
+
+    cy = cyto.Cytoscape(
+        id='cytoscape-graph-model',
+        layout={'name': 'dagre',
+                'animate': True,
+                'animationDuration': 300},
+        style={'width': '100%', 'height': '1000px'},
+        stylesheet=STYLESHEET,
+        elements=[],
+        zoomingEnabled=True,
+        panningEnabled=True,
+        autoungrabify=True,
+        minZoom=0.2,
+        maxZoom=3,
+    )
     layout = html.Div([
-        cyto.Cytoscape(
-            id='cytoscape-graph-model',
-            layout={'name': 'dagre',
-                    'animate': True,
-                    'animationDuration': 300},
-            style={'width': '100%', 'height': '1000px'},
-            stylesheet=STYLESHEET,
-            zoomingEnabled=True,
-            panningEnabled=True,
-            autoungrabify=True,
-            minZoom=0.2,
-            maxZoom=3,
-        ),
+        cy,
     ]
     )
     return layout
+
+
+def highlighted_node_stylesheet(G, source, target):
+    all_paths = list(nx.all_simple_paths(G, source, target))
+
+    source_target = []
+
+    for path in all_paths:
+        source_target += [(path[i], path[i + 1]) for i, _ in enumerate(path[:-1])]
+
+    child_style = []
+    for s_t in source_target:
+
+        child_style.append({'selector': f'edge[source = "{s_t[0]}"][target = "{s_t[1]}"]',
+                            'style': {
+                                'line-color': 'black',
+                                'width': 5,
+                                'target-arrow-color': 'black'
+                            }})
+
+    return child_style
 
 
 def description_display():
@@ -293,4 +317,30 @@ def displayTapNodeData(data):
                 ]
             )
         else:
-            return f"This node computes {data['out']} = {data['name']}"
+            return html.Div(
+                [
+                    html.P(f"{data['id']}", style={'font-size': 20, 'font-weight': 'bold'}),
+                    html.P(f"This node computes: "),
+                    html.P(f"{data['out']} = {data['name']}", style={"font-weight": 'bold'})
+                ]
+            )
+    else:
+        return html.P("Click on a node to get more information", style={'font-weight': 'bold'})
+
+
+@app.callback(Output('cytoscape-graph-model', 'stylesheet'),
+              [Input('cytoscape-graph-model', 'tapNodeData'),
+               Input("my-multi-dynamic-dropdown", "value"),
+               Input("my-dynamic-dropdown", "value")])
+def highlightpath(data, model_option, group_option):
+    if not data:
+        return STYLESHEET
+    else:
+        G = model_dictionnary[group_option][model_option]
+        outputs = G.outputs_()
+
+        res = STYLESHEET.copy()
+        for output in outputs:
+            if nx.has_path(G, data['id'], output):
+                res += highlighted_node_stylesheet(G, data['id'], output)
+        return res
