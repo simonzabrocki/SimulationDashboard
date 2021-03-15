@@ -10,7 +10,7 @@ from app import app, data, ISO_options
 import numpy as np
 import pandas as pd
 
-# TO improve, must be put in a function somewhere !
+# TO improve, to many queries on the df, needs to be done once rather than in all plots !
 
 
 def add_reference_to_data(data):
@@ -208,54 +208,6 @@ def polar(ISO):
     ))
     return fig
 
-#
-# def loliplot(ISO):
-#     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
-#                                                   ].drop_duplicates().values[0].tolist())
-#     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
-#                                              'Dimension') & (data.Year == 2019)]  # .fillna(0)
-#     df = df.round(2)
-#     continent = df.Continent.values[0]
-#
-#     fig = px.scatter(df[df.ISO == ISO],
-#                      x="Value",
-#                      y="Variable",
-#                      color='ISO',
-#                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
-#                      hover_name='Variable_name',
-#                      hover_data={'ISO': False,
-#                                  'Variable': False,
-#                                  'Continental_Rank': True,
-#                                  'Income_Rank': False},
-#
-#                      labels={"Value": 'Score',
-#                              'Variable': '',
-#                              'ISO': '',
-#                              'Continental_Rank': f'Rank in {continent}',
-#                              }
-#                      )
-#
-#     fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
-#                              x=df[df.ISO == REF]['Value'],
-#                              name=REF,
-#                              mode='markers',
-#                              marker=dict(color='darkgrey', size=1),
-#                              hoverinfo='skip'))
-#
-#     fig.update_traces(marker=dict(size=15, opacity=0.6))
-#     fig.update_xaxes(showgrid=False, range=[0, 100])
-#     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
-#                       showlegend=True)
-#     fig.update_layout(legend=dict(
-#         orientation="h",
-#         yanchor="bottom",
-#         y=1.02,
-#         xanchor="right",
-#         x=1
-#     ))
-#
-#     return fig
-
 
 def loliplot(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
@@ -303,7 +255,15 @@ def loliplot(ISO):
 
                       showlegend=True)
 
-    fig.update_layout(legend=dict(
+    fig.update_layoutupdate_layout(legend=dict(
+        orientation="h",
+        yanchor="top",
+        y=-0.05,
+        xanchor="right",
+        x=1, title='',
+    ))
+
+    return fig(legend=dict(
         orientation="h",
         yanchor="top",
         y=-0.05,
@@ -312,60 +272,6 @@ def loliplot(ISO):
     ))
 
     return fig
-
-
-#
-# def loliplot_2(ISO):
-#     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
-#                                                   ].drop_duplicates().values[0].tolist())
-#     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
-#                                              'Category') & (data.Year == 2019)]  # .fillna(0)
-#     df = df.round(2)
-#     continent = df.Continent.values[0]
-#
-#     cats = ['EE', 'EW', 'SL', 'ME',
-#             'EQ', 'GE', 'BE', 'CV',
-#             'AB', 'GB', 'SE', 'SP',
-#             'GV', 'GT', 'GJ', 'GN']
-#
-#     df = df.set_index('Variable').T[cats].T.reset_index()
-#     fig = px.scatter(df[df.ISO == ISO],
-#                      x="Value",
-#                      y="Variable",
-#                      color='ISO',
-#                      color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
-#                      hover_name='Variable_name',
-#                      hover_data={'ISO': False,
-#                                  'Variable': False,
-#                                  'Continental_Rank': True,
-#                                  'Income_Rank': False},
-#
-#                      labels={"Value": 'Score',
-#                              'Variable': '',
-#                              'ISO': '',
-#                              'Continental_Rank': f'Rank in {continent}',
-#                              },
-#                      )
-#
-#     fig.add_trace(go.Scatter(y=df[df.ISO == REF]['Variable'],
-#                              x=df[df.ISO == REF]['Value'],
-#                              name=REF,
-#                              mode='markers',
-#                              marker=dict(color='darkgrey', size=1),
-#                              hoverinfo='skip'))
-#
-#     fig.update_traces(marker=dict(size=10, opacity=0.6))
-#     fig.update_xaxes(showgrid=False, range=[0, 100])
-#     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
-#                       showlegend=True)
-#     fig.update_layout(legend=dict(
-#         orientation="h",
-#         yanchor="bottom",
-#         y=1.02,
-#         xanchor="right",
-#         x=1
-#     ))
-#     return fig
 
 
 def loliplot_2(ISO):
@@ -480,42 +386,6 @@ def time_series_Index(ISO):
     return fig
 
 
-@app.callback(
-    dash.dependencies.Output('Description', 'children'),
-    [dash.dependencies.Input('ISO_select', 'value')],
-    suppress_callback_exceptions=True)
-def update_HTML(ISO):
-    return HTML_text(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('Perf_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_polar(ISO):
-    return loliplot_2(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('Dim_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_loliplot(ISO):
-    return loliplot(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('index_time_series', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_ts_ind(ISO):
-    return time_series_Index(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('circular_plot', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_circular_plot(ISO):
-    return circular_plot(ISO)
-
-
 layout = html.Div(
     [
         html.Div([Header(app)]),
@@ -580,3 +450,39 @@ layout = html.Div(
     ],
     className="page",
 )
+
+
+@app.callback(
+    dash.dependencies.Output('Description', 'children'),
+    [dash.dependencies.Input('ISO_select', 'value')],
+    suppress_callback_exceptions=True)
+def update_HTML(ISO):
+    return HTML_text(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('Perf_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_polar(ISO):
+    return loliplot_2(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('Dim_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    return loliplot(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('index_time_series', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_ts_ind(ISO):
+    return time_series_Index(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('circular_plot', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_circular_plot(ISO):
+    return circular_plot(ISO)

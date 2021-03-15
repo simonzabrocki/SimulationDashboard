@@ -5,6 +5,7 @@ import dash_table
 from utils import Header
 from app import app, data
 
+
 def map_dcc_config(file_name):
     return {'toImageButtonOptions': {'format': 'png',
                                      'filename': f'{file_name}.png',
@@ -13,6 +14,7 @@ def map_dcc_config(file_name):
             'displaylogo': False,
             'modeBarButtonsToRemove': ['select2d', 'lasso2d',
                                         'toggleSpikelines', 'autoScale2d']}
+
 
 def Map(data):
     map_df = data[(data.Aggregation == 'Index')].sort_values(by='Year')

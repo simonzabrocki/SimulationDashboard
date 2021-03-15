@@ -13,36 +13,6 @@ from utils import Header
 model_dictionnary = all_models
 
 
-def query_model_data(model, data):
-    return data[data.Variable.isin(model.summary_df.index)]
-
-
-def make_ISO_data_summary(ISO, model, data_dict):
-    model_data_df = query_model_data(model, data_dict)
-    ISO_df = model_data_df[model_data_df.ISO == ISO]
-    return pd.merge(ISO_df, model.summary_df, left_on='Variable', right_index=True)
-
-
-def make_dropdown_menu(model_dictionnary):
-
-    model_group_option = [{'label': key, 'value': key} for key in model_dictionnary.keys()]
-    dropdown = html.Div(
-        [
-            html.Label(["Model group:", dcc.Dropdown(id="my-dynamic-dropdown",
-                                                     options=model_group_option,
-                                                     value='EW_models')]),
-            html.Label(
-                [
-                    "Model:",
-                    dcc.Dropdown(id="my-multi-dynamic-dropdown", multi=False, value='EW_model'),
-                ]
-            ),
-        ]
-    )
-
-    return dropdown
-
-
 cyto.load_extra_layouts()
 
 
@@ -52,6 +22,8 @@ STYLESHEET = [
 
         'style': {'content': 'data(type)',
                   'label': 'data(id)',
+                  'font-size': 20,
+                  'font-weight': 'bold',
                   'text-halign': 'center',
                   'text-valign': 'center',
                   'height': 80, 'width': 80}
@@ -61,6 +33,11 @@ STYLESHEET = [
         'style': {
             'curve-style': 'bezier',
             'target-arrow-shape': 'triangle',
+            'selectable': False,
+            'grabbable': False,
+            'overlay-opacity': 0,
+            'line-color': '#D3D3D3',
+            'target-arrow-color': '#D3D3D3',
         }
     },
     {'selector': '[type = "input"]',
@@ -78,13 +55,67 @@ STYLESHEET = [
          'background-color': '#f4a261',
      }
      },
+    {'selector': '[type = "computationnal"]',
+     'style': {
+         'background-color': '#D3D3D3',
+     }
+     },
     {'selector': '[type = "output"]',
      'style': {
          'background-color': '#2a9d8f',
          'height': 150, 'width': 150,
      }
      },
+    {
+        'selector': 'node:selected',
+        'style': {
+            # 'background-color': 'black',
+            'border-color': '#A9A9A9',
+            'border-style': 'solid',
+            'border-width': 5,
+            'border-opacity': 1,
+        }
+    },
+    {
+        'selector': 'node:unselected',
+        'style': {
+            'background-opacity': 0.6
+        }
+    },
 ]
+
+
+def query_model_data(model, data):
+    return data[data.Variable.isin(model.summary_df.index)]
+
+
+def make_ISO_data_summary(ISO, model, data_dict):
+    model_data_df = query_model_data(model, data_dict)
+    ISO_df = model_data_df[model_data_df.ISO == ISO]
+    return pd.merge(ISO_df, model.summary_df, left_on='Variable', right_index=True)
+
+
+def make_dropdown_menu(model_dictionnary):
+
+    model_group_option = [{'label': key, 'value': key} for key in model_dictionnary.keys()]
+    dropdown = html.Div(
+        [
+            html.H6(
+                "Select model group: ",
+                className="subtitle padded",
+            ),
+            dcc.Dropdown(id="my-dynamic-dropdown",
+                         options=model_group_option,
+                         value='EW_models'),
+            html.H6(
+                "Select model: ",
+                className="subtitle padded",
+            ),
+            dcc.Dropdown(id="my-multi-dynamic-dropdown", multi=False, value='EW_model')
+        ]
+    )
+
+    return dropdown
 
 
 def GraphModel_to_cytodata(model):
@@ -117,10 +148,6 @@ def info_boxes_display():
 
 def graph_display():
     layout = html.Div([
-        html.Div(
-            [html.H5(id="graphbox"), html.P("Hover on node for info", id='cytoscape-mouseoverNodeData-output')],
-            className="mini_container",
-        ),
         cyto.Cytoscape(
             id='cytoscape-graph-model',
             layout={'name': 'dagre',
@@ -142,14 +169,17 @@ def graph_display():
 def description_display():
     tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
-    layout = html.Div([html.P("Model description:", className="control_label"),
+    layout = html.Div([html.H6("Model description:", className="subtitle padded"),
                        html.P(tmp_text, id='description-graph-model')])
     return layout
 
 
 def summary_table_display():
     layout = html.Div([
-        html.P("Model summary table:", className="control_label"),
+        html.H6(
+            "Model summary table: ",
+            className="subtitle padded",
+        ),
         dash_table.DataTable(id='summary_table',
                              columns=[{'name': 'id', 'id': 'id'},
                                       {'name': 'name', 'id': 'name'},
@@ -188,7 +218,22 @@ layout = html.Div(
                         graph_display()
                     ],
                     id="right-column",
-                    className="pretty_container eight columns",
+                    className="pretty_container six columns",
+                ),
+                html.Div(
+                    [
+                        html.H6(
+                            "Node description",
+                            className="subtitle padded",
+                        ),
+                        html.Div(
+                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
+                                                            id='cytoscape-tapNodeData-output')],
+                            className="product",
+                        ),
+                    ],
+                    id="var-info-box",
+                    className="pretty_container two columns",
                 ),
             ],
             className="row",
@@ -206,20 +251,6 @@ layout = html.Div(
 def update_multi_options(value):
     model_option = [{'label': key, 'value': key} for key in model_dictionnary[value].keys()]
     return model_option, model_option[0]['value']
-
-
-# Selectors -> main graph
-@app.callback(
-    Output("summary_graph", "figure"),
-    [
-        Input("country_selector", "value"),
-        Input("model_selector", "value"),
-    ],
-)
-def make_summary_plot(country_selector, model_selector):
-    data_summary_df = make_ISO_data_summary(
-        country_selector, model_dictionnary[model_selector], data)
-    return plot_EW1_summary(data_summary_df)
 
 
 @app.callback(
@@ -245,11 +276,21 @@ def update_graph_plot(model_option, group_option):
     return GraphModel_to_cytodata(model)['elements']
 
 
-@app.callback(Output('cytoscape-mouseoverNodeData-output', 'children'),
-              Input('cytoscape-graph-model', 'mouseoverNodeData'))
+@app.callback(Output('cytoscape-tapNodeData-output', 'children'),
+              Input('cytoscape-graph-model', 'tapNodeData'))
 def displayTapNodeData(data):
     if data:
         if data['type'] != 'computationnal':
-            return f"This node represents the {data['type']} {data['name']} expressed in {data['unit']}."
+            return html.Div(
+                [
+                    html.P(f"{data['id']}", style={'font-size': 20, 'font-weight': 'bold'}),
+                    html.P(
+                        f"This node is an {data['type']}"),
+                    html.P(
+                        f"It represents the {data['name']}.", style={'font-weight': 'bold'}),
+                    html.P(
+                        f"It expressed in {data['unit']}.")
+                ]
+            )
         else:
             return f"This node computes {data['out']} = {data['name']}"

@@ -101,54 +101,6 @@ def HTML_text(Indicator):
                     )
 
 
-@app.callback(
-    dash.dependencies.Output('indicator_select', 'options'),
-    [dash.dependencies.Input('dimension_select', 'value')])
-def update_indicator_select(dimension):
-    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
-
-    indicator_options = props[['Indicator', 'display_name']].values
-
-    return [{'label': display_name, 'value': indicator} for indicator, display_name in indicator_options]
-
-
-@app.callback(
-    dash.dependencies.Output('indicator_select', 'value'),
-    [dash.dependencies.Input('dimension_select', 'value')])
-def update_indicator_select(dimension):
-    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
-
-    indicator_options = props[['Indicator', 'display_name']].values
-
-    return indicator_options[0][0]
-
-
-@app.callback(
-    dash.dependencies.Output('source_text', 'children'),
-    [dash.dependencies.Input('indicator_select', 'value')])
-def update_indicator_source(Indicator):
-    return HTML_text(Indicator)
-
-
-@app.callback(
-    dash.dependencies.Output('indicator_line_charts', 'figure'),
-    [dash.dependencies.Input('indicator_select', 'value'),
-     dash.dependencies.Input('ISO_select', 'value')])
-def update_indicator_line_charts(Indicator, ISO_list):
-    return indicator_line_charts(indicator_data, indicator_properties, ISO_list, Indicator)
-
-
-@app.callback(
-    dash.dependencies.Output('ISO_select', 'options'),
-    [dash.dependencies.Input('indicator_select', 'value')])
-def update_ISO_select(Indicator):
-    df = indicator_data[indicator_data.Indicator == Indicator].dropna(subset=['Value'])
-    new_ISO_options = df[['ISO', 'Country']].drop_duplicates().values
-    options = [{'label': country, 'value': iso} for iso, country in new_ISO_options]
-    return options
-
-
-
 layout = html.Div(
     [
         html.Div([Header(app)]),
@@ -216,3 +168,50 @@ layout = html.Div(
     ],
     className="page",
 )
+
+
+@app.callback(
+    dash.dependencies.Output('indicator_select', 'options'),
+    [dash.dependencies.Input('dimension_select', 'value')])
+def update_indicator_select(dimension):
+    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
+
+    indicator_options = props[['Indicator', 'display_name']].values
+
+    return [{'label': display_name, 'value': indicator} for indicator, display_name in indicator_options]
+
+
+@app.callback(
+    dash.dependencies.Output('indicator_select', 'value'),
+    [dash.dependencies.Input('dimension_select', 'value')])
+def update_indicator_select(dimension):
+    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
+
+    indicator_options = props[['Indicator', 'display_name']].values
+
+    return indicator_options[0][0]
+
+
+@app.callback(
+    dash.dependencies.Output('source_text', 'children'),
+    [dash.dependencies.Input('indicator_select', 'value')])
+def update_indicator_source(Indicator):
+    return HTML_text(Indicator)
+
+
+@app.callback(
+    dash.dependencies.Output('indicator_line_charts', 'figure'),
+    [dash.dependencies.Input('indicator_select', 'value'),
+     dash.dependencies.Input('ISO_select', 'value')])
+def update_indicator_line_charts(Indicator, ISO_list):
+    return indicator_line_charts(indicator_data, indicator_properties, ISO_list, Indicator)
+
+
+@app.callback(
+    dash.dependencies.Output('ISO_select', 'options'),
+    [dash.dependencies.Input('indicator_select', 'value')])
+def update_ISO_select(Indicator):
+    df = indicator_data[indicator_data.Indicator == Indicator].dropna(subset=['Value'])
+    new_ISO_options = df[['ISO', 'Country']].drop_duplicates().values
+    options = [{'label': country, 'value': iso} for iso, country in new_ISO_options]
+    return options

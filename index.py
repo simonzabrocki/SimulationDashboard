@@ -5,7 +5,6 @@ from dash.dependencies import Input, Output
 from app import app
 from pages import (
     global_overview,
-    simulation,
     country_profile,
     regional_outlook,
     data_viz,
