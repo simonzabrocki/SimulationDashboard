@@ -255,7 +255,7 @@ def loliplot(ISO):
 
                       showlegend=True)
 
-    fig.update_layoutupdate_layout(legend=dict(
+    fig.update_layout(legend=dict(
         orientation="h",
         yanchor="top",
         y=-0.05,
@@ -263,7 +263,7 @@ def loliplot(ISO):
         x=1, title='',
     ))
 
-    return fig(legend=dict(
+    fig.update_layout(legend=dict(
         orientation="h",
         yanchor="top",
         y=-0.05,

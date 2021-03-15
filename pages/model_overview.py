@@ -325,7 +325,7 @@ def displayTapNodeData(data):
                 ]
             )
     else:
-        return html.P("Click on a node to get more information", style={'font-weight': 'bold'})
+        return html.P("Click on nodes node to get more information", style={'font-weight': 'bold'})
 
 
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
