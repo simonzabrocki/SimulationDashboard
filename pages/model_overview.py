@@ -148,7 +148,7 @@ def info_boxes_display():
 
 def graph_display():
 
-    cy = cyto.Cytoscape(
+    cy_graph = cyto.Cytoscape(
         id='cytoscape-graph-model',
         layout={'name': 'dagre',
                 'animate': True,
@@ -163,8 +163,28 @@ def graph_display():
         maxZoom=3,
     )
     layout = html.Div([
-        html.Button('Reset', id='btn-reset', n_clicks=0),
-        cy,
+        html.Div(
+            [
+                html.Div([cy_graph], className='container eight columns'),
+                html.Div(
+                    [
+                        html.H6(
+                            "Node description",
+                            className="subtitle padded",
+                        ),
+                        html.Div(
+                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
+                                                            id='cytoscape-tapNodeData-output')],
+                            className="product",
+                        ),
+                        html.Button('Reset Graph', id='btn-reset', n_clicks=0),
+                    ],
+                    id="var-info-box",
+                    className="pretty_container four columns",
+                ),
+            ],
+            className='row'
+        ),
     ]
     )
     return layout
@@ -243,23 +263,8 @@ layout = html.Div(
                         graph_display()
                     ],
                     id="right-column",
-                    className="pretty_container six columns",
-                ),
-                html.Div(
-                    [
-                        html.H6(
-                            "Node description",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
-                                                            id='cytoscape-tapNodeData-output')],
-                            className="product",
-                        ),
-                    ],
-                    id="var-info-box",
-                    className="pretty_container two columns",
-                ),
+                    className="pretty_container eight columns",
+                )
             ],
             className="row",
         ),
@@ -294,16 +299,27 @@ def update_summary_table(model_option, group_option):
     [
         Input("my-multi-dynamic-dropdown", "value"),
         Input("my-dynamic-dropdown", "value"),
+        Input("btn-reset", "n_clicks")
     ],
 )
-def update_graph_plot(model_option, group_option):
+def update_graph_plot(model_option, group_option, n_clicks):
     model = model_dictionnary[group_option][model_option]
+
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'btn-reset' in changed_id:
+        return GraphModel_to_cytodata(model)['elements']
+
     return GraphModel_to_cytodata(model)['elements']
 
 
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
-              Input('cytoscape-graph-model', 'tapNodeData'))
-def displayTapNodeData(data):
+              [Input('cytoscape-graph-model', 'tapNodeData'),
+               Input("btn-reset", "n_clicks")])
+def displayTapNodeData(data, n_clicks):
+    # changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    # if 'btn-reset' in changed_id:
+    #     return html.P("Click on nodes node to get more information", style={'font-weight': 'bold'})
+
     if data:
         if data['type'] != 'computationnal':
             return html.Div(
@@ -325,8 +341,8 @@ def displayTapNodeData(data):
                     html.P(f"{data['out']} = {data['name']}", style={"font-weight": 'bold'})
                 ]
             )
-    else:
-        return html.P("Click on nodes node to get more information", style={'font-weight': 'bold'})
+
+    return html.P("Click on a node to get more information", style={'font-weight': 'bold'})
 
 
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
