@@ -154,6 +154,26 @@ li {
   background: #14ac9c;
   color: #ffffff;
 }
+
+.product_A {
+  position: relative;
+  height: 15%;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 1px;
+  background: #D8A488;
+  color: #ffffff;
+}
+
+.product_B {
+  position: relative;
+  height: 15%;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 1px;
+  background: #86BBD8;
+  color: #ffffff;
+}
 .full-view-link {
   background-color: rgb(20, 172, 156);
   color: white !important;

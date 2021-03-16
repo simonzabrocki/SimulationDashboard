@@ -106,10 +106,10 @@ def circular_plot(ISO):
                        color='Dimension',
                        hover_data={'Variable_name': True, 'Variable': False},
                        color_discrete_map={
-                           "Natural Capital Protection": "#89afc5",
-                           "Social Inclusion": "#c7829d",
-                           "Efficiant and Sustainable Resource Use": "#cc8608",
-                           "Green Economic Opportunities": "#93c186"
+                           "Social Inclusion": "#d9b5c9",
+                           "Natural Capital Protection": "#f7be49",
+                           "Efficient and Sustainable Resource Use": "#8fd1e7",
+                           "Green Economic Opportunities": "#9dcc93",
                        },
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},

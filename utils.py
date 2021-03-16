@@ -100,6 +100,10 @@ def get_menu():
                 className="tab"
             ),
             dcc.Link(
+                "Country Comparator", href="/SimulationDashBoard/country-comparator",
+                className="tab"
+            ),
+            dcc.Link(
                 "Data", href="/SimulationDashBoard/data",
                 className="tab"
             ),
