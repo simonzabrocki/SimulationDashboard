@@ -238,6 +238,7 @@ GE3_nodes = {'Pop': {'type': 'input', 'unit': '1000 persons', 'name': 'Total pop
 nodes = concatenate_graph_specs(
     [GE3_nodes, TEE_CO2eq_nodes, TMA_CO2eq_nodes, TMT_CO2eq_nodes, TMP_CO2eq_nodes, FE_CO2eq_nodes, M_xi_nodes, TMi_nodes])
 
+
 # models
 FPi_nodes = GraphModel(FPi_nodes)
 TAi_model = GraphModel(TAi_nodes)
@@ -261,5 +262,5 @@ GE3_models = {'TMi_model': TMi_model,
               'TEE_CO2eq_model': TEE_CO2eq_model,
               'FE_CO2eq_model': FE_CO2eq_model,
               'GE3_partial_model': GE3_partial_model,
-              'GE3_model': GE3_model
+              'GE3_model': GE3_model,
               }

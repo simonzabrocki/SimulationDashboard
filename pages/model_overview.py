@@ -165,9 +165,18 @@ def graph_display():
     layout = html.Div([
         html.Div(
             [
-                html.Div([cy_graph], className='container eight columns'),
+
                 html.Div(
                     [
+                        html.Div(
+                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
+                            className="mini_container",
+                        ),
+                        cy_graph
+                    ], className='container eight columns'),
+                html.Div(
+                    [
+                        html.Button('Reset Graph', id='btn-reset', n_clicks=0),
                         html.H6(
                             "Node description",
                             className="subtitle padded",
@@ -177,7 +186,16 @@ def graph_display():
                                                             id='cytoscape-tapNodeData-output')],
                             className="product",
                         ),
-                        html.Button('Reset Graph', id='btn-reset', n_clicks=0),
+                        html.H6(
+                            "Impact",
+                            className="subtitle padded",
+                        ),
+                        html.Div(
+                            [html.H5(id="impactbox"), html.P("", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 20})],
+                            className="product",
+                        ),
+
+
                     ],
                     id="var-info-box",
                     className="pretty_container four columns",
@@ -324,10 +342,6 @@ def update_graph_plot(model_option, group_option, n_clicks):
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("btn-reset", "n_clicks")])
 def displayTapNodeData(data, n_clicks):
-    # changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    # if 'btn-reset' in changed_id:
-    #     return html.P("Click on nodes node to get more information", style={'font-weight': 'bold'})
-
     if data:
         if data['type'] != 'computationnal':
             return html.Div(
@@ -351,6 +365,37 @@ def displayTapNodeData(data, n_clicks):
             )
 
     return html.P("Click on a node to get more information", style={'font-weight': 'bold'})
+
+
+@app.callback(Output('cytoscape-mouseoverNodeData-output', 'children'),
+              Input('cytoscape-graph-model', 'mouseoverNodeData'))
+def displayHoverNodeData(data):
+    if data:
+        if data['type'] != 'computationnal':
+            return f"Represents {data['id']}: {data['name']}"
+        else:
+            return f"Computes {data['out']} = {data['name']}"
+
+
+@app.callback(Output('cytoscape-tapNodeData-impact', 'children'),
+              [Input('cytoscape-graph-model', 'tapNodeData'),
+               Input("my-multi-dynamic-dropdown", "value"),
+               Input("my-dynamic-dropdown", "value"),
+               Input("btn-reset", "n_clicks")])
+def displayImpactNodeData(data, model_option, group_option, n_clicks):
+    G = model_dictionnary[group_option][model_option]
+    outputs = G.outputs_()
+    impacted_nodes = []
+
+    if not data:
+        return ''
+
+    if data['id'] in G:
+        for output in outputs:
+            if nx.has_path(G, data['id'], output):
+                impacted_nodes.append(output)
+
+    return ', '.join(impacted_nodes)
 
 
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
