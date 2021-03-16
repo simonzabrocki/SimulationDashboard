@@ -240,7 +240,7 @@ def dimension_trend(ISO_A, ISO_B):
                                   'Year': False,
                                   'Value': False,
                                   'Continent': False,
-                                  'Variable_name': False},
+                                  'Variable_name': False, 'ISO': False},
                       height=700,
                       color_discrete_map={ISO_A: '#D8A488', ISO_B: '#86BBD8'},
                       )
@@ -264,17 +264,13 @@ def dimension_trend(ISO_A, ISO_B):
                                   )
                       )
 
-
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_xaxes(showticklabels=True, col=2, row=2)
-    fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25},
-                      hovermode="x",
-                      legend=dict(yanchor="bottom",
-                                  y=0.01,
-                                  xanchor="right",
-                                  x=1
-                                  )
-                      )
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
 
     return fig
 
@@ -308,7 +304,7 @@ layout = html.Div(
                           dcc.Graph(id='circular_plot_B', config={'displayModeBar': False}),
                           ], className='pretty_container six columns'),
 
-            ], className='row'),
+            ], className='pretty_container twelve columns'),
 
         html.Div(
             [
