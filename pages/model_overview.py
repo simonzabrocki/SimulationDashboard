@@ -208,6 +208,14 @@ def highlighted_node_stylesheet(G, source, target):
                                 'target-arrow-color': 'black'
                             }})
 
+        child_style.append({'selector': f'node[id = "{s_t[1]}"]',
+                            'style': {
+                                'border-color': 'black',
+                                'border-style': 'dotted',
+                                'border-width': 3,
+                                'border-opacity': 1,
+                            }})
+
     return child_style
 
 
