@@ -9,6 +9,8 @@ import dash
 from app import app
 from dash.dependencies import Input, Output
 from utils import Header
+import dash_bootstrap_components as dbc
+
 
 model_dictionnary = all_models
 

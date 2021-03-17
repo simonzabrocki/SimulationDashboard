@@ -1,6 +1,7 @@
 import dash_html_components as html
 import dash_core_components as dcc
 import pandas as pd
+import dash_bootstrap_components as dbc
 
 
 def format_data(data):
@@ -38,6 +39,9 @@ def format_data(data):
 
 def Header(app):
     return html.Div([get_header(app), html.Br([]), get_menu()])
+
+
+
 
 
 def get_header(app):
@@ -112,7 +116,33 @@ def get_menu():
                 href="/SimulationDashBoard/models",
                 className="tab",
             ),
-        ],
+         ],
         className="row all-tabs",
     )
     return menu
+
+# def get_menu():
+#     menu = html.Div(
+#         [
+#             dbc.Nav(
+#                 [
+#                     dbc.DropdownMenu(
+#                         [dbc.DropdownMenuItem("Global Overview", href="/SimulationDashBoard/global-overview"),
+#                          dbc.DropdownMenuItem("Regional Outlook", href="/SimulationDashBoard/regional-outlouk"),
+#                          dbc.DropdownMenuItem("Country Profile", href="/SimulationDashBoard/country-comparator"),
+#                          dbc.DropdownMenuItem("Country Comparator", href="/SimulationDashBoard/country-profile"),
+#                          dbc.DropdownMenuItem("Data", href="/SimulationDashBoard/data"), ],
+#                         label="Green Growth Index",
+#                         nav=True,
+#                     ),
+#                     dbc.DropdownMenu(
+#                         [dbc.DropdownMenuItem("Model Overview", href="/SimulationDashBoard/models")],
+#                         label="Simulation Tool",
+#                         nav=True,
+#                     ),
+#                 ]
+#             ),
+#         ],
+#         className="row all-tabs",
+#     )
+#     return menu

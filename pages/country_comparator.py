@@ -88,7 +88,7 @@ def circular_plot(ISO):
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
                                         'Category') & (data.Year == 2019)].fillna(0)
     for dim in df.Dimension.unique():
-        df = df.append({'Variable': f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
+        df = df.append({'Variable':f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
 
     index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
                     & (data.Year == 2019)].Value.unique()
@@ -366,7 +366,7 @@ def update_HTML_B(ISO):
     [dash.dependencies.Input('ISO_select_A', 'value'),
      dash.dependencies.Input('ISO_select_B', 'value')],
     suppress_callback_exceptions=True)
-def update_HTML_B(ISO_A, ISO_B):
+def update_ts(ISO_A, ISO_B):
     return time_series_Index(ISO_A, ISO_B)
 
 @app.callback(
@@ -374,5 +374,5 @@ def update_HTML_B(ISO_A, ISO_B):
     [dash.dependencies.Input('ISO_select_A', 'value'),
      dash.dependencies.Input('ISO_select_B', 'value')],
     suppress_callback_exceptions=True)
-def update_HTML_B(ISO_A, ISO_B):
+def update_dim(ISO_A, ISO_B):
     return dimension_trend(ISO_A, ISO_B)
