@@ -184,7 +184,7 @@ def update_indicator_select(dimension):
 @app.callback(
     dash.dependencies.Output('indicator_select', 'value'),
     [dash.dependencies.Input('dimension_select', 'value')])
-def update_indicator_select(dimension):
+def update_indicator_select_0(dimension):
     props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
 
     indicator_options = props[['Indicator', 'display_name']].values

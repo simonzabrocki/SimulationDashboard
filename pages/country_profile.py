@@ -24,7 +24,8 @@ def add_reference_to_data(data):
     Income_region_group = data.groupby(
         ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
     Income_region_group['ISO'] = 'AVG' + '_' + \
-        Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+        Income_region_group["IncomeLevel"] + \
+        '_' + Income_region_group["Region"]
 
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
@@ -40,8 +41,10 @@ def add_reference_to_data(data):
 
     data = pd.concat([data, Income_region_group, Region_group, Income_group])
 
-    indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
-    indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
+    indicator_property = pd.read_csv(
+        'data/indicators/indicator_properties.csv', index_col=0)
+    indicator_property['Category'] = indicator_property['Indicator'].apply(
+        lambda x: x[0:2])
     data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(
     ), left_on='Variable', right_on='Category', how='left')
 
@@ -69,11 +72,13 @@ def HTML_text(ISO):
     return html.Div([
                     html.Div(
                         [
-                            html.H5(f"{Country}'s Green Growth Index is {Index}"),
+                            html.H5(
+                                f"{Country}'s Green Growth Index is {Index}"),
                             html.Br([]),
                             html.P(
                                 f"{Country} is a {Status} country located in {Continent}. Its Green Growth index is {Index}.",
-                                style={"color": "#ffffff", 'font-size': '15px'},
+                                style={"color": "#ffffff",
+                                       'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -88,7 +93,8 @@ def circular_plot(ISO):
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
                                         'Category') & (data.Year == 2019)].fillna(0)
     for dim in df.Dimension.unique():
-        df = df.append({'Variable': f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
+        df = df.append({'Variable': f'{dim}', 'Value': 0,
+                        'Dimension': dim}, ignore_index=True)
 
     index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
                     & (data.Year == 2019)].Value.unique()
@@ -312,7 +318,8 @@ def loliplot_2(ISO):
                              y=df[df.ISO == REF]['Value'],
                              name=REF,
                              mode='markers',
-                             marker=dict(color='darkgrey', size=10, symbol='square'),
+                             marker=dict(color='darkgrey',
+                                         size=10, symbol='square'),
                              hoverinfo='skip'))
 
     fig.update_yaxes(showgrid=False, range=[0, 100], tickvals=[20, 40, 60, 80])
@@ -334,7 +341,8 @@ def time_series_Index(ISO):
     REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                     ].drop_duplicates().values[0].tolist())
 
-    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) & (data.Aggregation == 'Index')].fillna(0)
+    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
+              (data.Aggregation == 'Index')].fillna(0)
     df = df.round(2)
     continent = df.Continent.values[0]
 
@@ -424,7 +432,8 @@ layout = html.Div(
                             [
                                 html.Div(
                                     [
-                                        html.H6(["2019 Dimensions"], className="subtitle padded"),
+                                        html.H6(["2019 Dimensions"],
+                                                className="subtitle padded"),
                                         dcc.Graph(id='Dim_ISO',
                                                   config={'displayModeBar': False}),
                                     ],
@@ -432,7 +441,8 @@ layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.H6(["2019 Indicators"], className="subtitle padded"),
+                                        html.H6(["2019 Indicators"],
+                                                className="subtitle padded"),
                                         dcc.Graph(id='Perf_ISO',
                                                   config={'displayModeBar': False}),
                                     ],

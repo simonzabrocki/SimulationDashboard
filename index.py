@@ -10,6 +10,7 @@ from pages import (
     data_viz,
     model_overview,
     country_comparator,
+    simulation
 )
 
 app.layout = html.Div(
@@ -32,6 +33,8 @@ def display_page(pathname):
         return country_comparator.layout
     elif pathname == "/SimulationDashBoard/models":
         return model_overview.layout
+    elif pathname == "/SimulationDashBoard/simulation":
+        return simulation.layout
     elif pathname == "/SimulationDashBoard/data":
         return data_viz.layout
     else:

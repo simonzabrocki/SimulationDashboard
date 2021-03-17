@@ -24,7 +24,8 @@ def add_reference_to_data(data):
     Income_region_group = data.groupby(
         ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
     Income_region_group['ISO'] = 'AVG' + '_' + \
-        Income_region_group["IncomeLevel"] + '_' + Income_region_group["Region"]
+        Income_region_group["IncomeLevel"] + \
+        '_' + Income_region_group["Region"]
 
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
@@ -40,8 +41,10 @@ def add_reference_to_data(data):
 
     data = pd.concat([data, Income_region_group, Region_group, Income_group])
 
-    indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
-    indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
+    indicator_property = pd.read_csv(
+        'data/indicators/indicator_properties.csv', index_col=0)
+    indicator_property['Category'] = indicator_property['Indicator'].apply(
+        lambda x: x[0:2])
     data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(
     ), left_on='Variable', right_on='Category', how='left')
 
@@ -69,11 +72,13 @@ def HTML_text(ISO, className):
     return html.Div([
                     html.Div(
                         [
-                            html.H5(f"{Country}'s Green Growth Index is {Index}"),
+                            html.H5(
+                                f"{Country}'s Green Growth Index is {Index}"),
                             html.Br([]),
                             html.P(
                                 f"{Country} is a {Status} country located in {Continent}. Its Green Growth index is {Index}.",
-                                style={"color": "#ffffff", 'font-size': '15px'},
+                                style={"color": "#ffffff",
+                                       'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -88,7 +93,8 @@ def circular_plot(ISO):
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
                                         'Category') & (data.Year == 2019)].fillna(0)
     for dim in df.Dimension.unique():
-        df = df.append({'Variable':f'{dim}', 'Value': 0, 'Dimension': dim}, ignore_index=True)
+        df = df.append({'Variable': f'{dim}', 'Value': 0,
+                        'Dimension': dim}, ignore_index=True)
 
     index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
                     & (data.Year == 2019)].Value.unique()
@@ -153,7 +159,8 @@ def circular_plot(ISO):
 
 def time_series_Index(ISO_A, ISO_B):
 
-    df = data[(data.ISO.isin([ISO_A, ISO_B])) & (data.Aggregation == 'Index')].fillna(0)
+    df = data[(data.ISO.isin([ISO_A, ISO_B])) & (
+        data.Aggregation == 'Index')].fillna(0)
     df = df.round(2)
 
     fig = px.line(df,
@@ -204,12 +211,13 @@ def time_series_Index(ISO_A, ISO_B):
 
 def dimension_trend(ISO_A, ISO_B):
 
-    df = data[(data.Aggregation.isin(['Dimension'])) & (data.ISO.isin([ISO_A, ISO_B]))]
-    df['Value'] = df['Value'].round(2)
+    df = data[(data.Aggregation.isin(['Dimension']))
+              & (data.ISO.isin([ISO_A, ISO_B]))]
     fig = px.line(df,
                   x='Year',
                   y='Value',
-                  labels={'Year': 'Year', 'Value': 'Score', 'Variable_name': 'Dimension'},
+                  labels={'Year': 'Year', 'Value': 'Score',
+                          'Variable_name': 'Dimension'},
                   facet_col='Variable_name',
                   color='ISO',
                   facet_col_wrap=2,
@@ -289,7 +297,8 @@ layout = html.Div(
                                           'font-size': '20px'}
                                    ),
                           html.Div(id='Description_A'),
-                          dcc.Graph(id='circular_plot_A', config={'displayModeBar': False}),
+                          dcc.Graph(id='circular_plot_A', config={
+                                    'displayModeBar': False}),
 
                           ], className='pretty_container six columns'),
 
@@ -301,7 +310,8 @@ layout = html.Div(
                                           'font-size': '20px'}
                                    ),
                           html.Div(id='Description_B'),
-                          dcc.Graph(id='circular_plot_B', config={'displayModeBar': False}),
+                          dcc.Graph(id='circular_plot_B', config={
+                                    'displayModeBar': False}),
                           ], className='pretty_container six columns'),
 
             ], className='pretty_container twelve columns'),
@@ -368,6 +378,7 @@ def update_HTML_B(ISO):
     suppress_callback_exceptions=True)
 def update_ts(ISO_A, ISO_B):
     return time_series_Index(ISO_A, ISO_B)
+
 
 @app.callback(
     dash.dependencies.Output('dim_plot_A_B', 'figure'),
