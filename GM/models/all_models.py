@@ -377,7 +377,8 @@ IWW_nodes = {'TCLDi': {'type': 'input',
              'ICU': {'type': 'variable',
                      'name': 'Irrigation Consumptive Use',
                      'unit': 'mm/year',
-                     'computation': lambda ETc, ETa, **kwargs: abs(ETc - ETa)  # bug to fix
+                     # bug to fix
+                     'computation': lambda ETc, ETa, **kwargs: abs(ETc - ETa)
                      },
              'AIR': {'type': 'parameter',
                      'unit': '1000 ha',
@@ -615,3 +616,52 @@ EXPERIMENT_model = GraphModel(concatenate_graph_specs([BE2_nodes, CH_IL_FL_nodes
 
 
 all_models['FULL_model'] = {"model_1": EXPERIMENT_model}
+
+
+# to put properly somewhere else
+
+model_properties = {'EW_model': {'model': 'EW_model',
+                                 'description': 'This model calculates the water use efficiency (EW1) and the water stress (EW2) of a country. Water withdrawals from the agricultural, industrial, and municipal sectors are calculated to determine a country’s total withdrawal. Currently, due to data limitations, agricultural withdrawal is only represented by irrigation water use and industrial water withdrawal is not modelled. Water availability of a country includes natural and non-conventional sources. The inclusion of non-conventional water resources allows the development of scenarios related to human innovation in managing freshwater resources. Water use efficiency is calculated by summating the corresponding gross value added for each sector and dividing by the total water withdrawal.  Water stress is calculated by the total water withdrawal divided by the total renewable freshwater minus the environmental flow requirement. To find the percentage values the water stress output is multiplied by 100.',
+                                 'display_name': 'TODO',
+                                 'model_group': 'Water',
+                                 },
+                    'IWW_model ': {'model': 'IWW_model ',
+                                   'description': 'This sub-model calculates the agricultural water use for a country. Currently, due to data limitations, agricultural withdrawal is only represented by irrigation water withdrawal. Potential crop evapotranspiration (ETc) is the evapotranspiration from crops under standard conditions. It is calculated by the summation of crop coefficients, cropping intensity and reference evapotranspiration for each irrigated crop denoted in a country. Cropping intensity is the harvest irrigated area divided by the total actual irrigation area. Subtracting potential crop evapotranspiration from actual evapotranspiration, the irrigation consumptive use is calculated representing the water demand required to fulfill the deficit between crop consumption under ample water versus rainfed conditions. By multiplying irrigation consumptive use with the total actual area irrigated within a country, as well as considering the additional non-consumptive water required for rice paddy irrigation, the irrigation water requirement is computed. Total irrigation water withdrawal is then determined by the irrigation water requirement divided by the water requirement ratio (or irrigation efficiency). Users will be able to set irrigation efficiency values depending on various technologies to understand the impact on irrigation water withdrawal.',
+                                   'display_name': 'TODO',
+                                   'model_group': 'Water'},
+                    'MWU_model ': {'model': 'MWU_model',
+                                   'description': 'Municipal water withdrawal is calculated by the municipal water demand (or municipal water withdrawal per capita) multiplied by the total population of a country. Municipal water demand is represented by a logarithmic regression model as a function of GDP per capita (proxy for income) and water tariff price (in m3 per USD). A scenario will be available to users to investigate the impact of changing water tariffs on municipal water withdrawal.',
+                                   'display_name': 'TODO',
+                                   'model_group': 'Water'},
+                    'EW1_partial_model': {'model': 'EW1_partial_model',
+                                          'description': 'Total water use efficiency is dependent by the total water withdrawal from agriculture, industry and municipal sectors and each sector’s gross value added. A corrective coefficient was applied to the agricultural sector to focus on irrigated production related to gross value added. The summation of sectoral gross value added was then divided by total water withdrawal to calculate EW 1.',
+                                          'display_name': 'TODO',
+                                          'model_group': 'Water',},
+                    'EW2_partial_model': {'model': 'EW2_Partial_model',
+                                          'description': 'A country’s total freshwater availability includes natural and non-conventional sources. Total renewable freshwater is determined by the internal renewable water resources plus the external renewable water resources. A scenario to improve natural freshwater availability is to include non-conventional water resources of desalinated water and treated wastewater. EW 2 is the computed by the total water withdrawal divided by the total renewable freshwater minus the environmental flow requirement. To find the percentage values the water stress output is multiplied by 100.',
+                                          'display_name': 'TODO',
+                                          'model_group': 'Water'},
+                    'EW1_partial_model': {'model': 'EW1_partial_model',
+    'description': "Total water use efficiency is dependent by the total water withdrawal from agriculture, industry and municipal sectors and each sector’s gross value added. A corrective coefficient was applied to the agricultural sector to focus on irrigated production related to gross value added. The summation of sectoral gross value added was then divided by total water withdrawal to calculate EW1.",
+    'display_name': 'TODO',
+    'model_group': 'Water'
+},
+    'GE3_model': {'model': 'GE3_model',
+                  'description': 'This model calculates the different agricultural non-CO2 emissions using emission factors. To compare the different greenhouse gasses, they are converted to their respective CO2-equivalent using their global-warming potential in relative to CO2. From the total animal populations that are calculated in the food demand (FDTi) model, methane (CH4) emissions from enteric fermentation are computed. The total animal stocks are also used to compute the total manure that is produced per animal. Total manure production is used to compute the CH4 and nitrous oxide (N2O) emissions from manure that is treated, left on the pasture, and applied to the soils. In addition, N2O emissions from fertilizer use and other CH4 and N2O emissions that are not yet included are added. After summing, all the emissions are divided by total population to compute the GE3 indicator:  the ratio of non-CO2 emissions in agriculture to population.',
+                  'display_name': 'TODO',
+                  'model_group': 'AFOLU'},
+    'BE3_model': {'model': 'BE3_model',
+                      'description': "The change in above group biomass is calculated by multiplying the forest biomass increment rate in m3/ha multiplied by a harvest rate set by the user. The total forest biomass increment rates are calculated by taking the natural increment rate and a climate smart forestry policy.",
+                      'display_name': 'TODO',
+                      'model_group': 'AFOLU'},
+    'SL1_model': {'model': 'SL1_model',
+                      'description': "The nutrient balance consist of nutrient in- and outputs. Nutrient inputs consist of 1) biological nitrogen fixation and 2) atmospheric nitrogen deposition, which are kept constant in the model.  3) fertilizer application to cropland and 4) manure application to croplands. The nutrient outputs are based on total crops harvested. The total food demand per food group is divided by the nitrogen concentration of their respective crop to compute the total crop nitrogen during harvest.  ",
+                      'display_name': 'TODO',
+                      'model_group': 'AFOLU'},
+    'BE2_model': {'model': 'BE2_model',
+                  'description': 'Land use change is a consequence of changes in a country’s food demand. The total food demand for 97 different food groups are calculated based on the total calorie demand, population, food waste reduction policies and other types of food demand.  From the total crop-based food demands, the total cropland demand was computed by dividing it by the total crop yields. However, some minor differences occurred as the food groups calculated did not exactly match the crop types in FAOSTAT. Thus, an additional parameter was used to correct this. With the total cropland demand, the change in land use was calculated by comparing it to the previous year. If the cropland area increased, it was assumed that this caused a decrease in the inactive or fallow land area. When cropland area decreases, the total inactive land or fallow areas will increase. A reforestation scenario set by the user determines the share of inactive lands to be converted to forests. Both the fallow land and forest area were then computed by adding their respective changes to the land use of the previous year.',
+                  'display_name': 'TODO',
+                  'model_group': 'AFOLU'
+                  },
+        
+}

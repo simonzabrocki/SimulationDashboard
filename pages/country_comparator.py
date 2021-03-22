@@ -14,6 +14,7 @@ import pandas as pd
 
 
 def add_reference_to_data(data):
+    '''To improve'''
 
     data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])[
         "Value"].rank(method='dense', ascending=False)
@@ -26,10 +27,12 @@ def add_reference_to_data(data):
     Income_region_group['ISO'] = 'AVG' + '_' + \
         Income_region_group["IncomeLevel"] + \
         '_' + Income_region_group["Region"]
+    
 
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
     Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
+
     Income_group['Continental_Rank'] = np.nan
     Income_group['Income_Rank'] = np.nan
 

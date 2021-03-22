@@ -4,12 +4,11 @@ import dash_html_components as html
 import dash_table
 import dash_core_components as dcc
 import pandas as pd
-from GM.models.all_models import all_models
+from GM.models.all_models import all_models, model_properties
 import dash
 from app import app
 from dash.dependencies import Input, Output
 from utils import Header
-import dash_bootstrap_components as dbc
 
 
 model_dictionnary = all_models
@@ -99,7 +98,8 @@ def make_ISO_data_summary(ISO, model, data_dict):
 
 def make_dropdown_menu(model_dictionnary):
 
-    model_group_option = [{'label': key, 'value': key} for key in model_dictionnary.keys()]
+    model_group_option = [{'label': key, 'value': key}
+                          for key in model_dictionnary.keys()]
     dropdown = html.Div(
         [
             html.H6(
@@ -113,7 +113,8 @@ def make_dropdown_menu(model_dictionnary):
                 "Select model: ",
                 className="subtitle padded",
             ),
-            dcc.Dropdown(id="my-multi-dynamic-dropdown", multi=False, value='EW_model')
+            dcc.Dropdown(id="my-multi-dynamic-dropdown",
+                         multi=False, value='EW_model')
         ]
     )
 
@@ -132,7 +133,7 @@ def GraphModel_to_cytodata(model):
 
 def info_boxes_display():
     layout = html.Div([html.Div(
-        [html.H6(id="box1"), html.P("TO DO")],
+        [html.H6(id="box1"), html.P("TO DO", id='box1_content')],
         className="mini_container",
     ),
         html.Div(
@@ -164,6 +165,7 @@ def graph_display():
         minZoom=0.2,
         maxZoom=3,
     )
+    
     layout = html.Div([
         html.Div(
             [
@@ -171,7 +173,8 @@ def graph_display():
                 html.Div(
                     [
                         html.Div(
-                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
+                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={
+                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
                             className="mini_container",
                         ),
                         cy_graph
@@ -193,7 +196,8 @@ def graph_display():
                             className="subtitle padded",
                         ),
                         html.Div(
-                            [html.H5(id="impactbox"), html.P("", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 20})],
+                            [html.H5(id="impactbox"), html.P(
+                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 20})],
                             className="product",
                         ),
 
@@ -216,7 +220,8 @@ def highlighted_node_stylesheet(G, source, target):
     source_target = []
 
     for path in all_paths:
-        source_target += [(path[i], path[i + 1]) for i, _ in enumerate(path[:-1])]
+        source_target += [(path[i], path[i + 1])
+                          for i, _ in enumerate(path[:-1])]
 
     child_style = []
     for s_t in source_target:
@@ -307,7 +312,8 @@ layout = html.Div(
     [dash.dependencies.Input("my-dynamic-dropdown", "value")],
 )
 def update_multi_options(value):
-    model_option = [{'label': key, 'value': key} for key in model_dictionnary[value].keys()]
+    model_option = [{'label': key, 'value': key}
+                    for key in model_dictionnary[value].keys()]
     return model_option, model_option[0]['value']
 
 
@@ -340,6 +346,53 @@ def update_graph_plot(model_option, group_option, n_clicks):
     return GraphModel_to_cytodata(model)['elements']
 
 
+@app.callback(
+    Output("description-graph-model", "children"),
+    [
+        Input("my-multi-dynamic-dropdown", "value"),
+        Input("my-dynamic-dropdown", "value"),
+        Input("btn-reset", "n_clicks")
+    ],
+)
+def update_graph_description(model_option, group_option, n_clicks):
+    model = model_dictionnary[group_option][model_option]
+
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'btn-reset' in changed_id:
+        return GraphModel_to_cytodata(model)['elements']
+
+    if model_option not in model_properties:
+        return 'TODO'
+    else:
+        return model_properties[model_option]['description']
+
+
+@app.callback(
+    Output("box1_content", "children"),
+    [
+        Input("my-multi-dynamic-dropdown", "value"),
+        Input("my-dynamic-dropdown", "value"),
+        Input("btn-reset", "n_clicks")
+    ],
+)
+def update_boxes(model_option, group_option, n_clicks):
+    model = model_dictionnary[group_option][model_option]
+
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'btn-reset' in changed_id:
+        return GraphModel_to_cytodata(model)['elements']
+
+    if model_option not in model_properties:
+        return 'TODO'
+
+    if model_properties[model_option]['model_group'] == 'Water':
+        return "💧"
+    if model_properties[model_option]['model_group'] == 'AFOLU':
+        return "🌲"
+    else:
+        return 'TODO'
+
+
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("btn-reset", "n_clicks")])
@@ -348,7 +401,8 @@ def displayTapNodeData(data, n_clicks):
         if data['type'] != 'computationnal':
             return html.Div(
                 [
-                    html.P(f"{data['id']}", style={'font-size': 20, 'font-weight': 'bold'}),
+                    html.P(f"{data['id']}", style={
+                           'font-size': 20, 'font-weight': 'bold'}),
                     html.P(
                         f"This node is an {data['type']}"),
                     html.P(
@@ -360,9 +414,11 @@ def displayTapNodeData(data, n_clicks):
         else:
             return html.Div(
                 [
-                    html.P(f"{data['id']}", style={'font-size': 20, 'font-weight': 'bold'}),
+                    html.P(f"{data['id']}", style={
+                           'font-size': 20, 'font-weight': 'bold'}),
                     html.P(f"This node computes: "),
-                    html.P(f"{data['out']} = {data['name']}", style={"font-weight": 'bold'})
+                    html.P(f"{data['out']} = {data['name']}",
+                           style={"font-weight": 'bold'})
                 ]
             )
 

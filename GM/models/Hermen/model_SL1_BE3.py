@@ -47,7 +47,7 @@ BE3_nodes = {'NFI': {'type': 'input',
                      'computation': lambda CSF, NFI, **kwargs: CSF + NFI
                      },
              'HR': {'type': 'input', 'unit': '%', 'name': 'Harvest rate'},
-             'BE3': {'type': 'variable',
+             'BE3': {'type': 'output',
                      'unit': 'tonnes/ha',
                      'name': 'net change forest biomass',
                      'computation': lambda FBI, HR, **kwargs: FBI * (1 - HR * 1e-2) * m3_to_tonnes
