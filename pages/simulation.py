@@ -280,5 +280,7 @@ def make_var_df(var, scenarios_results=scenarios_results):
 
 
 # Add WP and WRR time series
-# Add GDPC for context
+# Add GDPC for contextqsdqsd 
+
 # Water Requirement Ratio -> Irrigation Water Efficiency !
+
