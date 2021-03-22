@@ -233,44 +233,6 @@ def run_scenario(results_data, ISO):
 
     return fig_1, fig_2, None
 
-
-# @app.callback(
-#     Output("results-graph-1", "figure"),
-#     Output("results-graph-2", "figure"),
-#     Output("loading-scenario", "children"),
-#     [
-#         Input("local-store", "data"),
-#         Input("btn-run", "n_clicks"),
-#         Input("results-local-store", "data"),
-#     ],
-# )
-# def run_scenario(data, n_clicks, results_data):
-#     print(results_data.keys())
-#     print(results_data['scenario_one'].keys())
-#     print(pd.read_json(results_data['scenario_one']['EW1']))
-#     data = data.copy()
-
-#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-#     if 'btn-run' in changed_id:
-#         scenarios_results['scenario_one'] = scenario(
-#             WP_rate=data['WP_1'], WRR_rate=data['WRR_1'])
-#         scenarios_results['scenario_two'] = scenario(
-#             WP_rate=data['WP_2'], WRR_rate=data['WRR_2'])
-
-#         df_1 = make_var_df('EW1').reset_index()
-#         df_2 = make_var_df('EW2').reset_index()
-
-#         fig_1 = px.line(df_1.query("ISO == 'FRA'"),
-#                         x='Year', y='EW1', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'},)
-#         fig_2 = px.line(df_2.query("ISO == 'FRA'"),
-#                         x='Year', y='EW2', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'})
-
-#         return fig_1, fig_2, None
-
-#     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
-#         raise PreventUpdate
-
-
 def make_var_df(var, scenarios_results=scenarios_results):
     dfs = []
     for scenario, res_dict in scenarios_results.items():
@@ -280,7 +242,6 @@ def make_var_df(var, scenarios_results=scenarios_results):
 
 
 # Add WP and WRR time series
-# Add GDPC for contextqsdqsd 
-
+# Add GDPC for context
 # Water Requirement Ratio -> Irrigation Water Efficiency !
 
