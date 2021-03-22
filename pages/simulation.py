@@ -212,7 +212,7 @@ def run_scenario(results_data, ISO):
 
     df_EW2_one = pd.read_json(results_data['scenario_one']['EW2']).assign(
         scenario='scenario_one').rename(columns={'0': 'EW2'})
-    df_EW2_two = pd.read_json(results_data['giscenario_two']['EW2']).assign(
+    df_EW2_two = pd.read_json(results_data['scenario_two']['EW2']).assign(
         scenario='scenario_two').rename(columns={'0': 'EW2'})
 
     EW2_BAU = scenarios_results['BAU']['EW2'].to_frame(
@@ -230,8 +230,8 @@ def run_scenario(results_data, ISO):
     
     fig_2.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
 
-
     return fig_1, fig_2, None
+
 
 def make_var_df(var, scenarios_results=scenarios_results):
     dfs = []
