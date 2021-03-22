@@ -212,7 +212,7 @@ def run_scenario(results_data, ISO):
 
     df_EW2_one = pd.read_json(results_data['scenario_one']['EW2']).assign(
         scenario='scenario_one').rename(columns={'0': 'EW2'})
-    df_EW2_two = pd.read_json(results_data['scenario_two']['EW2']).assign(
+    df_EW2_two = pd.read_json(results_data['giscenario_two']['EW2']).assign(
         scenario='scenario_two').rename(columns={'0': 'EW2'})
 
     EW2_BAU = scenarios_results['BAU']['EW2'].to_frame(
@@ -241,7 +241,7 @@ def make_var_df(var, scenarios_results=scenarios_results):
     return pd.concat(dfs, axis=0)
 
 
-# Add WP and WRR time series
+# Add WP and WRR time series # # # 
 # Add GDPC for context
 # Water Requirement Ratio -> Irrigation Water Efficiency !
 
