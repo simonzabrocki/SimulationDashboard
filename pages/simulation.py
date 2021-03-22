@@ -111,31 +111,33 @@ layout = html.Div(
         ),
         html.Div(
             [
-
-                html.H6(
-                    "Simulation Results",
-                    className="subtitle padded",
-                ),
-                html.Div([dcc.Dropdown(id="ISO_run_results", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
-                         style={'width': '100%',
-                                'display': 'inline-block',
-                                'align-items': 'center',
-                                'justify-content': 'center',
-                                'font-size': '20px'}
-                         ),
                 html.Div(
                     [
-                        dcc.Graph(id='results-graph-1',
-                                  config={'displayModeBar': False}),
-                        dcc.Graph(id='results-graph-2',
-                                  config={'displayModeBar': False}),
+                        html.H6(
+                            "Simulation Results",
+                            className="subtitle padded",
+                        ),
+                        html.Div([dcc.Dropdown(id="ISO_run_results", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
+                                 style={'width': '100%',
+                                        'display': 'inline-block',
+                                        'align-items': 'center',
+                                        'justify-content': 'center',
+                                        'font-size': '20px'}
+                                 ),
+                        html.Div(
+                            [
+                                dcc.Graph(id='results-graph-1',
+                                          config={'displayModeBar': False}),
+                                dcc.Graph(id='results-graph-2',
+                                          config={'displayModeBar': False}),
+                            ],
+                            className='row')
                     ],
-                    className='row')
-
+                    className='pretty_container eight columns'
+                )
             ],
-            className='pretty_container eight columns'
-        )
-
+            className='row'
+        ),
     ],
     className="page",
 )
@@ -220,8 +222,14 @@ def run_scenario(results_data, ISO):
 
     fig_1 = px.line(df_1.query(f"ISO == '{ISO}' and Year >= 2000"),
                     x='Year', y='EW1', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'},)
+
+    fig_1.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
+
     fig_2 = px.line(df_2.query(f"ISO == '{ISO}' and Year >= 2000"),
                     x='Year', y='EW2', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'})
+    
+    fig_2.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
+
 
     return fig_1, fig_2, None
 

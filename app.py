@@ -1,7 +1,6 @@
 import dash
 import pandas as pd
 from utils import format_data
-import dash_bootstrap_components as dbc
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}],
