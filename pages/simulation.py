@@ -6,14 +6,14 @@ from app import app, ISO_options
 from dash.dependencies import Input, Output
 from utils import Header
 import plotly.express as px
-from GM.demo_script import scenario, data_dict_expanded
+from GM.demo_script import run_EW_scenario, data_dict_expanded
 from dash.exceptions import PreventUpdate
 
 
 scenarios_results = {}
 
 # See if we can change to more smooth scenario
-scenarios_results['BAU'] = scenario(data_dict_expanded)
+scenarios_results['BAU'] = run_EW_scenario(data_dict_expanded)
 
 
 def scenario_box(scenario_id='_one'):
@@ -22,7 +22,7 @@ def scenario_box(scenario_id='_one'):
         [
             html.H5(f'Scenario{scenario_id}'),
             html.Br([]),
-            html.P('Water Price annual increase'),
+            html.P('Water Price annual increase', style={'font-size': 17}),
             dcc.Slider(
                 id=f'WP-slider{scenario_id}',
                 min=0.80,
@@ -30,16 +30,18 @@ def scenario_box(scenario_id='_one'):
                 step=None,
                 value=1,
                 marks={
-                    0.80: {'label': '-20 %'},
-                    0.90: {'label': '-10 %'},
-                    1: {'label': '0 %', },
-                    1.1: {'label': '+ 10 %', },
-                    1.2: {'label': '+ 20 %', },
+                    0.80: {'label': '-20%', 'style': {'color': 'white'}},
+                    0.90: {'label': '-10%', 'style': {'color': 'white'}},
+                    1: {'label': '0%', 'style': {'color': 'white'}},
+                    1.1: {'label': '+10%', 'style': {'color': 'white'}},
+                    1.2: {'label': '+20%', 'style': {'color': 'white'}},
 
                 },
                 included=False,
             ),
-            html.P('Irrigation Water Efficiency annual increase'),
+            html.Br([]),
+            html.P('Irrigation Water Efficiency annual increase',
+                   style={'font-size': 17}),
             dcc.Slider(
                 id=f'WRR-slider{scenario_id}',
                 step=None,
@@ -47,9 +49,9 @@ def scenario_box(scenario_id='_one'):
                 min=1,
                 max=1.01,
                 marks={
-                    1: {'label': '0 %', },
-                    1.005: {'label': '0.5 %', },
-                    1.01: {'label': '+ 1 %', },
+                    1: {'label': '0%', 'style': {'color': 'white'}},
+                    1.005: {'label': '0.5%', 'style': {'color': 'white'}},
+                    1.01: {'label': '+1%', 'style': {'color': 'white'}},
                 },
                 included=False,
             ),
@@ -85,7 +87,7 @@ def scenario_building_box():
                     html.Button('Run', id='btn-run', n_clicks=0),
                     dcc.Loading(
                         id="loading-scenario",
-                        children=[html.Div(id="results-graph-2")],
+                        children=html.Div(id='loading-output'),
                         type="dot",
                     ),
                 ],
@@ -100,8 +102,8 @@ def scenario_building_box():
 
 layout = html.Div(
     [
-        dcc.Store(id='local-store', storage_type='local'),
-        dcc.Store(id='results-local-store', storage_type='local'),
+        dcc.Store(id='local-store', storage_type='session'),
+        dcc.Store(id='results-local-store', storage_type='session', data={}),
         html.Div([Header(app)]),
         html.Div(
             [
@@ -117,7 +119,9 @@ layout = html.Div(
                             "Simulation Results",
                             className="subtitle padded",
                         ),
-                        html.Div([dcc.Dropdown(id="ISO_run_results", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
+                        html.Div([dcc.Dropdown(id="ISO_run_results",
+                                               options=[{'label': country, 'value': iso} for iso, country in ISO_options],
+                                               value='FRA')],
                                  style={'width': '100%',
                                         'display': 'inline-block',
                                         'align-items': 'center',
@@ -131,7 +135,17 @@ layout = html.Div(
                                 dcc.Graph(id='results-graph-2',
                                           config={'displayModeBar': False}),
                             ],
-                            className='row')
+                            className='row'),
+                        html.H6(
+                            "Socio-economic context",
+                            className="subtitle padded",
+                        ),
+                        html.Div(
+                            [
+                                dcc.Graph(id='context-graph-1',
+                                          config={'displayModeBar': False}),
+                            ],
+                            className='row'),
                     ],
                     className='pretty_container eight columns'
                 )
@@ -158,6 +172,7 @@ def update_scenario_parameters(WRR_1, WP_1, WRR_2, WP_2):
 
 @app.callback(
     Output("results-local-store", "data"),
+    Output("loading-output", "children"),
     [
         Input("local-store", "data"),
         Input("btn-run", "n_clicks"),
@@ -169,68 +184,87 @@ def run_scenario(data, n_clicks):
 
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
-        scenarios_results['scenario_one'] = scenario(
+        scenarios_results['scenario_one'] = run_EW_scenario(
             WP_rate=data['WP_1'], WRR_rate=data['WRR_1'])
-        scenarios_results['scenario_two'] = scenario(
+        scenarios_results['scenario_two'] = run_EW_scenario(
             WP_rate=data['WP_2'], WRR_rate=data['WRR_2'])
 
+        # do case by case to not save too much data
         return {
             'scenario_one': {
                 'EW1': scenarios_results['scenario_one']['EW1'].reset_index().to_json(),
                 'EW2': scenarios_results['scenario_one']['EW2'].reset_index().to_json(),
+                'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
             },
             'scenario_two': {
                 'EW1': scenarios_results['scenario_two']['EW1'].reset_index().to_json(),
                 'EW2': scenarios_results['scenario_two']['EW2'].reset_index().to_json(),
+                'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
             },
-        }
+        }, None
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
 
 
 @app.callback(
+    Output('context-graph-1', 'figure'),
     Output("results-graph-1", "figure"),
     Output("results-graph-2", "figure"),
-    Output("loading-scenario", "children"),
     [
         Input("results-local-store", "data"),
         Input('ISO_run_results', 'value')
     ],
 )
-def run_scenario(results_data, ISO):
-    """TO CLEAN UP !!!!!!!!! EXPERIMENT ONLY"""
+def plot_scenario_results(results_data, ISO):
+    """TO CLEAN UP !!!!!!!!! EXPERIMENT ONLY still ugly"""
+    # FIND WAY TO FORMAT A BIT MORE CLEANLY
+    results_data['BAU'] = scenarios_results['BAU']
 
-    df_EW1_one = pd.read_json(results_data['scenario_one']['EW1']).assign(
-        scenario='scenario_one').rename(columns={'0': 'EW1'})
-    df_EW1_two = pd.read_json(results_data['scenario_two']['EW1']).assign(
-        scenario='scenario_two').rename(columns={'0': 'EW1'})
-    EW1_BAU = scenarios_results['BAU']['EW1'].to_frame(
-        name='EW1').assign(scenario='BAU').reset_index()
+    df_1 = format_var_df('EW1', results_data)
+    df_2 = format_var_df('EW2', results_data)
 
-    df_1 = pd.concat([df_EW1_one, df_EW1_two, EW1_BAU], axis=0)
+    df_context_1 = format_var_df('GDPC', results_data)
 
-    df_EW2_one = pd.read_json(results_data['scenario_one']['EW2']).assign(
-        scenario='scenario_one').rename(columns={'0': 'EW2'})
-    df_EW2_two = pd.read_json(results_data['scenario_two']['EW2']).assign(
-        scenario='scenario_two').rename(columns={'0': 'EW2'})
+    # Wrap graph in function
+    context_fig_1 = scenario_line_plot('GDPC', df_context_1, ISO)
+    fig_1 = scenario_line_plot('EW1', df_1, ISO)
+    fig_2 = scenario_line_plot('EW2', df_2, ISO)
 
-    EW2_BAU = scenarios_results['BAU']['EW2'].to_frame(
-        name='EW2').assign(scenario='BAU').reset_index()
+    return context_fig_1, fig_1, fig_2
 
-    df_2 = pd.concat([df_EW2_one, df_EW2_two, EW2_BAU], axis=0)
 
-    fig_1 = px.line(df_1.query(f"ISO == '{ISO}' and Year >= 2000"),
-                    x='Year', y='EW1', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'},)
+def scenario_line_plot(var, df, ISO):  # ugly af
+    fig = px.line(df.query(f"ISO == '{ISO}' and Year >= 2000"),
+                  x='Year',
+                  y=var,
+                  color='scenario',
+                  color_discrete_map={'scenario_one': '#D8A488',
+                                      'scenario_two': '#86BBD8',
+                                      'BAU': '#A9A9A9'},
+                  )
 
-    fig_1.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
-
-    fig_2 = px.line(df_2.query(f"ISO == '{ISO}' and Year >= 2000"),
-                    x='Year', y='EW2', color='scenario', color_discrete_map={'scenario_one': '#D8A488', 'scenario_two': '#86BBD8', 'BAU': '#A9A9A9'})
+    fig.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
     
-    fig_2.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
+    return fig
 
-    return fig_1, fig_2, None
+
+def format_var_df(var, results_data):
+    '''TO CLEAN UP'''
+    dfs = []
+    for scenario, res_dict in results_data.items():
+
+        if scenario == 'BAU':
+            df = res_dict[var].to_frame(name=var).assign(
+                scenario=scenario).reset_index()
+
+        else:
+            df = pd.read_json(res_dict[var]).assign(
+                scenario=scenario).rename(columns={'0': var})
+
+        dfs.append(df)
+
+    return pd.concat(dfs, axis=0)
 
 
 def make_var_df(var, scenarios_results=scenarios_results):
@@ -241,7 +275,4 @@ def make_var_df(var, scenarios_results=scenarios_results):
     return pd.concat(dfs, axis=0)
 
 
-# Add WP and WRR time series # # # 
-# Add GDPC for context
-# Water Requirement Ratio -> Irrigation Water Efficiency !
-
+# Add WP and WRR time series

@@ -290,40 +290,7 @@ data_dict_expanded['Kc'] = pd.read_csv(
     'data/demo_data/projection_data/Kc.csv', index_col=['ISO', 'Year', 'Item']).iloc[:, 0]
 
 
-def scenario_BAU(data_dict_expanded=data_dict_expanded):
-
-    data_dict_expanded = data_dict_expanded.copy()
-    X, y = get_X_y_from_data(EW_model, data_dict_expanded)
-    res = EW_model.run(X)
-
-    return res
-
-
-def scenario_1(data_dict_expanded=data_dict_expanded):
-
-    data_dict_expanded = data_dict_expanded.copy()
-    data_dict_expanded['WP'] = apply_scenario_WP(
-        data_dict_expanded['WP'], rate=1.1)
-    data_dict_expanded['WRR'] = apply_scenario_WRR(
-        data_dict_expanded['WRR'], rate=1)
-
-    X, y = get_X_y_from_data(EW_model, data_dict_expanded)
-    return EW_model.run(X)
-
-
-def scenario_2(data_dict_expanded=data_dict_expanded):
-
-    data_dict_expanded = data_dict_expanded.copy()
-    data_dict_expanded['WP'] = apply_scenario_WP(
-        data_dict_expanded['WP'], rate=1.05)
-    data_dict_expanded['WRR'] = apply_scenario_WRR(
-        data_dict_expanded['WRR'], rate=1)
-
-    X, y = get_X_y_from_data(EW_model, data_dict_expanded)
-    return EW_model.run(X)
-
-
-def scenario(data_dict_expanded=data_dict_expanded, WP_rate=1, WRR_rate=1):
+def run_EW_scenario(data_dict_expanded=data_dict_expanded, WP_rate=1, WRR_rate=1):
     data_dict_expanded = data_dict_expanded.copy()
     data_dict_expanded['WP'] = apply_scenario_WP(
         data_dict_expanded['WP'], rate=WP_rate)
@@ -332,8 +299,3 @@ def scenario(data_dict_expanded=data_dict_expanded, WP_rate=1, WRR_rate=1):
 
     X, y = get_X_y_from_data(EW_model, data_dict_expanded)
     return EW_model.run(X)
-
-
-res_1 = scenario()
-res_2 = scenario(WP_rate=1.05, WRR_rate=1)
-res_3 = scenario(WP_rate=1.1, WRR_rate=0.999)
