@@ -102,7 +102,8 @@ def circular_plot(ISO):
                                        ))
 
     fig.update_layout(annotations=[dict(
-        text=f'{index}', x=0.5, y=0.5, font_size=20, showarrow=False, font_color='green'), ])
+        text=f'{index}', x=0.5, y=0.5, font_size=20, showarrow=False,
+        font_color='green'), ])
 
     fig.update_layout(legend=dict(
         orientation="h",
@@ -290,9 +291,6 @@ layout = html.Div(
                     'displayModeBar': False}),
             ],
             className='pretty_container twelve columns')
-
-
-
         # page 1
     ],
     className="page",
