@@ -163,6 +163,7 @@ EW_model = GraphModel(concatenate_graph_specs([IWW_nodes, MWU_nodes, EW1_nodes, 
 
 # To check if it's usefull
 EW_models = {'IWW_model': IWW_model,
+             'MWU_model': MWU_model,
              'EW1_partial_model': EW1_partial_model,
              'EW2_partial_model': EW2_partial_model,
              'EW1_model': EW1_model,

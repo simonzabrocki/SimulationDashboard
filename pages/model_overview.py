@@ -13,6 +13,25 @@ from utils import Header
 
 model_dictionnary = all_models
 
+model_dictionnary_bis = [dict_model for key, dict_model in all_models.items()]
+model_dictionnary_bis = {
+    k: v for d in model_dictionnary_bis for k, v in d.items()}
+
+
+model_group_properties = {
+    'Water': {
+        'model_list': ['EW_model', 'EW1_partial_model', 'EW2_partial_model', 'IWW_model', 'MWU_model'],
+        'symbol': "💧"
+    },
+    'AFOLU': {
+        'model_list': ['GE3_model', 'BE3_model', 'BE2_model', 'SL1_model'],
+        'symbol': "🌾🌲"
+    },
+    'Combined models': {
+        'model_list': ['model_1'],
+        'symbol': '🌱'
+    },
+}
 
 cyto.load_extra_layouts()
 
@@ -99,22 +118,23 @@ def make_ISO_data_summary(ISO, model, data_dict):
 def make_dropdown_menu(model_dictionnary):
 
     model_group_option = [{'label': key, 'value': key}
-                          for key in model_dictionnary.keys()]
+                          for key in model_group_properties.keys()]
     dropdown = html.Div(
         [
             html.H6(
-                "Select model group: ",
+                "Select sector: ",
                 className="subtitle padded",
             ),
             dcc.Dropdown(id="my-dynamic-dropdown",
                          options=model_group_option,
-                         value='EW_models'),
+                         value='Water',
+                         clearable=False),
             html.H6(
                 "Select model: ",
                 className="subtitle padded",
             ),
             dcc.Dropdown(id="my-multi-dynamic-dropdown",
-                         multi=False, value='EW_model')
+                         multi=False, value='EW_model', clearable=False)
         ]
     )
 
@@ -133,17 +153,15 @@ def GraphModel_to_cytodata(model):
 
 def info_boxes_display():
     layout = html.Div([html.Div(
-        [html.H6(id="box1"), html.P("TO DO", id='box1_content')],
+        [html.P("Sector"), html.P(id="box1_content", style={'font-size': 25})],
         className="mini_container",
     ),
         html.Div(
-        [html.H6(id="box2"), html.P("TO DO")],
+        [html.P("Status"), html.H6(
+            id="box2_content", style={'font-size': 25})],
         className="mini_container",
     ),
-        html.Div(
-        [html.H6(id="box3"), html.P("TO DO")],
-        className="mini_container",
-    )],
+    ],
         id="info-container",
         className="row container-display",)
     return layout
@@ -312,8 +330,8 @@ layout = html.Div(
     [dash.dependencies.Input("my-dynamic-dropdown", "value")],
 )
 def update_multi_options(value):
-    model_option = [{'label': key, 'value': key}
-                    for key in model_dictionnary[value].keys()]
+    model_option = [{'label': model_properties[key]['display_name'], 'value': key}
+                    for key in model_group_properties[value]['model_list']]
     return model_option, model_option[0]['value']
 
 
@@ -321,23 +339,21 @@ def update_multi_options(value):
     Output("summary_table", "data"),
     [
         Input("my-multi-dynamic-dropdown", "value"),
-        Input("my-dynamic-dropdown", "value"),
     ],
 )
-def update_summary_table(model_option, group_option):
-    return model_dictionnary[group_option][model_option].summary_df.reset_index().to_dict('records')
+def update_summary_table(model_option):
+    return model_dictionnary_bis[model_option].summary_df.reset_index().to_dict('records')
 
 
 @app.callback(
     Output("cytoscape-graph-model", "elements"),
     [
         Input("my-multi-dynamic-dropdown", "value"),
-        Input("my-dynamic-dropdown", "value"),
         Input("btn-reset", "n_clicks")
     ],
 )
-def update_graph_plot(model_option, group_option, n_clicks):
-    model = model_dictionnary[group_option][model_option]
+def update_graph_plot(model_option, n_clicks):
+    model = model_dictionnary_bis[model_option]
 
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-reset' in changed_id:
@@ -350,12 +366,10 @@ def update_graph_plot(model_option, group_option, n_clicks):
     Output("description-graph-model", "children"),
     [
         Input("my-multi-dynamic-dropdown", "value"),
-        Input("my-dynamic-dropdown", "value"),
-        #Input("btn-reset", "n_clicks")
     ],
 )
-def update_graph_description(model_option, group_option):
-    model = model_dictionnary[group_option][model_option]
+def update_graph_description(model_option):
+    model = model_dictionnary_bis[model_option]
 
     if model_option not in model_properties:
         return 'TODO'
@@ -365,23 +379,17 @@ def update_graph_description(model_option, group_option):
 
 @app.callback(
     Output("box1_content", "children"),
+    Output('box2_content', 'children'),
     [
         Input("my-multi-dynamic-dropdown", "value"),
-        Input("my-dynamic-dropdown", "value"),
     ],
 )
-def update_boxes(model_option, group_option):
-    model = model_dictionnary[group_option][model_option]
+def update_boxes(model_option):
+    model_group = model_properties[model_option]['model_group']
+    symbol = model_group_properties[model_group]['symbol']
+    status = model_properties[model_option]['status']
 
-    if model_option not in model_properties:
-        return 'TODO'
-
-    if model_properties[model_option]['model_group'] == 'Water':
-        return "💧"
-    if model_properties[model_option]['model_group'] == 'AFOLU':
-        return "🌲"
-    else:
-        return 'TODO'
+    return symbol, status
 
 
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
@@ -429,10 +437,9 @@ def displayHoverNodeData(data):
 @app.callback(Output('cytoscape-tapNodeData-impact', 'children'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("my-multi-dynamic-dropdown", "value"),
-               Input("my-dynamic-dropdown", "value"),
                Input("btn-reset", "n_clicks")])
-def displayImpactNodeData(data, model_option, group_option, n_clicks):
-    G = model_dictionnary[group_option][model_option]
+def displayImpactNodeData(data, model_option, n_clicks):
+    G = model_dictionnary_bis[model_option]
     outputs = G.outputs_()
     impacted_nodes = []
 
@@ -450,9 +457,8 @@ def displayImpactNodeData(data, model_option, group_option, n_clicks):
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("my-multi-dynamic-dropdown", "value"),
-               Input("my-dynamic-dropdown", "value"),
                Input("btn-reset", "n_clicks")])
-def highlightpath(data, model_option, group_option, n_clicks):
+def highlightpath(data, model_option, n_clicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
 
     if 'btn-reset' in changed_id:
@@ -461,7 +467,7 @@ def highlightpath(data, model_option, group_option, n_clicks):
     if not data:
         return STYLESHEET
     else:
-        G = model_dictionnary[group_option][model_option]
+        G = model_dictionnary_bis[model_option]
         outputs = G.outputs_()
 
         res = STYLESHEET.copy()
