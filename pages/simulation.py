@@ -293,14 +293,3 @@ def format_var_df(var, results_data):
         dfs.append(df)
 
     return pd.concat(dfs, axis=0)
-
-
-def make_var_df(var, scenarios_results=scenarios_results):
-    dfs = []
-    for scenario, res_dict in scenarios_results.items():
-        dfs.append(res_dict[var].to_frame(
-            name=var).assign(scenario=scenario))
-    return pd.concat(dfs, axis=0)
-
-
-# Add WP and WRR time series
