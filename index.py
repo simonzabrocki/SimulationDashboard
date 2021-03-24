@@ -10,7 +10,7 @@ from pages import (
     data_viz,
     model_overview,
     country_comparator,
-    simulation
+    #simulation
 )
 
 app.layout = html.Div(
@@ -33,8 +33,8 @@ def display_page(pathname):
         return country_comparator.layout
     elif pathname == "/SimulationDashBoard/models":
         return model_overview.layout
-    elif pathname == "/SimulationDashBoard/simulation":
-        return simulation.layout
+    # elif pathname == "/SimulationDashBoard/simulation":
+    #     return simulation.layout
     elif pathname == "/SimulationDashBoard/data":
         return data_viz.layout
     else:
@@ -42,7 +42,7 @@ def display_page(pathname):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=False, host='localhost', port=8080,
+    app.run_server(debug=True, host='localhost', port=8080,
                    #dev_tools_ui=False,
                    #dev_tools_props_check=False,
                    )
