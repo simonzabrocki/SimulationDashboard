@@ -206,9 +206,6 @@ def update_scenario_parameters(WRR_1, WP_1, WRR_2, WP_2):
     ],
 )
 def run_scenario(data, n_clicks):
-
-    data = data.copy()
-
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
         scenarios_results['scenario_one'] = run_EW_scenario(
