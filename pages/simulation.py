@@ -101,10 +101,17 @@ def scenario_building_box():
             ),
             html.Div(
                 [
-                    html.Button('Run', id='btn-run', n_clicks=0),
+                    html.Button('Run', id='btn-run', n_clicks=0,
+                                style={'font-size': 20,
+                                'font-weight': 'normal',
+                                'color': '#ffffff',
+                                'background': '#14ac9c',
+                                'border':'#14ac9c',
+                                }),
                     dcc.Loading(
                         id="loading-scenario",
                         children=html.Div(id='loading-output'),
+                        color='#14ac9c',
                         type="dot",
                     ),
                 ],
