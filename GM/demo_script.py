@@ -112,7 +112,7 @@ def apply_projection(data_dict_expanded):
     return data_dict_expanded
 
 
-MWU_df = pd.read_csv('data/demo_data/MWU_df.csv')
+#MWU_df = pd.read_csv('data/demo_data/MWU_df.csv')
 
 # Conversions
 height_rice = 0.2  # meter height of rice
