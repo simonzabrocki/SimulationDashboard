@@ -165,7 +165,7 @@ def graph_display():
         minZoom=0.2,
         maxZoom=3,
     )
-    
+
     layout = html.Div([
         html.Div(
             [
@@ -351,15 +351,11 @@ def update_graph_plot(model_option, group_option, n_clicks):
     [
         Input("my-multi-dynamic-dropdown", "value"),
         Input("my-dynamic-dropdown", "value"),
-        Input("btn-reset", "n_clicks")
+        #Input("btn-reset", "n_clicks")
     ],
 )
-def update_graph_description(model_option, group_option, n_clicks):
+def update_graph_description(model_option, group_option):
     model = model_dictionnary[group_option][model_option]
-
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'btn-reset' in changed_id:
-        return GraphModel_to_cytodata(model)['elements']
 
     if model_option not in model_properties:
         return 'TODO'
@@ -372,15 +368,10 @@ def update_graph_description(model_option, group_option, n_clicks):
     [
         Input("my-multi-dynamic-dropdown", "value"),
         Input("my-dynamic-dropdown", "value"),
-        Input("btn-reset", "n_clicks")
     ],
 )
-def update_boxes(model_option, group_option, n_clicks):
+def update_boxes(model_option, group_option):
     model = model_dictionnary[group_option][model_option]
-
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'btn-reset' in changed_id:
-        return GraphModel_to_cytodata(model)['elements']
 
     if model_option not in model_properties:
         return 'TODO'

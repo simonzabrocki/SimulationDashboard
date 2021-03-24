@@ -62,6 +62,23 @@ def scenario_box(scenario_id='_one'):
     return layout
 
 
+def model_selection_box():
+    layout = html.Div(
+        [
+            html.H5(
+                "Model Selection",
+                className="subtitle padded",
+            ),
+            html.Br([]),
+            dcc.Dropdown(id="dropdown-simulation-model",
+                         options=[
+                             {'label': 'Water Model', 'value': 'EW_models'}],
+                         value='EW_models')
+
+        ])
+    return layout
+
+
 def scenario_building_box():
     layout = html.Div(
         [
@@ -107,6 +124,8 @@ layout = html.Div(
         html.Div([Header(app)]),
         html.Div(
             [
+                model_selection_box(),
+                html.Br([]),
                 scenario_building_box()
             ],
             className="pretty_container four columns",
@@ -120,7 +139,8 @@ layout = html.Div(
                             className="subtitle padded",
                         ),
                         html.Div([dcc.Dropdown(id="ISO_run_results",
-                                               options=[{'label': country, 'value': iso} for iso, country in ISO_options],
+                                               options=[{'label': country, 'value': iso}
+                                                        for iso, country in ISO_options],
                                                value='FRA')],
                                  style={'width': '100%',
                                         'display': 'inline-block',
@@ -245,7 +265,8 @@ def scenario_line_plot(var, df, ISO):  # ugly af
                   )
 
     fig.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
-    
+    fig.update_layout(hovermode="x")
+
     return fig
 
 
