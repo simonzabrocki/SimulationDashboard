@@ -300,10 +300,10 @@ def loliplot_2(ISO):
                  color='Dimension',
                  color_discrete_map={
         ISO: '#14ac9c',
-        "Social Inclusion": "#d9b5c9",
-        "Natural Capital Protection": "#f7be49",
         "Efficient and Sustainable Resource Use": "#8fd1e7",
         "Green Economic Opportunities": "#9dcc93",
+        "Natural Capital Protection": "#f7be49",
+        "Social Inclusion": "#d9b5c9",
     },
         hover_name='Variable_name',
         hover_data={'ISO': False,

@@ -215,7 +215,7 @@ def graph_display():
                         ),
                         html.Div(
                             [html.H5(id="impactbox"), html.P(
-                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 20})],
+                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
                             className="product",
                         ),
 
@@ -412,9 +412,9 @@ def displayTapNodeData(data, n_clicks):
                     html.P(f"{data['id']}", style={
                            'font-size': 20, 'font-weight': 'bold'}),
                     html.P(
-                        f"This node is an {data['type']}"),
+                        f"{data['name']}.", style={'font-weight': 'bold', 'font-size': 15}),
                     html.P(
-                        f"It represents the {data['name']}.", style={'font-weight': 'bold'}),
+                        f"This node is an {data['type']}"),
                     html.P(
                         f"It expressed in {data['unit']}.")
                 ]
@@ -458,9 +458,10 @@ def displayImpactNodeData(data, model_option, n_clicks):
     if data['id'] in G:
         for output in outputs:
             if nx.has_path(G, data['id'], output):
-                impacted_nodes.append(output)
+                name = G.nodes[output]['name']
+                impacted_nodes.append(name)
 
-    return ', '.join(impacted_nodes)
+    return ', \n'.join(impacted_nodes)
 
 
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
