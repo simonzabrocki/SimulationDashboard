@@ -72,5 +72,5 @@ def add_reference_to_data(data):
     return data
 
 #to improve using double the amount of mem for nothing
-data_bis = add_reference_to_data(data)
+#data_bis = add_reference_to_data(data)
 

@@ -7,9 +7,9 @@ from pages import (
     global_overview,
     #country_profile,
     #regional_outlook,
-    #data_viz,
+    data_viz,
     model_overview,
-    country_comparator,
+    #country_comparator,
     simulation
 )
 
