@@ -5,12 +5,15 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header
-from app import app, data_bis, ISO_options
+from app import app, data, ISO_options, indicator_properties
 
 import numpy as np
 import pandas as pd
 
-data = data_bis
+
+indicator_properties['Category'] = indicator_properties['Indicator'].apply(lambda x: x[0:2])
+data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')
+
 
 def HTML_text(ISO, className):
     data_plot = data[(data.ISO.isin([ISO]))]
@@ -48,8 +51,13 @@ def HTML_text(ISO, className):
 
 
 def circular_plot(ISO):
+    # to put elsewhere
+
+
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
                                         'Category') & (data.Year == 2019)].fillna(0)
+        
+
     for dim in df.Dimension.unique():
         df = df.append({'Variable': f'{dim}', 'Value': 0,
                         'Dimension': dim}, ignore_index=True)
@@ -131,7 +139,8 @@ def time_series_Index(ISO_A, ISO_B):
                   hover_data={'ISO': True, 'Year': True, 'Income_Rank': True,
                               },
                   hover_name='Year',
-                  labels={"Value": 'Score',
+                  labels={
+                          "Value": 'Score',
                           'ISO': 'ISO',
                           'Income_Rank': 'Rank in income group',
                           },

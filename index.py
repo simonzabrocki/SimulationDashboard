@@ -9,9 +9,10 @@ from pages import (
     #regional_outlook,
     data_viz,
     model_overview,
-    #country_comparator,
+    country_comparator,
     simulation
 )
+
 
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
