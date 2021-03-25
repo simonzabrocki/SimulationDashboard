@@ -9,11 +9,7 @@ import plotly.express as px
 from GM.demo_script import run_EW_scenario, data_dict_expanded
 from dash.exceptions import PreventUpdate
 
-
-scenarios_results = {}
-
-# See if we can change to more smooth scenario
-scenarios_results['BAU'] = run_EW_scenario(data_dict_expanded)
+import time
 
 
 def scenario_box(scenario_id='_one'):
@@ -99,21 +95,32 @@ def scenario_building_box():
                 ],
                 className='product_B'
             ),
+            html.Div([dcc.Dropdown(id="ISO_run_results",
+                                   options=[{'label': country, 'value': iso}
+                                            for iso, country in ISO_options],
+                                   value='FRA')],
+                     style={'width': '100%',
+                            'display': 'inline-block',
+                            'align-items': 'center',
+                            'justify-content': 'center',
+                            'font-size': '20px'}
+                     ),
             html.Div(
                 [
                     html.Button('Run', id='btn-run', n_clicks=0,
                                 style={'font-size': 20,
-                                'font-weight': 'normal',
-                                'color': '#ffffff',
-                                'background': '#14ac9c',
-                                'border':'#14ac9c',
-                                }),
+                                       'font-weight': 'normal',
+                                       'color': '#ffffff',
+                                       'background': '#14ac9c',
+                                       'border': '#14ac9c',
+                                       }),
                     dcc.Loading(
                         id="loading-scenario",
                         children=html.Div(id='loading-output'),
                         color='#14ac9c',
                         type="dot",
                     ),
+
                 ],
                 className='row'
             ),
@@ -145,16 +152,6 @@ layout = html.Div(
                             "Simulation Results",
                             className="subtitle padded",
                         ),
-                        html.Div([dcc.Dropdown(id="ISO_run_results",
-                                               options=[{'label': country, 'value': iso}
-                                                        for iso, country in ISO_options],
-                                               value='FRA')],
-                                 style={'width': '100%',
-                                        'display': 'inline-block',
-                                        'align-items': 'center',
-                                        'justify-content': 'center',
-                                        'font-size': '20px'}
-                                 ),
                         html.Div(
                             [
                                 dcc.Graph(id='results-graph-1',
@@ -185,77 +182,150 @@ layout = html.Div(
 
 
 @app.callback(
-    Output("local-store", "data"),
+    Output("results-graph-1", "figure"),
+    Output("results-graph-2", "figure"),
+    Output('context-graph-1', 'figure'),
+    Output("loading-output", "children"),
     [
         Input("WRR-slider_one", "value"),
         Input("WP-slider_one", "value"),
         Input("WRR-slider_two", "value"),
         Input("WP-slider_two", "value"),
-    ],
-)
-def update_scenario_parameters(WRR_1, WP_1, WRR_2, WP_2):
-    return {'WRR_1': WRR_1, 'WP_1': WP_1, 'WRR_2': WRR_2, 'WP_2': WP_2}
-
-
-@app.callback(
-    Output("results-local-store", "data"),
-    Output("loading-output", "children"),
-    [
-        Input("local-store", "data"),
+        Input('ISO_run_results', 'value'),
         Input("btn-run", "n_clicks"),
     ],
 )
-def run_scenario(data, n_clicks):
+def run_scenario(WRR_1, WP_1, WRR_2, WP_2, ISO, n_clicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
-        scenarios_results['scenario_one'] = run_EW_scenario(
-            WP_rate=data['WP_1'], WRR_rate=data['WRR_1'])
-        scenarios_results['scenario_two'] = run_EW_scenario(
-            WP_rate=data['WP_2'], WRR_rate=data['WRR_2'])
 
-        # do case by case to not save too much data
-        return {
-            'scenario_one': {
-                'EW1': scenarios_results['scenario_one']['EW1'].reset_index().to_json(),
-                'EW2': scenarios_results['scenario_one']['EW2'].reset_index().to_json(),
-                'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
-            },
-            'scenario_two': {
-                'EW1': scenarios_results['scenario_two']['EW1'].reset_index().to_json(),
-                'EW2': scenarios_results['scenario_two']['EW2'].reset_index().to_json(),
-                'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
-            },
-        }, None
+        try:
+            scenarios_results = {}
+
+            data_dict = {key: value.loc[[ISO]]
+                        for key, value in data_dict_expanded.items()}
+
+
+            scenarios_results['BAU'] = run_EW_scenario(data_dict)
+
+            scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict,
+                                                                WP_rate=WP_1, WRR_rate=WRR_1)
+
+            scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict,
+                                                                WP_rate=WP_2, WRR_rate=WRR_2)
+
+
+
+            df_1 = format_var_results(scenarios_results, 'EW1')
+            df_2 = format_var_results(scenarios_results, 'EW2')
+            df_3 = format_var_results(scenarios_results, 'GDPC')
+
+            fig_1 = scenario_line_plot('EW1', df_1, ISO)
+            fig_2 = scenario_line_plot('EW2', df_2, ISO)
+            fig_3 = scenario_line_plot('GDPC', df_3, ISO)
+        
+        except Exception as e:
+            return {}, {}, {}, None
+
+        return fig_1, fig_2, fig_3, None
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
 
 
-@app.callback(
-    Output('context-graph-1', 'figure'),
-    Output("results-graph-1", "figure"),
-    Output("results-graph-2", "figure"),
-    [
-        Input("results-local-store", "data"),
-        Input('ISO_run_results', 'value')
-    ],
-)
-def plot_scenario_results(results_data, ISO):
-    """TO CLEAN UP !!!!!!!!! EXPERIMENT ONLY still ugly"""
-    # FIND WAY TO FORMAT A BIT MORE CLEANLY
-    results_data['BAU'] = scenarios_results['BAU']
+def format_var_results(scenarios_results, var):
+    df = pd.concat([
+        scenarios_results['scenario_one'][var].reset_index().assign(scenario='scenario_one'),
+        scenarios_results['scenario_two'][var].reset_index().assign(scenario='scenario_two'),
+        scenarios_results['BAU'][var].reset_index().assign(scenario='BAU'),
+        ], axis=0).rename(columns={0: var})
 
-    df_1 = format_var_df('EW1', results_data)
-    df_2 = format_var_df('EW2', results_data)
+    return df
 
-    df_context_1 = format_var_df('GDPC', results_data)
+# @app.callback(
+#     Output("local-store", "data"),
+#     [
+#         Input("WRR-slider_one", "value"),
+#         Input("WP-slider_one", "value"),
+#         Input("WRR-slider_two", "value"),
+#         Input("WP-slider_two", "value"),
+#     ],
+# )
+# def update_scenario_parameters(WRR_1, WP_1, WRR_2, WP_2):
+#     return {'WRR_1': WRR_1, 'WP_1': WP_1, 'WRR_2': WRR_2, 'WP_2': WP_2}
 
-    # Wrap graph in function
-    context_fig_1 = scenario_line_plot('GDPC', df_context_1, ISO)
-    fig_1 = scenario_line_plot('EW1', df_1, ISO)
-    fig_2 = scenario_line_plot('EW2', df_2, ISO)
 
-    return context_fig_1, fig_1, fig_2
+# @app.callback(
+#     Output("results-local-store", "data"),
+#     Output("loading-output", "children"),
+#     [
+#         Input("local-store", "data"),
+#         Input("btn-run", "n_clicks"),
+#     ],
+# )
+# def run_scenario(data, n_clicks):
+#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+#     if 'btn-run' in changed_id:
+
+#         scenarios_results['scenario_one'] = run_EW_scenario(
+#             WP_rate=data['WP_1'], WRR_rate=data['WRR_1'])
+
+#         scenarios_results['scenario_two'] = run_EW_scenario(
+#             WP_rate=data['WP_2'], WRR_rate=data['WRR_2'])
+
+#         # do case by case to not save too much data
+#         return {
+#             'scenario_one': {
+#                 'EW1': scenarios_results['scenario_one']['EW1'].reset_index().to_json(),
+#                 'EW2': scenarios_results['scenario_one']['EW2'].reset_index().to_json(),
+#                 'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
+#             },
+#             'scenario_two': {
+#                 'EW1': scenarios_results['scenario_two']['EW1'].reset_index().to_json(),
+#                 'EW2': scenarios_results['scenario_two']['EW2'].reset_index().to_json(),
+#                 'GDPC': scenarios_results['scenario_one']['GDPC'].reset_index().to_json(),
+#             },
+#         }, None
+
+#     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+#         raise PreventUpdate
+
+# import time
+
+
+# @app.callback(
+#     Output('context-graph-1', 'figure'),
+#     Output("results-graph-1", "figure"),
+#     Output("results-graph-2", "figure"),
+#     [
+#         Input("results-local-store", "data"),
+#         Input('ISO_run_results', 'value')
+#     ],
+# )
+# def plot_scenario_results(results_data, ISO):
+#     """TO CLEAN UP !!!!!!!!! EXPERIMENT ONLY still ugly"""
+#     # FIND WAY TO FORMAT A BIT MORE CLEANLY
+#     results_data['BAU'] = scenarios_results['BAU']
+
+#     t = time.time()
+
+#     df_1 = format_var_df('EW1', results_data)
+#     df_2 = format_var_df('EW2', results_data)
+
+#     df_context_1 = format_var_df('GDPC', results_data)
+
+#     print(time.time() - t)
+
+#     t = time.time()
+
+#     # Wrap graph in function
+#     context_fig_1 = scenario_line_plot('GDPC', df_context_1, ISO)
+#     fig_1 = scenario_line_plot('EW1', df_1, ISO)
+#     fig_2 = scenario_line_plot('EW2', df_2, ISO)
+
+#     print(time.time() - t)
+
+#     return context_fig_1, fig_1, fig_2
 
 
 def scenario_line_plot(var, df, ISO):  # ugly af
@@ -274,19 +344,19 @@ def scenario_line_plot(var, df, ISO):  # ugly af
     return fig
 
 
-def format_var_df(var, results_data):
-    '''TO CLEAN UP'''
-    dfs = []
-    for scenario, res_dict in results_data.items():
+# def format_var_df(var, results_data):
+#     '''TO CLEAN UP'''
+#     dfs = []
+#     for scenario, res_dict in results_data.items():
 
-        if scenario == 'BAU':
-            df = res_dict[var].to_frame(name=var).assign(
-                scenario=scenario).reset_index()
+#         if scenario == 'BAU':
+#             df = res_dict[var].to_frame(name=var).assign(
+#                 scenario=scenario).reset_index()
 
-        else:
-            df = pd.read_json(res_dict[var]).assign(
-                scenario=scenario).rename(columns={'0': var})
+#         else:
+#             df = pd.read_json(res_dict[var]).assign(
+#                 scenario=scenario).rename(columns={'0': var})
 
-        dfs.append(df)
+#         dfs.append(df)
 
-    return pd.concat(dfs, axis=0)
+#     return pd.concat(dfs, axis=0)
