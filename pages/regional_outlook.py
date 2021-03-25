@@ -243,10 +243,10 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.H5(f"{cover} countries covered"),
+                                html.H5(f"Highlights"),
                                 html.Br([]),
                                 html.P(
-                                    "",
+                                    "Average scores for the Green Growth Index are provided for countries within five geographic regions – Africa, the Americas, Asia, Europe, and Oceania. Although the trends differ across regions for the four green growth dimensions, green economic opportunities is consistently below targets and largely stable across time, except in Europe where the trend is rising slightly and greater than other regions. Another positive trend to note is that across all regions, social inclusion scores have risen systematically over the past 15 years. This is especially true in areas with many developing countries like Asia and Africa.",
                                     style={"color": "#ffffff", 'font-size': '13px'},
                                     className="row",
                                 ),

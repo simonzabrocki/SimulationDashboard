@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 
 
-
 def HTML_text(ISO, className):
     data_plot = data[(data.ISO.isin([ISO]))]
 
@@ -303,14 +302,13 @@ layout = html.Div(
 )
 
 
-@app.callback(
-    dash.dependencies.Output('circular_plot_A', 'figure'),
-    dash.dependencies.Output('circular_plot_B', 'figure'),
-    [dash.dependencies.Input('ISO_select_A', 'value'),
-     dash.dependencies.Input('ISO_select_B', 'value')])
-def update_circular_plots(ISO_A, ISO_B):
-    return circular_plot(ISO_A), circular_plot(ISO_B)
-
+# @app.callback(
+#     dash.dependencies.Output('circular_plot_A', 'figure'),
+#     dash.dependencies.Output('circular_plot_B', 'figure'),
+#     [dash.dependencies.Input('ISO_select_A', 'value'),
+#      dash.dependencies.Input('ISO_select_B', 'value')])
+# def update_circular_plots(ISO_A, ISO_B):
+#     return circular_plot(ISO_A), circular_plot(ISO_B)
 
 @app.callback(
     dash.dependencies.Output('Description_A', 'children'),
@@ -326,6 +324,22 @@ def update_HTML_A(ISO):
     suppress_callback_exceptions=True)
 def update_HTML_B(ISO):
     return HTML_text(ISO, 'product_B')
+
+
+@app.callback(
+    dash.dependencies.Output('circular_plot_A', 'figure'),
+    [dash.dependencies.Input('ISO_select_A', 'value')])
+def update_circular_plots(ISO_A):
+    return circular_plot(ISO_A)
+
+
+@app.callback(
+    dash.dependencies.Output('circular_plot_B', 'figure'),
+    [dash.dependencies.Input('ISO_select_B', 'value')])
+def update_circular_plots(ISO_B):
+    return circular_plot(ISO_B)
+
+
 
 
 @app.callback(

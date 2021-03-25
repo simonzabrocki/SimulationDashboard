@@ -19,7 +19,7 @@ def compute_group(data):
     Income_region_group['ISO'] = 'AVG' + '_' + \
         Income_region_group["IncomeLevel"] + \
         '_' + Income_region_group["Region"]
-    
+
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
     Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
@@ -37,7 +37,9 @@ def compute_group(data):
 
     return data
 
+
 group_data = compute_group(data)
+
 
 def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
@@ -147,7 +149,7 @@ def polar(ISO):
                                                   ].drop_duplicates().values[0].tolist())
 
     group_df = group_data[group_data.ISO.isin([ISO]) & (data.Aggregation ==
-                                             'Category') & (data.Year == 2019)]
+                                                        'Category') & (data.Year == 2019)]
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Category') & (data.Year == 2019)]  # .fillna(0)
@@ -208,9 +210,9 @@ def polar(ISO):
 def loliplot(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                   ].drop_duplicates().values[0].tolist())
-        
+
     group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
-                                             'Dimension') & (group_data.Year == 2019)]
+                                                        'Dimension') & (group_data.Year == 2019)]
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Dimension') & (data.Year == 2019)]  # .fillna(0)
@@ -281,12 +283,11 @@ def loliplot_2(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                   ].drop_duplicates().values[0].tolist())
 
-    
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Category') & (data.Year == 2019)]  # .fillna(0)
-    
+
     group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
-                                            'Category') & (group_data.Year == 2019)]
+                                                        'Category') & (group_data.Year == 2019)]
 
     df = pd.concat([df, group_df])
 
@@ -348,8 +349,9 @@ def time_series_Index(ISO):
 
     df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
               (data.Aggregation == 'Index')].fillna(0)
-    
-    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (group_data.Aggregation == 'Index')].fillna(0)
+
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (
+        group_data.Aggregation == 'Index')].fillna(0)
 
     df = pd.concat([df, group_df])
 
@@ -413,7 +415,8 @@ layout = html.Div(
                 html.Div(
                     [
                         html.Div([dcc.Dropdown(id="ISO_select",
-                                               options=[{'label': country, 'value': iso} for iso, country in ISO_options],
+                                               options=[{'label': country, 'value': iso}
+                                                        for iso, country in ISO_options],
                                                value='FRA')],
                                  style={'width': '100%',
                                         'display': 'inline-block',
@@ -483,17 +486,10 @@ def update_HTML(ISO):
 
 
 @app.callback(
-    dash.dependencies.Output('Perf_ISO', 'figure'),
+    dash.dependencies.Output('circular_plot', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
-def update_polar(ISO):
-    return loliplot_2(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('Dim_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_loliplot(ISO):
-    return loliplot(ISO)
+def update_circular_plot(ISO):
+    return circular_plot(ISO)
 
 
 @app.callback(
@@ -504,7 +500,14 @@ def update_ts_ind(ISO):
 
 
 @app.callback(
-    dash.dependencies.Output('circular_plot', 'figure'),
+    dash.dependencies.Output('Dim_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
-def update_circular_plot(ISO):
-    return circular_plot(ISO)
+def update_loliplot(ISO):
+    return loliplot(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('Perf_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_polar(ISO):
+    return loliplot_2(ISO)
