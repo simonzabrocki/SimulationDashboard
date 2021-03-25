@@ -11,16 +11,8 @@ import numpy as np
 import pandas as pd
 
 
-
-
 def add_rank_to_data(data):
     '''To improve'''
-
-    data['Continental_Rank'] = data.groupby(["Year", "Continent", "Variable"])[
-        "Value"].rank(method='dense', ascending=False)
-
-    data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])[
-        "Value"].rank(method='dense', ascending=False)
 
     Income_region_group = data.groupby(
         ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
@@ -28,7 +20,6 @@ def add_rank_to_data(data):
         Income_region_group["IncomeLevel"] + \
         '_' + Income_region_group["Region"]
     
-
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
     Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
@@ -44,17 +35,12 @@ def add_rank_to_data(data):
 
     data = pd.concat([data, Income_region_group, Region_group, Income_group])
 
-    indicator_property = pd.read_csv(
-        'data/indicators/indicator_properties.csv', index_col=0)
-    indicator_property['Category'] = indicator_property['Indicator'].apply(
-        lambda x: x[0:2])
-    data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(
-    ), left_on='Variable', right_on='Category', how='left')
-
     return data
+
 
 data = add_rank_to_data(data)
 
+print("country data",data.memory_usage().sum())
 
 def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]

@@ -40,39 +40,10 @@ def add_rank_to_data(data):
     data['Income_Rank'] = data.groupby(["Year", "IncomeLevel", "Variable"])[
         "Value"].rank(method='dense', ascending=False)
 
-    # Income_region_group = data.groupby(
-    #     ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
-    # Income_region_group['ISO'] = 'AVG' + '_' + \
-    #     Income_region_group["IncomeLevel"] + \
-    #     '_' + Income_region_group["Region"]
-    
-
-    # Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
-    #                              'Aggregation']).mean().reset_index()
-    # Income_group['ISO'] = 'AVG' + '_' + Income_group["IncomeLevel"]
-
-    # Income_group['Continental_Rank'] = np.nan
-    # Income_group['Income_Rank'] = np.nan
-
-    # Region_group = data.groupby(['Variable', 'Year', 'Continent',
-    #                              'Aggregation']).mean().reset_index()
-    # Region_group['ISO'] = 'AVG' + '_' + Region_group["Continent"]
-    # Region_group['Continental_Rank'] = np.nan
-    # Region_group['Income_Rank'] = np.nan
-
-    # data = pd.concat([data, Income_region_group, Region_group, Income_group])
-
-    # indicator_property = pd.read_csv(
-    #     'data/indicators/indicator_properties.csv', index_col=0)
-    # indicator_property['Category'] = indicator_property['Indicator'].apply(
-    #     lambda x: x[0:2])
-    # data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(
-    # ), left_on='Variable', right_on='Category', how='left')
-
     return data
 
 data = add_rank_to_data(data)
 
-#to improve using double the amount of mem for nothing
-#data_bis = add_reference_to_data(data)
-
+indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
+indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
+data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')

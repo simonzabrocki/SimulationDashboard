@@ -11,9 +11,6 @@ import numpy as np
 import pandas as pd
 
 
-indicator_properties['Category'] = indicator_properties['Indicator'].apply(lambda x: x[0:2])
-data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')
-
 
 def HTML_text(ISO, className):
     data_plot = data[(data.ISO.isin([ISO]))]

@@ -7,10 +7,6 @@ import pandas as pd
 from utils import Header
 from app import app, data
 
-indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
-indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
-data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')
-
 
 def Index_trend(data):
     df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
@@ -34,7 +30,11 @@ def Index_trend(data):
                       x='Year',
                       y='Value',
                       color='Continent',
-                      hover_data={'Value': False, 'Year': False, 'Continent': False},
+                      hover_data={
+                                'Value': False,
+                                'Year': False,
+                                'Continent': False
+                                },
                       labels={'Value': 'Score', 'Continent': 'Region'},
                       color_discrete_sequence=px.colors.qualitative.Set2,
                       )
