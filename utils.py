@@ -62,9 +62,9 @@ def get_header(app):
                         [html.H5("Green Growth Index")],
                         className="seven columns main-title",
                     ),
-                    html.Div(
+                    html.A(
                         [
-                            dcc.Link(
+                            html.A(
                                 "About the Index",
                                 href="https://greengrowthindex.gggi.org/",
                                 className="full-view-link",
