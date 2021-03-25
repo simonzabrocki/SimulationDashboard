@@ -22,6 +22,7 @@ data = data.replace('America', 'Americas')
 ISO_options = data[['ISO', 'Country']].drop_duplicates().values
 data = format_data(data)
 
+
 indicator_data = pd.read_csv('data/indicators/data.csv')
 
 indicator_properties = pd.read_csv('data/indicators/indicator_properties.csv',index_col=0)
@@ -70,5 +71,6 @@ def add_reference_to_data(data):
 
     return data
 
-# to improve using double the amount of mem for nothing
-data_bis = add_reference_to_data(data)
+#to improve using double the amount of mem for nothing
+#data_bis = add_reference_to_data(data)
+

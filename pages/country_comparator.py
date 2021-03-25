@@ -299,16 +299,11 @@ layout = html.Div(
 
 @app.callback(
     dash.dependencies.Output('circular_plot_A', 'figure'),
-    [dash.dependencies.Input('ISO_select_A', 'value')])
-def update_circular_plot_A(ISO):
-    return circular_plot(ISO)
-
-
-@app.callback(
     dash.dependencies.Output('circular_plot_B', 'figure'),
-    [dash.dependencies.Input('ISO_select_B', 'value')])
-def update_circular_plot_B(ISO):
-    return circular_plot(ISO)
+    [dash.dependencies.Input('ISO_select_A', 'value'),
+     dash.dependencies.Input('ISO_select_B', 'value')])
+def update_circular_plots(ISO_A, ISO_B):
+    return circular_plot(ISO_A), circular_plot(ISO_B)
 
 
 @app.callback(
