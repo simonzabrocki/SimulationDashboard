@@ -44,6 +44,6 @@ def add_rank_to_data(data):
 
 data = add_rank_to_data(data)
 
-indicator_property = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
-indicator_property['Category'] = indicator_property['Indicator'].apply(lambda x: x[0:2])
-data = pd.merge(data, indicator_property[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')
+indicator_properties = pd.read_csv('data/indicators/indicator_properties.csv', index_col=0)
+indicator_properties['Category'] = indicator_properties['Indicator'].apply(lambda x: x[0:2])
+data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(), left_on='Variable', right_on='Category', how='left')

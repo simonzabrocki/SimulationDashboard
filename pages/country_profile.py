@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 
-def add_rank_to_data(data):
+def compute_group(data):
     '''To improve'''
 
     Income_region_group = data.groupby(
@@ -33,14 +33,11 @@ def add_rank_to_data(data):
     Region_group['Continental_Rank'] = np.nan
     Region_group['Income_Rank'] = np.nan
 
-    data = pd.concat([data, Income_region_group, Region_group, Income_group])
+    data = pd.concat([Income_region_group, Region_group, Income_group])
 
     return data
 
-
-data = add_rank_to_data(data)
-
-print("country data",data.memory_usage().sum())
+group_data = compute_group(data)
 
 def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
@@ -149,8 +146,13 @@ def polar(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][['Continent']
                                                   ].drop_duplicates().values[0].tolist())
 
+    group_df = group_data[group_data.ISO.isin([ISO]) & (data.Aggregation ==
+                                             'Category') & (data.Year == 2019)]
+
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Category') & (data.Year == 2019)]  # .fillna(0)
+
+    df = pd.concat([df, group_df])
     continent = df.Continent.values[0]
 
     df = df.round(2)
@@ -206,8 +208,15 @@ def polar(ISO):
 def loliplot(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                   ].drop_duplicates().values[0].tolist())
+        
+    group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
+                                             'Dimension') & (group_data.Year == 2019)]
+
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Dimension') & (data.Year == 2019)]  # .fillna(0)
+
+    df = pd.concat([df, group_df])
+
     df = df.round(2)
     continent = df.Continent.values[0]
 
@@ -271,8 +280,16 @@ def loliplot(ISO):
 def loliplot_2(ISO):
     REF = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                   ].drop_duplicates().values[0].tolist())
+
+    
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
                                              'Category') & (data.Year == 2019)]  # .fillna(0)
+    
+    group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
+                                            'Category') & (group_data.Year == 2019)]
+
+    df = pd.concat([df, group_df])
+
     df = df.round(2)
     continent = df.Continent.values[0]
 
@@ -331,6 +348,11 @@ def time_series_Index(ISO):
 
     df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
               (data.Aggregation == 'Index')].fillna(0)
+    
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (group_data.Aggregation == 'Index')].fillna(0)
+
+    df = pd.concat([df, group_df])
+
     df = df.round(2)
     continent = df.Continent.values[0]
 
