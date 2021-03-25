@@ -5,11 +5,11 @@ from dash.dependencies import Input, Output
 from app import app
 from pages import (
     global_overview,
-    #     country_profile,
-    #     regional_outlook,
+    country_profile,
+    regional_outlook,
     data_viz,
-    #     model_overview,
-    #     country_comparator,
+    model_overview,
+    country_comparator,
     simulation
 )
 
@@ -27,12 +27,12 @@ server = app.server
 def display_page(pathname):
     if pathname == "/SimulationDashBoard/regional-outlouk":
         return regional_outlook.layout
-    # elif pathname == "/SimulationDashBoard/country-profile":
-    #     return country_profile.layout
-    # elif pathname == "/SimulationDashBoard/country-comparator":
-    #     return country_comparator.layout
-    # elif pathname == "/SimulationDashBoard/models":
-    #     return model_overview.layout
+    elif pathname == "/SimulationDashBoard/country-profile":
+        return country_profile.layout
+    elif pathname == "/SimulationDashBoard/country-comparator":
+        return country_comparator.layout
+    elif pathname == "/SimulationDashBoard/models":
+        return model_overview.layout
     elif pathname == "/SimulationDashBoard/simulation":
         return simulation.layout
     elif pathname == "/SimulationDashBoard/data":
