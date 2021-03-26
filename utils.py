@@ -59,7 +59,7 @@ def get_header(app):
             html.Div(
                 [
                     html.Div(
-                        [html.H5("Green Growth Index")],
+                        [html.H5("Index and Simulation")],
                         className="seven columns main-title",
                     ),
                     html.A(
@@ -121,29 +121,3 @@ def get_menu():
         className="row all-tabs",
     )
     return menu
-
-# def get_menu():
-#     menu = html.Div(
-#         [
-#             dbc.Nav(
-#                 [
-#                     dbc.DropdownMenu(
-#                         [dbc.DropdownMenuItem("Global Overview", href="/SimulationDashBoard/global-overview"),
-#                          dbc.DropdownMenuItem("Regional Outlook", href="/SimulationDashBoard/regional-outlouk"),
-#                          dbc.DropdownMenuItem("Country Profile", href="/SimulationDashBoard/country-comparator"),
-#                          dbc.DropdownMenuItem("Country Comparator", href="/SimulationDashBoard/country-profile"),
-#                          dbc.DropdownMenuItem("Data", href="/SimulationDashBoard/data"), ],
-#                         label="Green Growth Index",
-#                         nav=True,
-#                     ),
-#                     dbc.DropdownMenu(
-#                         [dbc.DropdownMenuItem("Model Overview", href="/SimulationDashBoard/models")],
-#                         label="Simulation Tool",
-#                         nav=True,
-#                     ),
-#                 ]
-#             ),
-#         ],
-#         className="row all-tabs",
-#     )
-#     return menu

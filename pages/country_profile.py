@@ -197,6 +197,13 @@ def polar(ISO):
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=True)
 
+    # fig.update_layout(legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     y=1.02,
+    #     xanchor="right",
+    #     x=1
+    # ))
     fig.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
@@ -234,16 +241,18 @@ def loliplot(ISO):
                          "GEO": "#9dcc93",
     },
         hover_name='Variable_name',
-        hover_data={'ISO': False,
-                    'Variable': False,
-                    'Continental_Rank': True,
-                    'Income_Rank': False},
-
-        labels={"Value": 'Score',
-                'Variable': '',
-                'ISO': '',
-                'Continental_Rank': f'Rank in {continent}',
-                }
+        hover_data={
+        'ISO': False,
+        'Variable': False,
+        'Continental_Rank': True,
+        'Income_Rank': False
+    },
+        labels={
+        "Value": 'Score',
+        'Variable': '',
+        'ISO': '',
+        'Continental_Rank': f'Rank in {continent}',
+    }
 
     )
 
@@ -252,29 +261,32 @@ def loliplot(ISO):
                              name=REF,
                              mode='markers',
                              marker=dict(color='darkgrey', size=1),
-                             hoverinfo='skip'))
+                             hoverinfo='skip')
+                  )
 
     fig.update_traces(marker=dict(size=20, opacity=0.8))
     fig.update_yaxes(showgrid=False, range=[0, 100], tickvals=[20, 40, 60, 80])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
-
                       showlegend=True)
 
     fig.update_layout(legend=dict(
         orientation="h",
-        yanchor="top",
-        y=-0.05,
+        yanchor="bottom",
+        y=1.02,
         xanchor="right",
-        x=1, title='',
+        x=1
     ))
 
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="top",
-        y=-0.05,
-        xanchor="right",
-        x=1, title='',
-    ))
+    # there must be a better way
+    conversion = {
+        "ESRU": 'Efficient and Sustainable Resource Use',
+        "GEO": 'Green Economic Opportunities',
+        "NCP": 'Natural Capital Protection',
+        'SI': "Social Inclusion",
+        REF: REF,
+    }
+
+    fig.for_each_trace(lambda t: t.update(name=conversion[t.name]))
 
     return fig
 
@@ -312,7 +324,7 @@ def loliplot_2(ISO):
                     'Income_Rank': False},
 
         labels={"Value": 'Score',
-                         'Variable': '',
+                'Variable': '',
                 'ISO': '',
                 'Continental_Rank': f'Rank in {continent}',
                 },
@@ -331,12 +343,13 @@ def loliplot_2(ISO):
     fig.update_yaxes(showgrid=False, range=[0, 100], tickvals=[20, 40, 60, 80])
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=True)
+
     fig.update_layout(legend=dict(
         orientation="h",
-        yanchor="top",
-        y=-0.05,
+        yanchor="bottom",
+        y=1.02,
         xanchor="right",
-        x=1, title='',
+        x=1
     ))
     return fig
 
