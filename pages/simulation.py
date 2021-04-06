@@ -8,7 +8,6 @@ from utils import Header
 import plotly.express as px
 from GM.demo_script import run_EW_scenario, data_dict_expanded
 from dash.exceptions import PreventUpdate
-
 import time
 
 
@@ -18,8 +17,8 @@ scenario_properties = {
     'BAU': {'name': 'Business as Usual'},
 }
 
-def scenario_box(scenario_id='_one'):
-    
+
+def water_scenario_box(scenario_id='_one'):
     Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
 
     layout = html.Div(
@@ -60,7 +59,89 @@ def scenario_box(scenario_id='_one'):
                 },
                 included=False,
             ),
+        ],
+        className='row')
 
+    return layout
+
+
+def BE2_scenario_box(scenario_id='_one'):
+
+    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
+
+    layout = html.Div(
+
+        [
+            html.H5(Scenario_name),
+            html.Br([]),
+            html.P('Food losses 2050 target', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'FLOi-slider{scenario_id}',
+                step=None,
+                value=0,
+                min=-50,  # To update later
+                max=50,
+                marks={
+                    -50: {'label': '-50%', 'style': {'color': 'white'}},
+                    -25: {'label': '-25%', 'style': {'color': 'white'}},
+                    0: {'label': '+0%', 'style': {'color': 'white'}},
+                    25: {'label': '+25%', 'style': {'color': 'white'}},
+                    50: {'label': '+50%', 'style': {'color': 'white'}},
+
+                },
+                included=False,
+            ),
+            html.Br([]),
+            html.P('Food demand 2050 target',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'FDKGi-slider{scenario_id}',
+                step=None,
+                value=0,
+                min=-50,  # To update later
+                max=50,
+                marks={
+                    -50: {'label': '-50%', 'style': {'color': 'white'}},
+                    -25: {'label': '-25%', 'style': {'color': 'white'}},
+                    0: {'label': '+0%', 'style': {'color': 'white'}},
+                    25: {'label': '+25%', 'style': {'color': 'white'}},
+                    50: {'label': '+50%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+            html.P('Crop yields 2050 targets',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'CYi-slider{scenario_id}',
+                step=None,
+                value=0,
+                min=-10,
+                max=10,
+                marks={
+                    -10: {'label': '-10%', 'style': {'color': 'white'}},
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    10: {'label': '+10%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+            html.P('Reforestation annual rate',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'R_rate-slider{scenario_id}',
+                step=None,
+                value=0,
+                min=0,  # To update with proper values later
+                max=1,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    0.25: {'label': '25%', 'style': {'color': 'white'}},
+                    0.5: {'label': '50%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
         ],
         className='row')
 
@@ -77,9 +158,11 @@ def model_selection_box():
             html.Br([]),
             dcc.Dropdown(id="dropdown-simulation-model",
                          options=[
-                             {'label': 'Water Model',
-                             'value': 'EW_models'}],
-                         value='EW_models')
+                            {'label': 'Efficient Water Model', 'value': 'EW_models'},
+                            {'label': 'Land Use Model', 'value': 'BE2_model'}
+                         ],
+                         value='EW_models'
+                         )
 
         ])
     return layout
@@ -93,18 +176,14 @@ def scenario_building_box():
                 className="subtitle padded",
             ),
             html.Br([]),
-            html.Div(
-                [
-                    scenario_box(scenario_id='_one'),
-                ],
-                className='product_A'
-            ),
-            html.Div(
-                [
-                    scenario_box(scenario_id='_two'),
-                ],
-                className='product_B'
-            ),
+            html.Div([],
+                     id="scenario_box_1",
+                     className='product_A'
+                     ),
+            html.Div([],
+                     id="scenario_box_2",
+                     className='product_B'
+                     ),
             html.H5(
                 "Choose a Country",
                 className="subtitle padded",
@@ -120,7 +199,7 @@ def scenario_building_box():
                             'justify-content': 'center',
                             'font-size': '20px'}
                      ),
-            html.Br([]),       
+            html.Br([]),
             html.Br([]),
             html.Br([]),
             html.Div(
@@ -138,7 +217,6 @@ def scenario_building_box():
                         color='#14ac9c',
                         type="dot",
                     ),
-
                 ],
                 className='row'
             ),
@@ -197,40 +275,74 @@ layout = html.Div(
 )
 
 
+scenario_box_dictionnary = {
+    'EW_models': water_scenario_box,
+    'BE2_model': BE2_scenario_box,
+}
+
+
+@app.callback(
+    Output('scenario_box_1', 'children'),
+    Output('scenario_box_2', 'children'),
+    [
+        Input('dropdown-simulation-model', 'value'),
+    ]
+)
+def update_scenario_box(model_name):
+    scenario_box_function = scenario_box_dictionnary[model_name]
+    return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
+
+
+component_variable_dictionnary = {
+    'WP-slider': 'WP_rate',
+    'WRR-slider': 'WRR_rate',
+    'FDKGi-slider': 'FDKGi_target',
+    'FLOi-slider': 'FLOi_target',
+    'CYi-slider': 'CYi_target',
+    'R_rate-slider': 'R_rate'
+}
+
+
+def get_args_dict_from_scenario_box(box):
+    ided_components = [el for el in box['props']
+                       ['children'] if 'id' in el['props']]
+    arg_dict = {el['props']['id'].rstrip('_one').rstrip('_two'): el['props']['value'] for el in ided_components}
+
+    arg_dict = {component_variable_dictionnary[k]: v for k, v in arg_dict.items()}
+
+    return arg_dict
+
+
+
 @app.callback(
     Output("results-graph-1", "figure"),
     Output("results-graph-2", "figure"),
     Output('context-graph-1', 'figure'),
     Output("loading-output", "children"),
     [
-        Input("WRR-slider_one", "value"),
-        Input("WP-slider_one", "value"),
-        Input("WRR-slider_two", "value"),
-        Input("WP-slider_two", "value"),
+        Input('scenario_box_1', 'children'),
+        Input('scenario_box_2', 'children'),
         Input('ISO_run_results', 'value'),
         Input("btn-run", "n_clicks"),
-    ],
+    ]
 )
-def run_scenario(WRR_1, WP_1, WRR_2, WP_2, ISO, n_clicks):
+def run_scenario(box_1, box_2, ISO, n_clicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
 
-        try:
+        args_dict_1 = get_args_dict_from_scenario_box(box_1)
+        args_dict_2 = get_args_dict_from_scenario_box(box_2)
+
+        try: # To generalize
             scenarios_results = {}
 
-            data_dict = {key: value.loc[[ISO]]
-                        for key, value in data_dict_expanded.items()}
-
+            data_dict = {key: value.loc[[ISO]] for key, value in data_dict_expanded.items()}
 
             scenarios_results['BAU'] = run_EW_scenario(data_dict)
 
-            scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict,
-                                                                WP_rate=WP_1, WRR_rate=WRR_1)
+            scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_1)
 
-            scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict,
-                                                                WP_rate=WP_2, WRR_rate=WRR_2)
-
-
+            scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_2)
 
             df_1 = format_var_results(scenarios_results, 'EW1')
             df_2 = format_var_results(scenarios_results, 'EW2')
@@ -239,22 +351,74 @@ def run_scenario(WRR_1, WP_1, WRR_2, WP_2, ISO, n_clicks):
             fig_1 = scenario_line_plot('EW1', df_1, ISO)
             fig_2 = scenario_line_plot('EW2', df_2, ISO)
             fig_3 = scenario_line_plot('GDPC', df_3, ISO)
-        
+
         except Exception as e:
             return {}, {}, {}, None
-
+       
         return fig_1, fig_2, fig_3, None
+   
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
 
+# @app.callback(
+#     Output("results-graph-1", "figure"),
+#     Output("results-graph-2", "figure"),
+#     Output('context-graph-1', 'figure'),
+#     Output("loading-output", "children"),
+#     [
+#         Input("WRR-slider_one", "value"),
+#         Input("WP-slider_one", "value"),
+#         Input("WRR-slider_two", "value"),
+#         Input("WP-slider_two", "value"),
+#         Input('ISO_run_results', 'value'),
+#         Input("btn-run", "n_clicks"),
+#     ],
+# )
+# def run_water_scenario(WRR_1, WP_1, WRR_2, WP_2, ISO, n_clicks):
+#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+#     if 'btn-run' in changed_id:
+
+#         try:
+#             scenarios_results = {}
+
+#             data_dict = {key: value.loc[[ISO]]
+#                         for key, value in data_dict_expanded.items()}
+
+#             scenarios_results['BAU'] = run_EW_scenario(data_dict)
+
+#             scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict,
+#                                                                 WP_rate=WP_1, WRR_rate=WRR_1)
+
+#             scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict,
+#                                                                 WP_rate=WP_2, WRR_rate=WRR_2)
+
+
+#             df_1 = format_var_results(scenarios_results, 'EW1')
+#             df_2 = format_var_results(scenarios_results, 'EW2')
+#             df_3 = format_var_results(scenarios_results, 'GDPC')
+
+#             fig_1 = scenario_line_plot('EW1', df_1, ISO)
+#             fig_2 = scenario_line_plot('EW2', df_2, ISO)
+#             fig_3 = scenario_line_plot('GDPC', df_3, ISO)
+
+#         except Exception as e:
+#             return {}, {}, {}, None
+
+#         return fig_1, fig_2, fig_3, None
+
+#     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+#         raise PreventUpdate
+
 
 def format_var_results(scenarios_results, var):
     df = pd.concat([
-        scenarios_results['scenario_one'][var].reset_index().assign(scenario='Scenario 1'),
-        scenarios_results['scenario_two'][var].reset_index().assign(scenario='Scenario 2'),
+        scenarios_results['scenario_one'][var].reset_index().assign(
+            scenario='Scenario 1'),
+        scenarios_results['scenario_two'][var].reset_index().assign(
+            scenario='Scenario 2'),
         scenarios_results['BAU'][var].reset_index().assign(scenario='BAU'),
-        ], axis=0).rename(columns={0: var})
+    ], axis=0).rename(columns={0: var})
 
     return df
 
