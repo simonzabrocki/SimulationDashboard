@@ -26,7 +26,8 @@ server = app.server
 @app.callback(Output("page-content", "children"),
               [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/SimulationDashBoard/regional-outlouk":
+    if pathname == "/SimulationDashBoard/regional-outlouk." \
+                   ".k":
         return regional_outlook.layout
     elif pathname == "/SimulationDashBoard/country-profile":
         return country_profile.layout
