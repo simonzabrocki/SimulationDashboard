@@ -17,8 +17,8 @@ body {
   padding: 0mm;
   margin: 0mm auto;
   border-radius: 0px;
-  background: white;
-  box-shadow: 0 0 10px lightgrey;
+  background-image: url(/assets/GGGIsimulationbg.jpeg);
+ /* box-shadow: 0 0 10px lightgrey;*/
 }
 
 .pagetwo {
@@ -249,7 +249,7 @@ a:active {
 
 .tab {
   border-style: solid;
-  border-color: rgb(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
   border-bottom-style: none;
   border-top-style: none;
   border-right-style: none;
