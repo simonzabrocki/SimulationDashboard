@@ -19,6 +19,9 @@ body {
   border-radius: 0px;
   background-image: url(/assets/GGGIsimulationbg.jpeg);
  /* box-shadow: 0 0 10px lightgrey;*/
+    background-position:center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .pagetwo {
@@ -129,6 +132,7 @@ h6 {
 }
 h5 {
   font-size: 2.6rem;
+
 }
 h6 {
   font-size: 1.425rem;
@@ -186,9 +190,10 @@ li {
   transition-duration: 1s;
 }
 .all-tabs {
-  text-align: center;
+  text-align: left;
   font-size: 13px;
   margin-top: 10px;
+
 }
 .main-title {
   position: relative;
@@ -221,7 +226,7 @@ li {
 }
 
 a:link {
-  color: #696969;
+  color: white;
   text-decoration: none;
 }
 
@@ -267,6 +272,7 @@ a:active {
   width: 97%;
 }
 
+/*noinspection ALL*/
 .tablast {
   border-style: solid;
   border-color: rgb(0, 0, 0, 0.2);
@@ -285,6 +291,7 @@ a:active {
   padding-right: 15px;
   text-transform: none;
   margin: 25px 25px;
+  background: white;
 }
 
 /* for screens smaller than 768px */
