@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 from utils import Header
 import plotly.express as px
 from GM.demo_script import run_EW_scenario, data_dict_expanded
+import GM.demo_script_Hermen
 from dash.exceptions import PreventUpdate
 import time
 
@@ -79,14 +80,14 @@ def BE2_scenario_box(scenario_id='_one'):
                 id=f'FLOi-slider{scenario_id}',
                 step=None,
                 value=0,
-                min=-50,  # To update later
-                max=50,
+                min=0.5,  # To update later
+                max=1.5,
                 marks={
-                    -50: {'label': '-50%', 'style': {'color': 'white'}},
-                    -25: {'label': '-25%', 'style': {'color': 'white'}},
-                    0: {'label': '+0%', 'style': {'color': 'white'}},
-                    25: {'label': '+25%', 'style': {'color': 'white'}},
-                    50: {'label': '+50%', 'style': {'color': 'white'}},
+                    0.5: {'label': '-50%', 'style': {'color': 'white'}},
+                    0.75: {'label': '-25%', 'style': {'color': 'white'}},
+                    1: {'label': '+0%', 'style': {'color': 'white'}},
+                    1.25: {'label': '+25%', 'style': {'color': 'white'}},
+                    1.5: {'label': '+50%', 'style': {'color': 'white'}},
 
                 },
                 included=False,
@@ -98,14 +99,15 @@ def BE2_scenario_box(scenario_id='_one'):
                 id=f'FDKGi-slider{scenario_id}',
                 step=None,
                 value=0,
-                min=-50,  # To update later
-                max=50,
+                min=0.5,  # To update later
+                max=1.5,
                 marks={
-                    -50: {'label': '-50%', 'style': {'color': 'white'}},
-                    -25: {'label': '-25%', 'style': {'color': 'white'}},
-                    0: {'label': '+0%', 'style': {'color': 'white'}},
-                    25: {'label': '+25%', 'style': {'color': 'white'}},
-                    50: {'label': '+50%', 'style': {'color': 'white'}},
+                    0.5: {'label': '-50%', 'style': {'color': 'white'}},
+                    0.75: {'label': '-25%', 'style': {'color': 'white'}},
+                    1: {'label': '+0%', 'style': {'color': 'white'}},
+                    1.25: {'label': '+25%', 'style': {'color': 'white'}},
+                    1.5: {'label': '+50%', 'style': {'color': 'white'}},
+
                 },
                 included=False,
             ),
@@ -116,12 +118,12 @@ def BE2_scenario_box(scenario_id='_one'):
                 id=f'CYi-slider{scenario_id}',
                 step=None,
                 value=0,
-                min=-10,
-                max=10,
+                min=0.9,
+                max=1.1,
                 marks={
-                    -10: {'label': '-10%', 'style': {'color': 'white'}},
-                    0: {'label': '0%', 'style': {'color': 'white'}},
-                    10: {'label': '+10%', 'style': {'color': 'white'}},
+                    0.9: {'label': '-10%', 'style': {'color': 'white'}},
+                    1: {'label': '0%', 'style': {'color': 'white'}},
+                    1.1: {'label': '+10%', 'style': {'color': 'white'}},
                 },
                 included=False,
             ),
@@ -323,36 +325,58 @@ def get_args_dict_from_scenario_box(box):
         Input('scenario_box_1', 'children'),
         Input('scenario_box_2', 'children'),
         Input('ISO_run_results', 'value'),
+        Input('dropdown-simulation-model', 'value'),
         Input("btn-run", "n_clicks"),
     ]
 )
-def run_scenario(box_1, box_2, ISO, n_clicks):
+def run_scenario(box_1, box_2, ISO, model, n_clicks):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
 
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
 
-        try: # To generalize
-            scenarios_results = {}
+        try:  # To generalize
+            if model == 'EW_models':
+                scenarios_results = {}
 
-            data_dict = {key: value.loc[[ISO]] for key, value in data_dict_expanded.items()}
+                data_dict = {key: value.loc[[ISO]] for key, value in data_dict_expanded.items()}
 
-            scenarios_results['BAU'] = run_EW_scenario(data_dict)
+                scenarios_results['BAU'] = run_EW_scenario(data_dict)
 
-            scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_1)
+                scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_1)
 
-            scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_2)
+                scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_2)
 
-            df_1 = format_var_results(scenarios_results, 'EW1')
-            df_2 = format_var_results(scenarios_results, 'EW2')
-            df_3 = format_var_results(scenarios_results, 'GDPC')
+                df_1 = format_var_results(scenarios_results, 'EW1')
+                df_2 = format_var_results(scenarios_results, 'EW2')
+                df_3 = format_var_results(scenarios_results, 'GDPC')
 
-            fig_1 = scenario_line_plot('EW1', df_1, ISO)
-            fig_2 = scenario_line_plot('EW2', df_2, ISO)
-            fig_3 = scenario_line_plot('GDPC', df_3, ISO)
+                fig_1 = scenario_line_plot('EW1', df_1, ISO)
+                fig_2 = scenario_line_plot('EW2', df_2, ISO)
+                fig_3 = scenario_line_plot('GDPC', df_3, ISO)
 
+            if model == 'BE2_model':
+
+                scenarios_results = {}
+
+                data_dict = {k: v.loc[ISO, 2000:] for k, v in GM.demo_script_Hermen.data_dict.items()}
+                
+                data_dict = GM.demo_script_Hermen.run_BE2_projection(data_dict)
+                
+                scenarios_results['BAU'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict)
+                scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_1)
+                scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_2)
+
+                df_1 = format_var_results(scenarios_results, 'BE2')
+
+                fig_1 = scenario_line_plot('BE2', df_1, ISO)
+                fig_2 = fig_1
+                fig_3 = fig_1
+
+        
         except Exception as e:
+            print(e)
             return {}, {}, {}, None
        
         return fig_1, fig_2, fig_3, None
@@ -360,55 +384,6 @@ def run_scenario(box_1, box_2, ISO, n_clicks):
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
-
-# @app.callback(
-#     Output("results-graph-1", "figure"),
-#     Output("results-graph-2", "figure"),
-#     Output('context-graph-1', 'figure'),
-#     Output("loading-output", "children"),
-#     [
-#         Input("WRR-slider_one", "value"),
-#         Input("WP-slider_one", "value"),
-#         Input("WRR-slider_two", "value"),
-#         Input("WP-slider_two", "value"),
-#         Input('ISO_run_results', 'value'),
-#         Input("btn-run", "n_clicks"),
-#     ],
-# )
-# def run_water_scenario(WRR_1, WP_1, WRR_2, WP_2, ISO, n_clicks):
-#     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-#     if 'btn-run' in changed_id:
-
-#         try:
-#             scenarios_results = {}
-
-#             data_dict = {key: value.loc[[ISO]]
-#                         for key, value in data_dict_expanded.items()}
-
-#             scenarios_results['BAU'] = run_EW_scenario(data_dict)
-
-#             scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict,
-#                                                                 WP_rate=WP_1, WRR_rate=WRR_1)
-
-#             scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict,
-#                                                                 WP_rate=WP_2, WRR_rate=WRR_2)
-
-
-#             df_1 = format_var_results(scenarios_results, 'EW1')
-#             df_2 = format_var_results(scenarios_results, 'EW2')
-#             df_3 = format_var_results(scenarios_results, 'GDPC')
-
-#             fig_1 = scenario_line_plot('EW1', df_1, ISO)
-#             fig_2 = scenario_line_plot('EW2', df_2, ISO)
-#             fig_3 = scenario_line_plot('GDPC', df_3, ISO)
-
-#         except Exception as e:
-#             return {}, {}, {}, None
-
-#         return fig_1, fig_2, fig_3, None
-
-#     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
-#         raise PreventUpdate
 
 
 def format_var_results(scenarios_results, var):
