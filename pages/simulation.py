@@ -118,11 +118,11 @@ def BE2_scenario_box(scenario_id='_one'):
                 id=f'CYi-slider{scenario_id}',
                 step=None,
                 value=0,
-                min=0.9,
+                min=1,
                 max=1.1,
                 marks={
-                    0.9: {'label': '-10%', 'style': {'color': 'white'}},
-                    1: {'label': '0%', 'style': {'color': 'white'}},
+                    1: {'label': '+0%', 'style': {'color': 'white'}},
+                    1.05: {'label': '+5%', 'style': {'color': 'white'}},
                     1.1: {'label': '+10%', 'style': {'color': 'white'}},
                 },
                 included=False,
@@ -135,12 +135,12 @@ def BE2_scenario_box(scenario_id='_one'):
                 step=None,
                 value=0,
                 min=0,  # To update with proper values later
-                max=1,
+                max=100,
                 marks={
                     0: {'label': '0%', 'style': {'color': 'white'}},
-                    0.25: {'label': '25%', 'style': {'color': 'white'}},
-                    0.5: {'label': '50%', 'style': {'color': 'white'}},
-                    1: {'label': '100%', 'style': {'color': 'white'}},
+                    25: {'label': '25%', 'style': {'color': 'white'}},
+                    50: {'label': '50%', 'style': {'color': 'white'}},
+                    100: {'label': '100%', 'style': {'color': 'white'}},
                 },
                 included=False,
             ),
@@ -360,8 +360,11 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
 
                 scenarios_results = {}
 
-                data_dict = {k: v.loc[ISO, 2000:] for k, v in GM.demo_script_Hermen.data_dict.items()}
+                data_dict = {k: v.loc[ISO, 2000:] for k, v in GM.demo_script_Hermen.data_dict.items() if k not in ['CL_corr_intercept', 'CL_corr_coef']}
                 
+                data_dict['CL_corr_intercept'] = GM.demo_script_Hermen.data_dict['CL_corr_intercept'].loc[ISO]
+                data_dict['CL_corr_coef'] = GM.demo_script_Hermen.data_dict['CL_corr_coef']
+
                 data_dict = GM.demo_script_Hermen.run_BE2_projection(data_dict)
                 
                 scenarios_results['BAU'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict)

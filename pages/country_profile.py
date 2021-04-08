@@ -197,13 +197,6 @@ def polar(ISO):
     fig.update_layout(margin={"r": 20, "t": 20, "l": 20, "b": 20},
                       showlegend=True)
 
-    # fig.update_layout(legend=dict(
-    #     orientation="h",
-    #     yanchor="bottom",
-    #     y=1.02,
-    #     xanchor="right",
-    #     x=1
-    # ))
     fig.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
