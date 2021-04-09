@@ -171,8 +171,17 @@ li {
   padding: 30px;
   margin-bottom: 25px;
   border-radius: 1px;
-  background: #14ac9c;
+
   color: #ffffff;
+}
+
+.pretty_container .product p{
+  color: black;
+  font-size: 13px;
+}
+
+.product h5{
+  color: black;
 }
 
 .product_A {

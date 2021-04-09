@@ -114,10 +114,10 @@ layout = html.Div(
                                 html.H5("Highlights"),
                                 html.Br([]),
                                 html.P("Green Growth Index measures country performance in achieving sustainability targets including Sustainable Development Goals, Paris Climate Agreement, and Aichi Biodiversity Targets for four green growth dimensions: efficient and sustainable resource use, natural capital protection, green economic opportunities and social inclusion.",
-                                       style={"color": "#ffffff", 'font-size': '13px'},),
+                                       ),
                                 html.Br([]),
                                 html.P("In 2019, there are 117 countries with scores for the Green Growth Index, with 24 countries in Africa, 20 countries in the Americas, 33 countries in Asia, 38 countries in Europe, and only two in Oceania. The scores of almost half of the countries are in the middle range, between 40 and 60, covering about 77 million m2 of the global land area. There are 32 countries that reached a high score between 60 and 80, many of them are in Europe. Those 30 countries with low scores, between 20 and 40, are mainly from Africa and Asia. While there are no countries with very low scores of below 20, none has also received a very high score of over 80 in 2019. Sweden, located in Northern Europe, has the highest Green Growth Index with a score of 78.72, which is still further away from reaching the sustainability target of 100.",
-                                       style={"color": "#ffffff", 'font-size': '13px'}),
+                                       ),
                             ],
                             className="product",
                         )
