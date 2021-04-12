@@ -8,9 +8,10 @@ from utils import Header
 import plotly.express as px
 from GM.demo_script import run_EW_scenario, data_dict_expanded
 import GM.demo_script_Hermen
+from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 from dash.exceptions import PreventUpdate
 import time
-
+import plotly.graph_objects as go
 
 scenario_properties = {
     'Scenario_one': {"name": 'Scenario 1'},
@@ -117,7 +118,7 @@ def BE2_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'CYi-slider{scenario_id}',
                 step=None,
-                value=0,
+                value=1,
                 min=1,
                 max=1.1,
                 marks={
@@ -150,6 +151,51 @@ def BE2_scenario_box(scenario_id='_one'):
     return layout
 
 
+def GE3_scenario_box(scenario_id='_one'):
+
+    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
+
+    step = 0.1
+    layout = html.Div(
+
+        [
+            html.H5(Scenario_name),
+            html.Br([]),
+            html.P('% Manure treated', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'MM_Ti-slider{scenario_id}',
+                step=step,
+                value=1/3,
+                min=0,  # To update later
+                max=1,
+                included=False,
+            ),
+            html.Br([]),
+            html.P('% Manure applied to soils', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'MM_ASi-slider{scenario_id}',
+                step=step,
+                value=1/3,
+                min=0,  # To update later
+                max=1,
+                included=False,
+            ),
+            html.Br([]),
+            html.P('% Manure left on pasture', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'MM_LPi-slider{scenario_id}',
+                step=step,
+                value=1/3,
+                min=0,  # To update later
+                max=1,
+                included=False,
+            ),
+        ],
+        className='row')
+
+    return layout
+
+
 def model_selection_box():
     layout = html.Div(
         [
@@ -161,7 +207,8 @@ def model_selection_box():
             dcc.Dropdown(id="dropdown-simulation-model",
                          options=[
                             {'label': 'Efficient Water Model', 'value': 'EW_models'},
-                            {'label': 'Land Use Model', 'value': 'BE2_model'}
+                            {'label': 'Land Use Model', 'value': 'BE2_model'},
+                            {'label': 'Agricultural Emissions Model', 'value': 'GE3_model'},
                          ],
                          value='EW_models'
                          )
@@ -280,6 +327,7 @@ layout = html.Div(
 scenario_box_dictionnary = {
     'EW_models': water_scenario_box,
     'BE2_model': BE2_scenario_box,
+    'GE3_model': GE3_scenario_box,
 }
 
 
@@ -301,7 +349,10 @@ component_variable_dictionnary = {
     'FDKGi-slider': 'FDKGi_target',
     'FLOi-slider': 'FLOi_target',
     'CYi-slider': 'CYi_target',
-    'R_rate-slider': 'R_rate'
+    'R_rate-slider': 'R_rate',
+    'MM_Ti-slider': 'MM_Ti',
+    'MM_ASi-slider': 'MM_ASi',
+    'MM_LPi-slider': 'MM_LPi'
 }
 
 
@@ -330,6 +381,7 @@ def get_args_dict_from_scenario_box(box):
     ]
 )
 def run_scenario(box_1, box_2, ISO, model, n_clicks):
+    '''To clean up'''
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-run' in changed_id:
 
@@ -376,8 +428,23 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
                 fig_1 = scenario_line_plot('BE2', df_1, ISO)
                 fig_2 = fig_1
                 fig_3 = fig_1
+            
+            if model == 'GE3_model':
+                scenarios_results = {}
+                data_dict = {k: v.loc[ISO, 2018, :] for k, v in GM.demo_script_Hermen.GE3_data_dict.items()}
+                
+                scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_1)
+                scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_2)
 
-        
+                #d_1 , c_1 = format_data_dict_sankey(scenarios_results['scenario_one'])
+                d_1 , c_1 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+                d_2 , c_2 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+                
+
+                fig_1 = plot_sanky_GE3(d_1, c_1)
+                fig_2 = plot_sanky_GE3(d_2, c_2)
+                fig_3 = {}
+
         except Exception as e:
             print(e)
             return {}, {}, {}, None
