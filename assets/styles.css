@@ -12,15 +12,14 @@ body {
   -moz-box-sizing: border-box;
 }
 .page {
-  position: relative;
   min-height: 300mm;
-  padding: 0mm;
-  margin: 0mm auto;
+  padding: 0;
+  margin: 0  auto;
   border-radius: 0px;
-  background-image: url(/assets/GGGIsimulationbg.jpeg);
+  background-image:url("./backgroundg.png");
  /* box-shadow: 0 0 10px lightgrey;*/
-    background-position:center;
-    background-size: cover;
+    background-position:left bottom ;
+    background-size: 70% 95%;
     background-repeat: no-repeat;
 }
 
@@ -250,14 +249,21 @@ li {
   margin: 30px 0 0 30px ;
 }
 
-a:link {
-  color: white;
-  text-decoration: none;
+.all-tabs{
+margin: 0 13px;
 }
 
+.all-tabs a:link {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+
+
 /* visited link */
-a:visited {
-  color: #14ac9c;
+.all-tabs a:visited {
+  color: black;
   text-decoration: none;
 }
 
@@ -266,11 +272,11 @@ a:visited {
   /* opacity: 0.6; */
   content: "";
   display: block;
-  background: white;
+  background:#14ac9c;
   transform: scale(0,1);
   width: 100%;
-  height: 4px;
-  transition: transform 300ms ease-in;
+  height: 2px;
+  transition:all .400s ease-in-out;
 }
 
 .all-tabs a:hover:after{
@@ -279,7 +285,7 @@ a:visited {
 }
 
 .all-tabs a:hover{
-  color: white;
+  color:#14ac9c;
   transition: transform 300ms ease-in;
 }
 
@@ -478,4 +484,116 @@ a:active {
 }
 
 
-/* BOOTSTRAP NAVBAR */
+.mainheader .mainnav li{
+  list-style: none;
+}
+
+.mainheader .mainnav li a:link{
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  color:#14ac9c;
+}
+
+/* visited link */
+.mainheader .mainnav li a:visited {
+  color: #14ac9c;
+  text-decoration: none;
+}
+
+
+.mainheader .mainnav  li a:hover:after{
+  transform: scale(1,1);
+}
+
+.mainheader .mainnav li  a:hover{
+  color:#14ac9c;
+  transition:all .400s ease-in-out;
+}
+
+
+.mainheader .mainnav  li a:after {
+  /* opacity: 0.6; */
+  content: "";
+  display: block;
+  background:#14ac9c;
+  transform: scale(0,1);
+  width: 100%;
+  height: 2px;
+  transition:all .400s ease-in-out;
+}
+
+
+.mainheader .mainnav li span{
+  height: 20px;
+  width: 1px;
+  background-color: #14ac9c;
+  display: block;
+  margin: 0 10px;
+}
+
+.mainheader {
+  display: flex;
+  flex-direction: row;
+}
+.mainheader .mainnav{
+ background:transparent;
+ margin: 50px 0 0 50px;
+ margin-top: 70px;
+}
+
+.mainheader .mainnav ul{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+ .thirdtabmain{
+  display: flex;
+  flex-direction: row;
+}
+
+ .thirdtab {
+margin: 0 10px;
+}
+ 
+ .thirdtabmain  .thirdtab a{
+  color: #14ac9c;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+ .thirdtabmain div {
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  background: #ffffff;
+  padding-top: 3px;
+  border-style:solid;
+  border-color: #14ac9c;
+  border-width: 1px;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}
+
+.thirdtabmain div:nth-child(4) {
+ padding-top: 10px;
+}
+
+.thirdtabmain div:hover {
+background: #14ac9c;
+transition:all .400s ease-in-out;
+color: white;
+}
+
+.thirdtabmain a:hover {
+  color: white;
+  transition:all .300s ease-in-out;
+  height: 40px;
+  width: 100px;
+  }
+
