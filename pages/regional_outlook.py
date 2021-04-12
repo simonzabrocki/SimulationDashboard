@@ -241,6 +241,30 @@ layout = html.Div(
                 # ISO sel
                 html.Div(
                     [
+                        html.Div([
+                            html.Div([
+                                 dcc.Link(
+                                 "Global Overview",
+                                 href="/SimulationDashBoard/global_overview",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Regional Outlook",
+                                 href="/SimulationDashBoard/regional-outlouk",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Country Profile",
+                                 href="/SimulationDashBoard/country-profile",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Dashboard",
+                                 href="/SimulationDashBoard/models",
+                                 ), ], className="thirdtab",),                                                              
+                        ], className="thirdtabmain"),
+                        html.Br([]),
+                        
                         html.Div(
                             [
                                 html.H5(f"Highlights"),
