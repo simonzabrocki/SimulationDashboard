@@ -106,37 +106,20 @@ def get_menu():
     menu = html.Div(
         [
             dcc.Link(
-                "Global Overview",
+                "Green Growth Index",
                 href="/SimulationDashBoard/global-overview",
                 className="tab first",
             ),
             dcc.Link(
-                "Regional Outlook",
-                href="/SimulationDashBoard/regional-outlouk",
-                className="tab",
-            ),
-            dcc.Link(
-                "Country Profile", href="/SimulationDashBoard/country-profile",
-                className="tab"
-            ),
-            dcc.Link(
-                "Country Comparison", href="/SimulationDashBoard/country-comparator",
-                className="tab"
-            ),
-            dcc.Link(
-                "Data", href="/SimulationDashBoard/data",
-                className="tab"
-            ),
-            dcc.Link(
-                "Models Overview",
-                href="/SimulationDashBoard/models",
-                className="tab",
-            ),
-            dcc.Link(
-                "Simulation",
+                "Simulation Tools",
                 href="/SimulationDashBoard/simulation",
                 className="tab",
             ),
+            dcc.Link(
+                "Evidence Liblary", href="/SimulationDashBoard/model",
+                className="tab"
+            ),
+
         ],
         className="row all-tabs",
     )
