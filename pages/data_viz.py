@@ -111,6 +111,30 @@ layout = html.Div(
                     [
                         html.Div(
                             [
+                                
+                                html.Div([
+                                    html.Div([
+                                         dcc.Link(
+                                         "Model Description",
+                                         href="/SimulationDashBoard/models",
+                                         ), ], className="thirdtab",),
+                                    html.Div([
+                                         dcc.Link(
+                                         "Model Assumptions",
+                                         href="/SimulationDashBoard/models",
+                                         ), ], className="thirdtab",),
+                                    html.Div([
+                                         dcc.Link(
+                                         "Python Codes",
+                                         href="/SimulationDashBoard/models",
+                                         ), ], className="thirdtab",),
+                                    html.Div([
+                                         dcc.Link(
+                                         "Data",
+                                         href="/SimulationDashBoard/data",
+                                         ), ], className="thirdtab",),                                                              
+                                ], className="thirdtabmain"),
+                                html.Br([]),                                
                                 html.H6(
                                     "Dimension",
                                     className="subtitle padded",
