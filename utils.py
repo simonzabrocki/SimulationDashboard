@@ -116,7 +116,7 @@ def get_menu():
                 className="tab",
             ),
             dcc.Link(
-                "Evidence Liblary", href="/SimulationDashBoard/model",
+                "Evidence Liblary", href="/SimulationDashBoard/models",
                 className="tab"
             ),
 
