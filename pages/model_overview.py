@@ -310,6 +310,31 @@ layout = html.Div(
             [
                 html.Div(
                     [
+
+                        html.Div([
+                            html.Div([
+                                 dcc.Link(
+                                 "Model Description",
+                                 href="/SimulationDashBoard/models",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Model Assumptions",
+                                 href="/SimulationDashBoard/models",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Python Codes",
+                                 href="/SimulationDashBoard/models",
+                                 ), ], className="thirdtab",),
+                            html.Div([
+                                 dcc.Link(
+                                 "Data",
+                                 href="/SimulationDashBoard/data",
+                                 ), ], className="thirdtab",),                                                              
+                        ], className="thirdtabmain"),
+                        html.Br([]),
+                        
                         make_dropdown_menu(all_models),
                         info_boxes_display(),
                         description_display(),
