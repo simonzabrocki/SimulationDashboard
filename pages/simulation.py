@@ -12,6 +12,8 @@ from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 from dash.exceptions import PreventUpdate
 import time
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 
 scenario_properties = {
     'Scenario_one': {"name": 'Scenario 1'},
@@ -432,18 +434,27 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
             if model == 'GE3_model':
                 scenarios_results = {}
                 data_dict = {k: v.loc[ISO, 2018, :] for k, v in GM.demo_script_Hermen.GE3_data_dict.items()}
-                
+
+
+                scenarios_results['BAU'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, MM_Ti=data_dict['MM_Ti'],MM_ASi=data_dict['MM_ASi'], MM_LPi=data_dict['MM_LPi'])
                 scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_1)
                 scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_2)
 
                 #d_1 , c_1 = format_data_dict_sankey(scenarios_results['scenario_one'])
                 d_1 , c_1 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
                 d_2 , c_2 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+                d_3 , c_3 = format_data_dict_sankey({k: v for k, v in scenarios_results['BAU'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
                 
 
-                fig_1 = plot_sanky_GE3(d_1, c_1)
-                fig_2 = plot_sanky_GE3(d_2, c_2)
-                fig_3 = {}
+
+                # fig_1 = make_subplots(rows=2, cols=1)
+                # fig_1.append_trace(plot_sanky_GE3(d_1, c_1)['data'][0], row=1, col=1)
+                # fig_1.append_trace(plot_sanky_GE3(d_2, c_2)['data'][0], row=2, col=1)
+
+
+                fig_1 = plot_sanky_GE3(d_1, c_1).update_layout(title='Scenario 1')
+                fig_2 = plot_sanky_GE3(d_2, c_2).update_layout(title='Scenario 2')
+                fig_3 = plot_sanky_GE3(d_3, c_3).update_layout(title='Business as Usual')
 
         except Exception as e:
             print(e)
