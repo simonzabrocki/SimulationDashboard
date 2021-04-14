@@ -167,9 +167,13 @@ def GE3_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'MM_Ti-slider{scenario_id}',
                 step=step,
-                value=1/3,
+                value=1/2,
                 min=0,  # To update later
                 max=1,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
+                },
                 included=False,
             ),
             html.Br([]),
@@ -177,19 +181,13 @@ def GE3_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'MM_ASi-slider{scenario_id}',
                 step=step,
-                value=1/3,
+                value=1,
                 min=0,  # To update later
                 max=1,
-                included=False,
-            ),
-            html.Br([]),
-            html.P('% Manure left on pasture', style={'font-size': 17}),
-            dcc.Slider(
-                id=f'MM_LPi-slider{scenario_id}',
-                step=step,
-                value=1/3,
-                min=0,  # To update later
-                max=1,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
+                },
                 included=False,
             ),
         ],
@@ -354,7 +352,6 @@ component_variable_dictionnary = {
     'R_rate-slider': 'R_rate',
     'MM_Ti-slider': 'MM_Ti',
     'MM_ASi-slider': 'MM_ASi',
-    'MM_LPi-slider': 'MM_LPi'
 }
 
 
@@ -389,8 +386,6 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
 
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
-
-        print(args_dict_1)
 
         try:  # To generalize
             if model == 'EW_models':
@@ -443,7 +438,7 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
                 data_dict = {k: v.loc[ISO, 2018, :] for k, v in GM.demo_script_Hermen.GE3_data_dict.items()}
 
 
-                scenarios_results['BAU'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, MM_Ti=data_dict['MM_Ti'],MM_ASi=data_dict['MM_ASi'], MM_LPi=data_dict['MM_LPi'])
+                scenarios_results['BAU'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, MM_Ti=data_dict['MM_Ti'],MM_ASi=data_dict['MM_ASi'])
                 scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_1)
                 scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_2)
 

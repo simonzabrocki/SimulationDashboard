@@ -669,13 +669,13 @@ GE3_models = {'TMi_model': TMi_model,
               }
 
 
-def run_GE3_scenario(data_dict, MM_Ti=1/3, MM_ASi=1/3, MM_LPi=1/3):
+def run_GE3_scenario(data_dict, MM_Ti=1/2, MM_ASi=1):
 
     data_dict = data_dict.copy()
 
     data_dict['MM_Ti'] = MM_Ti
     data_dict['MM_ASi'] = MM_ASi
-    data_dict['MM_LPi'] = MM_LPi
+    data_dict['MM_LPi'] = 1 - MM_Ti
 
     results = GE3_models['GE3_model'].run(data_dict)
 
