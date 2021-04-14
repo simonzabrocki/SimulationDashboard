@@ -82,7 +82,7 @@ def BE2_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'FLOi-slider{scenario_id}',
                 step=None,
-                value=0,
+                value=1,
                 min=0.5,  # To update later
                 max=1.5,
                 marks={
@@ -101,7 +101,7 @@ def BE2_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'FDKGi-slider{scenario_id}',
                 step=None,
-                value=0,
+                value=1,
                 min=0.5,  # To update later
                 max=1.5,
                 marks={
@@ -390,6 +390,8 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
 
+        print(args_dict_1)
+
         try:  # To generalize
             if model == 'EW_models':
                 scenarios_results = {}
@@ -397,6 +399,7 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
                 data_dict = {key: value.loc[[ISO]] for key, value in data_dict_expanded.items()}
 
                 scenarios_results['BAU'] = run_EW_scenario(data_dict)
+                
 
                 scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_1)
 
@@ -414,22 +417,26 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
 
                 scenarios_results = {}
 
-                data_dict = {k: v.loc[ISO, 2000:] for k, v in GM.demo_script_Hermen.data_dict.items() if k not in ['CL_corr_intercept', 'CL_corr_coef']}
+                data_dict = {k: v.loc[ISO, 2018:] for k, v in GM.demo_script_Hermen.data_dict.items() if k not in ['CL_corr_coef']}
                 
-                data_dict['CL_corr_intercept'] = GM.demo_script_Hermen.data_dict['CL_corr_intercept'].loc[ISO]
-                data_dict['CL_corr_coef'] = GM.demo_script_Hermen.data_dict['CL_corr_coef']
-
+                
+            
                 data_dict = GM.demo_script_Hermen.run_BE2_projection(data_dict)
+                
+                data_dict['CL_corr_coef'] = 1.4
+                
+                data_dict['R_rate'].loc[:, 2018] = 0
                 
                 scenarios_results['BAU'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict)
                 scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_1)
                 scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_2)
 
                 df_1 = format_var_results(scenarios_results, 'BE2')
+                df_2 = format_var_results(scenarios_results, 'delta_CL')
 
                 fig_1 = scenario_line_plot('BE2', df_1, ISO)
-                fig_2 = fig_1
-                fig_3 = fig_1
+                fig_2 = scenario_line_plot('delta_CL', df_2, ISO)
+                fig_3 = {}
             
             if model == 'GE3_model':
                 scenarios_results = {}

@@ -15,202 +15,200 @@ kg_to_1000tonnes = 1e-6
 day_per_year = 365
 ktonnes_to_hg = 1e7
 
+
 FPi_nodes = {'FLOi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Food losses per food group'
-},
-    'FDKGi': {
-    'type': 'input',
-    'unit': 'kg/capita/day',
-    'name': 'Kg food demand per day per food group'
-},
-    'SSRi': {
-    'type': 'input',
-    'unit': '1',
-    'name': 'Self-sufficiency ratio per food group',
-},
-    'FDPi': {
-    'type': 'variable',
-    'unit': '1000 tonnes',
-    'name': 'Total food production per food group',
-    'computation': lambda FDKGi, Pop, FLOi, **kwargs: kg_to_1000tonnes * day_per_year * FDKGi * Pop * 1e3 + FLOi
-},
-    'OFi': {
-    'type': 'variable',
-    'unit': '1000 tonnes',
-    'name': 'Other food demand',
-    'computation': lambda SDi, NFDi, PDi, RDi, SVi, **kwargs: SDi + NFDi + PDi + RDi + SVi
-},
-    'SDi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Seed demand per food group'
-},
-    'NFDi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Non-food demand per food group'
-},
-    'PDi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Processed demand per food group'
-},
-    'RDi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Residual demand per food group'
-},
-    'SVi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Stock variation per food group'
-},
-    'FPi': {
-    'type': 'output',
-    'name': 'Food production per food group',
-    'unit': '1000 tonnes',
-    'computation': lambda SSRi, OFi, FDi, FDPi, **kwargs: (OFi + FDi + FDPi) * SSRi
-},
-    'FDi': {
-    'type': 'input',
-    'unit': '1000 tonnes',
-    'name': 'Feed demand per food group'
-},
-    'Pop': {
-    'type': 'input',
-    'unit': '1000 persons',
-    'name': 'Total population'
-}
-}
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Food losses per food group'
+                },
+             'FDKGi': {
+                'type': 'input',
+                'unit': 'kg/capita/day',
+                'name': 'Kg food demand per day per food group'
+                },
+             'SSRi': {
+                'type': 'input',
+                'unit': '1',
+                'name': 'Self-sufficiency ratio per food group',
+                },
+             'FDPi': {
+                'type': 'variable',
+                'unit': '1000 tonnes',
+                'name': 'Total food production per food group',
+                'computation': lambda FDKGi, Pop, FLOi, **kwargs: kg_to_1000tonnes * day_per_year * FDKGi.fillna(0) * Pop * 1e3 + FLOi.fillna(0)
+                },
+             'OFi': {
+                'type': 'variable',
+                'unit': '1000 tonnes',
+                'name': 'Other food demand',
+                'computation': lambda SDi, NFDi, PDi, RDi, SVi, **kwargs: SDi.fillna(0) + NFDi.fillna(0) + PDi.fillna(0) + RDi.fillna(0) + SVi.fillna(0)
+                },
+             'SDi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Seed demand per food group'
+                },
+             'NFDi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Non-food demand per food group'
+                },
+             'PDi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Processed demand per food group'
+                },
+             'RDi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Residual demand per food group'
+                },
+             'SVi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Stock variation per food group'
+                },
+             'FPi': {
+                'type': 'output',
+                'name': 'Food production per food group',
+                'unit': '1000 tonnes',
+                'computation': lambda SSRi, OFi, FDi, FDPi, **kwargs: (OFi.fillna(0) + FDi.fillna(0) + FDPi.fillna(0)) * SSRi.fillna(1)
+                },
+             'FDi': {
+                'type': 'input',
+                'unit': '1000 tonnes',
+                'name': 'Feed demand per food group'
+                },
+             'Pop': {
+                'type': 'input',
+                'unit': '1000 persons',
+                'name': 'Total population'
+                }
+        }
 
 TCLDi_nodes = {'TCLDi': {
-    'type': 'output',
-    'name': 'Cropland demand',
-    'unit': 'ha',
-    'computation': lambda CYi, FPi, **kwargs: ktonnes_to_hg * FPi / CYi
-},
-    'CYi': {
-    'type': 'input',
-    'unit': 'hg/ha',
-    'name': 'Crop yields per crop type'
-},
-    'FPi': {
-    'type': 'input',
-    'name': 'Food production per food group',
-    'unit': '1000 tonnes'
-},
-}
+                  'type': 'output',
+                  'name': 'Cropland demand',
+                  'unit': 'ha',
+                  'computation': lambda CYi, FPi, **kwargs: ktonnes_to_hg * FPi / CYi
+                  },
+               'CYi': {
+                  'type': 'input',
+                  'unit': 'hg/ha',
+                  'name': 'Crop yields per crop type'
+                  },
+               'FPi': {
+                  'type': 'input',
+                  'name': 'Food production per food group',
+                  'unit': '1000 tonnes'
+                  },
+               }
 
 CL_nodes = {'TCLDi': {
-    'type': 'input',
-    'name': 'Cropland demand',
-    'unit': 'ha',
-},
-    'CL_corr_coef': {
-    'type': 'input',
-    'name': 'Correction coefficient',
-    'unit': '1',
-},
-    'CL_corr_intercept': {
-    'type': 'input',
-    'name': 'Correction intercept by country',
-    'unit': '1000 ha',
-},
-    'CL': {
-    'type': 'output',
-    'name': 'Cropland stock',
-    'unit': '1000 ha',
-    # Strange to check !
-    'computation': lambda TCLDi, CL_corr_coef, CL_corr_intercept, **kwargs: TCLDi.groupby(level=['ISO', 'Year']).sum() * 1e-3 * CL_corr_coef + CL_corr_intercept
-},
+               'type': 'input',
+               'name': 'Cropland demand',
+               'unit': 'ha',
+               },
+            'CL_corr_coef': {
+               'type': 'input',
+               'name': 'Correction coefficient',
+               'unit': '1',
+               },
+            'CL_corr_intercept': {
+               'type': 'input',
+               'name': 'Correction intercept by country',
+               'unit': '1000 ha',
+               },
+            'CL': {
+               'type': 'output',
+               'name': 'Cropland stock',
+               'unit': '1000 ha',
+               'computation':  lambda TCLDi, CL_corr_coef, **kwargs: TCLDi.groupby(level=['ISO', 'Year']).sum() * 1e-3 *CL_corr_coef #+ CL_corr_intercept # Strange to check !
+            },
 }
 
 IL_FL_nodes = {'CL': {
-    'type': 'input',
-    'name': 'Cropland stock',
-    'unit': '1000 ha',
-},
-    'CL_baseline': {
-    'type': 'input',
-    'name': 'Cropland stock baseline',
-    'unit': '1000 ha',
-},
-    'delta_CL': {
-    'type': 'variable',
-    'name': 'Change in cropland',
-    'unit': '1000 ha',
-    'computation': lambda CL, CL_baseline, **kwargs: CL - CL_baseline
-},
-    'IL_baseline': {
-    'type': 'input',
-    'unit': '1000 ha',
-    'name': 'Inactive land baseline'
-},
-    'FL_baseline': {
-    'type': 'input',
-    'unit': '1000 ha',
-    'name': 'Forest land baseline'
-},
-    'IL': {
-    'type': 'output',
-    'name': 'Inactive land stock',
-    'unit': '1000 ha',
-    # to double check
-    'computation': lambda delta_CL, IL_baseline, **kwargs: (IL_baseline - delta_CL).clip(lower=0)
-},
-    'FL': {
-    'type': 'output',
-    'name': 'Forest land stock',
-    'unit': '1000 ha',
-    # to double check
-    'computation': lambda delta_CL, FL_baseline, IL_baseline, **kwargs: FL_baseline + (IL_baseline - delta_CL).clip(upper=0)
-}
-}
+                  'type': 'input',
+                  'name': 'Cropland stock',
+                  'unit': '1000 ha',
+                  },
+               'CL_baseline': {
+                  'type': 'input',
+                  'name': 'Cropland stock baseline',
+                  'unit': '1000 ha',
+                  },
+               'delta_CL': {
+                  'type': 'variable',
+                  'name': 'Change in cropland',
+                  'unit': '1000 ha',
+                  'computation': lambda CL, CL_baseline, **kwargs: CL - CL_baseline
+                  },
+               'IL_baseline': {
+                  'type': 'input',
+                  'unit': '1000 ha',
+                  'name': 'Inactive land baseline'
+                  },
+               'FL_baseline': {
+                  'type': 'input',
+                  'unit': '1000 ha',
+                  'name': 'Forest land baseline'
+                  },
+               'IL': {
+                  'type': 'output',
+                  'name': 'Inactive land stock',
+                  'unit': '1000 ha',
+                  'computation': lambda delta_CL, IL_baseline, **kwargs: (IL_baseline - delta_CL).clip(lower=0) # to double check
+                  },
+               'FL': {
+                  'type': 'output',
+                  'name': 'Forest land stock',
+                  'unit': '1000 ha',
+                  'computation': lambda delta_CL, FL_baseline, IL_baseline, **kwargs: FL_baseline + (IL_baseline - delta_CL).clip(upper=0) # to double check
+                  }
+               }
 
-BE2_nodes = {'TLA': {
-    'type': 'input',
-    'unit': '1000 ha',
-    'name': 'Total land area'
-},
-    'FL': {
-    'type': 'input',
-    'unit': '1000 ha',
-    'name': 'Forest land stock'
-},
-    'IL': {
-    'type': 'input',
-    'unit': '1000 ha',
-    'name': 'Inactive land stock'
-},
-    'R_rate': {
-    'type': 'parameter',
-    'unit': '%',
-    'name': 'Rate of reforestation'
-},
-    'FL_RF': {
-    'type': 'variable',
-    'name': 'Forest land stock after reforestation policy',
-    'unit': '1000 ha',
-    'computation': lambda FL, R_rate, IL, **kwargs: FL + 1e-2 * R_rate * IL
-},
-    'BE2': {
-    'type': 'output',
-    'name': 'Share of forest area to total land area',
-    'unit': '%',
-    'computation': lambda FL_RF, TLA, **kwargs: 1e2 * FL_RF / TLA
-}
-}
+BE2_nodes = {'TLA':{
+               'type': 'input',
+               'unit': '1000 ha',
+               'name': 'Total land area'
+               },
+             'FL': {
+               'type': 'input',
+               'unit': '1000 ha',
+               'name': 'Forest land stock'
+               },
+             'IL': {
+               'type': 'input',
+               'unit': '1000 ha',
+               'name': 'Inactive land stock'
+               },
+             'R_rate': {
+               'type': 'parameter',
+               'unit': '%',
+               'name': 'Rate of reforestation'
+               },
+             'FL_RF': {
+               'type': 'variable',
+               'name': 'Forest land stock after reforestation policy',
+               'unit': '1000 ha',
+               'computation': lambda FL, R_rate, IL, **kwargs: FL + 1e-2 * R_rate * IL
+               },
+             'BE2': {
+               'type': 'output',
+               'name': 'Share of forest area to total land area',
+               'unit': '%',
+               'computation': lambda FL_RF, TLA, **kwargs: 1e2 * FL_RF / TLA
+               }
+             }
+
 
 
 FPi_model = GraphModel(FPi_nodes)
 TCLDi_partial_model = GraphModel(TCLDi_nodes)
 TCLDi_model = GraphModel(concatenate_graph_specs([TCLDi_nodes, FPi_nodes]))
 IL_FL_model = GraphModel(IL_FL_nodes)
-BE2_partial_model = GraphModel(BE2_nodes)
-BE2_model = GraphModel(concatenate_graph_specs(
-    [BE2_nodes, IL_FL_nodes, CL_nodes, TCLDi_nodes, FPi_nodes]))
+BE2_partial_model = GraphModel(concatenate_graph_specs([BE2_nodes, IL_FL_nodes]))
+BE2_model = GraphModel(concatenate_graph_specs([BE2_nodes, IL_FL_nodes, CL_nodes, TCLDi_nodes, FPi_nodes]))
 
 BE2_models = {
     'TCLDi_model': TCLDi_model,
@@ -222,9 +220,8 @@ BE2_models = {
 }
 
 
-model_df = pd.read_csv('data/demo_data/BE2_data/BE2_df.csv')
+model_df = pd.read_csv('data/demo_data/BE2_data/BE2_df.csv').query('Year < 2019')
 landuse = pd.read_csv('data/demo_data/BE2_data/landuse.csv')
-corrected_cl = pd.read_csv('data/demo_data/BE2_data/cl_corr.csv')
 
 
 def get_X_y_from_data(model, data_dict):
@@ -238,7 +235,7 @@ def get_X_y_from_data(model, data_dict):
 def df_to_dict(df):
     X = {}
     for code in df.columns:
-        X[code] = df[code]
+        X[code] = df[code]#.fillna(0)
     return X
 
 
@@ -280,21 +277,17 @@ data_dict['FL_baseline'] = data_dict['FL']
 data_dict['R_rate'] = pd.Series(data=0, index=data_dict['CL_baseline'].index)
 
 
-data_dict['CL_corr_intercept'] = corrected_cl.query('name != "comp"').rename(
-    columns={"name": 'ISO'}).set_index('ISO')['coef']
-data_dict['CL_corr_coef'] = pd.Series(data=corrected_cl.query('name == "comp"')[
-                                      'coef'].values[0], index=data_dict['CL_corr_intercept'].index)
 
 
 def expand_series_non_itemized(df):
     multi_index = pd.MultiIndex.from_product([df.index.get_level_values(
-        'ISO').unique(), np.arange(2000, 2051)], names=['ISO', 'Year'])
+        'ISO').unique(), np.arange(2018, 2051)], names=['ISO', 'Year'])
     return df.reindex(multi_index)
 
 
 def expand_series_itemized(df):
     multi_index = pd.MultiIndex.from_product([df.index.get_level_values('ISO').unique(), np.arange(
-        2000, 2051), df.index.get_level_values('Item').unique()], names=['ISO', 'Year', 'Item'])
+        2018, 2051), df.index.get_level_values('Item').unique()], names=['ISO', 'Year', 'Item'])
     return df.reindex(multi_index)
 
 
@@ -302,6 +295,13 @@ def apply_percent_target_projection(series, percent_target=0):
     series = series.copy()
     series = expand_series_non_itemized(series)
     series.loc[:, 2050, :] = percent_target * series.loc[:, 2018, :].values
+    return series.interpolate()
+
+
+def apply_target_projection(series, target=0):
+    series = series.copy()
+    series = expand_series_non_itemized(series)
+    series.loc[:, 2050, :] = target
     return series.interpolate()
 
 
@@ -347,7 +347,7 @@ def apply_ffill_projection(series):
     return series.groupby(['ISO']).fillna(method='ffill')
 
 
-def run_BE2_scenario(data_dict, FDKGi_target=1, FLOi_target=1, CYi_target=1, R_rate=1):
+def run_BE2_scenario(data_dict, FDKGi_target=1, FLOi_target=1, CYi_target=1, R_rate=0):
 
     data_dict = data_dict.copy()
 
@@ -355,15 +355,23 @@ def run_BE2_scenario(data_dict, FDKGi_target=1, FLOi_target=1, CYi_target=1, R_r
         'CYi': lambda x: apply_itemized_percent_target_projection(x, CYi_target),
         'FDKGi': lambda x: apply_itemized_percent_target_projection(x, FDKGi_target),
         'FLOi': lambda x: apply_itemized_percent_target_projection(x, FLOi_target),
-        'R_rate': lambda x: apply_constant_projection(x, R_rate)
+        'R_rate': lambda x: apply_target_projection(x, R_rate)
     }
 
     for variable, function in projection_dict.items():
         data_dict[variable] = function(data_dict[variable])
 
     results = BE2_models['BE2_model'].run(data_dict)
-
-    return results
+    
+    # Correct the CL_baseline (find a better way to do it)
+    
+    results['CL_baseline'] = pd.Series(results['CL'].loc[:, 2018].values[0], index=results['CL'].index)
+    
+    
+    corrected_results = BE2_models['BE2_partial_model'].run(results)
+    #return results
+    
+    return corrected_results
 
 
 def run_BE2_projection(data_dict):
