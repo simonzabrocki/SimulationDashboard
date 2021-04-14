@@ -4,6 +4,11 @@ body {
   margin: 0;
   padding: 0;
   /*background-color: #fafafa;*/
+   background-image:url("./backgroundg.png");
+ /* box-shadow: 0 0 10px lightgrey;*/
+  background-position:left bottom ;
+  background-size: 32% 60%;
+  background-repeat: no-repeat;
   font-size: 1.1rem;
   line-height: 1.3;
 }
@@ -12,15 +17,11 @@ body {
   -moz-box-sizing: border-box;
 }
 .page {
+  position:relative;
   min-height: 300mm;
   padding: 0;
-  margin: 0  auto;
+  margin: 0  50px;
   border-radius: 0px;
-  background-image:url("./backgroundg.png");
- /* box-shadow: 0 0 10px lightgrey;*/
-    background-position:left bottom ;
-    background-size: 70% 95%;
-    background-repeat: no-repeat;
 }
 
 .pagetwo {
@@ -44,7 +45,7 @@ body {
       height: 100%;
       width: 100%;
   }
- /* .page {
+.page {
     margin: 0;
     border: initial;
     border-radius: initial;
@@ -53,7 +54,7 @@ body {
     box-shadow: initial;
     background: initial;
     page-break-after: always;
-  }*/
+  }
   .no-print,
   .no-print * {
     display: none !important;
@@ -121,24 +122,10 @@ table.tiny-header tr:first-child {
 }
 
 
-.page .row{
- padding: 0 70px;
-
+.row > .columns:not(:first-child) {
+  padding-left: 20px;
 }
 
-.page .row:nth-child(1){
-  margin: 0 ;
-  padding: 0;
-}
-
-.page .row:nth-child(2){
-  margin: 5px ;
-  padding: 0 70px;
-}
-
-.page .row .pretty_container:nth-child(1) {
-  margin:0 40px;
-}
 
 h1,
 h5,
@@ -170,18 +157,10 @@ li {
   padding: 30px;
   margin-bottom: 25px;
   border-radius: 1px;
-
+  background: #14ac9c;
   color: #ffffff;
 }
 
-.pretty_container .product p{
-  color: black;
-  font-size: 13px;
-}
-
-.product h5{
-  color: black;
-}
 
 .product_A {
   position: relative;
@@ -208,7 +187,7 @@ li {
   font-size: medium;
   padding: 15px 15px;
   float: left;
-  margin-left: 70%;
+  margin-left: 75%;
   width: 35%;
   text-align: center;
   transition-duration: 1s;
@@ -221,11 +200,11 @@ li {
 }
 .main-title {
   position: relative;
-  color: white;
+  color: #3a3a3a;
   font-size: 40px !important;
   width: 80%;
-  /*border-left: 20px solid #14ac9c;*/
-  background: transparent;
+  border-left: 20px solid #14ac9c;
+  background: #ffffff;
   padding-left: 30px;
 }
 
@@ -252,13 +231,6 @@ li {
 .all-tabs{
 margin: 0 13px;
 }
-
-.all-tabs a:link {
-  color: white;
-  text-decoration: none;
-  font-size: 15px;
-}
-
 
 
 /* visited link */
@@ -300,14 +272,13 @@ a:active {
   border-bottom: 1px solid lightgrey;
 }
 
-.all-tabs .tab {
+.tab {
   border-style: solid;
-  border-color:#14ac9c;;
+  border-color: rgb(0, 0, 0, 0.2);
   border-bottom-style: none;
   border-top-style: none;
   border-right-style: none;
-  padding: 1px 10px;
-  background-color:transparent;
+  padding: 5px 10px;
 }
 
 
@@ -341,7 +312,6 @@ a:active {
   padding-right: 15px;
   text-transform: none;
   margin: 25px 37px;
-  background: white;
 }
 
 /* for screens smaller than 768px */
@@ -393,9 +363,9 @@ a:active {
     margin-left: 60%;
 
   }
- /* .row > .columns:not(:first-child) {
+  .row > .columns:not(:first-child) {
     padding: 0 0;
-  }*/
+  }
 
   .svg-container {
     width: 255px !important;
@@ -434,10 +404,10 @@ a:active {
   border-color: #14ac9c;
   border-style: solid ;
   border-width: thin;
- /* margin: 34px;*/
-  padding: 20px;
+  margin: 10px;
+  padding: 30px;
   position: relative;
-  box-shadow: 2px 2px 2px #5f5e5e;
+  box-shadow: 2px 2px 2px lightgrey;
 }
 
 
@@ -542,6 +512,35 @@ a:active {
  margin-top: 70px;
 }
 
+@media only screen and (max-width: 962px){
+
+  .mainnav ul a ,.mainnav ul li{
+  display: none;
+  color: white;
+  }
+}
+
+@media only screen and (max-width:560px){
+  .logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 30%;
+  }
+}
+@media only screen and (max-width:1300px){
+ .pretty_container .thirdtabmain {
+  display:grid;
+  grid-template-columns: 50% 50%;
+  }
+  
+  .pretty_container .thirdtabmain .thirdtab{
+    width: 95%;
+   margin: 5px;
+  }
+}
+
 .mainheader .mainnav ul{
   display: flex;
   flex-direction: row;
@@ -555,7 +554,7 @@ a:active {
 }
 
  .thirdtab {
-margin: 0 10px;
+  margin: 0 10px;
 }
  
  .thirdtabmain  .thirdtab a{
