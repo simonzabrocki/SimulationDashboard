@@ -460,6 +460,10 @@ a:active {
 .mainheader .mainnav li{
   list-style: none;
 }
+.mainheader .mainnav li a{
+  text-decoration: none;
+}
+
 
 .mainheader .mainnav li a:link{
   font-size: 20px;
@@ -554,48 +558,27 @@ a:active {
  .thirdtabmain{
   display: flex;
   flex-direction: row;
-}
-
- .thirdtab {
-  margin: 0 10px;
-}
- 
- .thirdtabmain  .thirdtab a{
-  color: #14ac9c;
-  text-align: center;
-  font-size: 12px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
- .thirdtabmain div {
-  height: 40px;
-  width: 100px;
-  border-radius: 10px;
-  background: #ffffff;
-  padding-top: 3px;
-  border-style:solid;
-  border-color: #14ac9c;
-  border-width: 1px;
-  text-align: center;
+  margin: 0;
   align-items: center;
-  align-content: center;
 }
 
-.thirdtabmain div:nth-child(4) {
- padding-top: 10px;
-}
-
-.thirdtabmain div:hover {
-background: #14ac9c;
-transition:all .400s ease-in-out;
-color: white;
-}
-
-.thirdtabmain a:hover {
-  color: white;
-  transition:all .300s ease-in-out;
+.thirdtab button{
+  width: 90px;
   height: 40px;
-  width: 100px;
-  }
+  margin: 0 2px;
+  background: white;
+  border-radius: 5px;
+  border-color: #14ac9c;
+  border-style: solid;
+  border-width: 1px;
+  color: #14ac9c;
+} 
+
+.thirdtab button:hover{
+  color: white;
+  background: #14ac9c;
+}
+
+
+
 
