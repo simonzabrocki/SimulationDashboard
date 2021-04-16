@@ -54,9 +54,9 @@ def get_header(app):
                         html.Ul([
                                 html.Li([html.A("Home", href="https://greengrowthindex.gggi.org/",),]),
                                 html.Li([html.Span(),]),    
-                                html.Li([html.A("Scores and Rank", href="#",),]),
+                                html.Li([html.A("Scores and Ranks", href="#",),]),
                                 html.Li([html.Span(),]),
-                                html.Li([html.A("Publication", href="https://greengrowthindex.gggi.org/?page_id=3126",),]),
+                                html.Li([html.A("Publications", href="https://greengrowthindex.gggi.org/?page_id=3126",),]),
                                 html.Li([html.Span(),]),    
                                 html.Li([html.A("Authors", href="https://greengrowthindex.gggi.org/?page_id=3080",),]),
                                 html.Li([html.Span(),]),
@@ -64,7 +64,7 @@ def get_header(app):
                                 html.Li([html.Span(),]),    
                                 html.Li([html.A("Partners", href="https://greengrowthindex.gggi.org/?page_id=2166",),]),
                                 html.Li([html.Span(),]),                                                                                                            
-                                html.Li([html.A("Contuact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",),]),
+                                html.Li([html.A("Contact", href="https://greengrowthindex.gggi.org/?page_id=2839",),]),
                             ]),
                     ],className="mainnav"),
 
@@ -111,12 +111,12 @@ def get_menu():
                 className="tab first",
             ),
             dcc.Link(
-                "Simulation Tools",
+                "Simulation Tool",
                 href="/SimulationDashBoard/simulation",
                 className="tab",
             ),
             dcc.Link(
-                "Evidence Liblary", href="/SimulationDashBoard/models",
+                "Evidence Library", href="/SimulationDashBoard/models",
                 className="tab"
             ),
 
