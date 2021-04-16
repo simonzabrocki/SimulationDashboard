@@ -310,28 +310,20 @@ layout = html.Div(
             [
                 html.Div(
                     [
-
                         html.Div([
                             html.Div([
-                                 dcc.Link(
-                                 "Model Description",
-                                 href="/SimulationDashBoard/models",
-                                 ), ], className="thirdtab",),
+                                  dcc.Link(html.Button('Model Description'), href="/SimulationDashBoard/models"),
+                                 ], className="thirdtab",),
                             html.Div([
-                                 dcc.Link(
-                                 "Model Assumptions",
-                                 href="/SimulationDashBoard/models",
-                                 ), ], className="thirdtab",),
+                                  dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),
+                                 ], className="thirdtab",),
+                                 
                             html.Div([
-                                 dcc.Link(
-                                 "Python Codes",
-                                 href="/SimulationDashBoard/models",
-                                 ), ], className="thirdtab",),
+                                 dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/Python Codes"),
+                                 ], className="thirdtab",), 
                             html.Div([
-                                 dcc.Link(
-                                 "Data",
-                                 href="/SimulationDashBoard/data",
-                                 ), ], className="thirdtab",),                                                              
+                                 dcc.Link(html.Button('Data'), href="/SimulationDashBoard/data"),
+                                 ], className="thirdtab",),                                         
                         ], className="thirdtabmain"),
                         html.Br([]),
                         

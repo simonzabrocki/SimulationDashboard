@@ -243,25 +243,18 @@ layout = html.Div(
                     [
                         html.Div([
                             html.Div([
-                                 dcc.Link(
-                                 "Global Overview",
-                                 href="/SimulationDashBoard/global_overview",
-                                 ), ], className="thirdtab",),
+                                  dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
+                                 ], className="thirdtab",),
                             html.Div([
-                                 dcc.Link(
-                                 "Regional Outlook",
-                                 href="/SimulationDashBoard/regional-outlouk",
-                                 ), ], className="thirdtab",),
+                                  dcc.Link(html.Button('Regional Outlook'), href="/SimulationDashBoard/regional-outlouk"),
+                                 ], className="thirdtab",),
+                                 
                             html.Div([
-                                 dcc.Link(
-                                 "Country Profile",
-                                 href="/SimulationDashBoard/country-profile",
-                                 ), ], className="thirdtab",),
+                                 dcc.Link(html.Button('Country Profile'), href="/SimulationDashBoard/country-profile"),
+                                 ], className="thirdtab",), 
                             html.Div([
-                                 dcc.Link(
-                                 "Dashboard",
-                                 href="/SimulationDashBoard/models",
-                                 ), ], className="thirdtab",),                                                              
+                                 dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
+                                 ], className="thirdtab",),                                                      
                         ], className="thirdtabmain"),
                         html.Br([]),
                         

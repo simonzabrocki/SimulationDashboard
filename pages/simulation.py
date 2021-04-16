@@ -151,6 +151,23 @@ def BE2_scenario_box(scenario_id='_one'):
 def model_selection_box():
     layout = html.Div(
         [
+             html.Div([
+                html.Div([
+                        dcc.Link(html.Button('ESRU'), href="#"),
+                        ], className="thirdtab",),
+                html.Div([
+                        dcc.Link(html.Button('NCP'), href="#"),
+                        ], className="thirdtab",),   
+                html.Div([
+                        dcc.Link(html.Button('GEO'), href="#"),
+                        ], className="thirdtab",), 
+                html.Div([
+                        dcc.Link(html.Button('SI'), href="#"),
+                        ], className="thirdtab",), 
+            ], className="thirdtabmain"), 
+            html.Br([]),    
+
+
             html.H5(
                 "Select a Model",
                 className="subtitle padded",
