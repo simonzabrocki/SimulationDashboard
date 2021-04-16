@@ -274,11 +274,14 @@ a:active {
 
 .tab {
   border-style: solid;
-  border-color: rgb(0, 0, 0, 0.2);
+  border-color:#14ac9c;
   border-bottom-style: none;
+  border-width: 2px;
+  height: 5%;
   border-top-style: none;
   border-right-style: none;
   padding: 5px 10px;
+  margin-left: 10px;
 }
 
 
