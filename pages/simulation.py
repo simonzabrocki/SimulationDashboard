@@ -153,16 +153,16 @@ def model_selection_box():
         [
              html.Div([
                 html.Div([
-                        dcc.Link(html.Button('ESRU'), href="#"),
-                        ], className="thirdtab",),
+                        dcc.Link(html.Button('Energy'), href="#"),
+                        ], className="thirdtab"),
                 html.Div([
-                        dcc.Link(html.Button('NCP'), href="#"),
+                        dcc.Link(html.Button('Land'), href="#"),
                         ], className="thirdtab",),   
                 html.Div([
-                        dcc.Link(html.Button('GEO'), href="#"),
+                        dcc.Link(html.Button('Water'), href="#"),
                         ], className="thirdtab",), 
                 html.Div([
-                        dcc.Link(html.Button('SI'), href="#"),
+                        dcc.Link(html.Button('Waste'), href="#"),
                         ], className="thirdtab",), 
             ], className="thirdtabmain"), 
             html.Br([]),    
