@@ -4,10 +4,10 @@ body {
   margin: 0;
   padding: 0;
   /*background-color: #fafafa;*/
-   background-image:url("./backgroundg.png");
+   background-image:url("./GGGIsimulationbg.jpeg");
  /* box-shadow: 0 0 10px lightgrey;*/
   background-position:left bottom ;
-  background-size: 32% 60%;
+  background-size:cover;
   background-repeat: no-repeat;
   font-size: 1.1rem;
   line-height: 1.3;
@@ -22,6 +22,7 @@ body {
   padding: 0;
   margin: 0  50px;
   border-radius: 0px;
+
 }
 
 .pagetwo {
@@ -195,9 +196,9 @@ li {
 .all-tabs {
   text-align: left;
   font-size: 13px;
-  margin-top: 10px;
-
+  margin: 0 30px;
 }
+
 .main-title {
   position: relative;
   color: #3a3a3a;
@@ -228,19 +229,18 @@ li {
   margin: 30px 0 0 30px ;
 }
 
-.all-tabs{
-margin: 0 13px;
+
+.all-tabs .tab button{
+  border: none;
+  background-color: transparent;
+  color: white;
 }
 
-
-/* visited link */
-.all-tabs a:visited {
-  color: black;
-  text-decoration: none;
+.all-tabs .tab button:hover{
+  color:#14ac9c;
 }
 
-/* mouse over link */
-.all-tabs a:after {
+.all-tabs .tab button:after{
   /* opacity: 0.6; */
   content: "";
   display: block;
@@ -251,21 +251,17 @@ margin: 0 13px;
   transition:all .400s ease-in-out;
 }
 
-.all-tabs a:hover:after{
+.all-tabs .tab button:hover:after{
   transform: scale(1,1);
 
 }
 
-.all-tabs a:hover{
-  color:#14ac9c;
-  transition: transform 300ms ease-in;
-}
 
 /* selected link */
 a:active {
   color: lightgrey;
   text-decoration: underline;
-}
+} 
 
 .greyline {
   width: 90%;
@@ -277,11 +273,10 @@ a:active {
   border-color:#14ac9c;
   border-bottom-style: none;
   border-width: 2px;
-  height: 5%;
+  height: 25px;
   border-top-style: none;
   border-right-style: none;
   padding: 5px 10px;
-  margin-left: 10px;
 }
 
 
@@ -321,6 +316,7 @@ a:active {
 @media only screen and (max-width: 550px) {
   .tab {
     display: block;
+    border: none;
   }
   .tablast {
     display: block;
@@ -406,11 +402,11 @@ a:active {
   background-color: #f9f9f9;
   border-color: #14ac9c;
   border-style: solid ;
-  border-width: thin;
+  border-width: 3px;
   margin: 10px;
   padding: 30px;
   position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+  /*box-shadow: 2px 2px 2px lightgrey;*/
 }
 
 
@@ -455,6 +451,20 @@ a:active {
   position: relative;
   box-shadow: 2px 2px 2px lightgrey;
 }
+
+.mini_containermodeltitle {
+  /*border-radius: 5px;*/
+  background-color:#14ac9c;
+  color: white;
+  padding: 15px;
+  position: relative;
+  /*box-shadow: 2px 2px 2px lightgrey;*/
+}
+
+#model-presentation-display{
+  
+}
+
 
 
 .mainheader .mainnav li{
@@ -512,11 +522,11 @@ a:active {
 .mainheader {
   display: flex;
   flex-direction: row;
+  margin-bottom: 20px;
 }
 .mainheader .mainnav{
  background:transparent;
- margin: 50px 0 0 50px;
- margin-top: 70px;
+ margin:70px 0 0 50px;
 }
 
 @media only screen and (max-width: 962px){
@@ -556,16 +566,18 @@ a:active {
 
 
  .thirdtabmain{
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  position: relative;
+  align-content: center;
+  margin-bottom:20px ;
+  justify-items: center;
 }
 
 .thirdtab button{
-  width: 90px;
+  width: 87px;
   height: 40px;
-  margin: 0 2px;
+  margin: 0 3px;
   background: white;
   border-radius: 5px;
   border-color: #14ac9c;
@@ -580,5 +592,34 @@ a:active {
 }
 
 
+
+#titleheader{
+  color: #14ac9c;
+  font-size: 20px;
+  margin: 0 0 0 60%;
+}
+
+.rowtabs{
+  display: flex;
+  flex-direction: column-reverse;
+
+}
+
+#pagetitle{   
+  margin: 0 100px;
+}
+
+#pagetitle p{
+  width: 20%;
+  background: #14ac9c;
+  font-size: 20px;
+}
+
+.btn{
+  color: black;
+  background: white;
+  text-decoration: none;
+  border-color: #14ac9c;
+}
 
 
