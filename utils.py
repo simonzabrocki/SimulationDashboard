@@ -1,6 +1,8 @@
+import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import pandas as pd
+from dash.dependencies import Input, Output
 
 
 def format_data(data):
@@ -72,6 +74,8 @@ def get_header(app):
 #                        html.Button("About GGGI", id="learn-more-button"),
 #                        href="https://gggi.org/",
 #                    ),      
+
+
             ],
             className="mainheader",
             ),
@@ -96,6 +100,8 @@ def get_header(app):
 #               className="twelve columns",
 #               style={"padding-left": "0"},
 #           ),
+
+               
         ],
         className="mainheader",
     )
@@ -103,24 +109,27 @@ def get_header(app):
 
 
 def get_menu():
+     
+
     menu = html.Div(
         [
-            dcc.Link(
-                "Green Growth Index",
-                href="/SimulationDashBoard/global-overview",
-                className="tab first",
-            ),
-            dcc.Link(
-                "Simulation Tool",
-                href="/SimulationDashBoard/simulation",
-                className="tab",
-            ),
-            dcc.Link(
-                "Evidence Library", href="/SimulationDashBoard/models",
-                className="tab"
-            ),
+            html.Div([
+                    html.Div([
+                            
+                            html.Div([                               
+                                  dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                 ], className="tab",),
+                            html.Div([
+                                  dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
+                                 ], className="tab",),
+                            html.Div([
+                                  dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                 ], className="tab",),               
+                    ],
+                    className="row all-tabs",),
 
-        ],
-        className="row all-tabs",
-    )
+            ],className="rowtabs",),
+        ])
     return menu
+
+
