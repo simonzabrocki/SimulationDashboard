@@ -303,16 +303,16 @@ layout = html.Div(
                                           config={'displayModeBar': False}),
                             ],
                             className='row'),
-                        html.H6(
-                            "Socio-economic context",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [
-                                dcc.Graph(id='context-graph-1',
-                                          config={'displayModeBar': False}),
-                            ],
-                            className='row'),
+                        # html.H6(
+                        #     "Socio-economic context",
+                        #     className="subtitle padded",
+                        # ),
+                        # html.Div(
+                        #     [
+                        #         dcc.Graph(id='context-graph-1',
+                        #                   config={'displayModeBar': False}),
+                        #     ],
+                        #     className='row'),
                     ],
                     className='pretty_container eight columns'
                 )
@@ -369,7 +369,7 @@ def get_args_dict_from_scenario_box(box):
 @app.callback(
     Output("results-graph-1", "figure"),
     Output("results-graph-2", "figure"),
-    Output('context-graph-1', 'figure'),
+    #Output('context-graph-1', 'figure'),
     Output("loading-output", "children"),
     [
         Input('scenario_box_1', 'children'),
@@ -462,7 +462,7 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
             print(e)
             return {}, {}, {}, None
        
-        return fig_1, fig_2, fig_3, None
+        return fig_1, fig_2, None
    
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8

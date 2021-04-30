@@ -6,8 +6,6 @@ WARNINGs:
 - As pandas explains, using loc[:, :, blabla] has really terrible performance, try to avoid
 
 ROADMAP:
-- Add a concatenate function to properly concatenate models without duplicates OK !
-- Automatically parse the computation to avoid having to type the name OK !
 
 
 - Cleanup the parser TODO
@@ -459,6 +457,7 @@ def model_function(G):
 
 
 # Node merging
+
 def get_duplicated_nodes(id_type_df):
     duplicated_nodes = (id_type_df.groupby('id').count() > 1)
     duplicated_nodes = duplicated_nodes[duplicated_nodes.type].index
@@ -529,4 +528,5 @@ def converte_to_format(old_nodes):
         if 'computation' in node:
             new_nodes[node['id']]['computation'] = node['computation']['formula']
             new_nodes[node['id']].pop('in', None)
+            
     return new_nodes
