@@ -123,7 +123,7 @@ layout = html.Div(
                                  dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/models"),
                                  ], className="thirdtab",), 
                                 html.Div([
-                                 dcc.Link(html.Button('Data'), href="/SimulationDashBoard/data"),
+                                 dcc.Link(html.Button('Data', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/data"),
                                  ], className="thirdtab",),                                                                 
                             ], className="thirdtabmain"),
                                 html.Br([]),                                
