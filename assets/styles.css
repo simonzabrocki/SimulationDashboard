@@ -461,12 +461,6 @@ a:active {
   /*box-shadow: 2px 2px 2px lightgrey;*/
 }
 
-#model-presentation-display{
-  
-}
-
-
-
 .mainheader .mainnav li{
   list-style: none;
 }
@@ -522,7 +516,7 @@ a:active {
 .mainheader {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .mainheader .mainnav{
  background:transparent;
@@ -606,13 +600,25 @@ a:active {
 }
 
 #pagetitle{   
-  margin: 0 100px;
+  margin-top: 0;
+  color: #14ac9c;
+  font-size: 25px;
 }
 
-#pagetitle p{
-  width: 20%;
-  background: #14ac9c;
+#pagetitlechild{
+  margin-top: 0;
+  color: #14ac9c;
   font-size: 20px;
+}
+
+.titlediv{
+  display: grid;
+  grid-template-columns: auto 69%  ;
+}
+
+.titlediv .titlemain{
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .btn{
@@ -620,6 +626,13 @@ a:active {
   background: white;
   text-decoration: none;
   border-color: #14ac9c;
+}
+
+
+#container-button-timestamp{   
+  margin: 0 100px;
+  color: #14ac9c;
+  font-size: 15px;
 }
 
 
