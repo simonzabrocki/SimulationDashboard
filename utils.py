@@ -113,23 +113,26 @@ def get_menu():
 
     menu = html.Div(
         [
-            html.Div([
-                    html.Div([
-                            
-                            html.Div([                               
-                                  dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
-                                 ], className="tab",),
-                            html.Div([
-                                  dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
-                                 ], className="tab",),
-                            html.Div([
-                                  dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
-                                 ], className="tab",),               
-                    ],
-                    className="row all-tabs",),
-
-            ],className="rowtabs",),
+           #html.Div([
+           #        html.Div([
+           #                
+           #                html.Div([                               
+           #                      dcc.Link(html.Button('Global Green Index', id='btn-nclicks-1', n_clicks_timestamp=1), href="/SimulationDashBoard/global_overview"),
+           #                     ], className="tab",),
+           #                html.Div([
+           #                      dcc.Link(html.Button('Simulation Tool', id='btn-nclicks-2', n_clicks_timestamp=2), href="/SimulationDashBoard/simulation"),
+           #                     ], className="tab",),
+           #                html.Div([
+           #                      dcc.Link(html.Button('Evidence Library', id='btn-nclicks-3', n_clicks_timestamp=3), href="/SimulationDashBoard/models"),
+           #                     ], className="tab",), 
+           #        
+           #        ],
+           #        className="row all-tabs",),
+           #],className="rowtabs",),
         ])
     return menu
+
+
+
 
 
