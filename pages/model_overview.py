@@ -307,14 +307,38 @@ def summary_table_display():
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),    
+        html.Div([Header(app)]), 
+        html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Evidence Library", id="pagetitle"),
+            html.P("Model Descriptions", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                ], className="tab",), 
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",),    
         html.Div(
             [
                 html.Div(
                     [
                         html.Div([
                             html.Div([
-                                  dcc.Link(html.Button('Model Description'), href="/SimulationDashBoard/models"),
+                                  dcc.Link(html.Button('Model Description', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/models"),
                                  ], className="thirdtab",),
                             html.Div([
                                   dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),

@@ -247,6 +247,32 @@ def scenario_building_box():
 layout = html.Div(
     [
         html.Div([Header(app)]),
+                html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Simulation Tool", id="pagetitle"),
+            html.P("Energy", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool',
+                                 style={'text-decoration': 'none','color': '#14ac9c'}),
+                                  href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                ], className="tab",), 
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",), 
         html.Div(
             [
                 model_selection_box(),

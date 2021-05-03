@@ -422,7 +422,30 @@ def time_series_Index(ISO):
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        # page 1
+        html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Global Green Index", id="pagetitle"),
+            html.P("Global Overview", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                ], className="tab",), 
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",), 
         html.Div(
             [
                 
@@ -437,7 +460,7 @@ layout = html.Div(
                                  ], className="thirdtab",),
                                  
                             html.Div([
-                                 dcc.Link(html.Button('Country Profile'), href="/SimulationDashBoard/country-profile"),
+                                 dcc.Link(html.Button('Country Profile', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/country-profile"),
                                  ], className="thirdtab",), 
                             html.Div([
                                  dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),

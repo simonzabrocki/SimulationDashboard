@@ -1,7 +1,9 @@
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import dash_table
+from dash.dependencies import Input, Output
 from utils import Header
 from app import app, data
 
@@ -104,16 +106,45 @@ def Table(data):
 
 layout = html.Div(
     [
+
         html.Div([Header(app)]),
+        html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Global Green Index", id="pagetitle"),
+            html.P("Global Overview", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index', 
+                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
+                                 href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                ], className="tab",), 
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",),        
         html.Div(
-            [
+            [  
+            
                 html.Div(
                     [
-                        
+
                     html.Div([
                             html.Div([
-                                  dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
+                                  dcc.Link(html.Button('Global Overview', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/global_overview"), 
                                  ], className="thirdtab",),
+                                
                             html.Div([
                                   dcc.Link(html.Button('Regional Outlook'), href="/SimulationDashBoard/regional-outlouk"),
                                  ], className="thirdtab",),
@@ -124,7 +155,7 @@ layout = html.Div(
                             html.Div([
                                  dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
                                  ], className="thirdtab",),      
-                                                                           
+                                                            
                         ], className="thirdtabmain"),
                         html.Br([]),                        
                         html.Div(
@@ -142,6 +173,8 @@ layout = html.Div(
                     ],
                     className="pretty_container four columns",
                 ),
+
+
                 html.Div(
                     [
 
@@ -159,10 +192,14 @@ layout = html.Div(
                     ],
                     className="pretty_container eight columns"
                 ),
-
+            
             ],
             className="row",
         ),
     ],
     className="page",
 )
+
+
+
+

@@ -1,9 +1,10 @@
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import dash_table
 import pandas as pd
-
+from dash.dependencies import Input, Output
 from utils import Header
 from app import app, data
 
@@ -235,7 +236,31 @@ cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        # page 1
+        html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Global Green Index", id="pagetitle"),
+            html.P("Global Overview", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool'), 
+                                 href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
+                                ], className="tab",), 
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",), 
         html.Div(
             [
                 # ISO sel
@@ -246,7 +271,7 @@ layout = html.Div(
                                   dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
                                  ], className="thirdtab",),
                             html.Div([
-                                  dcc.Link(html.Button('Regional Outlook'), href="/SimulationDashBoard/regional-outlouk"),
+                                  dcc.Link(html.Button('Regional Outlook', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/regional-outlouk"),
                                  ], className="thirdtab",),
                                  
                             html.Div([
@@ -320,3 +345,6 @@ layout = html.Div(
     ],
     className="page",
 )
+
+
+
