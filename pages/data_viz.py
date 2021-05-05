@@ -104,7 +104,33 @@ def HTML_text(Indicator):
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        # page 1
+                html.Div([
+            html.Div([],className="titlespace",),
+            html.Div([
+            html.P("Evidence Library", id="pagetitle"),
+            html.P("Data", id="pagetitlechild"),
+            ],className="titlemain",),
+            
+        ],className="titlediv",),
+           html.Div([
+                   html.Div([
+                           
+                           html.Div([                               
+                                 dcc.Link(html.Button('Global Green Index'), 
+                                 href="/SimulationDashBoard/global_overview"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
+                                ], className="tab",),
+                           html.Div([
+                                 dcc.Link(html.Button('Evidence Library', 
+                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
+                                 href="/SimulationDashBoard/models"),
+                                ], className="tab",),
+                   
+                   ],
+                   className="row all-tabs",),
+           ],className="rowtabs",), 
         html.Div(
             [
                 html.Div(
