@@ -193,10 +193,15 @@ li {
   text-align: center;
   transition-duration: 1s;
 }
+
 .all-tabs {
-  text-align: left;
+  text-align: center;
   font-size: 13px;
-  margin: 0 30px;
+}
+
+.rowtabs{
+  display: grid;
+  grid-template-columns: 31% auto;
 }
 
 .main-title {
@@ -517,7 +522,8 @@ a:active {
   display: flex;
   flex-direction: row;
   margin-bottom: 0;
-}
+  }
+  
 .mainheader .mainnav{
  background:transparent;
  margin:70px 0 0 50px;
@@ -586,34 +592,29 @@ a:active {
 }
 
 
-
 #titleheader{
   color: #14ac9c;
   font-size: 20px;
   margin: 0 0 0 60%;
 }
 
-.rowtabs{
-  display: flex;
-  flex-direction: column-reverse;
-
-}
-
 #pagetitle{   
   margin-top: 0;
-  color: #14ac9c;
+  color: #ffffff;
   font-size: 25px;
 }
 
 #pagetitlechild{
   margin-top: 0;
-  color: #14ac9c;
+  color: #ffffff;
   font-size: 20px;
 }
 
 .titlediv{
   display: grid;
-  grid-template-columns: auto 69%  ;
+  grid-template-columns: auto 69%;
+  background: #14ac9d1b;
+  margin: 10px;
 }
 
 .titlediv .titlemain{

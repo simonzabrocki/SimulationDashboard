@@ -133,6 +133,7 @@ layout = html.Div(
                    
                    ],
                    className="row all-tabs",),
+                   html.Div(className="separation"),
            ],className="rowtabs",),        
         html.Div(
             [  

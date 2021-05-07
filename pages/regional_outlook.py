@@ -259,6 +259,7 @@ layout = html.Div(
                            html.Div([
                                  dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
                                 ], className="tab",), 
+                                html.Div(className="separation"),
                    
                    ],
                    className="row all-tabs",),

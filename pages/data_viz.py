@@ -127,6 +127,7 @@ layout = html.Div(
                                  style={'text-decoration': 'none','color': '#14ac9c'}), 
                                  href="/SimulationDashBoard/models"),
                                 ], className="tab",),
+                                html.Div(className="separation"),
                    
                    ],
                    className="row all-tabs",),
