@@ -190,10 +190,53 @@ def graph_display():
 
                 html.Div(
                     [
+
+                 html.Div(
+                    [
+                        html.Button('Reset Graph', id='btn-reset', n_clicks=0,
+                        style={'font-size': 20,
+                                       'font-weight': 'normal',
+                                       'width':'15%',
+                                       'height':'40px',
+                                       'border-radius':'5px',
+                                       'border-color':'#2db29b',
+                                       'color': '#2db29b',
+                                       'border-style':'none',
+                                       'background':'white',
+                                       'border-width':'1px',
+                                       'border-style':'solid',
+                                       'box-shadow': '5px 8px 10px 0 rgb(30 95 95 / 38%)',
+                                       }),
+                        html.H6(
+                            "Node description",
+                            className="subtitle padded",
+                        ),
                         html.Div(
+                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
+                                                            id='cytoscape-tapNodeData-output')],
+                            className="product",
+                        ),
+                        html.H6(
+                            "Impact",
+                            className="subtitle padded",
+                        ),
+                        html.Div(
+                            [html.H5(id="impactbox"), html.P(
+                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
+                            className="product",
+                        ),
+                    ],
+                    id="var-info-box",
+                    className="modelbox",
+                ),
+                    html.H6(
+                            "Title",
+                            className="subtitle padded",),
+                    html.Div(
                             [html.H5(id="graphbox"), html.P("Hover on node for info", style={
                                 'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
                             className="mini_containermodeltitle",
+                            
                         ),
                         cy_graph
                     ], className='containermodel'),
@@ -240,31 +283,7 @@ def description_display():
     tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
     layout = html.Div([
-             html.Div(
-                    [
-                        html.Button('Reset Graph', id='btn-reset', n_clicks=0),
-                        html.H6(
-                            "Node description",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
-                                                            id='cytoscape-tapNodeData-output')],
-                            className="product",
-                        ),
-                        html.H6(
-                            "Impact",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [html.H5(id="impactbox"), html.P(
-                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
-                            className="product",
-                        ),
-                    ],
-                    id="var-info-box",
-                    className="modelbox",
-                ),
+
 
         html.H6("Model description:", className="subtitle padded"),
         
@@ -320,7 +339,7 @@ layout = html.Div(
                    html.Div([
                            
                            html.Div([                               
-                                 dcc.Link(html.Button('Global Green Index'), href="/SimulationDashBoard/global_overview"),
+                                 dcc.Link(html.Button('Green Growth Index'), href="/SimulationDashBoard/global_overview"),
                                 ], className="tab",),
                            html.Div([
                                  dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
