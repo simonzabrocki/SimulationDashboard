@@ -206,6 +206,7 @@ def graph_display():
                                        'border-width':'1px',
                                        'border-style':'solid',
                                        'box-shadow': '5px 8px 10px 0 rgb(30 95 95 / 38%)',
+                                       'cursor': 'pointer',
                                        }),
                         html.H6(
                             "Node description",
