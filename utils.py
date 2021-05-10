@@ -46,17 +46,17 @@ def get_header(app):
     header = html.Div(
         [
             html.Div(
-                [
+            [
                     html.Img(
-                        src=app.get_asset_url("GGGI_logo.png"),
+                        src=app.get_asset_url("GGGI_logo1.png"),
                         className="logo",
                     ),
 
                     html.Div([
                         html.Ul([
                                 html.Li([html.A("Home", href="https://greengrowthindex.gggi.org/",),]),
-                                html.Li([html.Span(),]),    
-                                html.Li([html.A("Scores and Ranks", href="#",),]),
+                                html.Li([html.Span(),]), 
+                                html.Li([html.A("Index and Simulation", href="localhost:8080",),]),
                                 html.Li([html.Span(),]),
                                 html.Li([html.A("Publications", href="https://greengrowthindex.gggi.org/?page_id=3126",),]),
                                 html.Li([html.Span(),]),    
@@ -70,40 +70,12 @@ def get_header(app):
                             ]),
                     ],className="mainnav"),
 
-#                    html.A(
-#                        html.Button("About GGGI", id="learn-more-button"),
-#                        href="https://gggi.org/",
-#                    ),      
-
-
             ],
             className="mainheader",
             ),
-
-#           html.Div(
-#               [
-#                   html.Div(
-#                       [html.H5("Index and Simulation")],
-#                       className="seven columns main-title",
-#                   ),
-#                   html.A(
-#                       [
-#                           html.A(
-#                               "About the Index",
-#                               href="https://greengrowthindex.gggi.org/",
-#                               className="full-view-link",
-#                           )
-#                       ],
-#                       className="five columns",
-#                   ),
-#               ],
-#               className="twelve columns",
-#               style={"padding-left": "0"},
-#           ),
-
                
-        ],
-        className="mainheader",
+    ],
+    className="mainheader",
     )
     return header
 
