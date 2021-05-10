@@ -116,7 +116,7 @@ layout = html.Div(
                    html.Div([
                            
                            html.Div([                               
-                                 dcc.Link(html.Button('Global Green Index'), 
+                                 dcc.Link(html.Button('Green Growth Index'), 
                                  href="/SimulationDashBoard/global_overview"),
                                 ], className="tab",),
                            html.Div([

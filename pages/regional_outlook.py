@@ -239,7 +239,7 @@ layout = html.Div(
         html.Div([
             html.Div([],className="titlespace",),
             html.Div([
-            html.P("Global Green Index", id="pagetitle"),
+            html.P("Green Growth Index", id="pagetitle"),
             html.P("Regional Outlook", id="pagetitlechild"),
             ],className="titlemain",),
             
@@ -248,7 +248,7 @@ layout = html.Div(
                    html.Div([
                            
                            html.Div([                               
-                                 dcc.Link(html.Button('Global Green Index', 
+                                 dcc.Link(html.Button('Green Growth Index', 
                                  style={'text-decoration': 'none','color': '#14ac9c'}), 
                                  href="/SimulationDashBoard/global_overview"),
                                 ], className="tab",),
