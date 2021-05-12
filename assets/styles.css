@@ -231,7 +231,7 @@ li {
 }
 
 .logo {
-  height: 80px;
+  height: 85px;
   width: auto;
   margin: 30px 0 0 10px ;
 }
@@ -479,7 +479,8 @@ a:active {
 
 
 .mainheader .mainnav li a:link{
-  font-size: 20px;
+  font-size: 18px;
+  font-weight:500;
   text-align: center;
   text-decoration: none;
   color:#2db29b;
@@ -515,9 +516,9 @@ a:active {
 
 
 .mainheader .mainnav li span{
-  height: 20px;
+  height: 27px;
   width: 1px;
-  background-color: #2db29b;
+  background-color: white;
   display: block;
   margin: 0 10px;
 }
@@ -551,7 +552,7 @@ a:active {
   grid-template-columns: 50% 50%;
   }
   
-  .pretty_container .thirdtabmain .thirdtab{
+  .pretty_container .thirdtabmain .thirdtabs{
     width: 95%;
    margin: 5px;
   }
@@ -572,7 +573,7 @@ a:active {
   margin-bottom:20px ;
 }
 
-.thirdtab button{
+.thirdtabs button{
   width: 98%;
   height: 40px;
   margin: 0 5%;
@@ -585,7 +586,7 @@ a:active {
   cursor: pointer;
 } 
 
-.thirdtab button:hover{
+.thirdtabs button:hover{
   color: white;
   background: #2db29b;
 }
