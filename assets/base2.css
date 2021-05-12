@@ -264,8 +264,8 @@ a:hover {
 }
 
 /* Buttons */
-.button,
-button :not(thirdtab),
+.first-page .button,
+.first-page .button :not(thirdtabs),
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
