@@ -66,7 +66,7 @@ def get_header(app):
                                 html.Li([html.Span(),]),    
                                 html.Li([html.A("Partners", href="https://greengrowthindex.gggi.org/?page_id=2166",),]),
                                 html.Li([html.Span(),]),                                                                                                            
-                                html.Li([html.A("Contact", href="https://greengrowthindex.gggi.org/?page_id=2839",),]),
+                                html.Li([html.A("Contact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",),]),
                             ]),
                     ],className="mainnav"),
 
