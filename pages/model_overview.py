@@ -190,13 +190,19 @@ def graph_display():
 
                 html.Div(
                     [
-
-                 html.Div(
+                        html.Div(
+                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={
+                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
+                            className="mini_container",
+                        ),
+                        cy_graph
+                    ], className='container eight columns'),
+                html.Div(
                     [
                         html.Button('Reset Graph', id='btn-reset', n_clicks=0,
-                        style={'font-size': 20,
+                        style={'font-size': 15,
                                        'font-weight': 'normal',
-                                       'width':'15%',
+                                       'width':'40%',
                                        'height':'40px',
                                        'border-radius':'5px',
                                        'border-color':'#2db29b',
@@ -226,22 +232,12 @@ def graph_display():
                                 "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
                             className="product",
                         ),
+
+
                     ],
                     id="var-info-box",
-                    className="modelbox",
+                    className="pretty_container four columns",
                 ),
-                    html.H6(
-                            "Title",
-                            className="subtitle padded",),
-                    html.Div(
-                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={
-                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
-                            className="mini_containermodeltitle",
-                            
-                        ),
-                        cy_graph
-                    ], className='containermodel'),
-
             ],
             className='row'
         ),
@@ -362,17 +358,17 @@ layout = html.Div(
                         html.Div([
                             html.Div([
                                   dcc.Link(html.Button('Model Description', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                             html.Div([
                                   dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                                  
                             html.Div([
                                  dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/Python Codes"),
-                                 ], className="thirdtab",), 
+                                 ], className="thirdtabs",), 
                             html.Div([
                                  dcc.Link(html.Button('Data'), href="/SimulationDashBoard/data"),
-                                 ], className="thirdtab",),                                         
+                                 ], className="thirdtabs",),                                         
                         ], className="thirdtabmain"),
                         html.Br([]),
                         

@@ -154,16 +154,16 @@ def model_selection_box():
              html.Div([
                 html.Div([
                         dcc.Link(html.Button('Energy'), href="#"),
-                        ], className="thirdtab"),
+                        ], className="thirdtabs"),
                 html.Div([
                         dcc.Link(html.Button('Land'), href="#"),
-                        ], className="thirdtab",),   
+                        ], className="thirdtabs",),   
                 html.Div([
                         dcc.Link(html.Button('Water'), href="#"),
-                        ], className="thirdtab",), 
+                        ], className="thirdtabs",), 
                 html.Div([
                         dcc.Link(html.Button('Waste'), href="#"),
-                        ], className="thirdtab",), 
+                        ], className="thirdtabs",), 
             ], className="thirdtabmain"), 
             html.Br([]),    
 
@@ -224,14 +224,17 @@ def scenario_building_box():
                     html.Button('Run', id='btn-run', n_clicks=0,
                                 style={'font-size': 20,
                                        'font-weight': 'normal',
+                                       'width':'80px',
+                                       'height':'40px',
+                                       'border-radius':'5px',
                                        'color': '#ffffff',
-                                       'background': '#14ac9c',
-                                       'border': '#14ac9c',
+                                       'background': '#2db29b',
+                                       'border': '#2db29b',
                                        }),
                     dcc.Loading(
                         id="loading-scenario",
                         children=html.Div(id='loading-output'),
-                        color='#14ac9c',
+                        color='#2db29b',
                         type="dot",
                     ),
                 ],

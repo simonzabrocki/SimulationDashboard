@@ -142,16 +142,16 @@ layout = html.Div(
                             html.Div([
                                 html.Div([
                                   dcc.Link(html.Button('Model Description'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                                 html.Div([
                                   dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                                 html.Div([
                                  dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",), 
+                                 ], className="thirdtabs",), 
                                 html.Div([
                                  dcc.Link(html.Button('Data', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/data"),
-                                 ], className="thirdtab",),                                                                 
+                                 ], className="thirdtabs",),                                                                 
                             ], className="thirdtabmain"),
                                 html.Br([]),                                
                                 html.H6(

@@ -272,17 +272,17 @@ layout = html.Div(
                         html.Div([
                             html.Div([
                                   dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                             html.Div([
                                   dcc.Link(html.Button('Regional Outlook', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/regional-outlouk"),
-                                 ], className="thirdtab",),
+                                 ], className="thirdtabs",),
                                  
                             html.Div([
                                  dcc.Link(html.Button('Country Profile'), href="/SimulationDashBoard/country-profile"),
-                                 ], className="thirdtab",), 
+                                 ], className="thirdtabs",), 
                             html.Div([
                                  dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtab",),                                                      
+                                 ], className="thirdtabs",),                                                      
                         ], className="thirdtabmain"),
                         html.Br([]),
                         
