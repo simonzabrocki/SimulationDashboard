@@ -192,54 +192,39 @@ def graph_display():
                     [
                         html.Div(
                             [html.H5(id="graphbox"), html.P("Hover on node for info", style={
-                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
-                            className="mini_container",
+                                'font-weight': 'bold', 'font-size':15}, id='cytoscape-mouseoverNodeData-output')],
+                            className="mini_containermodeltitle",
                         ),
                         cy_graph
-                    ], className='container eight columns'),
+                    ], className='container-model'),
                 html.Div(
                     [
-                        html.Button('Reset Graph', id='btn-reset', n_clicks=0,
-                        style={'font-size': 15,
-                                       'font-weight': 'normal',
-                                       'width':'40%',
-                                       'height':'40px',
-                                       'border-radius':'5px',
-                                       'border-color':'#2db29b',
-                                       'color': '#2db29b',
-                                       'border-style':'none',
-                                       'background':'white',
-                                       'border-width':'1px',
-                                       'border-style':'solid',
-                                       'box-shadow': '5px 8px 10px 0 rgb(30 95 95 / 38%)',
-                                       'cursor': 'pointer',
-                                       }),
+                        html.Button('Reset Graph', id='btn-reset', n_clicks=0,),
                         html.H6(
                             "Node description",
-                            className="subtitle padded",
+                            className="subtitle-padded",
                         ),
                         html.Div(
                             [html.H5(id="graphbox"), html.P("Click on a node to get more information",
                                                             id='cytoscape-tapNodeData-output')],
-                            className="product",
+                            className="productmodel",
                         ),
                         html.H6(
                             "Impact",
-                            className="subtitle padded",
+                            className="subtitle-padded",
                         ),
                         html.Div(
                             [html.H5(id="impactbox"), html.P(
                                 "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
-                            className="product",
+                            className="productmodel",
                         ),
-
 
                     ],
                     id="var-info-box",
                     className="pretty_container four columns",
                 ),
             ],
-            className='row'
+            className='rowmodel'
         ),
     ]
     )
@@ -299,22 +284,7 @@ def description_display():
 
 def summary_table_display():
     layout = html.Div([
-        html.H6(
-            "Model summary table: ",
-            className="subtitle padded",
-        ),
-        dash_table.DataTable(id='summary_table',
-                             columns=[{'name': 'id', 'id': 'id'},
-                                      {'name': 'name', 'id': 'name'},
-                                      {'name': 'type', 'id': 'type'},
-                                      {'name': 'unit', 'id': 'unit'},
-                                      {'name': 'computation', 'id': 'computation'}
-                                      ],
-                             style_table={'overflowX': 'auto',
-                                          'height': '600px',
-                                          'overflowY': 'auto'},
-                             style_cell={'font_family': 'roboto'}
-                             )
+
 
     ]
     )
@@ -386,12 +356,38 @@ layout = html.Div(
                     ],
                     id="right-column",
                     className="pretty_container eight columns",
-                )
+                ),
             ],
             className="row",
         ),
-    ],
-    className="page",
+
+        html.Div([
+            html.Div(className="spacer",),    
+                
+                html.Div([
+                    html.H6(
+                    "Model summary table: ",
+                    className="subtitle-model",
+                     ),
+                    dash_table.DataTable(id='summary_table',
+                             columns=[{'name': 'id', 'id': 'id'},
+                                      {'name': 'name', 'id': 'name'},
+                                      {'name': 'type', 'id': 'type'},
+                                      {'name': 'unit', 'id': 'unit'},
+                                      {'name': 'computation', 'id': 'computation'}
+                                      ],
+                             style_table={'overflowX': 'auto',
+                                          'height': '600px',
+                                          'font-size':'20px',
+                                          'font-style':'Lato',
+                                          'overflowY': 'auto'},
+                             style_cell={'font_family': 'roboto'}
+                             ),
+                ],className="modelbox",),
+
+        ],className="modeldesc" ,),
+    
+    ],className="page",
 )
 
 

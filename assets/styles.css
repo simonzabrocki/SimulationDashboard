@@ -228,6 +228,7 @@ li {
   padding-bottom: 1px;
   padding-left: 30px;
   padding-right: 60px;
+  font-weight: 700;
 }
 
 .logo {
@@ -414,6 +415,7 @@ a:active {
   margin: 10px;
   padding: 30px;
   position: relative;
+  height: 20%;
   /*box-shadow: 2px 2px 2px lightgrey;*/
 }
 
@@ -453,19 +455,24 @@ a:active {
 
 .mini_container {
   border-radius: 5px;
-  background-color: #f9f9f9;
-  margin: 10px;
+  background-color: #2db29ccc;
+  margin: 10px 5px;
   padding: 15px;
-  position: relative;
   box-shadow: 2px 2px 2px lightgrey;
+  color: white;
+  width: auto;
+  position: relative;
 }
 
 .mini_containermodeltitle {
   /*border-radius: 5px;*/
-  background-color:#2db29b;
+  background-color:#0a997f9f;
+  border-color:#2db29b ;
+  border-radius: 3px;
   color: white;
   padding: 15px;
-  position: relative;
+  width: 30.6%;
+  position: absolute;
   /*box-shadow: 2px 2px 2px lightgrey;*/
 }
 
@@ -636,4 +643,93 @@ a:active {
   font-size: 15px;
 }
 
+.modeldesc{
+  display: grid;
+  grid-template-columns: auto 67.7%;
+  background:transparent;
+  width: 96.5%;
+  margin-bottom: 5%;
 
+}
+
+.modeldesc .modelbox{
+  background: white;
+  border-color: #2db29b; 
+  border-width: 3px;
+  border-style: solid;
+
+}
+
+.subtitle-model {
+  position: relative;
+  color: white;
+  left: 0;
+  height: 7%;
+  margin: 0mm;
+  border-left: 5px solid white;
+  background: #2db29b;
+  padding: 10px 5px 10px 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.rowmodel{
+  display: grid;
+  grid-template-rows:80% auto ;
+
+}
+
+#var-info-box{
+  height: auto;
+  position: absolute;
+  margin:100px 0 0 50% ;
+  background: #0a997f9f;
+  border-color: #2db29b;
+}
+
+.productmodel{
+  position: relative;
+  height: 15%;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 1px;
+  background:transparent;
+  color: #ffffff;
+}
+
+.subtitle-padded{
+  position: relative;
+  color: white;
+  left: 0;
+  height: 7%;
+  margin: 0mm;
+  border-left: 5px solid white;
+  background: #2db29b;
+  padding: 10px 5px 10px 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+#btn-reset {
+  font-size: 15px;
+  font-weight: normal;
+  width: 40%;
+  height: 40px;
+  border-radius: 5px;
+  border-color: rgb(45, 178, 155);
+  color: rgb(45, 178, 155);
+  background: white;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: rgb(30 95 95 / 38%) 5px 8px 10px 0px;
+  cursor: pointer;
+}
+
+#btn-reset:hover{
+  background: #2db29b;
+  color: white;
+}
+
+.container-model{
+  width: 100%;
+}
