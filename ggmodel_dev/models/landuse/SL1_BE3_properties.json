@@ -1,0 +1,18 @@
+{
+    "BE3_model": {
+        "description": "The change in above group biomass is calculated by multiplying the forest biomass increment rate in m3/ha multiplied by a harvest rate set by the user. The total forest biomass increment rates are calculated by taking the natural increment rate and a climate smart forestry policy.",
+        "display_name": "Change in above group Biomass",
+        "model": "BE3_model",
+        "model_group": "Landuse",
+        "indicator": "BE3",
+        "status": "🚧"
+    },
+    "SL1_model": {
+        "description": "The nutrient balance consist of nutrient in- and outputs. Nutrient inputs consist of 1) biological nitrogen fixation and 2) atmospheric nitrogen deposition, which are kept constant in the model.  3) fertilizer application to cropland and 4) manure application to croplands. The nutrient outputs are based on total crops harvested. The total food demand per food group is divided by the nitrogen concentration of their respective crop to compute the total crop nitrogen during harvest.  ",
+        "display_name": "Nutrient Balance",
+        "model": "SL1_model",
+        "model_group": "Landuse",
+        "indicator": "BE3",
+        "status": "🚧"
+    }
+}

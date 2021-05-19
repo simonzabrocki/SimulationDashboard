@@ -9,29 +9,8 @@ import dash
 from app import app
 from dash.dependencies import Input, Output
 from utils import Header
+from ggmodel_dev.models.utils import all_model_dictionary, all_model_properties_df
 
-
-model_dictionnary = all_models
-
-model_dictionnary_bis = [dict_model for key, dict_model in all_models.items()]
-model_dictionnary_bis = {
-    k: v for d in model_dictionnary_bis for k, v in d.items()}
-
-
-model_group_properties = {
-    'Water': {
-        'model_list': ['EW_model', 'EW1_partial_model', 'EW2_partial_model', 'IWW_model', 'MWU_model'],
-        'symbol': "💧"
-    },
-    'AFOLU': {
-        'model_list': ['GE3_model', 'BE3_model', 'BE2_model', 'SL1_model'],
-        'symbol': "🌾🌲"
-    },
-    'Combined models': {
-        'model_list': ['model_1'],
-        'symbol': '🌱'
-    },
-}
 
 cyto.load_extra_layouts()
 
@@ -117,7 +96,8 @@ def make_ISO_data_summary(ISO, model, data_dict):
 def make_dropdown_menu(model_dictionnary):
 
     model_group_option = [{'label': key, 'value': key}
-                          for key in model_group_properties.keys()]
+                          for key in all_model_properties_df.model_group.unique().tolist()]
+
     dropdown = html.Div(
         [
             html.H6(
@@ -136,7 +116,6 @@ def make_dropdown_menu(model_dictionnary):
                          multi=False, value='EW_model', clearable=False)
         ]
     )
-
     return dropdown
 
 
@@ -338,8 +317,12 @@ layout = html.Div(
     [dash.dependencies.Input("my-dynamic-dropdown", "value")],
 )
 def update_multi_options(value):
-    model_option = [{'label': model_properties[key]['display_name'], 'value': key}
-                    for key in model_group_properties[value]['model_list']]
+    model_option = (
+        all_model_properties_df.query(f'model_group == "{value}"')[
+            ['model', 'display_name']]
+        .rename(columns={'model': 'value', 'display_name': 'label'})
+        .to_dict('records')
+    )
     return model_option, model_option[0]['value']
 
 
@@ -350,7 +333,7 @@ def update_multi_options(value):
     ],
 )
 def update_summary_table(model_option):
-    return model_dictionnary_bis[model_option].summary_df.reset_index().to_dict('records')
+    return all_model_dictionary[model_option].summary_df.reset_index().to_dict('records')
 
 
 @app.callback(
@@ -361,7 +344,7 @@ def update_summary_table(model_option):
     ],
 )
 def update_graph_plot(model_option, n_clicks):
-    model = model_dictionnary_bis[model_option]
+    model = all_model_dictionary[model_option]
 
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'btn-reset' in changed_id:
@@ -377,12 +360,8 @@ def update_graph_plot(model_option, n_clicks):
     ],
 )
 def update_graph_description(model_option):
-    model = model_dictionnary_bis[model_option]
 
-    if model_option not in model_properties:
-        return 'TODO'
-    else:
-        return model_properties[model_option]['description']
+    return all_model_properties_df.query(f'model == "{model_option}"').description.values[0]
 
 
 @app.callback(
@@ -393,10 +372,8 @@ def update_graph_description(model_option):
     ],
 )
 def update_boxes(model_option):
-    model_group = model_properties[model_option]['model_group']
-    symbol = model_group_properties[model_group]['symbol']
-    status = model_properties[model_option]['status']
-
+    symbol = all_model_properties_df.query(f'model == "{model_option}"').symbol.values[0]
+    status = all_model_properties_df.query(f'model == "{model_option}"').status.values[0]
     return symbol, status
 
 
@@ -447,7 +424,7 @@ def displayHoverNodeData(data):
                Input("my-multi-dynamic-dropdown", "value"),
                Input("btn-reset", "n_clicks")])
 def displayImpactNodeData(data, model_option, n_clicks):
-    G = model_dictionnary_bis[model_option]
+    G = all_model_dictionary[model_option]
     outputs = G.outputs_()
     impacted_nodes = []
 
@@ -476,7 +453,7 @@ def highlightpath(data, model_option, n_clicks):
     if not data:
         return STYLESHEET
     else:
-        G = model_dictionnary_bis[model_option]
+        G = all_model_dictionary[model_option]
         outputs = G.outputs_()
 
         res = STYLESHEET.copy()

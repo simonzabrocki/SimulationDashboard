@@ -1,0 +1,10 @@
+{
+    "GGGM_model": {
+        "description": "This model is the global green growth model. It includes all the sectorial sub models",
+        "display_name": "Green Growth Model",
+        "model": "GGGM_model",
+        "model_group": "Green Growth",
+        "indicator": "GGI",
+        "status":  "🚧"
+    }
+}

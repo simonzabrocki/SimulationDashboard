@@ -1,0 +1,10 @@
+{
+    "GE3_model": {
+        "description": "This model calculates the different agricultural non-CO2 emissions using emission factors. To compare the different greenhouse gasses, they are converted to their respective CO2-equivalent using their global-warming potential in relative to CO2. From the total animal populations that are calculated in the food demand (FDTi) model, methane (CH4) emissions from enteric fermentation are computed. The total animal stocks are also used to compute the total manure that is produced per animal. Total manure production is used to compute the CH4 and nitrous oxide (N2O) emissions from manure that is treated, left on the pasture, and applied to the soils. In addition, N2O emissions from fertilizer use and other CH4 and N2O emissions that are not yet included are added. After summing, all the emissions are divided by total population to compute the GE3 indicator:  the ratio of non-CO2 emissions in agriculture to population.",
+        "display_name": "Agricultural Non-CO2 Emissions",
+        "model": "GE3_model",
+        "model_group": "Landuse",
+        "indicator": "GE3",
+        "status": "🚧"
+    }
+}
