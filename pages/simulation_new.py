@@ -14,187 +14,14 @@ import time
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+from pages.scenario_box import GE3_scenario_box, BE2_scenario_box, water_scenario_box
+
 
 scenario_properties = {
     'Scenario_one': {"name": 'Scenario 1'},
     'Scenario_two': {'name': 'Scenario 2'},
     'BAU': {'name': 'Business as Usual'},
 }
-
-
-def water_scenario_box(scenario_id='_one'):
-    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
-
-    layout = html.Div(
-
-        [
-            html.H5(Scenario_name),
-            html.Br([]),
-            html.P('Water Price annual increase', style={'font-size': 17}),
-            dcc.Slider(
-                id=f'WP-slider{scenario_id}',
-                min=0.80,
-                max=1.2,
-                step=None,
-                value=1,
-                marks={
-                    0.80: {'label': '-20%', 'style': {'color': 'white'}},
-                    0.90: {'label': '-10%', 'style': {'color': 'white'}},
-                    1: {'label': '0%', 'style': {'color': 'white'}},
-                    1.1: {'label': '+10%', 'style': {'color': 'white'}},
-                    1.2: {'label': '+20%', 'style': {'color': 'white'}},
-
-                },
-                included=False,
-            ),
-            html.Br([]),
-            html.P('Irrigation Water Efficiency annual increase',
-                   style={'font-size': 17}),
-            dcc.Slider(
-                id=f'WRR-slider{scenario_id}',
-                step=None,
-                value=1,
-                min=1,
-                max=1.01,
-                marks={
-                    1: {'label': '0%', 'style': {'color': 'white'}},
-                    1.005: {'label': '0.5%', 'style': {'color': 'white'}},
-                    1.01: {'label': '+1%', 'style': {'color': 'white'}},
-                },
-                included=False,
-            ),
-        ],
-        className='row')
-
-    return layout
-
-
-def BE2_scenario_box(scenario_id='_one'):
-
-    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
-
-    layout = html.Div(
-
-        [
-            html.H5(Scenario_name),
-            html.Br([]),
-            html.P('Food losses 2050 target', style={'font-size': 17}),
-            dcc.Slider(
-                id=f'FLOi-slider{scenario_id}',
-                step=None,
-                value=1,
-                min=0.5,  # To update later
-                max=1.5,
-                marks={
-                    0.5: {'label': '-50%', 'style': {'color': 'white'}},
-                    0.75: {'label': '-25%', 'style': {'color': 'white'}},
-                    1: {'label': '+0%', 'style': {'color': 'white'}},
-                    1.25: {'label': '+25%', 'style': {'color': 'white'}},
-                    1.5: {'label': '+50%', 'style': {'color': 'white'}},
-
-                },
-                included=False,
-            ),
-            html.Br([]),
-            html.P('Food demand 2050 target',
-                   style={'font-size': 17}),
-            dcc.Slider(
-                id=f'FDKGi-slider{scenario_id}',
-                step=None,
-                value=1,
-                min=0.5,  # To update later
-                max=1.5,
-                marks={
-                    0.5: {'label': '-50%', 'style': {'color': 'white'}},
-                    0.75: {'label': '-25%', 'style': {'color': 'white'}},
-                    1: {'label': '+0%', 'style': {'color': 'white'}},
-                    1.25: {'label': '+25%', 'style': {'color': 'white'}},
-                    1.5: {'label': '+50%', 'style': {'color': 'white'}},
-
-                },
-                included=False,
-            ),
-            html.Br([]),
-            html.P('Crop yields 2050 targets',
-                   style={'font-size': 17}),
-            dcc.Slider(
-                id=f'CYi-slider{scenario_id}',
-                step=None,
-                value=1,
-                min=1,
-                max=1.1,
-                marks={
-                    1: {'label': '+0%', 'style': {'color': 'white'}},
-                    1.05: {'label': '+5%', 'style': {'color': 'white'}},
-                    1.1: {'label': '+10%', 'style': {'color': 'white'}},
-                },
-                included=False,
-            ),
-            html.Br([]),
-            html.P('Reforestation annual rate',
-                   style={'font-size': 17}),
-            dcc.Slider(
-                id=f'R_rate-slider{scenario_id}',
-                step=None,
-                value=0,
-                min=0,  # To update with proper values later
-                max=100,
-                marks={
-                    0: {'label': '0%', 'style': {'color': 'white'}},
-                    25: {'label': '25%', 'style': {'color': 'white'}},
-                    50: {'label': '50%', 'style': {'color': 'white'}},
-                    100: {'label': '100%', 'style': {'color': 'white'}},
-                },
-                included=False,
-            ),
-        ],
-        className='row')
-
-    return layout
-
-
-def GE3_scenario_box(scenario_id='_one'):
-
-    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
-
-    step = 0.1
-    layout = html.Div(
-
-        [
-            html.H5(Scenario_name),
-            html.Br([]),
-            html.P('% Manure treated', style={'font-size': 17}),
-            dcc.Slider(
-                id=f'MM_Ti-slider{scenario_id}',
-                step=step,
-                value=1/2,
-                min=0,  # To update later
-                max=1,
-                marks={
-                    0: {'label': '0%', 'style': {'color': 'white'}},
-                    1: {'label': '100%', 'style': {'color': 'white'}},
-                },
-                included=False,
-            ),
-            html.Br([]),
-            html.P('% Manure applied to soils', style={'font-size': 17}),
-            dcc.Slider(
-                id=f'MM_ASi-slider{scenario_id}',
-                step=step,
-                value=1,
-                min=0,  # To update later
-                max=1,
-                marks={
-                    0: {'label': '0%', 'style': {'color': 'white'}},
-                    1: {'label': '100%', 'style': {'color': 'white'}},
-                },
-                included=False,
-            ),
-        ],
-        className='row')
-
-    return layout
-
 
 def model_selection_box():
     layout = html.Div(
@@ -320,6 +147,12 @@ scenario_box_dictionnary = {
     'GE3_model': GE3_scenario_box,
 }
 
+scenario_function_dictionnary = {
+    'EW_models': run_EW_scenario,
+    'BE2_model': GM.demo_script_Hermen.run_BE2_scenario,
+    'GE3_model': GM.demo_script_Hermen.run_GE3_scenario,
+}
+
 
 @app.callback(
     Output('scenario_box_1', 'children'),
@@ -348,6 +181,7 @@ component_variable_dictionnary = {
 def get_args_dict_from_scenario_box(box):
     ided_components = [el for el in box['props']
                        ['children'] if 'id' in el['props']]
+
     arg_dict = {el['props']['id'].rstrip('_one').rstrip('_two'): el['props']['value'] for el in ided_components}
 
     arg_dict = {component_variable_dictionnary[k]: v for k, v in arg_dict.items()}
@@ -359,7 +193,6 @@ def get_args_dict_from_scenario_box(box):
 @app.callback(
     Output("results-graph-1", "figure"),
     Output("results-graph-2", "figure"),
-    #Output('context-graph-1', 'figure'),
     Output("loading-output", "children"),
     [
         Input('scenario_box_1', 'children'),
@@ -384,10 +217,7 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
                 data_dict = {key: value.loc[[ISO]] for key, value in data_dict_expanded.items()}
 
                 scenarios_results['BAU'] = run_EW_scenario(data_dict)
-                
-
                 scenarios_results['scenario_one'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_1)
-
                 scenarios_results['scenario_two'] = run_EW_scenario(data_dict_expanded=data_dict, **args_dict_2)
 
                 df_1 = format_var_results(scenarios_results, 'EW1')
@@ -402,14 +232,10 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
 
                 scenarios_results = {}
 
-                data_dict = {k: v.loc[ISO, 2018:] for k, v in GM.demo_script_Hermen.data_dict.items() if k not in ['CL_corr_coef']}
-                
-                
-            
+                data_dict = {k: v.loc[ISO, 2018:] for k, v in GM.demo_script_Hermen.data_dict.items() if k not in ['CL_corr_coef']}          
                 data_dict = GM.demo_script_Hermen.run_BE2_projection(data_dict)
                 
                 data_dict['CL_corr_coef'] = 1.4
-                
                 data_dict['R_rate'].loc[:, 2018] = 0
                 
                 scenarios_results['BAU'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict)
@@ -432,17 +258,10 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
                 scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_1)
                 scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_GE3_scenario(data_dict=data_dict, **args_dict_2)
 
-                #d_1 , c_1 = format_data_dict_sankey(scenarios_results['scenario_one'])
                 d_1 , c_1 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
                 d_2 , c_2 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
                 d_3 , c_3 = format_data_dict_sankey({k: v for k, v in scenarios_results['BAU'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
                 
-
-
-                # fig_1 = make_subplots(rows=2, cols=1)
-                # fig_1.append_trace(plot_sanky_GE3(d_1, c_1)['data'][0], row=1, col=1)
-                # fig_1.append_trace(plot_sanky_GE3(d_2, c_2)['data'][0], row=2, col=1)
-
 
                 fig_1 = plot_sanky_GE3(d_1, c_1).update_layout(title='Scenario 1')
                 fig_2 = plot_sanky_GE3(d_2, c_2).update_layout(title='Scenario 2')
@@ -467,7 +286,6 @@ def format_var_results(scenarios_results, var):
             scenario='Scenario 2'),
         scenarios_results['BAU'][var].reset_index().assign(scenario='BAU'),
     ], axis=0).rename(columns={0: var})
-
     return df
 
 

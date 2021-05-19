@@ -4,7 +4,6 @@ import dash_html_components as html
 import dash_table
 import dash_core_components as dcc
 import pandas as pd
-from GM.models.all_models import all_models, model_properties
 import dash
 from app import app
 from dash.dependencies import Input, Output
@@ -146,7 +145,6 @@ def info_boxes_display():
 
 
 def graph_display():
-
     cy_graph = cyto.Cytoscape(
         id='cytoscape-graph-model',
         layout={'name': 'dagre',
@@ -288,7 +286,7 @@ layout = html.Div(
             [
                 html.Div(
                     [
-                        make_dropdown_menu(all_models),
+                        make_dropdown_menu(all_model_dictionary),
                         info_boxes_display(),
                         description_display(),
                         summary_table_display()
