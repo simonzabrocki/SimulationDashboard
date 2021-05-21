@@ -1,20 +1,16 @@
 import dash_html_components as html
 import dash_core_components as dcc
-import pandas as pd
-import dash
 from app import app, ISO_options
 from dash.dependencies import Input, Output
-from utils import Header
-import plotly.express as px
-from GM.demo_script import run_EW_scenario, data_dict_expanded
+from utils import Header, is_btn_clicked
+from GM.demo_script import data_dict_expanded
 import GM.demo_script_Hermen
-from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 from dash.exceptions import PreventUpdate
-import time
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from pages.scenario_box import GE3_scenario_box, BE2_scenario_box, water_scenario_box
-from pages.scenario_function import run_all_scenarios_water, run_all_scenarios_BE2, run_all_scenarios_GE3
+from pages.scenario_function import (run_all_scenarios_water,
+                                     run_all_scenarios_BE2,
+                                     run_all_scenarios_GE3,
+                                     get_data_dict_from_folder)
 
 
 scenario_properties = {
@@ -36,7 +32,8 @@ def model_selection_box():
                          options=[
                             {'label': 'Efficient Water Model', 'value': 'EW_models'},
                             {'label': 'Land Use Model', 'value': 'BE2_model'},
-                            {'label': 'Agricultural Emissions Model', 'value': 'GE3_model'},
+                            {'label': 'Agricultural Emissions Model',
+                                'value': 'GE3_model'},
                          ],
                          value='EW_models'
                          )
@@ -108,7 +105,8 @@ def get_args_dict_from_scenario_box(box):
     ided_components = [el for el in box['props']
                        ['children'] if 'id' in el['props']]
 
-    arg_dict = {el['props']['id'][:-4]: el['props']['value'] for el in ided_components}
+    arg_dict = {el['props']['id'][:-4]: el['props']['value']
+                for el in ided_components}
 
     return arg_dict
 
@@ -157,10 +155,17 @@ scenario_box_dictionnary = {
     'GE3_model': GE3_scenario_box,
 }
 
+scenario_data_dictionnary = {
+    'EW_models': data_dict_expanded,
+    #'BE2_model': GM.demo_script_Hermen.data_dict,
+    'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
+    'GE3_model': GM.demo_script_Hermen.GE3_data_dict,
+}
+
 scenario_function_dictionnary = {
-    'EW_models': run_EW_scenario,
-    'BE2_model': GM.demo_script_Hermen.run_BE2_scenario,
-    'GE3_model': GM.demo_script_Hermen.run_GE3_scenario,
+    'EW_models': run_all_scenarios_water,
+    'BE2_model': run_all_scenarios_BE2,
+    'GE3_model': run_all_scenarios_GE3,
 }
 
 
@@ -189,57 +194,21 @@ def update_scenario_box(model_name):
     ]
 )
 def run_scenario(box_1, box_2, ISO, model, n_clicks):
-    '''To clean up'''
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-
-    if 'btn-run' in changed_id:
-
+    if is_btn_clicked('btn-run'):
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
 
-        try:  # To generalize
-            if model == 'EW_models':
-                fig_1, fig_2, fig_3 = run_all_scenarios_water(data_dict_expanded, ISO, args_dict_1, args_dict_2)
-
-            if model == 'BE2_model':
-                fig_1, fig_2, fig_3 = run_all_scenarios_BE2(GM.demo_script_Hermen.data_dict, ISO, args_dict_1, args_dict_2)
-            
-            if model == 'GE3_model':
-                fig_1, fig_2, fig_3 = run_all_scenarios_GE3(GM.demo_script_Hermen.GE3_data_dict, ISO, args_dict_1, args_dict_2)
+        try:
+            scenario_function = scenario_function_dictionnary[model]
+            data = scenario_data_dictionnary[model]
+            fig_1, fig_2, fig_3 = scenario_function(
+                data, ISO, args_dict_1, args_dict_2)
 
         except Exception as e:
             print(e)
             return {}, {}, {}, None
-       
+
         return fig_1, fig_2, None
-   
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
-
-
-def format_var_results(scenarios_results, var):
-    df = pd.concat([
-        scenarios_results['scenario_one'][var].reset_index().assign(
-            scenario='Scenario 1'),
-        scenarios_results['scenario_two'][var].reset_index().assign(
-            scenario='Scenario 2'),
-        scenarios_results['BAU'][var].reset_index().assign(scenario='BAU'),
-    ], axis=0).rename(columns={0: var})
-    return df
-
-
-def scenario_line_plot(var, df, ISO):  # ugly af
-    fig = px.line(df.query(f"ISO == '{ISO}' and Year >= 2000"),
-                  x='Year',
-                  y=var,
-                  color='scenario',
-                  color_discrete_map={'Scenario 1': '#D8A488',
-                                      'Scenario 2': '#86BBD8',
-                                      'BAU': '#A9A9A9'},
-                  )
-
-    fig.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
-    fig.update_layout(hovermode="x")
-    fig.update_layout(legend_title_text='Scenario')
-    return fig

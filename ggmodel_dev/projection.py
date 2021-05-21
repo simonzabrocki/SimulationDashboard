@@ -23,6 +23,14 @@ def apply_percent_target_projection(series, percent_target=0, baseline_year=2018
     return series.interpolate()
 
 
+def apply_target_projection(series, target=0, baseline_year=2018, target_year=2050, final_year=2050):
+    series = series.copy()
+    series = reindex_series_non_itemized(series, max_year=final_year)
+    series.loc[:, target_year:final_year+1, :] = target
+    return series.interpolate()
+
+
+
 def apply_itemized_percent_target_projection(series, percent_target=0, baseline_year=2018, target_year=2050):
     '''To improve: Apply item wise projection'''
     series = series.copy()

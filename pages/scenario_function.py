@@ -1,9 +1,11 @@
 import pandas as pd
+import os
 from GM.demo_script import run_EW_scenario
 from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 import GM.demo_script_Hermen
 import plotly.express as px
-
+from ggmodel_dev.models.landuse import BE2_scenario
+from ggmodel_dev.projection import run_projection, run_scenario_list
 
 def format_var_results(scenarios_results, var):
     df = pd.concat([
@@ -32,6 +34,15 @@ def scenario_line_plot(var, df, ISO):  # ugly af
     return fig
 
 
+def get_data_dict_from_folder(folder_name):
+    files = os.listdir(folder_name)
+    data_dict = {file.split('.')[0]: pd.read_csv(f'{folder_name}/{file}') for file in files}
+    
+    data_dict = {name: df.set_index([col for col in df.columns if col != name]).squeeze() for name, df in data_dict.items()}
+    
+    return data_dict
+
+
 def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results = {}
 
@@ -56,15 +67,12 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     
     scenarios_results = {}
 
-    data_dict = {k: v.loc[ISO, 2018:] for k, v in data_dict.items() if k not in ['CL_corr_coef']}          
-    data_dict = GM.demo_script_Hermen.run_BE2_projection(data_dict)
-    
-    data_dict['CL_corr_coef'] = 1.4
-    data_dict['R_rate'].loc[:, 2018] = 0
+    data_dict = {k: v.loc[ISO, 2018:] for k, v in data_dict.items()}          
 
-    scenarios_results['BAU'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict)
-    scenarios_results['scenario_one'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_1)
-    scenarios_results['scenario_two'] = GM.demo_script_Hermen.run_BE2_scenario(data_dict=data_dict, **args_dict_2)
+    data_dict = run_projection(BE2_scenario.projection_dict, data_dict)
+    scenarios_results['BAU'] = BE2_scenario.run_scenario(data_dict=data_dict)
+    scenarios_results['scenario_one'] = BE2_scenario.run_scenario(data_dict=data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = BE2_scenario.run_scenario(data_dict=data_dict, **args_dict_2)
 
     df_1 = format_var_results(scenarios_results, 'BE2')
     df_2 = format_var_results(scenarios_results, 'delta_CL')

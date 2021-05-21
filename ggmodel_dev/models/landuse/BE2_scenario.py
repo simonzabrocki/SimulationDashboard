@@ -29,7 +29,9 @@ def run_scenario(data_dict, FDKGi_target=1, FLOi_target=1, CYi_target=1, R_rate=
         'CYi': lambda x: apply_itemized_percent_target_projection(x, CYi_target),
         'FDKGi': lambda x: apply_itemized_percent_target_projection(x, FDKGi_target),
         'FLOi': lambda x: apply_itemized_percent_target_projection(x, FLOi_target),
-        'R_rate': lambda x: apply_constant_projection(x, R_rate)
+        #'R_rate': lambda x: apply_constant_projection(x, R_rate)
+        'R_rate': lambda x: apply_target_projection(x, R_rate, target_year=2050)
+
     }
 
     data_dict = run_projection(projection_dict, data_dict)

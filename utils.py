@@ -1,3 +1,4 @@
+import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import pandas as pd
@@ -121,3 +122,8 @@ def get_menu():
         className="row all-tabs",
     )
     return menu
+
+
+def is_btn_clicked(btn_id):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    return btn_id in changed_id
