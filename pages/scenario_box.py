@@ -18,7 +18,7 @@ def water_scenario_box(scenario_id='_one'):
             html.Br([]),
             html.P('Water Price annual increase', style={'font-size': 17}),
             dcc.Slider(
-                id=f'WP-slider{scenario_id}',
+                id=f'WP_rate{scenario_id}',
                 min=0.80,
                 max=1.2,
                 step=None,
@@ -29,7 +29,6 @@ def water_scenario_box(scenario_id='_one'):
                     1: {'label': '0%', 'style': {'color': 'white'}},
                     1.1: {'label': '+10%', 'style': {'color': 'white'}},
                     1.2: {'label': '+20%', 'style': {'color': 'white'}},
-
                 },
                 included=False,
             ),
@@ -37,7 +36,7 @@ def water_scenario_box(scenario_id='_one'):
             html.P('Irrigation Water Efficiency annual increase',
                    style={'font-size': 17}),
             dcc.Slider(
-                id=f'WRR-slider{scenario_id}',
+                id=f'WRR_rate{scenario_id}',
                 step=None,
                 value=1,
                 min=1,
@@ -66,7 +65,7 @@ def BE2_scenario_box(scenario_id='_one'):
             html.Br([]),
             html.P('Food losses 2050 target', style={'font-size': 17}),
             dcc.Slider(
-                id=f'FLOi-slider{scenario_id}',
+                id=f'FLOi_target{scenario_id}',
                 step=None,
                 value=1,
                 min=0.5,  # To update later
@@ -85,7 +84,7 @@ def BE2_scenario_box(scenario_id='_one'):
             html.P('Food demand 2050 target',
                    style={'font-size': 17}),
             dcc.Slider(
-                id=f'FDKGi-slider{scenario_id}',
+                id=f'FDKGi_target{scenario_id}',
                 step=None,
                 value=1,
                 min=0.5,  # To update later
@@ -104,7 +103,7 @@ def BE2_scenario_box(scenario_id='_one'):
             html.P('Crop yields 2050 targets',
                    style={'font-size': 17}),
             dcc.Slider(
-                id=f'CYi-slider{scenario_id}',
+                id=f'CYi_target{scenario_id}',
                 step=None,
                 value=1,
                 min=1,
@@ -120,7 +119,7 @@ def BE2_scenario_box(scenario_id='_one'):
             html.P('Reforestation annual rate',
                    style={'font-size': 17}),
             dcc.Slider(
-                id=f'R_rate-slider{scenario_id}',
+                id=f'R_rate{scenario_id}',
                 step=None,
                 value=0,
                 min=0,  # To update with proper values later
@@ -151,7 +150,7 @@ def GE3_scenario_box(scenario_id='_one'):
             html.Br([]),
             html.P('% Manure treated', style={'font-size': 17}),
             dcc.Slider(
-                id=f'MM_Ti-slider{scenario_id}',
+                id=f'MM_Ti{scenario_id}',
                 step=step,
                 value=1/2,
                 min=0,  # To update later
@@ -165,7 +164,7 @@ def GE3_scenario_box(scenario_id='_one'):
             html.Br([]),
             html.P('% Manure applied to soils', style={'font-size': 17}),
             dcc.Slider(
-                id=f'MM_ASi-slider{scenario_id}',
+                id=f'MM_ASi{scenario_id}',
                 step=step,
                 value=1,
                 min=0,  # To update later
