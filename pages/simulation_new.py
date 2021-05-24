@@ -3,14 +3,18 @@ import dash_core_components as dcc
 from app import app, ISO_options
 from dash.dependencies import Input, Output
 from utils import Header, is_btn_clicked
-from GM.demo_script import data_dict_expanded
-import GM.demo_script_Hermen
 from dash.exceptions import PreventUpdate
-from pages.scenario_box import GE3_scenario_box, BE2_scenario_box, water_scenario_box
+
+from pages.scenario_box import (GE3_scenario_box,
+                                BE2_scenario_box,
+                                water_scenario_box)
+
 from pages.scenario_function import (run_all_scenarios_water,
                                      run_all_scenarios_BE2,
                                      run_all_scenarios_GE3,
-                                     get_data_dict_from_folder)
+                                     get_data_dict_from_folder,
+                                     get_data_dict_from_folder_parquet
+                                     )
 
 
 scenario_properties = {
@@ -156,10 +160,9 @@ scenario_box_dictionnary = {
 }
 
 scenario_data_dictionnary = {
-    'EW_models': data_dict_expanded,
-    #'BE2_model': GM.demo_script_Hermen.data_dict,
+    'EW_models': get_data_dict_from_folder('data/sim/EW'),
     'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
-    'GE3_model': GM.demo_script_Hermen.GE3_data_dict,
+    'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
 }
 
 scenario_function_dictionnary = {

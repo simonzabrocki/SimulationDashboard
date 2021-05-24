@@ -22,7 +22,7 @@ projection_dict = {
  }
 
 
-def run_scenario(data_dict, WP_rate=1.05, WRR_rate=1.01):
+def run_scenario(data_dict, WP_rate=1.0, WRR_rate=1.00):
     
     data_dict = data_dict.copy()
 

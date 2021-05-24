@@ -75,8 +75,7 @@ def BE2_scenario_box(scenario_id='_one'):
                     0.75: {'label': '-25%', 'style': {'color': 'white'}},
                     1: {'label': '+0%', 'style': {'color': 'white'}},
                     1.25: {'label': '+25%', 'style': {'color': 'white'}},
-                    1.5: {'label': '+50%', 'style': {'color': 'white'}},
-
+                    1.5: {'label': '+50%', 'style': {'color': 'white'}}
                 },
                 included=False,
             ),
