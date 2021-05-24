@@ -1,0 +1,10 @@
+{
+    "JE_model": {
+        "description": "TO DO",
+        "display_name": "Job equivalent model",
+        "model": "JE_model",
+        "model_group": "Green Job",
+        "indicator": "GJ1",
+        "status": "✔️"
+        }
+}

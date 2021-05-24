@@ -1,0 +1,10 @@
+{
+    "VEHC_model": {
+        "description": "Transport activity demand is calculated by the vehicle stock multiplied by the transport intensity. Vehicle stock is represented by a Gompertz model as a function of gross domestic product per capita of a country. Transport intensity of each country is then multiplied to give total transport activity demand per year.",
+        "display_name": "Transport Energy Intensity Level of Primary Energy",
+        "model": "VEHC_model",
+        "model_group": "Transport",
+        "indicator": "EE1",
+        "status": "✔️"
+        }
+}

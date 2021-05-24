@@ -21,7 +21,7 @@ VDMC_nodes = {'DEi': {'type': 'input',
               }
 
 
-JE_nodes = {'DMCi': {'type': 'variable', 'name': 'Domestic material consumption per material', 'unit': 'tonnes'},
+JE_nodes = {'DMCi': {'type': 'input', 'name': 'Domestic material consumption per material', 'unit': 'tonnes'},
             'MI': {'type': 'input',
                    'name': 'Material Efficiency Improvement',
                    'unit': '%'},
@@ -59,3 +59,6 @@ model_dictionnary = {
     'VDMC_model': VDMC_model,
     'JE_model': JE_model
 }
+
+
+model_properties = get_model_properties('models/greenjob/JE_properties.json')
