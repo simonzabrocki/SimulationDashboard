@@ -179,3 +179,47 @@ def GE3_scenario_box(scenario_id='_one'):
 
     return layout
 
+
+def VEHC_scenario_box(scenario_id='_one'):
+
+    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
+
+    layout = html.Div(
+
+        [
+            html.H5(Scenario_name),
+            html.Br([]),
+            html.P('Vehicle per Capita Saturation Level', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'MAX_sat{scenario_id}',
+                step=50,
+                value=550,
+                min=300,  # To update later
+                max=800,
+                marks={
+                    300: {'label': '300', 'style': {'color': 'white'}},
+                    550: {'label': '550', 'style': {'color': 'white'}},
+                    800: {'label': '800', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+            html.P('GDPC annual growth', style={'font-size': 17}),
+            dcc.Slider(
+                id=f'GDPC_rate{scenario_id}',
+                step=0.05,
+                value=1,
+                min=0.95,  # To update later
+                max=1.1,
+                marks={
+                    0.95: {'label': '-5%', 'style': {'color': 'white'}},
+                    1: {'label': '0%', 'style': {'color': 'white'}},
+                    1.05: {'label': '5%', 'style': {'color': 'white'}},
+                    1.1: {'label': '10%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+        ],
+        className='row')
+
+    return layout

@@ -7,9 +7,11 @@ from dash.exceptions import PreventUpdate
 
 from pages.scenario_box import (GE3_scenario_box,
                                 BE2_scenario_box,
-                                water_scenario_box)
+                                water_scenario_box,
+                                VEHC_scenario_box,
+                                )
 
-from pages.scenario_function import (run_all_scenarios_water,
+from pages.scenario_function import (run_all_scenarios_VEHC, run_all_scenarios_water,
                                      run_all_scenarios_BE2,
                                      run_all_scenarios_GE3,
                                      get_data_dict_from_folder,
@@ -36,8 +38,8 @@ def model_selection_box():
                          options=[
                             {'label': 'Efficient Water Model', 'value': 'EW_models'},
                             {'label': 'Land Use Model', 'value': 'BE2_model'},
-                            {'label': 'Agricultural Emissions Model',
-                                'value': 'GE3_model'},
+                            {'label': 'Agricultural Emissions Model', 'value': 'GE3_model'},
+                            {'label': 'Vehicle Ownership rate Model', 'value': 'VEHC_model'}
                          ],
                          value='EW_models'
                          )
@@ -157,18 +159,21 @@ scenario_box_dictionnary = {
     'EW_models': water_scenario_box,
     'BE2_model': BE2_scenario_box,
     'GE3_model': GE3_scenario_box,
+    'VEHC_model': VEHC_scenario_box,
 }
 
 scenario_data_dictionnary = {
     'EW_models': get_data_dict_from_folder('data/sim/EW'),
     'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
     'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
+    'VEHC_model': get_data_dict_from_folder('data/sim/VEHC'),
 }
 
 scenario_function_dictionnary = {
     'EW_models': run_all_scenarios_water,
     'BE2_model': run_all_scenarios_BE2,
     'GE3_model': run_all_scenarios_GE3,
+    'VEHC_model': run_all_scenarios_VEHC,
 }
 
 

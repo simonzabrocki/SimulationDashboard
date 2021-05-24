@@ -4,6 +4,7 @@ from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 import plotly.express as px
 from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario
 from ggmodel_dev.models.water import EW_scenario
+from ggmodel_dev.models.transport import VEHC_scenario
 from ggmodel_dev.projection import run_projection
 
 
@@ -122,5 +123,28 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     fig_1 = plot_sanky_GE3(d_1, c_1).update_layout(title='Scenario 1')
     fig_2 = plot_sanky_GE3(d_2, c_2).update_layout(title='Scenario 2')
     fig_3 = plot_sanky_GE3(d_3, c_3).update_layout(title='Business as Usual')
+
+    return fig_1, fig_2, fig_3
+
+
+def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
+
+    scenarios_results = {}
+    data_dict = {k: v.loc[[ISO]] for k, v in data_dict.items()}
+
+    scenarios_results['BAU'] = VEHC_scenario.run_scenario(
+        data_dict, MAX_sat=data_dict['MAX_sat'], GDPC_rate=1.02)
+    scenarios_results['scenario_one'] = VEHC_scenario.run_scenario(
+        data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = VEHC_scenario.run_scenario(
+        data_dict, **args_dict_2)
+
+
+    df_1 = format_var_results(scenarios_results, 'VEHC')
+    df_2 = format_var_results(scenarios_results, 'GDPC')
+
+    fig_1 = scenario_line_plot('VEHC', df_1, ISO)
+    fig_2 = scenario_line_plot('GDPC', df_2, ISO)
+    fig_3 = {}
 
     return fig_1, fig_2, fig_3
