@@ -8,7 +8,7 @@ from GM.models.all_models import all_models, model_properties
 import dash
 from app import app
 from dash.dependencies import Input, Output
-from utils import Header
+from utils import Header, evidence_lib_menu
 
 
 model_dictionnary = all_models
@@ -192,14 +192,15 @@ def graph_display():
                     [
                         html.Div(
                             [html.H5(id="graphbox"), html.P("Hover on node for info", style={
-                                'font-weight': 'bold', 'font-size':15}, id='cytoscape-mouseoverNodeData-output')],
+                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
                             className="mini_containermodeltitle",
                         ),
                         cy_graph
                     ], className='container-model'),
                 html.Div(
                     [
-                        html.Button('Reset Graph', id='btn-reset', n_clicks=0,),
+                        html.Button('Reset Graph',
+                                    id='btn-reset', n_clicks=0,),
                         html.H6(
                             "Node description",
                             className="subtitle-padded",
@@ -268,14 +269,14 @@ def description_display():
 
 
         html.H6("Model description:", className="subtitle padded"),
-        
+
         html.Div(
             [
                 html.P(tmp_text, id='description-graph-model',
                        style={'font-size': 13})
             ],
             className='product'),
-            
+
     ]
     )
 
@@ -284,92 +285,10 @@ def description_display():
 
 def summary_table_display():
     layout = html.Div([
-
-
-    ]
-    )
-    return layout
-
-
-layout = html.Div(
-    [
-        html.Div([Header(app)]), 
-        html.Div([
-            html.Div([],className="titlespace",),
-            html.Div([
-            html.P("Evidence Library", id="pagetitle"),
-            html.P("Model Descriptions", id="pagetitlechild"),
-            ],className="titlemain",),
-            
-        ],className="titlediv",),
-           html.Div([
-                   html.Div([
-                           
-                           html.Div([                               
-                                 dcc.Link(html.Button('Green Growth Index'), href="/SimulationDashBoard/global_overview"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Evidence Library',
-                                 style={'text-decoration': 'none','color': '#14ac9c'}),
-                                  href="/SimulationDashBoard/models"),
-                                ], className="tab",), 
-                                html.Div(className="separation"),
-                   
-                   ],
-                   className="row all-tabs",),
-           ],className="rowtabs",),    
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Div([
-                            html.Div([
-                                  dcc.Link(html.Button('Model Description', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),
-                            html.Div([
-                                  dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),
-                                 
-                            html.Div([
-                                 dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/Python Codes"),
-                                 ], className="thirdtabs",), 
-                            html.Div([
-                                 dcc.Link(html.Button('Data'), href="/SimulationDashBoard/data"),
-                                 ], className="thirdtabs",),                                         
-                        ], className="thirdtabmain"),
-                        html.Br([]),
-                        
-                        make_dropdown_menu(all_models),
-                        info_boxes_display(),
-                        description_display(),
-                        summary_table_display()
-                    ],
-                    className="pretty_container four columns",
-                    id="model-presentation-display",
-                ),
-                html.Div(
-                    [
-                        graph_display()
-                    ],
-                    id="right-column",
-                    className="pretty_container eight columns",
-                ),
-            ],
-            className="row",
+        html.H6(
+            "Model summary table: ", className='subtitle padded'
         ),
-
-        html.Div([
-            html.Div(className="spacer",),    
-                
-                html.Div([
-                    html.H6(
-                    "Model summary table: ",
-                    className="subtitle-model",
-                     ),
-                    dash_table.DataTable(id='summary_table',
+        dash_table.DataTable(id='summary_table',
                              columns=[{'name': 'id', 'id': 'id'},
                                       {'name': 'name', 'id': 'name'},
                                       {'name': 'type', 'id': 'type'},
@@ -378,16 +297,45 @@ layout = html.Div(
                                       ],
                              style_table={'overflowX': 'auto',
                                           'height': '600px',
-                                          'font-size':'20px',
-                                          'font-style':'Lato',
+                                          'font-size': '20px',
+                                          'font-style': 'Lato',
                                           'overflowY': 'auto'},
                              style_cell={'font_family': 'roboto'}
                              ),
-                ],className="modelbox",),
 
-        ],className="modeldesc" ,),
-    
-    ],className="page",
+
+    ])
+    return layout
+
+
+layout = html.Div(
+    [
+        html.Div([Header(app)]),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        evidence_lib_menu('Model Description'),
+                        html.Br([]),
+                        make_dropdown_menu(all_models),
+                        info_boxes_display(),
+                        description_display(),
+                    ],
+                    className="pretty_container four columns",
+                    id="model-presentation-display",
+                ),
+                html.Div(
+                    [
+                        graph_display(),
+                        summary_table_display()
+                    ],
+                    id="right-column",
+                    className="pretty_container eight columns",
+                ),
+            ],
+            className="row",
+        ),
+    ], className="page",
 )
 
 

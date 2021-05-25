@@ -5,7 +5,7 @@ import plotly.express as px
 import dash_table
 import pandas as pd
 from dash.dependencies import Input, Output
-from utils import Header
+from utils import Header, gg_index_menu
 from app import app, data
 
 
@@ -236,56 +236,12 @@ cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        html.Div([
-            html.Div([],className="titlespace",),
-            html.Div([
-            html.P("Green Growth Index", id="pagetitle"),
-            html.P("Regional Outlook", id="pagetitlechild"),
-            ],className="titlemain",),
-            
-        ],className="titlediv",),
-           html.Div([
-                   html.Div([
-                           
-                           html.Div([                               
-                                 dcc.Link(html.Button('Green Growth Index', 
-                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
-                                 href="/SimulationDashBoard/global_overview"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Simulation Tool'), 
-                                 href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
-                                ], className="tab",), 
-                                html.Div(className="separation"),
-                   
-                   ],
-                   className="row all-tabs",),
-           ],className="rowtabs",), 
         html.Div(
             [
                 # ISO sel
                 html.Div(
-                    [
-                        html.Div([
-                            html.Div([
-                                  dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
-                                 ], className="thirdtabs",),
-                            html.Div([
-                                  dcc.Link(html.Button('Regional Outlook', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/regional-outlouk"),
-                                 ], className="thirdtabs",),
-                                 
-                            html.Div([
-                                 dcc.Link(html.Button('Country Profile'), href="/SimulationDashBoard/country-profile"),
-                                 ], className="thirdtabs",), 
-                            html.Div([
-                                 dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),                                                      
-                        ], className="thirdtabmain"),
+                    [   gg_index_menu('Regional Outlook'),
                         html.Br([]),
-                        
                         html.Div(
                             [
                                 html.H5(f"Highlights"),

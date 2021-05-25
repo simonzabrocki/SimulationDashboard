@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.express as px
 import dash_table
 from dash.dependencies import Input, Output
-from utils import Header
+from utils import Header, gg_index_menu
 from app import app, data
 
 
@@ -107,57 +107,13 @@ def Table(data):
 layout = html.Div(
     [
 
-        html.Div([Header(app)]),
-        html.Div([
-            html.Div([],className="titlespace",),
-            html.Div([
-            html.P("Green Growth Index", id="pagetitle"),
-            html.P("Global Overview", id="pagetitlechild"),
-            ],className="titlemain",),
-            
-        ],className="titlediv",),
-           html.Div([
-                   html.Div([
-                           
-                           html.Div([                               
-                                 dcc.Link(html.Button('Green Growth Index', 
-                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
-                                 href="/SimulationDashBoard/global_overview"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
-                                ], className="tab",), 
-                   
-                   ],
-                   className="row all-tabs",),
-                   html.Div(className="separation"),
-           ],className="rowtabs",),        
+        html.Div([Header(app)]),       
         html.Div(
             [  
             
                 html.Div(
                     [
-
-                    html.Div([
-                            html.Div([
-                                  dcc.Link(html.Button('Global Overview', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/global_overview"), 
-                                 ], className="thirdtabs",),
-                                
-                            html.Div([
-                                  dcc.Link(html.Button('Regional Outlook'), href="/SimulationDashBoard/regional-outlouk"),
-                                 ], className="thirdtabs",),
-                                 
-                            html.Div([
-                                 dcc.Link(html.Button('Country Profile'), href="/SimulationDashBoard/country-profile"),
-                                 ], className="thirdtabs",), 
-                            html.Div([
-                                 dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),      
-                                                            
-                        ], className="thirdtabmain"),
+                    gg_index_menu('Global Overview'),
                         html.Br([]),                        
                         html.Div(
                             [

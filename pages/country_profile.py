@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
 
-from utils import Header
+from utils import Header, gg_index_menu
 from app import app, data, ISO_options
 
 import numpy as np
@@ -422,55 +422,14 @@ def time_series_Index(ISO):
 layout = html.Div(
     [
         html.Div([Header(app)]),
-        html.Div([
-            html.Div([],className="titlespace",),
-            html.Div([
-            html.P("Green Growth Index", id="pagetitle"),
-            html.P("County Profile", id="pagetitlechild"),
-            ],className="titlemain",),
-            
-        ],className="titlediv",),
-           html.Div([
-                   html.Div([
-                           
-                           html.Div([                               
-                                 dcc.Link(html.Button('Green Growth Index', 
-                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
-                                 href="/SimulationDashBoard/global_overview"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Evidence Library'), href="/SimulationDashBoard/models"),
-                                ], className="tab",), 
-                                html.Div(className="separation"),
-                   
-                   ],
-                   className="row all-tabs",),
-           ],className="rowtabs",), 
         html.Div(
             [
-                
+
                 html.Div(
                     [
-                    html.Div([
-                            html.Div([
-                                  dcc.Link(html.Button('Global Overview'), href="/SimulationDashBoard/global_overview"),
-                                 ], className="thirdtabs",),
-                            html.Div([
-                                  dcc.Link(html.Button('Regional Outlook'), href="/SimulationDashBoard/regional-outlouk"),
-                                 ], className="thirdtabs",),
-                                 
-                            html.Div([
-                                 dcc.Link(html.Button('Country Profile', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/country-profile"),
-                                 ], className="thirdtabs",), 
-                            html.Div([
-                                 dcc.Link(html.Button('Dashboard'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),                                                             
-                        ], className="thirdtabmain"),
-                        html.Br([]),                
-           
+                        gg_index_menu('Country Profile'),
+                        html.Br([]),
+
                         html.Div([dcc.Dropdown(id="ISO_select",
                                                options=[{'label': country, 'value': iso}
                                                         for iso, country in ISO_options],

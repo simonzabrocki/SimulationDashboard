@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 
-from utils import Header
+from utils import Header, evidence_lib_menu
 from app import app, indicator_data, indicator_properties, dimension_properties
 
 
@@ -60,7 +60,8 @@ def HTML_text(Indicator):
 
                             html.P(
                                 f"{Indicator} corresponds to {Description}. It has a {Impact} impact on {Dimension}.",
-                                style={"color": "#ffffff", 'font-size': '15px'},
+                                style={"color": "#ffffff",
+                                       'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -75,7 +76,8 @@ def HTML_text(Indicator):
 
                             html.P(
                                 f"{Indicator} is expressed in {Unit}.",
-                                style={"color": "#ffffff", 'font-size': '15px'},
+                                style={"color": "#ffffff",
+                                       'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -90,7 +92,8 @@ def HTML_text(Indicator):
 
                             html.P(
                                 f"{Indicator} comes from {From} download. Its source is {Source}.",
-                                style={"color": "#ffffff", 'font-size': '15px'},
+                                style={"color": "#ffffff",
+                                       'font-size': '15px'},
                                 className="row",
                             ),
                         ],
@@ -104,56 +107,14 @@ def HTML_text(Indicator):
 layout = html.Div(
     [
         html.Div([Header(app)]),
-                html.Div([
-            html.Div([],className="titlespace",),
-            html.Div([
-            html.P("Evidence Library", id="pagetitle"),
-            html.P("Data", id="pagetitlechild"),
-            ],className="titlemain",),
-            
-        ],className="titlediv",),
-           html.Div([
-                   html.Div([
-                           
-                           html.Div([                               
-                                 dcc.Link(html.Button('Green Growth Index'), 
-                                 href="/SimulationDashBoard/global_overview"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Simulation Tool'), href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                           html.Div([
-                                 dcc.Link(html.Button('Evidence Library', 
-                                 style={'text-decoration': 'none','color': '#14ac9c'}), 
-                                 href="/SimulationDashBoard/models"),
-                                ], className="tab",),
-                                html.Div(className="separation"),
-                   
-                   ],
-                   className="row all-tabs",),
-           ],className="rowtabs",), 
         html.Div(
             [
                 html.Div(
                     [
                         html.Div(
                             [
-                                
-                            html.Div([
-                                html.Div([
-                                  dcc.Link(html.Button('Model Description'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),
-                                html.Div([
-                                  dcc.Link(html.Button('Model Assumptions'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",),
-                                html.Div([
-                                 dcc.Link(html.Button('Python Codes'), href="/SimulationDashBoard/models"),
-                                 ], className="thirdtabs",), 
-                                html.Div([
-                                 dcc.Link(html.Button('Data', style={'background-color':'#14ac9c' , 'color': 'white'}), href="/SimulationDashBoard/data"),
-                                 ], className="thirdtabs",),                                                                 
-                            ], className="thirdtabmain"),
-                                html.Br([]),                                
+                                evidence_lib_menu('Data'),
+                                html.Br([]),
                                 html.H6(
                                     "Dimension",
                                     className="subtitle padded",
@@ -217,7 +178,8 @@ layout = html.Div(
     dash.dependencies.Output('indicator_select', 'options'),
     [dash.dependencies.Input('dimension_select', 'value')])
 def update_indicator_select(dimension):
-    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
+    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(
+        by='Indicator')
 
     indicator_options = props[['Indicator', 'display_name']].values
 
@@ -228,7 +190,8 @@ def update_indicator_select(dimension):
     dash.dependencies.Output('indicator_select', 'value'),
     [dash.dependencies.Input('dimension_select', 'value')])
 def update_indicator_select_0(dimension):
-    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(by='Indicator')
+    props = indicator_properties[indicator_properties.Dimension == dimension].sort_values(
+        by='Indicator')
 
     indicator_options = props[['Indicator', 'display_name']].values
 
@@ -254,7 +217,9 @@ def update_indicator_line_charts(Indicator, ISO_list):
     dash.dependencies.Output('ISO_select', 'options'),
     [dash.dependencies.Input('indicator_select', 'value')])
 def update_ISO_select(Indicator):
-    df = indicator_data[indicator_data.Indicator == Indicator].dropna(subset=['Value'])
+    df = indicator_data[indicator_data.Indicator == Indicator].dropna(subset=[
+                                                                      'Value'])
     new_ISO_options = df[['ISO', 'Country']].drop_duplicates().values
-    options = [{'label': country, 'value': iso} for iso, country in new_ISO_options]
+    options = [{'label': country, 'value': iso}
+               for iso, country in new_ISO_options]
     return options
