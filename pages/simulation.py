@@ -249,7 +249,7 @@ def scenario_building_box():
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Simulation Tool')]),
         html.Div(
             [
                 model_selection_box(),

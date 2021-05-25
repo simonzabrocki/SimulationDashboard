@@ -38,8 +38,8 @@ def format_data(data):
     return data
 
 
-def Header(app):
-    return html.Div([get_header(app), html.Br([]), get_menu()])
+def Header(app, active_tab):
+    return html.Div([get_header(app), html.Br([]), get_menu(active_tab)])
 
 
 def get_header(app):
@@ -86,75 +86,68 @@ def get_header(app):
     return header
 
 
-def get_menu():
+def get_menu(active_tab):
+
+    name_link_list = [
+        {'label': 'Green Growth Index', 'value': '/SimulationDashBoard/global_overview'},
+        {'label': 'Simulation Tool', 'value': '/SimulationDashBoard/simulation'},
+        {'label': 'Evidence Library', 'value': '/SimulationDashBoard/models'},
+        ]
+
+    div_list = get_menu_div_list(name_link_list, active_tab=active_tab, active_style={
+                                 'text-decoration': 'none', 'color': '#14ac9c'}, className="tab")
 
     menu = html.Div([
                 html.Div([
                     html.Div([], className="titlespace",),
-                    html.Div([html.P("Green Growth Index", id="pagetitle"), html.P("Global Overview", id="pagetitlechild"), ], className="titlemain",),
-                    ], className="titlediv",),
-                html.Div([
+                    html.Div([html.P(active_tab, id="pagetitle"),
+                              ],
+                              className="titlemain",)],
+                              className="titlediv"),
                     html.Div([
-                        html.Div([
-                            dcc.Link(html.Button('Green Growth Index',
-                                                style={'text-decoration': 'none', 'color': '#14ac9c'}),
-                                    href="/SimulationDashBoard/global_overview"),
-                                    ], className="tab",),
-                        html.Div([
-                            dcc.Link(html.Button('Simulation Tool'),
-                                href="/SimulationDashBoard/simulation"),
-                                ], className="tab",),
-                        html.Div([
-                            dcc.Link(html.Button('Evidence Library'),
-                                href="/SimulationDashBoard/models"),
-                                ], className="tab",),
-                    ],
-                    className="row all-tabs",),
-                html.Div(className="separation"),
-                ], className="rowtabs",)
-    ])
-
+                        html.Div(div_list, className="row all-tabs",),
+                        html.Div(className="separation"),
+                    ], className="rowtabs")      
+                ]
+                )
     return menu
 
 
 def gg_index_menu(active_tab):
-
-
-    name_link_list = [
-        {'label': 'Global Overview', 'value':'/SimulationDashBoard/global_overview'},
-        {'label': 'Regional Outlook', 'value':'/SimulationDashBoard/regional-outlouk'},
-        {'label': 'Country Profile', 'value':'/SimulationDashBoard/country-profile'},
-        {'label': 'Dashboard', 'value':'/SimulationDashBoard/models'},
-
+    name_link_list=[
+        {'label': 'Global Overview', 'value': '/SimulationDashBoard/global_overview'},
+        {'label': 'Regional Outlook', 'value': '/SimulationDashBoard/regional-outlouk'},
+        {'label': 'Country Profile', 'value': '/SimulationDashBoard/country-profile'},
+        {'label': 'Dashboard', 'value': '/SimulationDashBoard/models'},
         ]
-
-    return get_box_menu(name_link_list, active_tab)
+    div_list=get_menu_div_list(name_link_list, active_tab)
+    return html.Div(div_list, className = "thirdtabmain")
 
 
 def evidence_lib_menu(active_tab):
-    name_link_list = [
-    {'label': 'Model Description', 'value':'/SimulationDashBoard/models'},
-    {'label': 'Model Assumptions', 'value':'/SimulationDashBoard/models'},
-    {'label': 'Python Codes', 'value':'/SimulationDashBoard/models'},
-    {'label': 'Data', 'value':'/SimulationDashBoard/data'},
+    name_link_list=[
+    {'label': 'Model Description', 'value': '/SimulationDashBoard/models'},
+    {'label': 'Model Assumptions', 'value': '/SimulationDashBoard/models'},
+    {'label': 'Python Codes', 'value': '/SimulationDashBoard/models'},
+    {'label': 'Data', 'value': '/SimulationDashBoard/data'},
     ]
-    return get_box_menu(name_link_list, active_tab)
+    div_list=get_menu_div_list(name_link_list, active_tab)
+    return html.Div(div_list, className = "thirdtabmain")
 
 
-
-def get_box_menu(name_link_list, active_tab):
-    div_list = []
+def get_menu_div_list(name_link_list, active_tab, className = 'thirdtabs', active_style = {'background-color': '#14ac9c', 'color': 'white'}):
+    div_list=[]
 
     for name_link in name_link_list:
-        name = name_link['label']
-        link = name_link['value']
+        name=name_link['label']
+        link=name_link['value']
 
         if name == active_tab:
-            div = html.Div([dcc.Link(html.Button(name, style={'background-color':'#14ac9c' , 'color': 'white'}), href=link)], className="thirdtabs",)
+            div =html.Div([dcc.Link(html.Button(name, style=active_style), href=link)], className = className)
 
         else:
-            div = html.Div([dcc.Link(html.Button(name), href=link)], className="thirdtabs")
+            div =html.Div([dcc.Link(html.Button(name), href=link)], className = className)
 
-        div_list.append(div)    
+        div_list.append(div)
 
-    return  html.Div(div_list, className="thirdtabmain")
+    return div_list

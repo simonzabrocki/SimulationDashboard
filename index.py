@@ -9,7 +9,7 @@ from pages import (
     regional_outlook,
     data_viz,
     model_overview,
-    country_comparator,
+    #country_comparator,
     simulation
 )
 
@@ -31,8 +31,8 @@ def display_page(pathname):
         return regional_outlook.layout 
     elif pathname == "/SimulationDashBoard/country-profile":
         return country_profile.layout
-    elif pathname == "/SimulationDashBoard/country-comparator":
-        return country_comparator.layout
+    # elif pathname == "/SimulationDashBoard/country-comparator":
+    #     return country_comparator.layout
     elif pathname == "/SimulationDashBoard/models":
         return model_overview.layout
     elif pathname == "/SimulationDashBoard/simulation":

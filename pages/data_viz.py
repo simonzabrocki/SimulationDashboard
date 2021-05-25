@@ -106,7 +106,7 @@ def HTML_text(Indicator):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Evidence Library')]),
         html.Div(
             [
                 html.Div(

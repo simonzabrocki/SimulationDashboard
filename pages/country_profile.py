@@ -421,7 +421,7 @@ def time_series_Index(ISO):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Green Growth Index')]),
         html.Div(
             [
 

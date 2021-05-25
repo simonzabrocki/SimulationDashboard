@@ -310,7 +310,7 @@ def summary_table_display():
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Evidence Library')]),
         html.Div(
             [
                 html.Div(

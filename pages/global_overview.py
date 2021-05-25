@@ -107,7 +107,7 @@ def Table(data):
 layout = html.Div(
     [
 
-        html.Div([Header(app)]),       
+        html.Div([Header(app, 'Green Growth Index')]),       
         html.Div(
             [  
             
