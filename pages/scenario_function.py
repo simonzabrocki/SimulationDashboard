@@ -1,7 +1,8 @@
 import pandas as pd
 import os
-from GM.demo_script_Hermen import format_data_dict_sankey, plot_sanky_GE3
 import plotly.express as px
+
+from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
 from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario
 from ggmodel_dev.models.water import EW_scenario
 from ggmodel_dev.models.transport import VEHC_scenario
@@ -113,18 +114,13 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
 
-    d_1, c_1 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_one'].items(
-    ) if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
-    d_2, c_2 = format_data_dict_sankey({k: v for k, v in scenarios_results['scenario_two'].items(
-    ) if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
-    d_3, c_3 = format_data_dict_sankey({k: v for k, v in scenarios_results['BAU'].items(
-    ) if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+    df_0 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+    df_1 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
 
-    fig_1 = plot_sanky_GE3(d_1, c_1).update_layout(title='Scenario 1')
-    fig_2 = plot_sanky_GE3(d_2, c_2).update_layout(title='Scenario 2')
-    fig_3 = plot_sanky_GE3(d_3, c_3).update_layout(title='Business as Usual')
+    fig_1 = sankeyplot(df_0, 'Item', 'Variable').update_layout(title='Scenario 1')
+    fig_2 = sankeyplot(df_1, 'Item', 'Variable').update_layout(title='Scenario 2')
 
-    return fig_1, fig_2, fig_3
+    return fig_1, fig_2, {}
 
 
 def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
