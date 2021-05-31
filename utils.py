@@ -95,7 +95,7 @@ def get_menu(active_tab):
         ]
 
     div_list = get_menu_div_list(name_link_list, active_tab=active_tab, active_style={
-                                 'text-decoration': 'none', 'color': '#14ac9c'}, className="tab")
+                                 'text-decoration': 'none', 'color': 'white'}, className="tab")
 
     menu = html.Div([
                 html.Div([
@@ -135,7 +135,7 @@ def evidence_lib_menu(active_tab):
     return html.Div(div_list, className = "thirdtabmain")
 
 
-def get_menu_div_list(name_link_list, active_tab, className = 'thirdtabs', active_style = {'background-color': '#14ac9c', 'color': 'white'}):
+def get_menu_div_list(name_link_list, active_tab, className = 'thirdtabs', active_style = {'background-color': '#0bb89c', 'color': 'white'}):
     div_list=[]
 
     for name_link in name_link_list:
