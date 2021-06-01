@@ -1,4 +1,5 @@
 import dash_cytoscape as cyto
+from dash_html_components.Div import Div
 import networkx as nx
 import dash_html_components as html
 import dash_table
@@ -9,6 +10,7 @@ from app import app
 from dash.dependencies import Input, Output
 from utils import Header
 from ggmodel_dev.models.utils import all_model_dictionary, all_model_properties_df
+from utils import is_btn_clicked
 
 
 cyto.load_extra_layouts()
@@ -162,44 +164,62 @@ def graph_display():
 
     layout = html.Div([
         html.Div(
-            [
-
+            [   
+                html.Button('Reset Graph', id='btn-reset', n_clicks=0),
                 html.Div(
                     [
                         html.Div(
-                            [html.H5(id="graphbox"), html.P("Hover on node for info", style={
-                                'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')],
-                            className="mini_container",
-                        ),
-                        cy_graph
-                    ], className='container eight columns'),
-                html.Div(
-                    [
-                        html.Button('Reset Graph', id='btn-reset', n_clicks=0),
-                        html.H6(
-                            "Node description",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [html.H5(id="graphbox"), html.P("Click on a node to get more information",
-                                                            id='cytoscape-tapNodeData-output')],
-                            className="product",
-                        ),
-                        html.H6(
-                            "Impact",
-                            className="subtitle padded",
+                            [
+                                html.H6(
+                                    "1. Hover on node for full name",
+                                    className="subtitle padded",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H5(id="graphbox"), html.P("Hover on node for info", style={'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')
+                                    ],
+                                    className="product",
+                                )
+                            ],
+                            className='bare_container four columns'
                         ),
                         html.Div(
-                            [html.H5(id="impactbox"), html.P(
-                                "", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})],
-                            className="product",
+                            [
+                                html.H6(
+                                    "2. Click on Node for description",
+                                    className="subtitle padded",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H5(id="graphbox"), html.P(
+                                            "Click on a node to get the description", id='cytoscape-tapNodeData-output',  style={'font-weight': 'bold', 'font-size': 15})
+                                    ],
+                                    className="product",
+                                )
+                            ],
+                            className='bare_container four columns'
                         ),
-
-
+                        html.Div(
+                            [
+                                html.H6(
+                                    "3. Get the impacts on Indicators",
+                                    className="subtitle padded",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H5(id="impactbox"), html.P(
+                                            "Click on a node to see its impact", id='cytoscape-tapNodeData-impact', style={'font-weight': 'bold', 'font-size': 15})
+                                    ],
+                                    className="product",
+                                ),
+                            ],
+                            className='bare_container four columns'
+                        ),
                     ],
                     id="var-info-box",
-                    className="pretty_container four columns",
+                    className="row",
                 ),
+                cy_graph
             ],
             className='row'
         ),
@@ -344,8 +364,7 @@ def update_summary_table(model_option):
 def update_graph_plot(model_option, n_clicks):
     model = all_model_dictionary[model_option]
 
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'btn-reset' in changed_id:
+    if is_btn_clicked('btn-reset'):
         return GraphModel_to_cytodata(model)['elements']
 
     return GraphModel_to_cytodata(model)['elements']
@@ -370,8 +389,10 @@ def update_graph_description(model_option):
     ],
 )
 def update_boxes(model_option):
-    symbol = all_model_properties_df.query(f'model == "{model_option}"').symbol.values[0]
-    status = all_model_properties_df.query(f'model == "{model_option}"').status.values[0]
+    symbol = all_model_properties_df.query(
+        f'model == "{model_option}"').symbol.values[0]
+    status = all_model_properties_df.query(
+        f'model == "{model_option}"').status.values[0]
     return symbol, status
 
 
@@ -379,6 +400,9 @@ def update_boxes(model_option):
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("btn-reset", "n_clicks")])
 def displayTapNodeData(data, n_clicks):
+    if is_btn_clicked('btn-reset') or not data:
+        return html.P("Click on a node to get more information", style={'font-weight': 'bold', 'font-size': 15})
+
     if data:
         if data['type'] != 'computationnal':
             return html.Div(
@@ -386,11 +410,7 @@ def displayTapNodeData(data, n_clicks):
                     html.P(f"{data['id']}", style={
                            'font-size': 20, 'font-weight': 'bold'}),
                     html.P(
-                        f"{data['name']}.", style={'font-weight': 'bold', 'font-size': 15}),
-                    html.P(
-                        f"This node is an {data['type']}"),
-                    html.P(
-                        f"It expressed in {data['unit']}.")
+                        f"{data['name']}. ({data['unit']})", style={'font-weight': 'bold', 'font-size': 15}),
                 ]
             )
         else:
@@ -404,17 +424,20 @@ def displayTapNodeData(data, n_clicks):
                 ]
             )
 
-    return html.P("Click on a node to get more information", style={'font-weight': 'bold'})
-
 
 @app.callback(Output('cytoscape-mouseoverNodeData-output', 'children'),
-              Input('cytoscape-graph-model', 'mouseoverNodeData'))
-def displayHoverNodeData(data):
+              [Input('cytoscape-graph-model', 'mouseoverNodeData'),
+               Input("btn-reset", "n_clicks")
+              ])
+def displayHoverNodeData(data, n_clicks):
+    if is_btn_clicked('btn-reset') or not data:
+        return "Hover on a node to get its full name"
+
     if data:
         if data['type'] != 'computationnal':
-            return f"Represents {data['id']}: {data['name']}"
+            return f"{data['id']}: {data['name']}"
         else:
-            return f"Computes {data['out']} = {data['name']}"
+            return f"{data['out']} = {data['name']}"
 
 
 @app.callback(Output('cytoscape-tapNodeData-impact', 'children'),
@@ -425,9 +448,8 @@ def displayImpactNodeData(data, model_option, n_clicks):
     G = all_model_dictionary[model_option]
     outputs = G.outputs_()
     impacted_nodes = []
-
-    if not data:
-        return ''
+    if is_btn_clicked('btn-reset') or not data:
+        return "Click on a node to see its impact"
 
     if data['id'] in G:
         for output in outputs:
@@ -435,7 +457,7 @@ def displayImpactNodeData(data, model_option, n_clicks):
                 name = G.nodes[output]['name']
                 impacted_nodes.append(name)
 
-    return ', \n'.join(impacted_nodes)
+    return ', '.join(impacted_nodes)
 
 
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
@@ -443,9 +465,7 @@ def displayImpactNodeData(data, model_option, n_clicks):
                Input("my-multi-dynamic-dropdown", "value"),
                Input("btn-reset", "n_clicks")])
 def highlightpath(data, model_option, n_clicks):
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-
-    if 'btn-reset' in changed_id:
+    if is_btn_clicked('btn-reset'):
         return STYLESHEET
 
     if not data:

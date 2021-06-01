@@ -21,6 +21,7 @@ def merge_model_dictionary():
     model_dictionary['BE2'] = BE2.model_dictionnary
     model_dictionary['SL1_BE3'] = SL1_BE3.model_dictionnary
     model_dictionary['GE3'] = GE3.model_dictionnary
+    model_dictionary['OE_CO2eq'] = OE_CO2eq.model_dictionnary
     model_dictionary['EW'] = EW.model_dictionnary
     model_dictionary['VEHC'] = VEHC.model_dictionnary
     model_dictionary['JE'] = JE.model_dictionnary
@@ -34,6 +35,7 @@ def merge_model_properties():
     model_properties['BE2'] = BE2.model_properties
     model_properties['SL1_BE3'] = SL1_BE3.model_properties
     model_properties['GE3'] = GE3.model_properties
+    model_properties['OE_CO2eq'] = OE_CO2eq.model_properties
     model_properties['EW'] = EW.model_properties
     model_properties['VEHC'] = VEHC.model_properties
     model_properties['JE'] = JE.model_properties

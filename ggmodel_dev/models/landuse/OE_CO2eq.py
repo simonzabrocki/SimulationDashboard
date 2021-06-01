@@ -32,7 +32,7 @@ E_OS_CO2eq_nodes = {
                    'computation': lambda E_OSG, E_OSC, **kwargs: (E_OSG + E_OSC).groupby(['ISO', 'Year']).sum() * GWPN2O
                    },
     'TCLDi': {'type': 'input',
-              'unit': '1000ha',
+              'unit': 'ha',
               'name': 'Cropland demand'},
     'EF_OSC': {'type': 'input',
                'unit': 'kg N2O-N/ha',
@@ -223,3 +223,5 @@ model_dictionnary = {'OE_CO2eq_partial_model': OE_CO2eq_partial_model,
                      'E_CR_CO2eq_model': E_CR_CO2eq_model,
                      'OE_CO2eq_model': OE_CO2eq_model,
                      }
+
+model_properties = get_model_properties('models/landuse/OE_CO2eq_properties.json')

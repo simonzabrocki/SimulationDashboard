@@ -1,0 +1,10 @@
+{
+    "OE_CO2eq_model": {
+        "description": "TO DO.",
+        "display_name": "Emssion from other sources",
+        "model": "OE_CO2eq_model",
+        "model_group": "Landuse",
+        "indicator": "GE3",
+        "status": "🚧"
+    }
+}
