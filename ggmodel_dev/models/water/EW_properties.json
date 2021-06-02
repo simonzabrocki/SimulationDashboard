@@ -26,7 +26,7 @@
     "IWW_model": {
         "description": "This sub-model calculates the agricultural water use for a country. Currently, due to data limitations, agricultural withdrawal is only represented by irrigation water withdrawal. Potential crop evapotranspiration (ETc) is the evapotranspiration from crops under standard conditions. It is calculated by the summation of crop coefficients, cropping intensity and reference evapotranspiration for each irrigated crop denoted in a country. Cropping intensity is the harvest irrigated area divided by the total actual irrigation area. Subtracting potential crop evapotranspiration from actual evapotranspiration, the irrigation consumptive use is calculated representing the water demand required to fulfill the deficit between crop consumption under ample water versus rainfed conditions. By multiplying irrigation consumptive use with the total actual area irrigated within a country, as well as considering the additional non-consumptive water required for rice paddy irrigation, the irrigation water requirement is computed. Total irrigation water withdrawal is then determined by the irrigation water requirement divided by the water requirement ratio (or irrigation efficiency). Users will be able to set irrigation efficiency values depending on various technologies to understand the impact on irrigation water withdrawal.",
         "display_name": "Agricultural Water Withdrawal",
-        "model": "IWW_model ",
+        "model": "IWW_model",
         "model_group": "Water",
         "indicator": "EW",
         "status": "✔️"

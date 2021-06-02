@@ -179,6 +179,7 @@ EW_model = GraphModel(concatenate_graph_specs(
 
 # Dictionnary for easier access in the interface
 model_dictionnary = {'IWW_model': IWW_model,
+                     'MWU_model': MWU_model,
                      'EW1_partial_model': EW1_partial_model,
                      'EW2_partial_model': EW2_partial_model,
                      'EW1_model': EW1_model,

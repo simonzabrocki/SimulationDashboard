@@ -227,13 +227,13 @@ GE3_nodes = {'Pop': {'type': 'input', 'unit': 'capita', 'name': 'Population'},
              'FE_CO2eq': {'type': 'input',
                           'unit': 'gigagrams (CO2eq)',
                           'name': 'Emissions (CO2eq) (Synthetic fertilizers)'},
-             'OE_CO2eq': {'type': 'input',
+             'OEi': {'type': 'input',
                      'unit': 'gigagrams (CO2eq)',
                      'name': 'Emissions other'},
              'GE3': {'type': 'output',
                      'unit': 'gigagrams (CO2eq) / capita',
                      'name': 'Ratio of non-CO2 emissions in agriculture to population',
-                     'computation': lambda OE_CO2eq, TEE_CO2eq, TMT_CO2eq, TMP_CO2eq, TMA_CO2eq, FE_CO2eq, Pop, **kwargs: (OEi + (TEE_CO2eq + TMT_CO2eq + TMP_CO2eq + TMA_CO2eq + FE_CO2eq).groupby(level=['ISO', 'Year']).sum()) / (Pop * 1e3)}}
+                     'computation': lambda OEi, TEE_CO2eq, TMT_CO2eq, TMP_CO2eq, TMA_CO2eq, FE_CO2eq, Pop, **kwargs: (OEi + (TEE_CO2eq + TMT_CO2eq + TMP_CO2eq + TMA_CO2eq + FE_CO2eq).groupby(level=['ISO', 'Year']).sum()) / (Pop * 1e3)}}
 
 
 nodes = concatenate_graph_specs(

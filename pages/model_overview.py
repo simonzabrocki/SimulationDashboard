@@ -26,6 +26,7 @@ STYLESHEET = [
                   'font-weight': 'bold',
                   'text-halign': 'center',
                   'text-valign': 'center',
+                  'border-width': 0,
                   'height': 80, 'width': 80}
     },
     {
@@ -164,7 +165,7 @@ def graph_display():
 
     layout = html.Div([
         html.Div(
-            [   
+            [
                 html.Button('Reset Graph', id='btn-reset', n_clicks=0),
                 html.Div(
                     [
@@ -176,7 +177,8 @@ def graph_display():
                                 ),
                                 html.Div(
                                     [
-                                        html.H5(id="graphbox"), html.P("Hover on node for info", style={'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')
+                                        html.H5(id="graphbox"), html.P("Hover on node for info", style={
+                                            'font-weight': 'bold', 'font-size': 15}, id='cytoscape-mouseoverNodeData-output')
                                     ],
                                     className="product",
                                 )
@@ -194,7 +196,7 @@ def graph_display():
                                         html.H5(id="graphbox"), html.P(
                                             "Click on a node to get the description", id='cytoscape-tapNodeData-output',  style={'font-weight': 'bold', 'font-size': 15})
                                     ],
-                                    className="product",
+                                    className="product"
                                 )
                             ],
                             className='bare_container four columns'
@@ -217,9 +219,11 @@ def graph_display():
                         ),
                     ],
                     id="var-info-box",
-                    className="row",
+                    className="row"
                 ),
-                cy_graph
+                html.Div([
+                    cy_graph
+                    ]),
             ],
             className='row'
         ),
@@ -400,55 +404,47 @@ def update_boxes(model_option):
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("btn-reset", "n_clicks")])
 def displayTapNodeData(data, n_clicks):
-    if is_btn_clicked('btn-reset') or not data:
-        return html.P("Click on a node to get more information", style={'font-weight': 'bold', 'font-size': 15})
-
     if data:
         if data['type'] != 'computationnal':
             return html.Div(
                 [
-                    html.P(f"{data['id']}", style={
-                           'font-size': 20, 'font-weight': 'bold'}),
-                    html.P(
-                        f"{data['name']}. ({data['unit']})", style={'font-weight': 'bold', 'font-size': 15}),
+                    html.P(f"{data['id']}: {data['name']}. ({data['unit']})", style={ 'font-size': 15, 'font-weight': 'bold'}),
                 ]
             )
         else:
             return html.Div(
                 [
-                    html.P(f"{data['id']}", style={
-                           'font-size': 20, 'font-weight': 'bold'}),
-                    html.P(f"This node computes: "),
-                    html.P(f"{data['out']} = {data['name']}",
-                           style={"font-weight": 'bold'})
+                    html.P(f"{data['out']} = {data['name']}", style={'font-size': 15, 'font-weight': 'bold'}),
                 ]
             )
+    else:
+        return html.P("Click on a node to get more information", style={'font-weight': 'bold', 'font-size': 15})
 
 
 @app.callback(Output('cytoscape-mouseoverNodeData-output', 'children'),
-              [Input('cytoscape-graph-model', 'mouseoverNodeData'),
-               Input("btn-reset", "n_clicks")
-              ])
-def displayHoverNodeData(data, n_clicks):
-    if is_btn_clicked('btn-reset') or not data:
-        return "Hover on a node to get its full name"
-
-    if data:
-        if data['type'] != 'computationnal':
-            return f"{data['id']}: {data['name']}"
-        else:
-            return f"{data['out']} = {data['name']}"
+              [
+                  Input('cytoscape-graph-model', 'mouseoverNodeData'),
+               ])
+def displayHoverNodeData(data):
+    # if data:
+    #     if data['type'] != 'computationnal':
+    #         return f"{data['id']}: {data['name']}"
+    #     else:
+    #         return f"{data['out']} = {data['name']}"
+    # else:
+    return "Hover on a node to get its full name"
 
 
 @app.callback(Output('cytoscape-tapNodeData-impact', 'children'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("my-multi-dynamic-dropdown", "value"),
-               Input("btn-reset", "n_clicks")])
-def displayImpactNodeData(data, model_option, n_clicks):
+               ])
+def displayImpactNodeData(data, model_option):
     G = all_model_dictionary[model_option]
     outputs = G.outputs_()
     impacted_nodes = []
-    if is_btn_clicked('btn-reset') or not data:
+    
+    if not data:
         return "Click on a node to see its impact"
 
     if data['id'] in G:
@@ -463,20 +459,47 @@ def displayImpactNodeData(data, model_option, n_clicks):
 @app.callback(Output('cytoscape-graph-model', 'stylesheet'),
               [Input('cytoscape-graph-model', 'tapNodeData'),
                Input("my-multi-dynamic-dropdown", "value"),
-               Input("btn-reset", "n_clicks")])
-def highlightpath(data, model_option, n_clicks):
-    if is_btn_clicked('btn-reset'):
-        return STYLESHEET
+               Input('cytoscape-graph-model', 'mouseoverNodeData'),
+               Input('cytoscape-graph-model', 'selectedNodeData'),
+               ])
+def highlightpath(data, model_option, hover_node, selected_node):
+    res = STYLESHEET.copy()
 
-    if not data:
-        return STYLESHEET
-    else:
+    # if not data and not hover_node and not selected_node:
+    #     return res
+
+    if data:
         G = all_model_dictionary[model_option]
         outputs = G.outputs_()
-
-        res = STYLESHEET.copy()
         if data['id'] in G:
             for output in outputs:
                 if nx.has_path(G, data['id'], output):
                     res += highlighted_node_stylesheet(G, data['id'], output)
-        return res
+
+    if hover_node:
+        node = hover_node['id']
+
+        style = [({'selector': f'node[id = "{node}"]',
+                   'style': {
+                       'label': 'data(name)',
+                                'border-color': 'black',
+                                'border-style': 'dotted',
+                                'height': 160, 'width': 160,
+                                'font-size': 12,
+                                'border-width': 3,
+                                'border-opacity': 1,
+                   }})]
+        res = res + style
+
+    return res
+
+
+@app.callback(
+    Output('cytoscape-graph-model', 'mouseoverNodeData'),
+    Output('cytoscape-graph-model', 'tapNodeData'),
+    Output('cytoscape-graph-model', 'selectedNodeData'),
+    [
+        Input("btn-reset", "n_clicks")
+    ])
+def master_reset(n_clicks):
+    return None, None, None
