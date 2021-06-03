@@ -475,18 +475,7 @@ a:active {
   position: relative;
 }
 
-.mini_containermodeltitle {
-  /*border-radius: 5px;*/
-  background-color:#0a997f9f;
-  border-color:#2db29b ;
-  border-radius: 3px;
-  color: white;
-  padding: 15px;
-  width: 30.6%;
-  position: absolute;
-  margin: 410px 0 0 0;
-  /*box-shadow: 2px 2px 2px lightgrey;*/
-}
+
 
 
 .mainheader .mainnav li{
@@ -692,14 +681,37 @@ a:active {
 
 }
 
-#var-info-box{
-  height: auto;
-  width: 90%;
-  position:absolute;
-  margin:0 0 10px 100px;
-  background: #0a997f9f;
-  border-color: #2db29b;
+.mini_containermodeltitle {
+  /*border-radius: 5px;*/
+  background-color:#0a997f9f;
+  border-color:#2db29b ;
+  border-radius: 3px;
+  color: white;
+  padding: 15px;
+  position:fixed;
+  width: 500px;
+  bottom: 10px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5px;
+  height: 50px;
+  /*box-shadow: 2px 2px 2px lightgrey;*/
+}
 
+#var-info-box{
+  background-color:#0a997f9f;
+  border-color:#2db29b ;
+  border-radius: 3px;
+  color: white;
+  position:fixed;
+  width:90%;
+  bottom: 0px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  height: auto;
+  display: flex;
+  -ms-flex-align: center;
 }
 
 .productmodel{
@@ -711,8 +723,7 @@ a:active {
   border-radius: 1px;
   background:transparent;
   color: #ffffff;
-  display: grid;
-  grid-template-rows: 100px 100px ;
+
 }
 
 #cytoscape-tapNodeData-output{
@@ -746,6 +757,7 @@ a:active {
   border-style: solid;
   box-shadow: rgb(30 95 95 / 38%) 5px 8px 10px 0px;
   cursor: pointer;
+  margin-right:10px ;
 }
 
 #btn-reset:hover{
