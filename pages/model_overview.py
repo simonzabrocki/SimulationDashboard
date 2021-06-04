@@ -426,13 +426,13 @@ def displayTapNodeData(data, n_clicks):
                   Input('cytoscape-graph-model', 'mouseoverNodeData'),
                ])
 def displayHoverNodeData(data):
-    # if data:
-    #     if data['type'] != 'computationnal':
-    #         return f"{data['id']}: {data['name']}"
-    #     else:
-    #         return f"{data['out']} = {data['name']}"
-    # else:
-    return "Hover on a node to get its full name"
+    if data:
+        if data['type'] != 'computationnal':
+            return f"{data['id']}: {data['name']}"
+        else:
+            return f"{data['out']} = {data['name']}"
+    else:
+        return "Hover on a node to get its full name"
 
 
 @app.callback(Output('cytoscape-tapNodeData-impact', 'children'),
@@ -463,10 +463,11 @@ def displayImpactNodeData(data, model_option):
                Input('cytoscape-graph-model', 'selectedNodeData'),
                ])
 def highlightpath(data, model_option, hover_node, selected_node):
+
     res = STYLESHEET.copy()
 
-    # if not data and not hover_node and not selected_node:
-    #     return res
+    if data and not selected_node:
+        return res
 
     if data:
         G = all_model_dictionary[model_option]
@@ -476,8 +477,7 @@ def highlightpath(data, model_option, hover_node, selected_node):
                 if nx.has_path(G, data['id'], output):
                     res += highlighted_node_stylesheet(G, data['id'], output)
 
-    if hover_node:
-        node = hover_node['id']
+        node = data['id']
 
         style = [({'selector': f'node[id = "{node}"]',
                    'style': {

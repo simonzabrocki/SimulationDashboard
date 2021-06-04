@@ -24,7 +24,7 @@ def merge_model_dictionary():
     model_dictionary['OE_CO2eq'] = OE_CO2eq.model_dictionnary
     model_dictionary['EW'] = EW.model_dictionnary
     model_dictionary['VEHC'] = VEHC.model_dictionnary
-    model_dictionary['JE'] = JE.model_dictionnary
+    #model_dictionary['JE'] = JE.model_dictionnary
 
     return flatten_dictionary(model_dictionary)
 
@@ -38,7 +38,7 @@ def merge_model_properties():
     model_properties['OE_CO2eq'] = OE_CO2eq.model_properties
     model_properties['EW'] = EW.model_properties
     model_properties['VEHC'] = VEHC.model_properties
-    model_properties['JE'] = JE.model_properties
+    #model_properties['JE'] = JE.model_properties
 
     return flatten_dictionary(model_properties)
 
