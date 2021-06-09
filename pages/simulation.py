@@ -108,11 +108,11 @@ def scenario_building_box():
 
 
 def get_args_dict_from_scenario_box(box):
+    '''TO DO: Recursive search of the id'''
     ided_components = [el for el in box['props']
                        ['children'] if 'id' in el['props']]
 
-    arg_dict = {el['props']['id'][:-4]: el['props']['value']
-                for el in ided_components}
+    arg_dict = {el['props']['id'][:-4]: el['props']['value'] for el in ided_components if 'value' in el['props']}
 
     return arg_dict
 
@@ -205,6 +205,7 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
     if is_btn_clicked('btn-run'):
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
+        print(args_dict_1)
 
         try:
             scenario_function = scenario_function_dictionnary[model]

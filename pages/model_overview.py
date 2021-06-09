@@ -313,7 +313,14 @@ layout = html.Div(
                         make_dropdown_menu(all_model_dictionary),
                         info_boxes_display(),
                         description_display(),
-                        summary_table_display()
+                        html.Div([
+                            html.Button('Download Summary Table', id='btn-download', n_clicks=0),
+                            dcc.Download(id="download-summary-csv"),
+
+                        ]),
+                        
+                        summary_table_display(),
+
                     ],
                     className="pretty_container four columns",
                     id="model-presentation-display",
@@ -357,6 +364,17 @@ def update_multi_options(value):
 def update_summary_table(model_option):
     return all_model_dictionary[model_option].summary_df.reset_index().to_dict('records')
 
+@app.callback(
+    Output("download-summary-csv", "data"),
+    [
+        Input("btn-download", "n_clicks"),
+        Input("my-multi-dynamic-dropdown", "value"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(n_clicks, model_option):
+    if is_btn_clicked('btn-download'):
+        return dcc.send_data_frame(all_model_dictionary[model_option].summary_df.to_csv, f"{model_option}_summary.csv")
 
 @app.callback(
     Output("cytoscape-graph-model", "elements"),
