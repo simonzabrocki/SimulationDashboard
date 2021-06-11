@@ -33,7 +33,11 @@ def sankeyplot(df, source, target, valueformat='.00f', valuesuffix=' Gg(CO2eq)')
     encoded_s_t, classe_names = encode_source_target(data, source, target)
 
     data[['Source', 'Target']] = encoded_s_t
-
+    color_dict = pd.DataFrame({'scenario': ['BAU', 'scenario 1' ,'scenario 2'],
+                               'color': ['grey', '#D8A488', '#86BBD8']})
+    
+    data = data.merge(color_dict, on='scenario')
+    
     fig = go.Figure(data=[go.Sankey(
         valueformat=valueformat,
         valuesuffix=valuesuffix,
@@ -42,11 +46,13 @@ def sankeyplot(df, source, target, valueformat='.00f', valuesuffix=' Gg(CO2eq)')
             thickness=20,
             line=dict(color="black", width=0.5),
             label=classe_names,
+            color='lightgrey'
         ),
         link=dict(
             target=data['Target'],
             source=data['Source'],
-            value=data['Value']
+            value=data['Value'],
+            color=data['color']
         ))])
 
     return fig

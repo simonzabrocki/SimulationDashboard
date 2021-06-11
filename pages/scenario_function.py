@@ -132,21 +132,43 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
         data_dict=data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
-    
+
     displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
-    df_0 = emission_data_dict_to_df({k: v for k, v in scenarios_results['BAU'].items() if k in displayed_variables})
-    df_1 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_one'].items() if k in displayed_variables})
-    df_2 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_two'].items() if k in displayed_variables})
+    df_0 = emission_data_dict_to_df(
+        {k: v for k, v in scenarios_results['BAU'].items() if k in displayed_variables})
+    df_1 = emission_data_dict_to_df(
+        {k: v for k, v in scenarios_results['scenario_one'].items() if k in displayed_variables})
+    df_2 = emission_data_dict_to_df(
+        {k: v for k, v in scenarios_results['scenario_two'].items() if k in displayed_variables})
 
-    df = pd.concat([df_0.assign(scenario='BAU'), df_1.assign(scenario='scenario 1'), df_2.assign(scenario='scenario 2')], axis=0)
+    df = pd.concat([df_0.assign(scenario='BAU'), df_1.assign(
+        scenario='scenario 1'), df_2.assign(scenario='scenario 2')], axis=0)
 
-    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[['name', 'unit']], left_on='Variable', right_index=True, how='left')
+    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[[
+                  'name', 'unit']], left_on='Variable', right_index=True, how='left')
 
     #fig_2 = px.treemap(df.query('Variable != "GE3_partial"'), path=['Item', 'name', 'scenario'], values='Value', )
-    fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'})
+    fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={
+                       'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'}).update_layout(title="Scenarios Tree Map")
 
-    return fig_1, {}, {}
+    df.loc[df.Variable == 'GE3_partial', 'unit'] = 'gigagrams (CO2eq)'
+    df.loc[df.Variable == 'GE3_partial',
+           'name'] = 'Non-CO2 agricultural emissions'
+
+    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[[
+                  'name']], left_on='Item', right_index=True, how='left', suffixes=('_target', '_source'))
+    df['name'] = df['name_target']
+    df.loc[df.name_source.isna(), 'name'] = df.loc[df.name_source.isna(), 'Item']
+
+    df.loc[df.name_source.isna(), 'name_source'] = df.loc[df.name_source.isna(), 'Item']
+
+    df.loc[df.name_target.isna(
+    ), 'name_target'] = df.loc[df.name_target.isna(), 'Variable']
+
+    fig_2 = sankeyplot(df, 'name_source', 'name_target').update_layout(title="Scenarios sankey diagram")
+    return fig_1, fig_2, {}
+
 
 def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
@@ -159,7 +181,6 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
         data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = VEHC_scenario.run_scenario(
         data_dict, **args_dict_2)
-
 
     df_1 = format_var_results(scenarios_results, 'VEHC')
     df_2 = format_var_results(scenarios_results, 'GDPC')
