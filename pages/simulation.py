@@ -107,15 +107,40 @@ def scenario_building_box():
     return layout
 
 
+# def get_args_dict_from_scenario_box(box):
+#     '''TO DO: Recursive search of the id'''
+#     ided_components = [el for el in box['props']
+#                        ['children'] if 'id' in el['props']]
+
+#     arg_dict = {el['props']['id'][:-4]: el['props']['value'] for el in ided_components if 'value' in el['props']}
+
+#     return arg_dict
+
+def extract_values_from_ided_component(component):
+    '''Dangerous way to filter out the index'''
+    return {component['props']['id'][:-4]: component['props']['value']}
+    
+
 def get_args_dict_from_scenario_box(box):
     '''TO DO: Recursive search of the id'''
-    ided_components = [el for el in box['props']
-                       ['children'] if 'id' in el['props']]
+    ided_components = [el for el in box['props']['children'] if 'id' in el['props']]
 
-    arg_dict = {el['props']['id'][:-4]: el['props']['value'] for el in ided_components if 'value' in el['props']}
-
+    arg_dict = {}
+    for component in ided_components:
+        if 'value' in component['props']:
+            arg_dict.update(extract_values_from_ided_component(component))
+        else:
+            unested_comp = []
+            for comp_1 in component['props']['children']: # to make recursive not sustainable as is
+                for comp_2 in comp_1['props']['children']:
+                    for comp_3 in comp_2['props']['children']:
+                        if 'id' in comp_3['props']:
+                            unested_comp.append(comp_3)
+            
+            for el in unested_comp:
+                arg_dict.update(extract_values_from_ided_component(el))
+            
     return arg_dict
-
 
 layout = html.Div(
     [
@@ -205,7 +230,6 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
     if is_btn_clicked('btn-run'):
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
-        print(args_dict_1)
 
         try:
             scenario_function = scenario_function_dictionnary[model]

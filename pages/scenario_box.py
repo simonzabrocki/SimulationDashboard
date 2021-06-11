@@ -159,13 +159,13 @@ def TAi_sliders(scenario_id):
         ], className='bare_container four columns'),
         html.Div([
             TAi_item_slider(Items[9], scenario_id=scenario_id, mark=True),
-            TAi_item_slider(Items[9], scenario_id=scenario_id, mark=False),
             TAi_item_slider(Items[10], scenario_id=scenario_id, mark=False),
             TAi_item_slider(Items[11], scenario_id=scenario_id, mark=False),
+            TAi_item_slider(Items[12], scenario_id=scenario_id, mark=False),
         ], className='bare_container four columns'),
         
 
-    ], id=f'TAi_pct{scenario_id}',)
+    ], id=f'TAi_pct{scenario_id}')
 
 
 def TAi_item_slider(item, scenario_id, mark=False):

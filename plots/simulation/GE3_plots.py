@@ -11,7 +11,7 @@ def emission_data_dict_to_df(data_dict):
                       for k, v in data_dict.items()], axis=0).reset_index().dropna()
 
     data = pd.concat([data, data.groupby('Variable').sum().reset_index().rename(
-        columns={"Variable": 'Item'}).assign(Variable='Non-CO2 agricultural emissions')])
+        columns={"Variable": 'Item'}).assign(Variable='GE3_partial')])
 
     return data
 

@@ -3,7 +3,7 @@ import os
 import plotly.express as px
 
 from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
-from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario
+from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario, GE3
 from ggmodel_dev.models.water import EW_scenario
 from ggmodel_dev.models.transport import VEHC_scenario
 from ggmodel_dev.projection import run_projection
@@ -103,6 +103,25 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     return fig_1, fig_2, fig_3
 
 
+# def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
+#     scenarios_results = {}
+#     data_dict = {k: v.loc[ISO, 2018, :] for k, v in data_dict.items()}
+
+#     scenarios_results['BAU'] = GE3_scenario.run_scenario(
+#         data_dict=data_dict, MM_Ti=data_dict['MM_Ti'], MM_ASi=data_dict['MM_ASi'])
+#     scenarios_results['scenario_one'] = GE3_scenario.run_scenario(
+#         data_dict=data_dict, **args_dict_1)
+#     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
+#         data_dict=data_dict, **args_dict_2)
+
+#     df_0 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+#     df_1 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+
+#     fig_1 = sankeyplot(df_0, 'Item', 'Variable').update_layout(title='Scenario 1')
+#     fig_2 = sankeyplot(df_1, 'Item', 'Variable').update_layout(title='Scenario 2')
+
+#     return fig_1, fig_2, {}
+
 def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results = {}
     data_dict = {k: v.loc[ISO, 2018, :] for k, v in data_dict.items()}
@@ -113,15 +132,21 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
         data_dict=data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
+    
+    displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
-    df_0 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_one'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
-    df_1 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_two'].items() if k in ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']})
+    df_0 = emission_data_dict_to_df({k: v for k, v in scenarios_results['BAU'].items() if k in displayed_variables})
+    df_1 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_one'].items() if k in displayed_variables})
+    df_2 = emission_data_dict_to_df({k: v for k, v in scenarios_results['scenario_two'].items() if k in displayed_variables})
 
-    fig_1 = sankeyplot(df_0, 'Item', 'Variable').update_layout(title='Scenario 1')
-    fig_2 = sankeyplot(df_1, 'Item', 'Variable').update_layout(title='Scenario 2')
+    df = pd.concat([df_0.assign(scenario='BAU'), df_1.assign(scenario='scenario 1'), df_2.assign(scenario='scenario 2')], axis=0)
 
-    return fig_1, fig_2, {}
+    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[['name', 'unit']], left_on='Variable', right_index=True, how='left')
 
+    #fig_2 = px.treemap(df.query('Variable != "GE3_partial"'), path=['Item', 'name', 'scenario'], values='Value', )
+    fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'})
+
+    return fig_1, {}, {}
 
 def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
