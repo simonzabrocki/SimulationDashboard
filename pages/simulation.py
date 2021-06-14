@@ -190,7 +190,7 @@ scenario_box_dictionnary = {
 scenario_data_dictionnary = {
     'EW_models': get_data_dict_from_folder('data/sim/EW'),
     'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
-    'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
+    #'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
     'VEHC_model': get_data_dict_from_folder('data/sim/VEHC'),
 }
 
