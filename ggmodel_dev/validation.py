@@ -12,6 +12,7 @@ check model should plot the one that are not checked
 '''
 
 
+
 def score_model_old(Model, X, y_true):
     '''Run a model without scenario to check that the aggregation is correct
 
