@@ -5,7 +5,7 @@ body {
   padding: 0;
 }
 #page-content{
-  background-image:url("./GGGIsimulationbg1.jpg");
+  background-image:url("./background.jpeg");
    background-position:center top ;
    background-size:100% 100%;
    background-repeat: no-repeat;
@@ -14,20 +14,20 @@ body {
    height: 305px;
    border-bottom: 4px solid #2db29b; 
 }
-
 * {
   box-sizing: border-box;
-  margin-bottom: 24px;
   -moz-box-sizing: border-box;
 }
 .page {
   position:relative;
   min-height: 300mm;
   padding: 0;
-  margin: 0  50px;
+  margin: 0mm auto;
   border-radius: 0px;
   background: transparent;
 }
+
+
 
 .pagetwo {
   position: relative;
@@ -128,7 +128,6 @@ table.tiny-header tr:first-child {
 
 .row > .columns:not(:first-child) {
   padding-left: 20px;
-
 }
 
 h1,
@@ -194,13 +193,11 @@ li {
   text-align: center;
   transition-duration: 1s;
 }
-
 .all-tabs {
   text-align: center;
   font-size: 13px;
   margin-bottom: 40px;
 }
-
 .tab{
   border-style: solid;
   border-color: #2db29b;
@@ -212,13 +209,12 @@ li {
   padding: 5px 10px;
   color: #ddd;
 }
-
 .main-title {
   position: relative;
   color: #3a3a3a;
   font-size: 40px !important;
   width: 80%;
-  border-left: 20px solid #14ac9c;
+  border-left: 20px solid #2db29b;
   background: #ffffff;
   padding-left: 30px;
 }
@@ -235,7 +231,6 @@ li {
   padding-bottom: 1px;
   padding-left: 30px;
   padding-right: 60px;
-  font-weight: 700;
 }
 
 .logo {
@@ -243,7 +238,6 @@ li {
   width: auto;
   margin: 30px 0 0 10px ;
 }
-
 .all-tabs .tab button{
   border: none;
   background-color: transparent;
@@ -251,7 +245,6 @@ li {
   cursor: pointer;
   font-size: 18px;
 }
-
 .all-tabs .tab button:hover{
   color:#ffffff;
 }
@@ -266,10 +259,25 @@ li {
   height: 2px;
   transition:all .400s ease-in-out;
 }
-
 .all-tabs .tab button:hover:after{
   transform: scale(1,1);
 }
+
+/* a:link {
+  color: #696969;
+  text-decoration: none;
+} */
+
+/* visited link */
+/* a:visited {
+  color: #696969;
+  text-decoration: none;
+} */
+
+/* mouse over link */
+/* a:hover {
+  opacity: 0.6;
+} */
 
 /* selected link */
 a:active {
@@ -406,15 +414,12 @@ a:active {
 
 
 .pretty_container {
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: #f9f9f9;
-  border-color: #2db29b;
-  border-style: solid ;
-  border-width: 3px;
   margin: 10px;
-  padding: 30px;
+  padding: 15px;
   position: relative;
-  height: 20%;
+  box-shadow: 2px 2px 2px lightgrey;
 }
 
 .bare_container {
@@ -452,8 +457,9 @@ a:active {
 .mini_container {
   border-radius: 5px;
   background-color: #f9f9f9;
-  margin: 10px 5px;
+  margin: 10px;
   padding: 15px;
+  position: relative;
   box-shadow: 2px 2px 2px lightgrey;
   color: white;
   width: auto;
@@ -461,10 +467,9 @@ a:active {
 }
 
 
-/* BOOTSTRAP NAVBAR */
-.mainheader{
- background: transparent;
-}
+/* Dervin stuff */
+
+
 
 .mainheader .mainnav li{
   list-style: none;
