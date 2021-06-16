@@ -50,80 +50,40 @@ def get_header(app):
                         src=app.get_asset_url("GGGI_logo.png"),
                         className="logo",
                     ),
-                    html.A(
-                        html.Button("About GGGI", id="learn-more-button"),
-                        href="https://gggi.org/",
-                    ),
+                    html.Div([
+                        html.Ul([
+                            html.Li(
+                                [html.A("Home", href="https://greengrowthindex.gggi.org/",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Index and Simulation", href="localhost:8080",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Publications", href="https://greengrowthindex.gggi.org/?page_id=3126",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Authors", href="https://greengrowthindex.gggi.org/?page_id=3080",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Reviewers", href="https://greengrowthindex.gggi.org/?page_id=1975",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Partners", href="https://greengrowthindex.gggi.org/?page_id=2166",), ]),
+                            html.Li([html.Span(), ]),
+                            html.Li(
+                                [html.A("Contact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",), ]),
+                        ]),
+                    ], className="mainnav"),
+
                 ],
-                className="row",
+                className="mainheader",
             ),
-            html.Div(
-                [
-                    html.Div(
-                        [html.H5("Index and Simulation")],
-                        className="seven columns main-title",
-                    ),
-                    html.A(
-                        [
-                            html.A(
-                                "About the Index",
-                                href="https://greengrowthindex.gggi.org/",
-                                className="full-view-link",
-                            )
-                        ],
-                        className="five columns",
-                    ),
-                ],
-                className="twelve columns",
-                style={"padding-left": "0"},
-            ),
+
         ],
-        className="row",
+        className="mainheader",
     )
     return header
 
-# def get_header(app):
-#     header = html.Div(
-#         [
-#             html.Div(
-#                 [
-#                     html.Img(
-#                         src=app.get_asset_url("GGGI_logo.png"),
-#                         className="logo",
-#                     ),
-#                     html.Div([
-#                         html.Ul([
-#                             html.Li(
-#                                 [html.A("Home", href="https://greengrowthindex.gggi.org/",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Index and Simulation", href="localhost:8080",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Publications", href="https://greengrowthindex.gggi.org/?page_id=3126",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Authors", href="https://greengrowthindex.gggi.org/?page_id=3080",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Reviewers", href="https://greengrowthindex.gggi.org/?page_id=1975",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Partners", href="https://greengrowthindex.gggi.org/?page_id=2166",), ]),
-#                             html.Li([html.Span(), ]),
-#                             html.Li(
-#                                 [html.A("Contact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",), ]),
-#                         ]),
-#                     ], className="mainnav"),
-
-#                 ],
-#                 className="mainheader",
-#             ),
-
-#         ],
-#         className="mainheader",
-#     )
-#     return header
 
 def get_menu():
     menu = html.Div(
@@ -131,7 +91,7 @@ def get_menu():
             dcc.Link(
                 "Global Overview",
                 href="/SimulationDashBoard/global-overview",
-                className="tab first",
+                className="tab",
             ),
             dcc.Link(
                 "Regional Outlook",
