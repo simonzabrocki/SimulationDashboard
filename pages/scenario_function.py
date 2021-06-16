@@ -141,7 +141,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
 
     #fig_2 = px.treemap(df.query('Variable != "GE3_partial"'), path=['Item', 'name', 'scenario'], values='Value', )
     fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={
-                       'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'}, height=600).update_layout(title="Scenarios Tree Map")
+                       'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'}, height=600).update_layout(title="Agriculture non CO2 emissions Tree Map")
 
     df.loc[df.Variable == 'GE3_partial', 'unit'] = 'gigagrams (CO2eq)'
     df.loc[df.Variable == 'GE3_partial',
@@ -158,7 +158,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     ), 'name_target'] = df.loc[df.name_target.isna(), 'Variable']
 
     fig_2 = sankeyplot(df, 'name_source', 'name_target').update_layout(
-        title="Scenarios sankey diagram").update_layout(height=600)
+        title="Agriculture non CO2 emissions sankey diagram").update_layout(height=600)
     return fig_1, fig_2, {}
 
 
