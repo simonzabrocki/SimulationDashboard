@@ -5,6 +5,7 @@
         "model": "VEHC_model",
         "model_group": "Transport",
         "indicator": "EE1",
-        "status": "✔️"
+        "status": "✔️",
+        "source": ["Sommer, Martin & Dargay, Joyce & Gately, Dermot. (2007). Vehicle Ownership and Income Growth, Worldwide: 1960-2030. The Energy Journal. 28. 143-170. 10.2307/41323125."]
         }
 }

@@ -273,6 +273,13 @@ def description_display():
                        style={'font-size': 13})
             ],
             className='product'),
+        html.H6("Model sources:", className="subtitle padded"),
+        html.Div(
+            [
+                html.P('model sources', id='source-graph-model',
+                       style={'font-size': 13})
+            ],
+            className='product'),
     ]
     )
 
@@ -394,13 +401,16 @@ def update_graph_plot(model_option, n_clicks):
 
 @app.callback(
     Output("description-graph-model", "children"),
+    Output('source-graph-model', 'children'),
     [
         Input("my-multi-dynamic-dropdown", "value"),
     ],
 )
 def update_graph_description(model_option):
-
-    return all_model_properties_df.query(f'model == "{model_option}"').description.values[0]
+    description = all_model_properties_df.query(f'model == "{model_option}"').description.values[0]
+    source = all_model_properties_df.query(f'model == "{model_option}"').source.values[0]
+    source = [html.Ol(el) for el in source]
+    return description, source
 
 
 @app.callback(

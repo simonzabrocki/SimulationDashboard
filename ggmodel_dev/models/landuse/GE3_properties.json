@@ -5,6 +5,7 @@
         "model": "GE3_model",
         "model_group": "Landuse",
         "indicator": "GE3",
-        "status": "🚧"
+        "status": "🚧",
+        "source": ["TODO"]
     }
 }

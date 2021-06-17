@@ -5,6 +5,7 @@
         "model": "GGGM_model",
         "model_group": "Green Growth",
         "indicator": "GGI",
-        "status":  "🚧"
+        "status":  "🚧",
+        "source": ["see submodels"]
     }
 }

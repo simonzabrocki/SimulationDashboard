@@ -5,7 +5,8 @@
         "model": "BE3_model",
         "model_group": "Landuse",
         "indicator": "BE3",
-        "status": "🚧"
+        "status": "🚧",
+        "source": ["TODO"]
     },
     "SL1_model": {
         "description": "The nutrient balance consist of nutrient in- and outputs. Nutrient inputs consist of 1) biological nitrogen fixation and 2) atmospheric nitrogen deposition, which are kept constant in the model.  3) fertilizer application to cropland and 4) manure application to croplands. The nutrient outputs are based on total crops harvested. The total food demand per food group is divided by the nitrogen concentration of their respective crop to compute the total crop nitrogen during harvest.  ",
@@ -13,6 +14,7 @@
         "model": "SL1_model",
         "model_group": "Landuse",
         "indicator": "BE3",
-        "status": "🚧"
+        "status": "🚧",
+        "source": ["TODO"]
     }
 }
