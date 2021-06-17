@@ -268,7 +268,7 @@ def VEHC_scenario_box(scenario_id='_one'):
             html.P('GDPC annual growth', style={'font-size': 17}),
             dcc.Slider(
                 id=f'GDPC_rate{scenario_id}',
-                step=0.05,
+                step=0.01,
                 value=1,
                 min=0.95,  # To update later
                 max=1.1,

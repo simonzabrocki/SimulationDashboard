@@ -102,18 +102,21 @@ def make_dropdown_menu(model_dictionnary):
 
     dropdown = html.Div(
         [
-            html.H6(
-                "Select sector: ",
+            html.H5(
+                "Select a sector",
                 className="subtitle padded",
             ),
+            html.Br([]),
             dcc.Dropdown(id="my-dynamic-dropdown",
                          options=model_group_option,
                          value='Water',
                          clearable=False),
-            html.H6(
-                "Select model: ",
+            html.Br([]),
+            html.H5(
+                "Select a model",
                 className="subtitle padded",
             ),
+            html.Br([]),
             dcc.Dropdown(id="my-multi-dynamic-dropdown",
                          multi=False, value='EW_model', clearable=False)
         ]
@@ -326,7 +329,7 @@ layout = html.Div(
 
                         ]),
                         
-                        summary_table_display(),
+                        
 
                     ],
                     className="pretty_container four columns",
@@ -334,7 +337,8 @@ layout = html.Div(
                 ),
                 html.Div(
                     [
-                        graph_display()
+                        graph_display(),
+                        summary_table_display(),
                     ],
                     id="right-column",
                     className="pretty_container eight columns",
