@@ -6,7 +6,7 @@
         "model_group": "Landuse",
         "indicator": "BE2",
         "status": "✔️",
-        "source": ["TODO"]
+        "source": ["2006 IPCC Guidelines for National Greenhouse Gas Inventories, CHAPTER 4: FOREST LAND"]
 
     }
 }

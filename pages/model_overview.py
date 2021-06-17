@@ -226,7 +226,7 @@ def graph_display():
                 ),
                 html.Div([
                     cy_graph
-                    ]),
+                ]),
             ],
             className='row'
         ),
@@ -269,14 +269,14 @@ def description_display():
     tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
     layout = html.Div([
-        html.H6("Model description:", className="subtitle padded"),
+        html.H6("Description:", className="subtitle padded"),
         html.Div(
             [
                 html.P(tmp_text, id='description-graph-model',
                        style={'font-size': 13})
             ],
             className='product'),
-        html.H6("Model sources:", className="subtitle padded"),
+        html.H6("Sources:", className="subtitle padded"),
         html.Div(
             [
                 html.P('model sources', id='source-graph-model',
@@ -305,7 +305,7 @@ def summary_table_display():
                              style_table={'overflowX': 'auto',
                                           'height': '600px',
                                           'overflowY': 'auto'},
-                             style_cell={'font_family': 'roboto'}
+                             style_cell={'font_family': 'roboto'},
                              )
 
     ]
@@ -324,12 +324,13 @@ layout = html.Div(
                         info_boxes_display(),
                         description_display(),
                         html.Div([
-                            html.Button('Download Summary Table', id='btn-download', n_clicks=0),
+                            html.Button('Download Summary Table',
+                                        id='btn-download', n_clicks=0),
                             dcc.Download(id="download-summary-csv"),
 
                         ]),
-                        
-                        
+
+
 
                     ],
                     className="pretty_container four columns",
@@ -375,6 +376,7 @@ def update_multi_options(value):
 def update_summary_table(model_option):
     return all_model_dictionary[model_option].summary_df.reset_index().to_dict('records')
 
+
 @app.callback(
     Output("download-summary-csv", "data"),
     [
@@ -386,6 +388,7 @@ def update_summary_table(model_option):
 def downdload_table(n_clicks, model_option):
     if is_btn_clicked('btn-download'):
         return dcc.send_data_frame(all_model_dictionary[model_option].summary_df.to_csv, f"{model_option}_summary.csv")
+
 
 @app.callback(
     Output("cytoscape-graph-model", "elements"),
@@ -411,8 +414,10 @@ def update_graph_plot(model_option, n_clicks):
     ],
 )
 def update_graph_description(model_option):
-    description = all_model_properties_df.query(f'model == "{model_option}"').description.values[0]
-    source = all_model_properties_df.query(f'model == "{model_option}"').source.values[0]
+    description = all_model_properties_df.query(
+        f'model == "{model_option}"').description.values[0]
+    source = all_model_properties_df.query(
+        f'model == "{model_option}"').source.values[0]
     source = [html.Ol(el) for el in source]
     return description, source
 
@@ -440,13 +445,15 @@ def displayTapNodeData(data, n_clicks):
         if data['type'] != 'computationnal':
             return html.Div(
                 [
-                    html.P(f"{data['id']}: {data['name']}. ({data['unit']})", style={ 'font-size': 15, 'font-weight': 'bold'}),
+                    html.P(f"{data['id']}: {data['name']}. ({data['unit']})", style={
+                           'font-size': 15, 'font-weight': 'bold'}),
                 ]
             )
         else:
             return html.Div(
                 [
-                    html.P(f"{data['out']} = {data['name']}", style={'font-size': 15, 'font-weight': 'bold'}),
+                    html.P(f"{data['out']} = {data['name']}", style={
+                           'font-size': 15, 'font-weight': 'bold'}),
                 ]
             )
     else:
@@ -456,7 +463,7 @@ def displayTapNodeData(data, n_clicks):
 @app.callback(Output('cytoscape-mouseoverNodeData-output', 'children'),
               [
                   Input('cytoscape-graph-model', 'mouseoverNodeData'),
-               ])
+])
 def displayHoverNodeData(data):
     if data:
         if data['type'] != 'computationnal':
@@ -475,7 +482,7 @@ def displayImpactNodeData(data, model_option):
     G = all_model_dictionary[model_option]
     outputs = G.outputs_()
     impacted_nodes = []
-    
+
     if not data:
         return "Click on a node to see its impact"
 
@@ -493,6 +500,7 @@ def displayImpactNodeData(data, model_option):
                Input("my-multi-dynamic-dropdown", "value"),
                Input('cytoscape-graph-model', 'mouseoverNodeData'),
                Input('cytoscape-graph-model', 'selectedNodeData'),
+               #Input('summary_table', 'active_cell')
                ])
 def highlightpath(data, model_option, hover_node, selected_node):
 
@@ -500,6 +508,7 @@ def highlightpath(data, model_option, hover_node, selected_node):
 
     if data and not selected_node:
         return res
+
 
     if data:
         G = all_model_dictionary[model_option]
@@ -535,3 +544,24 @@ def highlightpath(data, model_option, hover_node, selected_node):
     ])
 def master_reset(n_clicks):
     return None, None, None
+
+
+@app.callback(
+    Output("summary_table", "style_data_conditional"),
+    Input("summary_table", "active_cell"),
+)
+def style_selected_rows(active_cell):
+    if active_cell is None:
+        return dash.no_update
+
+    css = [{"if": {'row_index': active_cell['row']},
+            "backgroundColor": "rgba(45, 178, 155, 0.3)",
+            "border": "1px solid green",
+            },
+           {
+        # 'active' | 'selected'
+        "if": {"state": "selected"},
+        "backgroundColor": "rgba(45, 178, 155, 0.3)",
+        "border": "1px solid green",
+    }, ]
+    return css
