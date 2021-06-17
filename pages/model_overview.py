@@ -306,6 +306,13 @@ def summary_table_display():
                                           'height': '600px',
                                           'overflowY': 'auto'},
                              style_cell={'font_family': 'roboto'},
+                             style_data_conditional=[
+                                 {
+                                     # 'active' | 'selected'
+                                     "if": {"state": "selected"},
+                                     "backgroundColor": "rgba(45, 178, 155, 0.3)",
+                                     "border": "1px solid green",
+                                 }, ]
                              )
 
     ]
@@ -508,7 +515,6 @@ def highlightpath(data, model_option, hover_node, selected_node):
 
     if data and not selected_node:
         return res
-
 
     if data:
         G = all_model_dictionary[model_option]
