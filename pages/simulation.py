@@ -144,7 +144,7 @@ def get_args_dict_from_scenario_box(box):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Simulation')]),
         html.Div(
             [
                 model_selection_box(),

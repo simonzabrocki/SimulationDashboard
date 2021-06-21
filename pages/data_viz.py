@@ -103,7 +103,7 @@ def HTML_text(Indicator):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Data')]),
         # page 1
         html.Div(
             [

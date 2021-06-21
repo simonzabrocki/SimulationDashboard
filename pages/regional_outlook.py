@@ -234,7 +234,7 @@ cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Regional Outlook')]),
         # page 1
         html.Div(
             [

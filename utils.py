@@ -37,8 +37,8 @@ def format_data(data):
     return data
 
 
-def Header(app):
-    return html.Div([get_header(app), html.Br([]), get_menu()])
+def Header(app, active_tab='Global Overview'):
+    return html.Div([get_header(app), html.Br([]), get_menu(active_tab)])
 
 
 def get_header(app):
@@ -85,44 +85,37 @@ def get_header(app):
     return header
 
 
-def get_menu():
-    menu = html.Div(
-        [
-            dcc.Link(
-                "Global Overview",
-                href="/SimulationDashBoard/global-overview",
+def get_menu(active_tab):
+
+    tabs_links = {
+        'Global Overview': "/SimulationDashBoard/global-overview",
+        'Regional Outlook': "/SimulationDashBoard/regional-outlouk",
+        'Country Profile': "/SimulationDashBoard/country-profile",
+        'Country Comparison': "/SimulationDashBoard/country-comparator",
+        'Data': "/SimulationDashBoard/data",
+        'Models Overview': "/SimulationDashBoard/models",
+        'Simulation': "/SimulationDashBoard/simulation"
+    }
+
+    menu_list = []
+
+    for name, link in tabs_links.items():
+        if name == active_tab:
+            tab = dcc.Link(
+                name,
+                href=link,
                 className="tab",
-            ),
-            dcc.Link(
-                "Regional Outlook",
-                href="/SimulationDashBoard/regional-outlouk",
+                style={'color': '#2db29b'}
+            )
+        else:
+            tab = dcc.Link(
+                name,
+                href=link,
                 className="tab",
-            ),
-            dcc.Link(
-                "Country Profile", href="/SimulationDashBoard/country-profile",
-                className="tab"
-            ),
-            dcc.Link(
-                "Country Comparison", href="/SimulationDashBoard/country-comparator",
-                className="tab"
-            ),
-            dcc.Link(
-                "Data", href="/SimulationDashBoard/data",
-                className="tab"
-            ),
-            dcc.Link(
-                "Models Overview",
-                href="/SimulationDashBoard/models",
-                className="tab",
-            ),
-            dcc.Link(
-                "Simulation",
-                href="/SimulationDashBoard/simulation",
-                className="tab",
-            ),
-        ],
-        className="row all-tabs",
-    )
+            )
+        menu_list.append(tab)
+
+    menu = html.Div(menu_list, className="row all-tabs")
     return menu
 
 

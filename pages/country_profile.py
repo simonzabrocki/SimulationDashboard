@@ -414,7 +414,7 @@ def time_series_Index(ISO):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Country Profile')]),
         # page 1
         html.Div(
             [

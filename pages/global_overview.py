@@ -104,7 +104,7 @@ def Table(data):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Global Overview')]),
         html.Div(
             [
                 html.Div(

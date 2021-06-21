@@ -249,7 +249,7 @@ def dimension_trend(ISO_A, ISO_B):
 
 layout = html.Div(
     [
-        html.Div([Header(app)]),
+        html.Div([Header(app, 'Country Comparison')]),
 
         html.Div(
             [
