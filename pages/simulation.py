@@ -36,10 +36,10 @@ def model_selection_box():
             html.Br([]),
             dcc.Dropdown(id="dropdown-simulation-model",
                          options=[
-                            {'label': 'Efficient Water Model', 'value': 'EW_models'},
-                            {'label': 'Land Use Model', 'value': 'BE2_model'},
-                            {'label': 'Agricultural Emissions Model', 'value': 'GE3_model'},
-                            {'label': 'Vehicle Ownership rate Model', 'value': 'VEHC_model'}
+                            {'label': 'Efficient Water Model (Water)', 'value': 'EW_models'},
+                            {'label': 'Land Use Model (Landuse)', 'value': 'BE2_model'},
+                            {'label': 'Agricultural Emissions Model (Landuse)', 'value': 'GE3_model'},
+                            {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'}
                          ],
                          value='EW_models'
                          )
@@ -131,7 +131,7 @@ def get_args_dict_from_scenario_box(box):
             arg_dict.update(extract_values_from_ided_component(component))
         else:
             unested_comp = []
-            for comp_1 in component['props']['children']: # to make recursive not sustainable as is
+            for comp_1 in component['props']['children']: # to make recursive, not sustainable as is
                 for comp_2 in comp_1['props']['children']:
                     for comp_3 in comp_2['props']['children']:
                         if 'id' in comp_3['props']:
@@ -213,6 +213,19 @@ def update_scenario_box(model_name):
     scenario_box_function = scenario_box_dictionnary[model_name]
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
 
+# @app.callback(
+#     Output('ISO_run_results', 'options'),
+#     [
+        
+#         Input('dropdown-simulation-model', 'value'),
+#         Input("btn-run", "n_clicks"),
+#     ]
+# )
+# def run_scenario(model, n_clicks):
+#     data = scenario_data_dictionnary[model]
+#     print(data)
+
+#     return [{'label': country, 'value': iso} for iso, country in ISO_options]
 
 @app.callback(
     Output("results-graph-1", "figure"),

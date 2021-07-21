@@ -103,7 +103,7 @@ def make_dropdown_menu(model_dictionnary):
     dropdown = html.Div(
         [
             html.H5(
-                "Select a sector",
+                "Select a Sector",
                 className="subtitle padded",
             ),
             html.Br([]),
@@ -113,7 +113,7 @@ def make_dropdown_menu(model_dictionnary):
                          clearable=False),
             html.Br([]),
             html.H5(
-                "Select a model",
+                "Select a Model",
                 className="subtitle padded",
             ),
             html.Br([]),

@@ -2,10 +2,13 @@ import dash
 import pandas as pd
 from utils import format_data
 import numpy as np
+#import dash_bootstrap_components as dbc
+
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}],
     suppress_callback_exceptions=True,
+    #external_stylesheets=[dbc.themes.BOOTSTRAP]
     
 )
 app.title = 'GreenGrowthIndex'

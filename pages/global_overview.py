@@ -36,19 +36,20 @@ def Map(data):
 
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
                           geo=dict(showframe=False,
+                                   resolution=50,
                                    showcoastlines=False,
                                    ),
                           )
 
     fig_map.update_traces(marker_line_width=0.3, marker_line_color='white')
 
-    fig_map.update_layout(coloraxis_colorbar=dict(title="",
+    fig_map.update_layout(coloraxis_colorbar=dict(title="Score",
                                                   thicknessmode="pixels", thickness=10,
                                                   lenmode="pixels", len=200,
                                                   dtick=20
                                                   ))
 
-    #fig_map.update_layout(sliders=[dict(active=14)])
+    # fig_map.update_layout(sliders=[dict(active=14)])
 
     curr_val = {"font": {"size": 20, 'family': 'roboto'},
                 "prefix": "Year: ",
@@ -104,7 +105,10 @@ def Table(data):
 
 layout = html.Div(
     [
-        html.Div([Header(app, 'Global Overview')]),
+        html.Div([
+            Header(app, 'Global Overview'),
+
+        ]),
         html.Div(
             [
                 html.Div(
