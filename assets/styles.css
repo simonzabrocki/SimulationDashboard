@@ -296,7 +296,7 @@ li {
 
 .tab {
   border-style: solid;
-  border-color: rgb(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
   /* border-color: rgb(255, 255, 255); */
   border-bottom-style: none;
   border-top-style: none;
@@ -317,10 +317,10 @@ li {
 
 .tablast {
   border-style: solid;
-  border-color: rgb(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
   border-bottom-style: none;
   border-top-style: none;
-  color: black;
+  color: rgb(255, 255, 255);
   padding: 6px 20px;
   text-align: center;
   text-decoration: none;
@@ -556,8 +556,7 @@ li {
 }
 @media only screen and (max-width:1300px){
  .pretty_container .thirdtabmain {
-  display:grid;
-  grid-template-columns: 50% 50%;
+  display:block;
   }
   
   .pretty_container .thirdtabmain .thirdtabs{
