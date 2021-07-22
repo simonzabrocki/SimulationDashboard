@@ -45,7 +45,7 @@ def Header(app, active_tab='Global Overview'):
         [
             html.Div([
                 page_menu(active_tab)],
-                     className='pretty_container twelve columns'),
+                className='pretty_container twelve columns'),
         ],
         className="row")
 
@@ -56,12 +56,13 @@ def get_header(app):
     header = html.Div(
         [
             html.Div(
-                [
+                [   
                     html.Img(
-                        src=app.get_asset_url("GGGI_logo.png"),
-                        className="logo",
-                    ),
+                            src=app.get_asset_url("GGGI_logo.png"),
+                            className="logo",
+                            ),
                     html.Div([
+                        
                         html.Ul([
                             html.Li(
                                 [html.A("Home", href="https://greengrowthindex.gggi.org/",), ]),
@@ -104,7 +105,8 @@ def get_page_title(active_tab):
 def get_menu_old(active_tab):
 
     name_link_list = [
-        {'label': 'Green Growth Index', 'value': '/SimulationDashBoard/global_overview'},
+        {'label': 'Green Growth Index',
+            'value': '/SimulationDashBoard/global_overview'},
         {'label': 'Simulation Tool', 'value': '/SimulationDashBoard/simulation'},
         {'label': 'Evidence Library', 'value': '/SimulationDashBoard/models'},
     ]
@@ -119,13 +121,13 @@ def get_menu_old(active_tab):
 def get_menu(active_tab):
 
     tab_menu = {
-         'Global Overview': "Green Growth Index",
-         'Regional Outlook': "Green Growth Index",
-         'Country Profile': "Green Growth Index",
-         'Country Comparison': "Green Growth Index",
-         'Data': "Evidence Library",
-         'Models Overview': "Evidence Library",
-         'Simulation': "Simulation Tool"
+        'Global Overview': "Green Growth Index",
+        'Regional Outlook': "Green Growth Index",
+        'Country Profile': "Green Growth Index",
+        'Country Comparison': "Green Growth Index",
+        'Data': "Evidence Library",
+        'Models Overview': "Evidence Library",
+        'Simulation': "Simulation Tool"
     }
 
     tabs_links = {
@@ -170,7 +172,8 @@ def gg_index_menu(active_tab):
         {'label': 'Global Overview', 'value': '/SimulationDashBoard/global_overview'},
         {'label': 'Regional Outlook', 'value': '/SimulationDashBoard/regional-outlouk'},
         {'label': 'Country Profile', 'value': '/SimulationDashBoard/country-profile'},
-        {'label': 'Country Comparison', 'value': '/SimulationDashBoard/country-comparator'},
+        {'label': 'Country Comparison',
+            'value': '/SimulationDashBoard/country-comparator'},
     ]
     div_list = get_menu_div_list(name_link_list, active_tab, className='tab')
 
@@ -183,7 +186,7 @@ def evidence_lib_menu(active_tab):
         {'label': 'Data', 'value': '/SimulationDashBoard/data'},
     ]
     div_list = get_menu_div_list(name_link_list, active_tab,  className='tab')
-    #return html.Div(div_list, className="thirdtabmain")
+    # return html.Div(div_list, className="thirdtabmain")
     return html.Div(div_list, className="row all-tabs")
 
 
