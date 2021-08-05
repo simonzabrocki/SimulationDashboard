@@ -36,8 +36,10 @@ def model_selection_box():
             html.Br([]),
             dcc.Dropdown(id="dropdown-simulation-model",
                          options=[
-                            {'label': 'Efficient Water Model (Water)', 'value': 'EW_models'},
-                            {'label': 'Land Use Model (Landuse)', 'value': 'BE2_model'},
+                            {'label': 'Efficient Water Model (Water)',
+                             'value': 'EW_models'},
+                            {'label': 'Land Use Model (Landuse)',
+                             'value': 'BE2_model'},
                             {'label': 'Agricultural Emissions Model (Landuse)', 'value': 'GE3_model'},
                             {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'}
                          ],
@@ -119,11 +121,12 @@ def scenario_building_box():
 def extract_values_from_ided_component(component):
     '''Dangerous way to filter out the index'''
     return {component['props']['id'][:-4]: component['props']['value']}
-    
+
 
 def get_args_dict_from_scenario_box(box):
     '''TO DO: Recursive search of the id'''
-    ided_components = [el for el in box['props']['children'] if 'id' in el['props']]
+    ided_components = [el for el in box['props']
+                       ['children'] if 'id' in el['props']]
 
     arg_dict = {}
     for component in ided_components:
@@ -131,16 +134,18 @@ def get_args_dict_from_scenario_box(box):
             arg_dict.update(extract_values_from_ided_component(component))
         else:
             unested_comp = []
-            for comp_1 in component['props']['children']: # to make recursive, not sustainable as is
+            # to make recursive, not sustainable as is
+            for comp_1 in component['props']['children']:
                 for comp_2 in comp_1['props']['children']:
                     for comp_3 in comp_2['props']['children']:
                         if 'id' in comp_3['props']:
                             unested_comp.append(comp_3)
-            
+
             for el in unested_comp:
                 arg_dict.update(extract_values_from_ided_component(el))
-            
+
     return arg_dict
+
 
 layout = html.Div(
     [
@@ -155,23 +160,30 @@ layout = html.Div(
         ),
         html.Div(
             [
-                html.Div(
-                    [
-                        html.H6(
-                            "Simulation Results",
-                            className="subtitle padded",
-                        ),
-                        html.Div(
-                            [
-                                dcc.Graph(id='results-graph-1',
-                                          config={'displayModeBar': False}),
-                                dcc.Graph(id='results-graph-2',
-                                          config={'displayModeBar': False}),
-                            ],
-                            className='row'),
-                    ],
-                    className='pretty_container eight columns'
-                )
+                dcc.Tabs(id='sim-spatial-tabs', value='sim', children=[
+                    dcc.Tab(label='Simulation Results', value='sim',
+                            className='subtab', selected_className='subtab--selected'),
+                    dcc.Tab(label='Spatial Analysis', value='spatial',
+                            className='subtab', selected_className='subtab--selected'),
+                ]),
+                html.Div(id='sim-spatial-tabs-content', className='pretty_container eight columns'),
+                # html.Div(
+                #     [
+                #         html.H6(
+                #             "Simulation Results",
+                #             className="subtitle padded",
+                #         ),
+                #         html.Div(
+                #             [
+                #                 dcc.Graph(id='results-graph-1',
+                #                           config={'displayModeBar': False}),
+                #                 dcc.Graph(id='results-graph-2',
+                #                           config={'displayModeBar': False}),
+                #             ],
+                #             className='row'),
+                #     ],
+                #     className='pretty_container eight columns'
+                # )
             ],
             className='row'
         ),
@@ -213,19 +225,32 @@ def update_scenario_box(model_name):
     scenario_box_function = scenario_box_dictionnary[model_name]
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
 
-# @app.callback(
-#     Output('ISO_run_results', 'options'),
-#     [
-        
-#         Input('dropdown-simulation-model', 'value'),
-#         Input("btn-run", "n_clicks"),
-#     ]
-# )
-# def run_scenario(model, n_clicks):
-#     data = scenario_data_dictionnary[model]
-#     print(data)
 
-#     return [{'label': country, 'value': iso} for iso, country in ISO_options]
+@app.callback(Output('sim-spatial-tabs-content', 'children'),
+              Input('sim-spatial-tabs', 'value'))
+def render_tab(tab):
+    if tab == 'sim':
+        return html.Div(
+            [
+                html.H6(
+                    "Simulation Results",
+                    className="subtitle padded",
+                ),
+                html.Div(
+                    [
+                        dcc.Graph(id='results-graph-1',
+                                  config={'displayModeBar': False}),
+                        dcc.Graph(id='results-graph-2',
+                                  config={'displayModeBar': False}),
+                    ],
+                    className='row'),
+            ],
+        )
+    elif tab == 'spatial':
+        return html.Div([html.H3('Not available')],
+                        className='product_A', style={'background': '#D3D3D3'}
+                        ),
+
 
 @app.callback(
     Output("results-graph-1", "figure"),

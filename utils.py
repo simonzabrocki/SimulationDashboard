@@ -163,8 +163,18 @@ def page_menu(active_tab):
         return gg_index_menu(active_tab)
     if active_tab in ['Models Overview', 'Data']:
         return evidence_lib_menu(active_tab)
-    else:
-        return []
+    if active_tab in ['Simulation', 'Spatial Analysis']:
+        return simtool_menu(active_tab)
+
+
+def simtool_menu(active_tab):
+    name_link_list = [
+        {'label': 'Simulation', 'value': '/SimulationDashBoard/simulation'},
+        #{'label': 'Spatial Analysis', 'value': '/SimulationDashBoard/simulation/spatial'},
+    ]
+    div_list = get_menu_div_list(name_link_list, active_tab, className='tab')
+
+    return html.Div(div_list, className="row all-tabs")
 
 
 def gg_index_menu(active_tab):
