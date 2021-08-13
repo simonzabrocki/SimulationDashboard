@@ -20,7 +20,6 @@ app.layout = html.Div(
 
 server = app.server
 
-
 # Update page
 
 @app.callback(Output("page-content", "children"),

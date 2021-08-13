@@ -1,40 +1,6 @@
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
-import pandas as pd
-
-
-def format_data(data):
-    data = data.copy()
-    variable_names = {
-        'ESRU': 'Efficient and sustainable resource use',
-        'NCP': 'Natural capital protection',
-        'GEO': 'Green economic opportunities',
-        'SI': 'Social inclusion',
-        'EE': 'Efficient and and sustainable energy',
-        'EW': 'Efficient and sustainable water use',
-        'SL': 'Sustainable land use',
-        'ME': 'Material use efficiency',
-        'EQ': 'Environmental quality',
-        'GE': 'Greenhouse gas emissions reductions',
-        'BE': 'Biodiversity and ecosystem protection',
-        'CV': 'Cultural and social value',
-        'GV': 'Green investment',
-        'GT': 'Green trade',
-        'GJ': 'Green employment',
-        'GN': 'Green innovation',
-        'AB': 'Access to basic services and resources',
-        'GB': 'Gender balance',
-        'SE': 'Social equity',
-        'SP': 'Social protection'
-    }
-    var_names = pd.DataFrame.from_dict(variable_names, orient='index')
-    var_names.columns = ['Variable_name']
-    data = data.set_index('Variable')
-    data['Variable_name'] = var_names
-    data = data.reset_index()
-
-    return data
 
 
 def Header(app, active_tab='Global Overview'):
