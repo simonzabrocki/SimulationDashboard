@@ -1,0 +1,47 @@
+{
+    "EW1_partial_model": {
+        "description": "Total water use efficiency is dependent by the total water withdrawal from agriculture, industry and municipal sectors and each sector’s gross value added. A corrective coefficient was applied to the agricultural sector to focus on irrigated production related to gross value added. The summation of sectoral gross value added was then divided by total water withdrawal to calculate EW 1.",
+        "display_name": "Water Use Efficiency",
+        "model": "EW1_partial_model",
+        "model_group": "Water",
+        "indicator": "EW1",
+        "status": "✔️",
+        "source": ["UNSTATS. (2019). Indicator 6.4.1: Change in Water-Use Efficiency over Time (pp. 1–10). United Nations Statistics Division (UNSTATS)."]
+    },
+    "EW2_partial_model": {
+        "description": "A country’s total freshwater availability includes natural and non-conventional sources. Total renewable freshwater is determined by the internal renewable water resources plus the external renewable water resources. A scenario to improve natural freshwater availability is to include non-conventional water resources of desalinated water and treated wastewater. EW 2 is the computed by the total water withdrawal divided by the total renewable freshwater minus the environmental flow requirement. To find the percentage values the water stress output is multiplied by 100.",
+        "display_name": "Freshwater Availability",
+        "model": "EW2_partial_model",
+        "model_group": "Water",
+        "indicator": "EW2",
+        "status": "✔️",
+        "source": ["UNSTATS. (2020). Indicator 6.4.2: Level of water stress: freshwater withdrawal as a proportion of available freshwater resource (pp. 1-11. United Nations Statistics Division (UNSTATS)."]
+    },
+    "EW_model": {
+        "description": "This model calculates the water use efficiency (EW1) and the water stress (EW2) of a country. Water withdrawals from the agricultural, industrial, and municipal sectors are calculated to determine a country’s total withdrawal. Currently, due to data limitations, agricultural withdrawal is only represented by irrigation water use and industrial water withdrawal is not modelled. Water availability of a country includes natural and non-conventional sources. The inclusion of non-conventional water resources allows the development of scenarios related to human innovation in managing freshwater resources. Water use efficiency is calculated by summating the corresponding gross value added for each sector and dividing by the total water withdrawal.  Water stress is calculated by the total water withdrawal divided by the total renewable freshwater minus the environmental flow requirement. To find the percentage values the water stress output is multiplied by 100.",
+        "display_name": "Efficient Water",
+        "model": "EW_model",
+        "model_group": "Water",
+        "indicator": "EW",
+        "status": "✔️",
+        "source": ["UNSTATS. (2019). Indicator 6.4.1: Change in Water-Use Efficiency over Time (pp. 1–10). United Nations Statistics Division (UNSTATS).", "UNSTATS. (2020). Indicator 6.4.2: Level of water stress: freshwater withdrawal as a proportion of available freshwater resource (pp. 1-11. United Nations Statistics Division (UNSTATS).", "Frenken, K., & Gillet, V. (2012). Irrigation Water Requirement and Water Withdrawal by Country (pp. 1–263). Food and Agriculture Organization of the United Nations (FAO).", "Luck, M., Landis, M., & Gassert, F. (2015). Aqueduct Water Stress Projections: Decadal Projections of Water Supply and Demand using CMIP5 GCMs. In Techical Note (pp. 1–20). World Resources Institute.", "Hejazi, M., Edmonds, J., Chaturvedi, V., Davies, E., & Eom, J. (2013). Scenarios of Global Municipal Water-use Demand Projections over the 21st Century. Hydrological Sciences Journal, 58(3), 519–538"]
+    },
+    "IWW_model": {
+        "description": "This sub-model calculates the agricultural water use for a country. Currently, due to data limitations, agricultural withdrawal is only represented by irrigation water withdrawal. Potential crop evapotranspiration (ETc) is the evapotranspiration from crops under standard conditions. It is calculated by the summation of crop coefficients, cropping intensity and reference evapotranspiration for each irrigated crop denoted in a country. Cropping intensity is the harvest irrigated area divided by the total actual irrigation area. Subtracting potential crop evapotranspiration from actual evapotranspiration, the irrigation consumptive use is calculated representing the water demand required to fulfill the deficit between crop consumption under ample water versus rainfed conditions. By multiplying irrigation consumptive use with the total actual area irrigated within a country, as well as considering the additional non-consumptive water required for rice paddy irrigation, the irrigation water requirement is computed. Total irrigation water withdrawal is then determined by the irrigation water requirement divided by the water requirement ratio (or irrigation efficiency). Users will be able to set irrigation efficiency values depending on various technologies to understand the impact on irrigation water withdrawal.",
+        "display_name": "Agricultural Water Withdrawal",
+        "model": "IWW_model",
+        "model_group": "Water",
+        "indicator": "EW",
+        "status": "✔️",
+        "source": ["Frenken, K., & Gillet, V. (2012). Irrigation Water Requirement and Water Withdrawal by Country (pp. 1–263). Food and Agriculture Organization of the United Nations (FAO).", "Luck, M., Landis, M., & Gassert, F. (2015). Aqueduct Water Stress Projections: Decadal Projections of Water Supply and Demand using CMIP5 GCMs. In Techical Note (pp. 1–20). World Resources Institute."]
+    },
+    "MWU_model": {
+        "description": "Municipal water withdrawal is calculated by the municipal water demand (or municipal water withdrawal per capita) multiplied by the total population of a country. Municipal water demand is represented by a logarithmic regression model as a function of GDP per capita (proxy for income) and water tariff price (in m3 per USD). A scenario will be available to users to investigate the impact of changing water tariffs on municipal water withdrawal.",
+        "display_name": "Municipal Water Use",
+        "model": "MWU_model",
+        "model_group": "Water",
+        "indicator": "EW",
+        "status": "✔️",
+        "source": ["Hejazi, M., Edmonds, J., Chaturvedi, V., Davies, E., & Eom, J. (2013). Scenarios of Global Municipal Water-use Demand Projections over the 21st Century. Hydrological Sciences Journal, 58(3), 519–538"]
+    }
+}

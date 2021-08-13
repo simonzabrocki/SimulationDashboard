@@ -1,0 +1,12 @@
+{
+    "BE2_model": {
+        "description": "Land use change is a consequence of changes in a country’s food demand. The total food demand for 97 different food groups are calculated based on the total calorie demand, population, food waste reduction policies and other types of food demand.  From the total crop-based food demands, the total cropland demand was computed by dividing it by the total crop yields. However, some minor differences occurred as the food groups calculated did not exactly match the crop types in FAOSTAT. Thus, an additional parameter was used to correct this. With the total cropland demand, the change in land use was calculated by comparing it to the previous year. If the cropland area increased, it was assumed that this caused a decrease in the inactive or fallow land area. When cropland area decreases, the total inactive land or fallow areas will increase. A reforestation scenario set by the user determines the share of inactive lands to be converted to forests. Both the fallow land and forest area were then computed by adding their respective changes to the land use of the previous year.",
+        "display_name": "Change in Land Use",
+        "model": "BE2_model",
+        "model_group": "Landuse",
+        "indicator": "BE2",
+        "status": "✔️",
+        "source": ["2006 IPCC Guidelines for National Greenhouse Gas Inventories, CHAPTER 4: FOREST LAND"]
+
+    }
+}

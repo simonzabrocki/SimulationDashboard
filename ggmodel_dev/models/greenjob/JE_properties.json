@@ -1,0 +1,11 @@
+{
+    "JE_model": {
+        "description": "This sub-model provides insight into the impacts of improving material efficiency in terms of potential monetary savings and job generation. This model has a major assumption that the total amount of materials saved is converted into a monetary equivalent, by using international prices of commodity goods. The total amount of monetary savings is converted to an amount of employment generation by dividing by the country’s annual salary wage. Due to these assumptions, model outputs may be over-estimated or idealistic. Therefore, the main use of this sub-model is to provide awareness into the opportunities and benefits of material use efficiency.",
+        "display_name": "Job equivalent model",
+        "model": "JE_model",
+        "model_group": "Green Job",
+        "indicator": "GJ1",
+        "status": "✔️",
+        "source": ["TODO"]
+        }
+}

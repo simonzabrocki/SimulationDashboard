@@ -13,6 +13,7 @@ $ python index.py
 
 # Deploy
 -------------------
+to update
 As of November 13th 2020, the app is deploy on Heroku.
 ```
 $ git push heroku main
@@ -21,3 +22,4 @@ $ git push heroku main
 # Authors
 ---------------
 S. Zabrocki
+
