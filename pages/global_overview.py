@@ -3,7 +3,7 @@ import dash_html_components as html
 import plotly.express as px
 import dash_table
 from utils import Header
-from app import app, data
+from app import app, data, INDEX_YEAR
 
 
 def map_dcc_config(file_name):
@@ -61,7 +61,7 @@ def Map(data):
 
 
 def Table(data):
-    table_df = data[(data.Year == 2019) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
+    table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
         index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index()
 
@@ -132,13 +132,13 @@ layout = html.Div(
                     [
 
                         html.H6(
-                            "2005-2019 Green Growth Index Map",
+                            f"2005-{INDEX_YEAR} Green Growth Index Map",
                             className="subtitle padded",
                         ),
                         dcc.Graph(figure=Map(data), id='world_map',
                                   config=map_dcc_config('GGI_world_map')),
                         html.H6(
-                            "2019 Green Growth Index Table",
+                            f"{INDEX_YEAR} Green Growth Index Table",
                             className="subtitle padded",
                         ),
                         Table(data),

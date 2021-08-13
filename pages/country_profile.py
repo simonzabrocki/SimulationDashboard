@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header
-from app import app, data, ISO_options
+from app import app, data, ISO_options, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
@@ -78,13 +78,13 @@ def HTML_text(ISO):
 
 def circular_plot(ISO):
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
-                                        'Category') & (data.Year == 2019)].fillna(0)
+                                        'Category') & (data.Year == INDEX_YEAR)].fillna(0)
     for dim in df.Dimension.unique():
         df = df.append({'Variable': f'{dim}', 'Value': 0,
                         'Dimension': dim}, ignore_index=True)
 
     index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
-                    & (data.Year == 2019)].Value.unique()
+                    & (data.Year == INDEX_YEAR)].Value.unique()
 
     # degueux à revoir
     if index_df.shape[0] > 0:
@@ -149,10 +149,10 @@ def polar(ISO):
                                                   ].drop_duplicates().values[0].tolist())
 
     group_df = group_data[group_data.ISO.isin([ISO]) & (data.Aggregation ==
-                                                        'Category') & (data.Year == 2019)]
+                                                        'Category') & (data.Year == INDEX_YEAR)]
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
-                                             'Category') & (data.Year == 2019)]  # .fillna(0)
+                                             'Category') & (data.Year == INDEX_YEAR)]  # .fillna(0)
 
     df = pd.concat([df, group_df])
     continent = df.Continent.values[0]
@@ -212,10 +212,10 @@ def loliplot(ISO):
                                                   ].drop_duplicates().values[0].tolist())
 
     group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
-                                                        'Dimension') & (group_data.Year == 2019)]
+                                                        'Dimension') & (group_data.Year == INDEX_YEAR)]
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
-                                             'Dimension') & (data.Year == 2019)]  # .fillna(0)
+                                             'Dimension') & (data.Year == INDEX_YEAR)]  # .fillna(0)
 
     df = pd.concat([df, group_df])
 
@@ -289,10 +289,10 @@ def loliplot_2(ISO):
                                                   ].drop_duplicates().values[0].tolist())
 
     df = data[(data.ISO.isin([ISO, REF])) & (data.Aggregation ==
-                                             'Category') & (data.Year == 2019)]  # .fillna(0)
+                                             'Category') & (data.Year == INDEX_YEAR)]  # .fillna(0)
 
     group_df = group_data[group_data.ISO.isin([REF]) & (group_data.Aggregation ==
-                                                        'Category') & (group_data.Year == 2019)]
+                                                        'Category') & (group_data.Year == INDEX_YEAR)]
 
     df = pd.concat([df, group_df])
 
@@ -453,7 +453,7 @@ layout = html.Div(
                             [
                                 html.Div(
                                     [
-                                        html.H6(["2019 Dimensions"],
+                                        html.H6([f"{INDEX_YEAR} Dimensions"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='Dim_ISO',
                                                   config={'displayModeBar': False}),
@@ -462,7 +462,7 @@ layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.H6(["2019 Indicators"],
+                                        html.H6([f"{INDEX_YEAR} Indicators"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='Perf_ISO',
                                                   config={'displayModeBar': False}),

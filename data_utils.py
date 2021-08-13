@@ -47,10 +47,10 @@ def format_data(data):
     return data
 
 
-def load_index_data():
+def load_index_data(max_year):
     data = (
         pd.read_csv('data/GGIs_2005_2020.csv')
-          .query("Year < 2020")
+          .query(f"Year <=  {max_year}")
           .replace('America', 'Americas')
     )
 
@@ -73,8 +73,8 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
-def load_all_data():
-    data = load_index_data()
+def load_all_data(max_year=2019):
+    data = load_index_data(max_year)
 
     indicator_data, indicator_properties, dimension_properties = load_indicator_data()
 

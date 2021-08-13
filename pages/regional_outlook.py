@@ -2,10 +2,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import dash_table
-import pandas as pd
-
 from utils import Header
-from app import app, data
+from app import app, data, INDEX_YEAR
 
 
 def Index_trend(data):
@@ -23,10 +21,10 @@ def Index_trend(data):
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
-    fig.update_xaxes(range=[2005, 2021])
+    fig.update_xaxes(range=[2005, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
-    dots = px.scatter(df[df.Year == 2019],
+    dots = px.scatter(df[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       color='Continent',
@@ -72,10 +70,10 @@ def dimension_trend(data):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2005, 2021])
+    fig.update_xaxes(range=[2005, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
-    dots = px.scatter(df[df.Year == 2019],
+    dots = px.scatter(df[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       labels={'Year': 'Year', 'Value': 'Score'},
@@ -116,7 +114,7 @@ def dimension_trend(data):
 
 def category_lolipop(data):
 
-    df = data[(data.Aggregation == 'Category') & (data.Year == 2019)]
+    df = data[(data.Aggregation == 'Category') & (data.Year == INDEX_YEAR)]
     df = df.dropna().groupby(
         ['Variable', 'Continent', 'Variable_name', 'Dimension']).mean().reset_index()
     df = df.round(2).sort_values(by='Dimension')
@@ -177,7 +175,7 @@ def category_lolipop(data):
 
 def Table(data):
 
-    df = data[(data.Year == 2019) & (data.Aggregation.isin(['Dimension']))
+    df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Dimension']))
               ].groupby(['Variable', 'Continent']).mean()
     df = df.reset_index().pivot(index=['Continent'], columns='Variable', values='Value')
     df.columns.name = None
@@ -229,7 +227,7 @@ def dcc_config(file_name):
                                        'zoomIn2d', 'zoomOut2d', 'toggleSpikelines', 'autoScale2d']}
 
 
-cover = data[(data.Aggregation == 'Index') & (data.Year == 2019)].dropna(subset=['Value']).shape[0]
+cover = data[(data.Aggregation == 'Index') & (data.Year == INDEX_YEAR)].dropna(subset=['Value']).shape[0]
 
 
 layout = html.Div(
@@ -277,17 +275,17 @@ layout = html.Div(
                                                   config=dcc_config('Dimension_Regional_Trends'),
                                                   id="Dimension Regional Trends"),
                                         html.H6(
-                                            "2019 Dimensions by Region",
+                                            f"{INDEX_YEAR} Dimensions by Region",
                                             className="subtitle padded",
                                         ),
                                         Table(data),
                                         html.H6(
-                                            "2019 Indicators by Region",
+                                            f"{INDEX_YEAR} Indicators by Region",
                                             className="subtitle padded",
                                         ),
                                         dcc.Graph(figure=category_lolipop(data),
                                                   config=dcc_config('Indicators_Regional_DotPlot'),
-                                                  id="2019 Indicators by Region"),
+                                                  id=f"{INDEX_YEAR} Indicators by Region"),
                                     ],
                                     className="twelve columns",
                                 )

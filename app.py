@@ -12,4 +12,7 @@ app.title = 'GreenGrowthIndex'
 
 server = app.server
 
-data, indicator_data, indicator_properties, dimension_properties, ISO_options = load_all_data()
+INDEX_YEAR = 2019
+
+data, indicator_data, indicator_properties, dimension_properties, ISO_options = load_all_data(max_year=INDEX_YEAR)
+

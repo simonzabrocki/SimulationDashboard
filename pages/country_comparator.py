@@ -1,14 +1,10 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header
-from app import app, data, ISO_options, indicator_properties
-
-import numpy as np
-import pandas as pd
+from app import app, data, ISO_options, INDEX_YEAR
 
 
 def HTML_text(ISO, className):
@@ -51,7 +47,7 @@ def circular_plot(ISO):
 
 
     df = data[(data.ISO.isin([ISO])) & (data.Aggregation ==
-                                        'Category') & (data.Year == 2019)].fillna(0)
+                                        'Category') & (data.Year == INDEX_YEAR)].fillna(0)
         
 
     for dim in df.Dimension.unique():
@@ -59,7 +55,7 @@ def circular_plot(ISO):
                         'Dimension': dim}, ignore_index=True)
 
     index_df = data[(data.ISO.isin([ISO])) & (data.Variable == 'Index')
-                    & (data.Year == 2019)].Value.unique()
+                    & (data.Year == INDEX_YEAR)].Value.unique()
 
     # degueux à revoir
     if index_df.shape[0] > 0:
@@ -150,7 +146,7 @@ def time_series_Index(ISO_A, ISO_B):
         x=1
     ))
 
-    dots = px.scatter(df[df.Year == 2019],
+    dots = px.scatter(df[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       labels={'Year': 'Year', 'Value': 'Score'},
@@ -200,7 +196,7 @@ def dimension_trend(ISO_A, ISO_B):
     fig.update_xaxes(range=[2005, 2021])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
-    dots = px.scatter(df[df.Year == 2019],
+    dots = px.scatter(df[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       labels={'Year': 'Year', 'Value': 'Score'},
