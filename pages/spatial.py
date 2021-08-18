@@ -95,31 +95,34 @@ def scenario_building_box():
 def density_map(df):
     #plot_df = power_plant_df.query(f"ISO in ['{ISO}']")
 
-    fig = px.density_mapbox(df.dropna(subset=['Water_Withdrawal']),
-                        lat='latitude',
-                        lon='longitude',
-                        z='Water_Withdrawal',
-                        hover_data={'Name':True, 'Capacity':True, 'latitude': False, 'longitude': False, 'Fuel': True},
-                        width=1200,
-                        height=800,
-                        radius=20,
-                        zoom=4,
-                        ).update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
-                                        geo=dict(showframe=False,
-                                                resolution=50,
-                                                showcoastlines=False,
-                                                visible=True,
-                                                fitbounds="locations",
-                                                showcountries=True
-                                                ),
-                                        legend=dict(orientation="h"),
-                                        mapbox_style="carto-positron", 
-                                        )
+    fig =   px.density_mapbox(df,
+                     lat='latitude',
+                     lon='longitude',
+                     z='Water Withdrawal (m3)',
+                     hover_data={'Name':True, 'Capacity (MW)':True, 'latitude': False, 'longitude': False, 'Fuel': True},
+                     width=1200,
+                     height=1000,
+                     radius=35,
+                     zoom=5.3,
+                     opacity=None,
+                     ).update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                                    geo=dict(showframe=False,
+                                             resolution=50,
+                                             showcoastlines=False,
+                                             visible=True,
+                                             fitbounds="locations",
+                                             showcountries=True
+                                             ),
+                                     legend=dict(orientation="h"),
+                                     mapbox_style="carto-positron",
+                                     dragmode=False,
+                                     
+                                     )
     return fig
 
 
 def capa_ww_plot(df):
-    fig = px.bar(df.groupby('Fuel')[['Capacity', 'Water_Withdrawal']].sum().reset_index().melt(id_vars=['Fuel']),
+    fig = px.bar(df.groupby('Fuel')[['Capacity (MW)', 'Water Withdrawal (m3)']].sum().reset_index().melt(id_vars=['Fuel']),
                  x='Fuel',
                  y='value',
                  color='Fuel',
@@ -131,22 +134,7 @@ def capa_ww_plot(df):
                  ).update_yaxes(matches=None, showticklabels=True, )
 
     return fig
-
-
-
-def capacity_plot(df):
-    capa_plot = px.pie(df.assign(Unit="MW"), names='Fuel', values='Capacity', color='Fuel',
-                   hole=0.5)
-    return capa_plot
-
-
-def ww_plot(df):
-    ww_plot = px.pie(df.assign(Unit="m3/year").dropna(subset=['Water_Withdrawal']),
-                 names='Fuel',
-                 values='Water_Withdrawal',
-                 color='Fuel',
-                 hole=0.5)
-    return ww_plot
+    
 
 layout = html.Div(
     [
