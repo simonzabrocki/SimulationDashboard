@@ -4,3 +4,5 @@ venv
 venv/
 .venv
 .vscode/settings.json
+
+.mapbox_token

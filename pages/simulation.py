@@ -109,15 +109,6 @@ def scenario_building_box():
     return layout
 
 
-# def get_args_dict_from_scenario_box(box):
-#     '''TO DO: Recursive search of the id'''
-#     ided_components = [el for el in box['props']
-#                        ['children'] if 'id' in el['props']]
-
-#     arg_dict = {el['props']['id'][:-4]: el['props']['value'] for el in ided_components if 'value' in el['props']}
-
-#     return arg_dict
-
 def extract_values_from_ided_component(component):
     '''Dangerous way to filter out the index'''
     return {component['props']['id'][:-4]: component['props']['value']}
@@ -160,30 +151,13 @@ layout = html.Div(
         ),
         html.Div(
             [
-                dcc.Tabs(id='sim-spatial-tabs', value='sim', children=[
+                dcc.Tabs(id='sim-spatial-tabs', value='sim', persistence=True, children=[
                     dcc.Tab(label='Simulation Results', value='sim',
                             className='subtab', selected_className='subtab--selected'),
-                    dcc.Tab(label='Spatial Analysis', value='spatial',
-                            className='subtab', selected_className='subtab--selected'),
+                    # dcc.Tab(label='Spatial Analysis', value='spatial',
+                    #         className='subtab', selected_className='subtab--selected'),
                 ]),
                 html.Div(id='sim-spatial-tabs-content', className='pretty_container eight columns'),
-                # html.Div(
-                #     [
-                #         html.H6(
-                #             "Simulation Results",
-                #             className="subtitle padded",
-                #         ),
-                #         html.Div(
-                #             [
-                #                 dcc.Graph(id='results-graph-1',
-                #                           config={'displayModeBar': False}),
-                #                 dcc.Graph(id='results-graph-2',
-                #                           config={'displayModeBar': False}),
-                #             ],
-                #             className='row'),
-                #     ],
-                #     className='pretty_container eight columns'
-                # )
             ],
             className='row'
         ),
@@ -226,30 +200,39 @@ def update_scenario_box(model_name):
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
 
 
+def get_sim_tab():
+    return html.Div(
+                [
+                    html.H6(
+                        "Simulation Results",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+                            dcc.Graph(id='results-graph-1',
+                                    config={'displayModeBar': False}),
+                            dcc.Graph(id='results-graph-2',
+                                    config={'displayModeBar': False}),
+                        ],
+                        className='row'),
+                ],
+            )
+
+def get_spatial_tab():
+    return html.Div([
+        html.Div([html.H3('Not available')], className='product_A', style={'background': '#D3D3D3'}),
+        html.Div([dcc.Graph(id='map', config={'displayModeBar': False}),], className='row')
+        ]
+    )
+
+
 @app.callback(Output('sim-spatial-tabs-content', 'children'),
               Input('sim-spatial-tabs', 'value'))
 def render_tab(tab):
     if tab == 'sim':
-        return html.Div(
-            [
-                html.H6(
-                    "Simulation Results",
-                    className="subtitle padded",
-                ),
-                html.Div(
-                    [
-                        dcc.Graph(id='results-graph-1',
-                                  config={'displayModeBar': False}),
-                        dcc.Graph(id='results-graph-2',
-                                  config={'displayModeBar': False}),
-                    ],
-                    className='row'),
-            ],
-        )
+        return get_sim_tab()
     elif tab == 'spatial':
-        return html.Div([html.H3('Not available')],
-                        className='product_A', style={'background': '#D3D3D3'}
-                        ),
+        return get_spatial_tab()
 
 
 @app.callback(
