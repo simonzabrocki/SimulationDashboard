@@ -130,11 +130,10 @@ def capa_ww_plot(df):
                  facet_col_spacing=0.05,
                  width=1200,
                  height=500,
-                 #color_discrete_map=FUEL_COLORMAP,
                  ).update_yaxes(matches=None, showticklabels=True, )
 
     return fig
-    
+
 
 layout = html.Div(
     [
@@ -158,16 +157,6 @@ layout = html.Div(
                          dcc.Graph(id='capa_ww_plot', config={'displayModeBar': False}),
                     ],
                     className='twelve columns'),
-                    # html.Div([
-                    #     html.H6([f"Capacity distribution"], className="subtitle padded"),
-                    #     dcc.Graph(id='capa_plot', config={'displayModeBar': False}),
-                    # ],
-                    # className='six columns'),
-                    # html.Div([
-                    #     html.H6([f"Water Withdrawal distribution"], className="subtitle padded"),
-                    #     dcc.Graph(id='ww_plot', config={'displayModeBar': False}),
-                    # ],
-                    # className='six columns'),
             ], className='row'),
                 
             
@@ -185,8 +174,6 @@ layout = html.Div(
 @app.callback(
     dash.dependencies.Output('density_map', 'figure'),
     dash.dependencies.Output('capa_ww_plot', 'figure'),
-    # dash.dependencies.Output('capa_plot', 'figure'),
-    # dash.dependencies.Output('ww_plot', 'figure'),
     [dash.dependencies.Input('ISO_map_run_results', 'value')])
 def update_density_map(ISO):
     plot_df = power_plant_df.query(f"ISO in ['{ISO}']")

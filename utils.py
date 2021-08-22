@@ -11,11 +11,17 @@ def Header(app, active_tab='Global Overview'):
         [
             html.Div([
                 page_menu(active_tab)],
-                className='pretty_container twelve columns'),
+                className='twelve columns'),
         ],
         className="row")
 
-    return html.Div([top_header, html.Br([]), menu, page_title])
+    return html.Div([
+        html.Div([
+            top_header,
+            html.Br([]),
+            menu,
+            ], className='mainheader'),
+        page_title])
 
 
 def get_header(app):
@@ -52,15 +58,10 @@ def get_header(app):
                                 [html.A("Contact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",), ]),
                         ]),
                     ], className="mainnav"),
-
-                ],
-                className="mainheader",
+                ],className="twelve columns",
             ),
-
         ],
-        className="mainheader",
     )
-
     return header
 
 
