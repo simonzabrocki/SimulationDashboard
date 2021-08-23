@@ -197,6 +197,7 @@ li {
   text-align: center;
   font-size: 22px;
   margin-bottom: 20px;
+  width: 100%;
 }
 .tab{
   border-style: solid;
@@ -208,6 +209,8 @@ li {
   border-right-style: none;
   padding: 5px 10px;
   color: #ddd;
+  margin-bottom: 15px;
+  /* width: 100%; */
 }
 .main-title {
   position: relative;
@@ -242,31 +245,20 @@ li {
 .all-tabs .tab{
   border: none;
   background-color: transparent;
-  /* border-color: rgb(255, 255, 255); */
   color: #ffffff;
   cursor: pointer;
   font-size: 30px;
-  /* letter-spacing: 1px; */
+  width: auto;
+  /* margin: 30px 20px 20px 30px ; */
 
 }
 
 .all-tabs .tab:hover{
   transform: scale(1,1);
-  /* text-decoration: underline; */
-
-  /* transition:all .400s ease-in-out; */
-
 }
 
 .all-tabs .tab:after{
-  /* opacity: 0.6; */
   content: "";
-  /* display: block; */
-  /* background:#2db29b; */
-  /* width: 100%; */
-  /* position: absolute; */
-  /* height: 2px; */
-  /* left: 0; */
   transition:all .400s ease-in-out;
 }
 
@@ -276,7 +268,7 @@ li {
   font-weight:bold;
   background:#ffffff;
   width: 100%;
-  position: absolute;
+  position: relative;
   height: 2px;
   left: 0;
   transition:all .400s ease-in-out;
@@ -317,7 +309,7 @@ li {
   border-bottom-style: none;
   border-top-style: none;
   border-right-style: none;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
 }
 
 .rowrow {
@@ -515,6 +507,7 @@ li {
   background-size: cover;
   background-position: left;
   height: 305px;
+  width: auto;
 } 
 
 .mainheader .mainnav li{
@@ -531,6 +524,8 @@ li {
   text-align: center;
   text-decoration: none;
   color:#2db29b;
+  margin-bottom: 30px;
+
 }
 
 /* visited link */
@@ -553,7 +548,7 @@ li {
 .mainheader .mainnav  li a:after {
   /* opacity: 0.6; */
   content: "";
-  display: block;
+  /* display: block; */
   background:#2db29b;
   transform: scale(0,1);
   width: 100%;
