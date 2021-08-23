@@ -246,25 +246,41 @@ li {
   color: #ffffff;
   cursor: pointer;
   font-size: 30px;
+  /* letter-spacing: 1px; */
+
 }
 
 .all-tabs .tab:hover{
-  color:#2db29b;
+  transform: scale(1,1);
+  /* text-decoration: underline; */
+
+  /* transition:all .400s ease-in-out; */
+
 }
 
 .all-tabs .tab:after{
   /* opacity: 0.6; */
   content: "";
   /* display: block; */
-  background:#2db29b;
-  transform: scale(0,1);
-  width: 100%;
-  height: 2px;
+  /* background:#2db29b; */
+  /* width: 100%; */
+  /* position: absolute; */
+  /* height: 2px; */
+  /* left: 0; */
   transition:all .400s ease-in-out;
 }
 
 .all-tabs .tab:hover:after{
   transform: scale(1,1);
+  display: block;
+  font-weight:bold;
+  background:#ffffff;
+  width: 100%;
+  position: absolute;
+  height: 2px;
+  left: 0;
+  transition:all .400s ease-in-out;
+
 }
 
 /* a:link {
@@ -473,14 +489,31 @@ li {
 
 
 /* Dervin stuff */
+/* .mainheader-bg {
+  position:relative;
+  background-image:url("./background.jpeg"); */
+  /* -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); */
+  /* background-size:100% 100%;
+  border-bottom: 4px solid #2db29b;
+  z-index: -1;
+  min-height: 50mm;
+  background-size: cover;
+  height: 305px;
+} */
 
 .mainheader {
   position:relative;
+  z-index: 5;
   background-image:url("./background.jpeg");
   background-size:100% 100%;
   border-bottom: 4px solid #2db29b;
   min-height: 50mm;
   background-size: cover;
+  background-position: left;
   height: 305px;
 } 
 

@@ -16,6 +16,7 @@ def Header(app, active_tab='Global Overview'):
         className="row")
 
     return html.Div([
+        # html.Div([],className='mainheader-bg'),
         html.Div([
             top_header,
             html.Br([]),
@@ -112,7 +113,9 @@ def get_menu(active_tab):
                 name,
                 href=link,
                 className="tab",
-                style={'color': '#2db29b'}
+                # style={'color': '#FFFFFF', 'font-weight': 'bold'}
+                style={'color': '#FFFFFF', 'font-weight': 'bold'}
+
             )
         else:
             tab = dcc.Link(
