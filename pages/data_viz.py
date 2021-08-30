@@ -120,7 +120,7 @@ layout = html.Div(
                                                 'display': 'inline-block',
                                                 'align-items': 'center',
                                                 'justify-content': 'center',
-                                                'font-size': '12px'}
+                                                'font-size': '15px'}
                                          ),
                                 html.H6(
                                     "Indicator",
@@ -131,7 +131,7 @@ layout = html.Div(
                                                 'display': 'inline-block',
                                                 'align-items': 'center',
                                                 'justify-content': 'center',
-                                                'font-size': '12px'},
+                                                'font-size': '15px'},
                                          ),
                                 html.Div(id='source_text'),
                             ],

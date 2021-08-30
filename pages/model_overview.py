@@ -273,14 +273,14 @@ def description_display():
         html.Div(
             [
                 html.P(tmp_text, id='description-graph-model',
-                       style={'font-size': 13})
+                       style={'font-size': 15})
             ],
             className='product'),
         html.H6("Sources:", className="subtitle padded"),
         html.Div(
             [
                 html.P('model sources', id='source-graph-model',
-                       style={'font-size': 13})
+                       style={'font-size': 15})
             ],
             className='product'),
     ]
