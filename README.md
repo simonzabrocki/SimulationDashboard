@@ -3,6 +3,9 @@
 # Simulation Dashboard
 Simulation Dashboard is a web application for index vizualisation and policy simulation. It is deployed at https://gggi-simtool-demo.herokuapp.com/
 
+# Purpose
+The goal of this application is to display the index and simulation results. The app is divided into three components. The first is the green growth index which includes scores and vizualistations for all countries. The second is the simulation tool which allows to interact with models and simulate policies. The last is the evidence librabry which includes all the models, data and codes used in the analysis. 
+
 # Installation
 -------------------
 ```
@@ -11,7 +14,7 @@ $ git clone https://github.com/simonzabrocki/SimulationDashboard.git
 $ python index.py
 ```
 
-# Deploy
+# Deployement
 -------------------
 The app can be deployed on Heroku via:
 ```
@@ -19,9 +22,11 @@ $ git push heroku main
 ```
 
 # Roadmap
+
 Code: 
-- Create a dedicated simulation object
 - Fetch simulation data and model from database
+- Improves modularity by using a sub repo for ggmodel_dev.
+
 
 Features:
 - Heatmap for index categories
