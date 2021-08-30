@@ -322,7 +322,7 @@ def summary_table_display():
 
 layout = html.Div(
     [
-        html.Div([Header(app, 'Models Overview')]),
+        html.Div([Header(app, 'Models')]),
         html.Div(
             [
                 html.Div(
