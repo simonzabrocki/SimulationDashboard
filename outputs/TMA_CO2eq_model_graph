@@ -1,0 +1,16 @@
+digraph {
+	graph [splines=ortho]
+	M_ASi [label=M_ASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure applied to soils (N content) 
+ (M_ASi) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	EF_ASi [label=EF_ASi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Manure applied) 
+ (EF_ASi) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	TMA_CO2eq [label=TMA_CO2eq color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure applied) 
+ (TMA_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMA_CO2eq_comp [label=TMA_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GWPN2O * N2ON_to_NO2 * kg_to_Gg * (EF_ASi * M_ASi)" peripheries=1 shape=rectangle style=""]
+	M_ASi -> TMA_CO2eq_comp [color="#A9A9A9"]
+	EF_ASi -> TMA_CO2eq_comp [color="#A9A9A9"]
+	TMA_CO2eq_comp -> TMA_CO2eq [color="#A9A9A9"]
+}

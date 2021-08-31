@@ -1,0 +1,36 @@
+digraph {
+	graph [splines=ortho]
+	M_Ti [label=M_Ti color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure treated (N content) 
+ (M_Ti) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	EF_Ti [label=EF_Ti color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Manure management) 
+ (EF_Ti) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	EF_CH4Ti [label=EF_CH4Ti color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for CH4 (Manure management) 
+ (EF_CH4Ti) 
+ kg/head" peripheries=1 shape=rectangle style=filled]
+	TAi [label=TAi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total animal population 
+ (TAi) 
+ head" peripheries=1 shape=rectangle style=filled]
+	E_Ti [label=E_Ti color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (N2O) (Manure management) 
+ (E_Ti) 
+ gigagrams" peripheries=1 shape=rectangle style=filled]
+	E_Ti_comp [label=E_Ti_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="N2ON_to_NO2 * kg_to_Gg * (EF_Ti * M_Ti)" peripheries=1 shape=rectangle style=""]
+	E_TCH4i [label=E_TCH4i color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CH4) (Manure management) 
+ (E_TCH4i) 
+ gigagrams" peripheries=1 shape=rectangle style=filled]
+	E_TCH4i_comp [label=E_TCH4i_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="kg_to_Gg * (EF_CH4Ti * TAi)" peripheries=1 shape=rectangle style=""]
+	TMT_CO2eq [label=TMT_CO2eq color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure management) 
+ (TMT_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMT_CO2eq_comp [label=TMT_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="E_Ti * GWPN2O + E_TCH4i * GWPCH4" peripheries=1 shape=rectangle style=""]
+	M_Ti -> E_Ti_comp [color="#A9A9A9"]
+	EF_Ti -> E_Ti_comp [color="#A9A9A9"]
+	EF_CH4Ti -> E_TCH4i_comp [color="#A9A9A9"]
+	TAi -> E_TCH4i_comp [color="#A9A9A9"]
+	E_Ti -> TMT_CO2eq_comp [color="#A9A9A9"]
+	E_Ti_comp -> E_Ti [color="#A9A9A9"]
+	E_TCH4i -> TMT_CO2eq_comp [color="#A9A9A9"]
+	E_TCH4i_comp -> E_TCH4i [color="#A9A9A9"]
+	TMT_CO2eq_comp -> TMT_CO2eq [color="#A9A9A9"]
+}

@@ -1,0 +1,16 @@
+digraph {
+	graph [splines=ortho]
+	TAi [label=TAi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total animal population 
+ (TAi) 
+ head" peripheries=1 shape=rectangle style=filled]
+	MYi [label=MYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure yields 
+ (MYi) 
+ kgN/head" peripheries=1 shape=rectangle style=filled]
+	TMi [label=TMi color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Total Manure (N content) 
+ (TMi) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	TMi_comp [label=TMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="TAi * MYi" peripheries=1 shape=rectangle style=""]
+	TAi -> TMi_comp [color="#A9A9A9"]
+	MYi -> TMi_comp [color="#A9A9A9"]
+	TMi_comp -> TMi [color="#A9A9A9"]
+}

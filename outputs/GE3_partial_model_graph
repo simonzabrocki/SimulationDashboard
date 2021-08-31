@@ -1,0 +1,36 @@
+digraph {
+	graph [splines=ortho]
+	Pop [label=Pop color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population 
+ (Pop) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	TEE_CO2eq [label=TEE_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Enteric) 
+ (TEE_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMT_CO2eq [label=TMT_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure management) 
+ (TMT_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMA_CO2eq [label=TMA_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure applied) 
+ (TMA_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMP_CO2eq [label=TMP_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure on pasture) 
+ (TMP_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	FE_CO2eq [label=FE_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Synthetic fertilizers) 
+ (FE_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	OEi [label=OEi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions other 
+ (OEi) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	GE3 [label=GE3 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Ratio of non-CO2 emissions in agriculture to population 
+ (GE3) 
+ gigagrams (CO2eq) / capita" peripheries=1 shape=rectangle style=filled]
+	GE3_comp [label=GE3_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(OEi + (TEE_CO2eq + TMT_CO2eq + TMP_CO2eq + TMA_CO2eq + FE_CO2eq).groupby(level=['ISO', 'Year']).sum()) / (Pop * 1e3)" peripheries=1 shape=rectangle style=""]
+	Pop -> GE3_comp [color="#A9A9A9"]
+	TEE_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMT_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMA_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMP_CO2eq -> GE3_comp [color="#A9A9A9"]
+	FE_CO2eq -> GE3_comp [color="#A9A9A9"]
+	OEi -> GE3_comp [color="#A9A9A9"]
+	GE3_comp -> GE3 [color="#A9A9A9"]
+}

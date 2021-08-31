@@ -415,8 +415,6 @@ def downdload_table(n_clicks, model_option):
 )
 def downdload_table(n_clicks, model_option):
     if is_btn_clicked('graph-download'):
-        model = all_model_dictionary[model_option].draw()
-        model.render(f'./outputs/{model_option}_graph')
         return dcc.send_file(f'./outputs/{model_option}_graph.pdf')
 
 

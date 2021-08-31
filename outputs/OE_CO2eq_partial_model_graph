@@ -1,0 +1,24 @@
+digraph {
+	graph [splines=ortho]
+	E_burn_CO2eq [label=E_burn_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="CO2eq emissions from biomass burning 
+ (E_burn_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	E_rice_CO2eq [label=E_rice_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Rice cultivation) 
+ (E_rice_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	E_CR_CO2eq [label=E_CR_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="N2O emission from crop residues in CO2-equivalent 
+ (E_CR_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	E_OS_CO2eq [label=E_OS_CO2eq color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions (N2O) (CO2eq) (Cultivation of organic soils) 
+ (E_OS_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	OE_CO2eq [label=OE_CO2eq color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Emissions other 
+ (OE_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	OE_CO2eq_comp [label=OE_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="E_rice_CO2eq + E_burn_CO2eq + E_CR_CO2eq + E_OS_CO2eq" peripheries=1 shape=rectangle style=""]
+	E_burn_CO2eq -> OE_CO2eq_comp [color="#A9A9A9"]
+	E_rice_CO2eq -> OE_CO2eq_comp [color="#A9A9A9"]
+	E_CR_CO2eq -> OE_CO2eq_comp [color="#A9A9A9"]
+	E_OS_CO2eq -> OE_CO2eq_comp [color="#A9A9A9"]
+	OE_CO2eq_comp -> OE_CO2eq [color="#A9A9A9"]
+}

@@ -1,0 +1,134 @@
+digraph {
+	graph [splines=ortho]
+	Pop [label=Pop color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population 
+ (Pop) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	TEE_CO2eq [label=TEE_CO2eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Enteric) 
+ (TEE_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TEE_CO2eq_comp [label=TEE_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="kg_to_Gg * GWPCH4 * (TAi * EF_EEi)" peripheries=1 shape=rectangle style=""]
+	TMT_CO2eq [label=TMT_CO2eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure management) 
+ (TMT_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMT_CO2eq_comp [label=TMT_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="E_Ti * GWPN2O + E_TCH4i * GWPCH4" peripheries=1 shape=rectangle style=""]
+	TMA_CO2eq [label=TMA_CO2eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure applied) 
+ (TMA_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMA_CO2eq_comp [label=TMA_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GWPN2O * N2ON_to_NO2 * kg_to_Gg * (EF_ASi * M_ASi)" peripheries=1 shape=rectangle style=""]
+	TMP_CO2eq [label=TMP_CO2eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Manure on pasture) 
+ (TMP_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	TMP_CO2eq_comp [label=TMP_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="kg_to_Gg * N2ON_to_NO2 * GWPN2O * (M_LPi * EF_Li)" peripheries=1 shape=rectangle style=""]
+	FE_CO2eq [label=FE_CO2eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CO2eq) (Synthetic fertilizers) 
+ (FE_CO2eq) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	FE_CO2eq_comp [label=FE_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GWPN2O * N2ON_to_NO2 * kg_to_Gg * (EF_F * IN_F)" peripheries=1 shape=rectangle style=""]
+	OEi [label=OEi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emissions other 
+ (OEi) 
+ gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
+	GE3 [label=GE3 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Ratio of non-CO2 emissions in agriculture to population 
+ (GE3) 
+ gigagrams (CO2eq) / capita" peripheries=1 shape=rectangle style=filled]
+	GE3_comp [label=GE3_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(OEi + (TEE_CO2eq + TMT_CO2eq + TMP_CO2eq + TMA_CO2eq + FE_CO2eq).groupby(level=['ISO', 'Year']).sum()) / (Pop * 1e3)" peripheries=1 shape=rectangle style=""]
+	EF_EEi [label=EF_EEi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for CH4 (Enteric) 
+ (EF_EEi) 
+ kg CH4 / head" peripheries=1 shape=rectangle style=filled]
+	TAi [label=TAi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total animal population 
+ (TAi) 
+ head" peripheries=1 shape=rectangle style=filled]
+	M_ASi [label=M_ASi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Manure applied to soils (N content) 
+ (M_ASi) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	M_ASi_comp [label=M_ASi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MM_ASi * TMi" peripheries=1 shape=rectangle style=""]
+	EF_ASi [label=EF_ASi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Manure applied) 
+ (EF_ASi) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	M_Ti [label=M_Ti color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Manure treated (N content) 
+ (M_Ti) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	M_Ti_comp [label=M_Ti_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MM_Ti * TMi" peripheries=1 shape=rectangle style=""]
+	EF_Ti [label=EF_Ti color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Manure management) 
+ (EF_Ti) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	EF_CH4Ti [label=EF_CH4Ti color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for CH4 (Manure management) 
+ (EF_CH4Ti) 
+ kg/head" peripheries=1 shape=rectangle style=filled]
+	E_Ti [label=E_Ti color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (N2O) (Manure management) 
+ (E_Ti) 
+ gigagrams" peripheries=1 shape=rectangle style=filled]
+	E_Ti_comp [label=E_Ti_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="N2ON_to_NO2 * kg_to_Gg * (EF_Ti * M_Ti)" peripheries=1 shape=rectangle style=""]
+	E_TCH4i [label=E_TCH4i color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Emissions (CH4) (Manure management) 
+ (E_TCH4i) 
+ gigagrams" peripheries=1 shape=rectangle style=filled]
+	E_TCH4i_comp [label=E_TCH4i_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="kg_to_Gg * (EF_CH4Ti * TAi)" peripheries=1 shape=rectangle style=""]
+	M_LPi [label=M_LPi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Manure left on pasture (N content) 
+ (M_LPi) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	M_LPi_comp [label=M_LPi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MM_LPi * TMi" peripheries=1 shape=rectangle style=""]
+	EF_Li [label=EF_Li color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Manure on pasture) 
+ (EF_Li) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	IN_F [label=IN_F color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Agricultural Use in nutrients 
+ (IN_F) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	EF_F [label=EF_F color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Synthetic fertilizers) 
+ (EF_F) 
+ kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
+	TMi [label=TMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total Manure (N content) 
+ (TMi) 
+ kgN" peripheries=1 shape=rectangle style=filled]
+	TMi_comp [label=TMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="TAi * MYi" peripheries=1 shape=rectangle style=""]
+	MM_ASi [label=MM_ASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="% Manure applied to soils 
+ (MM_ASi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	MM_LPi [label=MM_LPi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="% Manure left on pasture 
+ (MM_LPi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	MM_Ti [label=MM_Ti color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="% Manure treated 
+ (MM_Ti) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	MYi [label=MYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure yields 
+ (MYi) 
+ kgN/head" peripheries=1 shape=rectangle style=filled]
+	Pop -> GE3_comp [color="#A9A9A9"]
+	TEE_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TEE_CO2eq_comp -> TEE_CO2eq [color="#A9A9A9"]
+	TMT_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMT_CO2eq_comp -> TMT_CO2eq [color="#A9A9A9"]
+	TMA_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMA_CO2eq_comp -> TMA_CO2eq [color="#A9A9A9"]
+	TMP_CO2eq -> GE3_comp [color="#A9A9A9"]
+	TMP_CO2eq_comp -> TMP_CO2eq [color="#A9A9A9"]
+	FE_CO2eq -> GE3_comp [color="#A9A9A9"]
+	FE_CO2eq_comp -> FE_CO2eq [color="#A9A9A9"]
+	OEi -> GE3_comp [color="#A9A9A9"]
+	GE3_comp -> GE3 [color="#A9A9A9"]
+	EF_EEi -> TEE_CO2eq_comp [color="#A9A9A9"]
+	TAi -> TEE_CO2eq_comp [color="#A9A9A9"]
+	TAi -> E_TCH4i_comp [color="#A9A9A9"]
+	TAi -> TMi_comp [color="#A9A9A9"]
+	M_ASi -> TMA_CO2eq_comp [color="#A9A9A9"]
+	M_ASi_comp -> M_ASi [color="#A9A9A9"]
+	EF_ASi -> TMA_CO2eq_comp [color="#A9A9A9"]
+	M_Ti -> E_Ti_comp [color="#A9A9A9"]
+	M_Ti_comp -> M_Ti [color="#A9A9A9"]
+	EF_Ti -> E_Ti_comp [color="#A9A9A9"]
+	EF_CH4Ti -> E_TCH4i_comp [color="#A9A9A9"]
+	E_Ti -> TMT_CO2eq_comp [color="#A9A9A9"]
+	E_Ti_comp -> E_Ti [color="#A9A9A9"]
+	E_TCH4i -> TMT_CO2eq_comp [color="#A9A9A9"]
+	E_TCH4i_comp -> E_TCH4i [color="#A9A9A9"]
+	M_LPi -> TMP_CO2eq_comp [color="#A9A9A9"]
+	M_LPi_comp -> M_LPi [color="#A9A9A9"]
+	EF_Li -> TMP_CO2eq_comp [color="#A9A9A9"]
+	IN_F -> FE_CO2eq_comp [color="#A9A9A9"]
+	EF_F -> FE_CO2eq_comp [color="#A9A9A9"]
+	TMi -> M_ASi_comp [color="#A9A9A9"]
+	TMi -> M_Ti_comp [color="#A9A9A9"]
+	TMi -> M_LPi_comp [color="#A9A9A9"]
+	TMi_comp -> TMi [color="#A9A9A9"]
+	MM_ASi -> M_ASi_comp [color="#A9A9A9"]
+	MM_LPi -> M_LPi_comp [color="#A9A9A9"]
+	MM_Ti -> M_Ti_comp [color="#A9A9A9"]
+	MYi -> TMi_comp [color="#A9A9A9"]
+}
