@@ -245,7 +245,8 @@ def render_tab(tab):
         Input('ISO_run_results', 'value'),
         Input('dropdown-simulation-model', 'value'),
         Input("btn-run", "n_clicks"),
-    ]
+    ],
+    prevent_initial_call=True,
 )
 def run_scenario(box_1, box_2, ISO, model, n_clicks):
     if is_btn_clicked('btn-run'):

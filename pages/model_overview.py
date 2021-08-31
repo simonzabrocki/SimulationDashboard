@@ -330,10 +330,17 @@ layout = html.Div(
                         make_dropdown_menu(all_model_dictionary),
                         info_boxes_display(),
                         description_display(),
+                        html.H6(
+                                "Downloads: ",
+                                     className="subtitle padded",),
                         html.Div([
                             html.Button('Download Summary Table',
                                         id='btn-download', n_clicks=0),
                             dcc.Download(id="download-summary-csv"),
+                            html.P(),
+                            html.Button('Download graph model',
+                                        id='graph-download', n_clicks=0),
+                            dcc.Download(id="download-graph-pdf"),
 
                         ]),
 
@@ -345,8 +352,9 @@ layout = html.Div(
                 ),
                 html.Div(
                     [
-                        graph_display(),
+                        
                         summary_table_display(),
+                        graph_display(),
                     ],
                     id="right-column",
                     className="pretty_container eight columns",
@@ -395,6 +403,21 @@ def update_summary_table(model_option):
 def downdload_table(n_clicks, model_option):
     if is_btn_clicked('btn-download'):
         return dcc.send_data_frame(all_model_dictionary[model_option].summary_df.to_csv, f"{model_option}_summary.csv")
+
+
+@app.callback(
+    Output("download-graph-pdf", "data"),
+    [
+        Input("graph-download", "n_clicks"),
+        Input("my-multi-dynamic-dropdown", "value"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(n_clicks, model_option):
+    if is_btn_clicked('graph-download'):
+        model = all_model_dictionary[model_option].draw()
+        model.render(f'./outputs/{model_option}_graph')
+        return dcc.send_file(f'./outputs/{model_option}_graph.pdf')
 
 
 @app.callback(

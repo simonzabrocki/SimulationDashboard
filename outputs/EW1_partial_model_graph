@@ -1,0 +1,58 @@
+digraph {
+	graph [splines=ortho]
+	IWU [label=IWU color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Industrial Water Withdrawal 
+ (IWU) 
+ 1e9 m3/year" peripheries=1 shape=rectangle style=filled]
+	ICA [label=ICA color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Cropland area actually irrigated 
+ (ICA) 
+ 1000 ha" peripheries=1 shape=rectangle style=filled]
+	MWU [label=MWU color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Municipal Water Withdrawal 
+ (MWU) 
+ 1e9 m3/year" peripheries=1 shape=rectangle style=filled]
+	AWU [label=AWU color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Agricultural Water Withdrawal 
+ (AWU) 
+ 1e9 m3/year" peripheries=1 shape=rectangle style=filled]
+	TWW [label=TWW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total Water Withdrawal 
+ (TWW) 
+ 1e9 m3/year" peripheries=1 shape=rectangle style=filled]
+	TWW_comp [label=TWW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="AWU + IWU + MWU" peripheries=1 shape=rectangle style=""]
+	AGVA [label=AGVA color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Agricultural Gross Value Added 
+ (AGVA) 
+ $" peripheries=1 shape=rectangle style=filled]
+	CL [label=CL color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Cropland 
+ (CL) 
+ 1000 ha" peripheries=1 shape=rectangle style=filled]
+	PAIR [label=PAIR color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Proportion of Irrigated Cropland 
+ (PAIR) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	PAIR_comp [label=PAIR_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="ICA.groupby(level=['ISO']).sum() / CL" peripheries=1 shape=rectangle style=""]
+	Cr [label=Cr color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Corrective coefficient 
+ (Cr) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	Cr_comp [label=Cr_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1 / (1 + (PAIR / (1 - PAIR) * 0.375))" peripheries=1 shape=rectangle style=""]
+	IGVA [label=IGVA color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Industrial Gross Value Added 
+ (IGVA) 
+ $" peripheries=1 shape=rectangle style=filled]
+	SGVA [label=SGVA color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Service Sector Gross Value Added 
+ (SGVA) 
+ $" peripheries=1 shape=rectangle style=filled]
+	EW1 [label=EW1 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Water Use Efficiency 
+ (EW1) 
+ $/(m3/year)" peripheries=1 shape=rectangle style=filled]
+	EW1_comp [label=EW1_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(AGVA * (1 - Cr) + IGVA + SGVA) / (TWW * 1e9)" peripheries=1 shape=rectangle style=""]
+	IWU -> TWW_comp [color="#A9A9A9"]
+	ICA -> PAIR_comp [color="#A9A9A9"]
+	MWU -> TWW_comp [color="#A9A9A9"]
+	AWU -> TWW_comp [color="#A9A9A9"]
+	TWW -> EW1_comp [color="#A9A9A9"]
+	TWW_comp -> TWW [color="#A9A9A9"]
+	AGVA -> EW1_comp [color="#A9A9A9"]
+	CL -> PAIR_comp [color="#A9A9A9"]
+	PAIR -> Cr_comp [color="#A9A9A9"]
+	PAIR_comp -> PAIR [color="#A9A9A9"]
+	Cr -> EW1_comp [color="#A9A9A9"]
+	Cr_comp -> Cr [color="#A9A9A9"]
+	IGVA -> EW1_comp [color="#A9A9A9"]
+	SGVA -> EW1_comp [color="#A9A9A9"]
+	EW1_comp -> EW1 [color="#A9A9A9"]
+}
