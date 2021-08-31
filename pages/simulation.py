@@ -137,6 +137,23 @@ def get_args_dict_from_scenario_box(box):
 
     return arg_dict
 
+def get_sim_tab():
+    return html.Div(
+                [
+                    html.H6(
+                        "Simulation Results",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+                            dcc.Graph(id='results-graph-1',
+                                    config={'displayModeBar': False}),
+                            dcc.Graph(id='results-graph-2',
+                                    config={'displayModeBar': False}),
+                        ],
+                        className='row'),
+                ],
+            )
 
 layout = html.Div(
     [
@@ -151,13 +168,15 @@ layout = html.Div(
         ),
         html.Div(
             [
-                dcc.Tabs(id='sim-spatial-tabs', value='sim', persistence=True, children=[
-                    dcc.Tab(label='Simulation Results', value='sim',
-                            className='subtab', selected_className='subtab--selected'),
-                    # dcc.Tab(label='Spatial Analysis', value='spatial',
-                    #         className='subtab', selected_className='subtab--selected'),
-                ]),
-                html.Div(id='sim-spatial-tabs-content', className='pretty_container eight columns'),
+                # dcc.Tabs(id='sim-spatial-tabs', value='sim', persistence=True, children=[
+                #     dcc.Tab(label='Simulation Results', value='sim',
+                #             className='subtab', selected_className='subtab--selected'),
+                #     # dcc.Tab(label='Spatial Analysis', value='spatial',
+                #     #         className='subtab', selected_className='subtab--selected'),
+                # ],
+                # className='container twelve columns'),
+                
+                html.Div([get_sim_tab()], id='sim-spatial-tabs-content', className='pretty_container eight columns'),
             ],
             className='row'
         ),
@@ -200,23 +219,7 @@ def update_scenario_box(model_name):
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
 
 
-def get_sim_tab():
-    return html.Div(
-                [
-                    html.H6(
-                        "Simulation Results",
-                        className="subtitle padded",
-                    ),
-                    html.Div(
-                        [
-                            dcc.Graph(id='results-graph-1',
-                                    config={'displayModeBar': False}),
-                            dcc.Graph(id='results-graph-2',
-                                    config={'displayModeBar': False}),
-                        ],
-                        className='row'),
-                ],
-            )
+
 
 def get_spatial_tab():
     return html.Div([
