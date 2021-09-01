@@ -1,6 +1,6 @@
 {
     "ELECWW_model": {
-        "description": "The model is computes the annual thermo electric power water withdrawal. The water withdrawal depends on fuel and cooling system.  The fuel type is provided directly in the input data. The cooling system is estimated with geospatial analysis, the estimation takes into account nearby discharge as well as electricity production. (TO BE UPDATED)",
+        "description": "This model is focused on total annual thermoelectric power water withdrawal. Gridded-based spatial analysis is conducted so spatial distribution of industrial water demand can be investigated.  For calculation of this model, fuel type, cooling system and annual electricity produced of each power plant are considered. Whereas fuel type information is fully provided with database, cooling type and electricity generation don’t have enough information in database. So, for electricity generation, total generation and aggregated capacity of all plants by fuel type and country are used for assuming missing values. Also, other institute’s research and each country’s government report are referred for better data quality.  And as cooling system relies on volumes of nearby discharge, volumes of discharge and electricity production of surrounding area is considered for estimating the type of cooling system.",
         "display_name": "Electric plant water withdrawal model",
         "model": "ELECWW_model",
         "model_group": "Water",
