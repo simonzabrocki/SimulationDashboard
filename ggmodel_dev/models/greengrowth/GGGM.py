@@ -1,7 +1,7 @@
 from ggmodel_dev.graphmodel import merge_models
 from ggmodel_dev.utils import get_model_properties
 from ggmodel_dev.models.landuse import BE2, SL1_BE3, GE3, OE_CO2eq
-from ggmodel_dev.models.water import EW
+from ggmodel_dev.models.water import EW, ELECWW
 from ggmodel_dev.models.transport import VEHC
 from ggmodel_dev.models.greenjob import JE
 
@@ -24,6 +24,8 @@ def merge_model_dictionary():
     model_dictionary['OE_CO2eq'] = OE_CO2eq.model_dictionnary
     model_dictionary['EW'] = EW.model_dictionnary
     model_dictionary['VEHC'] = VEHC.model_dictionnary
+    model_dictionary['ELECWW'] = ELECWW.model_dictionnary
+
     #model_dictionary['JE'] = JE.model_dictionnary
 
     return flatten_dictionary(model_dictionary)
@@ -38,6 +40,8 @@ def merge_model_properties():
     model_properties['OE_CO2eq'] = OE_CO2eq.model_properties
     model_properties['EW'] = EW.model_properties
     model_properties['VEHC'] = VEHC.model_properties
+    model_properties['ELECWW'] = ELECWW.model_properties
+
     #model_properties['JE'] = JE.model_properties
 
     return flatten_dictionary(model_properties)

@@ -1,0 +1,11 @@
+{
+    "ELECWW_model": {
+        "description": "The model is computes the annual thermo electric power water withdrawal. The water withdrawal depends on fuel and cooling system.  The fuel type is provided directly in the input data. The cooling system is estimated with geospatial analysis, the estimation takes into account nearby discharge as well as electricity production. (TO BE UPDATED)",
+        "display_name": "Electric plant water withdrawal model",
+        "model": "ELECWW_model",
+        "model_group": "Water",
+        "indicator": "EW1",
+        "status": "🚧",
+        "source": ["HydroATLA version 1.0", "IRENA", "Global Power Plant Database(WRI)", "IEA", "EIA", "Vassolo, S., and P. Do¨ll (2005), Global-scale gridded estimates of thermoelectric power and manufacturing water use, Water Resour. Res., 41, W04010, doi:10.1029/2004WR003360", "Flörke, Martina & Teichert, Ellen & Bärlund, Ilona & Eisner, Stephanie & Wimmer, Florian & Alcamo, Joseph. (2013). Domestic and industrial water uses of the past 60 years as a mirror of socio-economic development: A global simulation study. Global Environmental Change. 23. 144-156. 10.1016/j.gloenvcha.2012.10.018."]
+    }
+}
