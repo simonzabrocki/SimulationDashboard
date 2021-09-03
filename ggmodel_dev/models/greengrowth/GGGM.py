@@ -4,6 +4,7 @@ from ggmodel_dev.models.landuse import BE2, SL1_BE3, GE3, OE_CO2eq
 from ggmodel_dev.models.water import EW, ELECWW
 from ggmodel_dev.models.transport import VEHC
 from ggmodel_dev.models.greenjob import JE
+from ggmodel_dev.models.energy import ELECGHG
 
 
 def flatten_dictionary(dictionary):
@@ -15,6 +16,8 @@ def flatten_dictionary(dictionary):
         
     return flat_dictionary
 
+    
+
 def merge_model_dictionary():
     '''To improve'''
     model_dictionary = {}
@@ -25,6 +28,7 @@ def merge_model_dictionary():
     model_dictionary['EW'] = EW.model_dictionnary
     model_dictionary['VEHC'] = VEHC.model_dictionnary
     model_dictionary['ELECWW'] = ELECWW.model_dictionnary
+    model_dictionary['ELECGHG'] = ELECGHG.model_dictionnary
 
     #model_dictionary['JE'] = JE.model_dictionnary
 
@@ -41,6 +45,7 @@ def merge_model_properties():
     model_properties['EW'] = EW.model_properties
     model_properties['VEHC'] = VEHC.model_properties
     model_properties['ELECWW'] = ELECWW.model_properties
+    model_properties['ELECGHG'] = ELECGHG.model_properties
 
     #model_properties['JE'] = JE.model_properties
 
@@ -48,6 +53,7 @@ def merge_model_properties():
 
 all_model_dictionary = merge_model_dictionary()
 all_model_properties = merge_model_properties()
+
 
 GreenGrowthModel = merge_models([model for _, model in all_model_dictionary.items()])
 
