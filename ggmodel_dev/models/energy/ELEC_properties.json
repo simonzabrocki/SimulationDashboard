@@ -1,0 +1,39 @@
+{
+    "ELECGHG_model": {
+        "description": "The electricity and heat production sector contribute the most amount of CO2 emissions across the world [1]. The intensity of CO2 emissions is proportional to the amount of fossil fuels burned in the power plants. The emissions from fossil fuel power plants are calculated using the methodologies suggested by the Asian Development Bank on estimating greenhouse gas emissions [2]. The emissions are driven by population growth, and an increase in electricity demand from various sectors",
+        "display_name": "Electric plant green house gas emission model",
+        "model": "ELECGHG_model",
+        "model_group": "Energy",
+        "indicator": "GE1",
+        "status": "🚧",
+        "source": ["IEA. Data and statistics. CO2 emissions by sector, World 1990-2018",
+                   "Asian development Bank. Guidelines for estimating greenhouse gas emissions of Asian Development Bank projects",
+                   "Asian Development Bank. Manual for Calculating Energy Output Indicators. 2011",
+                    "IAEA. Glossary of Terms in PRIS Reports.",
+                    "EPA (United States Environmental Protection Agency). Energy and the Environment. Greenhouse Gases Equivalencies Calculator",
+                    "IFI. IFIs - Harmonization of Standards for GHG accounting.",
+                    "Edwards, Robert, et al. Draft Methodology for Calculation of GHG emission avoidance. 2020"
+                ]
+                
+    },
+    "ELECWW_model": {
+        "description": "This model is focused on total annual thermoelectric power water withdrawal. Gridded-based spatial analysis is conducted so spatial distribution of industrial water demand can be investigated.  For calculation of this model, fuel type, cooling system and annual electricity produced of each power plant are considered. Whereas fuel type information is fully provided with database, cooling type and electricity generation don’t have enough information in database. So, for electricity generation, total generation and aggregated capacity of all plants by fuel type and country are used for assuming missing values. Also, other institute’s research and each country’s government report are referred for better data quality.  And as cooling system relies on volumes of nearby discharge, volumes of discharge and electricity production of surrounding area is considered for estimating the type of cooling system.",
+        "display_name": "Electric plant water withdrawal model",
+        "model": "ELECWW_model",
+        "model_group": "Water",
+        "indicator": "EW1",
+        "status": "🚧",
+        "source": ["HydroATLA version 1.0", "IRENA", "Global Power Plant Database(WRI)", "IEA", "EIA", "Vassolo, S., and P. Do¨ll (2005), Global-scale gridded estimates of thermoelectric power and manufacturing water use, Water Resour. Res., 41, W04010, doi:10.1029/2004WR003360", "Flörke, Martina & Teichert, Ellen & Bärlund, Ilona & Eisner, Stephanie & Wimmer, Florian & Alcamo, Joseph. (2013). Domestic and industrial water uses of the past 60 years as a mirror of socio-economic development: A global simulation study. Global Environmental Change. 23. 144-156. 10.1016/j.gloenvcha.2012.10.018."]
+    },
+    "ELEC_model": {
+        "description": "Electricty plant models",
+        "display_name": "Electric plant green house gas emission  and water withdrawal models",
+        "model": "ELEC_model",
+        "model_group": "Energy",
+        "indicator": "GE1",
+        "status": "🚧",
+        "source": ["See submodels."
+                ]
+                
+    }
+}

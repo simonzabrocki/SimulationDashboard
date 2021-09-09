@@ -6,6 +6,7 @@ from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
 from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario, GE3, BE2
 from ggmodel_dev.models.water import EW_scenario, EW
 from ggmodel_dev.models.transport import VEHC_scenario, VEHC
+from ggmodel_dev.models.energy import ELEC, ELEC_scenario
 from ggmodel_dev.projection import run_projection
 
 
@@ -184,3 +185,69 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_3 = {}
 
     return fig_1, fig_2, fig_3
+
+
+
+# ELEC TO CLEAN UP
+
+def density_map(df):
+    fig =   px.density_mapbox(df,
+                     lat='latitude',
+                     lon='longitude',
+                     z='Water Withdrawal (m3)',
+                     hover_data={'Name':True, 'Generation (GWh)':True, 'latitude': False, 'longitude': False, 'Fuel': True},
+                     width=1200,
+                     height=1000,
+                     radius=35,
+                     zoom=5.3,
+                     opacity=None,
+                     ).update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                                    geo=dict(showframe=False,
+                                             resolution=50,
+                                             showcoastlines=False,
+                                             visible=True,
+                                             fitbounds="locations",
+                                             showcountries=True
+                                             ),
+                                     legend=dict(orientation="h"),
+                                     mapbox_style="carto-positron",
+                                     dragmode=False,
+                                     
+                                     )
+    return fig
+
+
+def ghg_capa_ww_plot(df):
+    fig = px.bar(df.groupby('Fuel')[['CO2 emissions (tonnes)','Generation (GWh)', 'Water Withdrawal (m3)']].sum().reset_index().melt(id_vars=['Fuel']),
+                 x='Fuel',
+                 y='value',
+                 color='Fuel',
+                 facet_col='variable',
+                 facet_col_spacing=0.05,
+                 width=1200,
+                 height=500,
+                 ).update_yaxes(matches=None, showticklabels=True, )
+
+    return fig
+
+
+def format_ELEC_results(results):
+    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['ELECPRODi', 'ELECWWi', 'ELECGHGi']], axis=1)
+    return (
+        df.reset_index()
+          .dropna()
+          .rename(columns={'ELECWWi': 'Water Withdrawal (m3)', 'ELECGHGi': 'CO2 emissions (tonnes)', 'ELECPRODi': 'Generation (GWh)'})
+    )
+
+def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
+
+    data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
+    
+    results = ELEC_scenario.run_scenario(data_dict, **args_dict_1, **args_dict_2)
+    
+    results_df = format_ELEC_results(results)
+    
+    fig_1 = density_map(results_df)
+    fig_2 = ghg_capa_ww_plot(results_df)
+
+    return fig_1, fig_2

@@ -283,3 +283,22 @@ def VEHC_scenario_box(scenario_id='_one'):
         className='row')
 
     return layout
+
+
+def ELEC_scenario_box(scenario_id='_one'):
+
+    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
+
+    layout = html.Div(
+
+        [
+            html.H5(Scenario_name),
+            html.Br([]),
+            html.P('Variable 1',
+                   style={'font-size': 17}),
+            html.Br([]),
+            html.P('Variable 2', style={'font-size': 17}),
+        ],
+        className='row')
+
+    return layout

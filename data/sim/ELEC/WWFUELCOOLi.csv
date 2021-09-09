@@ -1,0 +1,23 @@
+Fuel,Cooling System,WWFUELCOOLi
+Biomass,Cooling tower,2099.999999972051
+Biomass,Once-through cooling,132499.9999994419
+Coal,Cooling tower,2100.000000000013
+Coal,Once-through cooling,132500.00000000003
+Cogeneration,Cooling tower,2100.0000000013383
+Cogeneration,Once-through cooling,132500.0
+Gas,Cooling tower,2099.999999999858
+Gas,Once-through cooling,132499.99999999127
+Geothermal,No Water Cooling,0.0
+Hydro,No Water Cooling,0.0
+Nuclear,Cooling tower,3610.000000000014
+Oil,Cooling tower,2099.9999999990646
+Oil,Once-through cooling,132500.0000000463
+Other,Cooling tower,2099.999999999999
+Other,Once-through cooling,132500.0
+Petcoke,Cooling tower,2100.0000000040714
+Petcoke,Once-through cooling,0.0
+Solar,No Water Cooling,0.0
+Storage,No Water Cooling,0.0
+Waste,Cooling tower,2099.9999999999986
+Waste,Once-through cooling,132499.99999999997
+Wind,No Water Cooling,0.0
