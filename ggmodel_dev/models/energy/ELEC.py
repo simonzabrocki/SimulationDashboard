@@ -22,7 +22,7 @@ ELECGHG_nodes = {
 ELECWW_nodes = {'ELECWWi': {'type': 'output',
                       'unit': 'm3',
                       'name': 'Water withdrawal per electric plant',
-                      'computation': lambda WWFUELCOOLi, ELECPRODi, **kwargs: ELECPRODi * WWFUELCOOLi
+                      'computation': lambda WWFUELCOOLi, ELECPRODi, **kwargs: (ELECPRODi * WWFUELCOOLi).reorder_levels(ELECPRODi.index.names)
                         },
              'WWFUELCOOLi': {'type': 'input',
                       'unit': 'm3 / GWh',

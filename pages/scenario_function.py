@@ -243,6 +243,7 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
 
     data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
     
+    
     results = ELEC_scenario.run_scenario(data_dict, **args_dict_1, **args_dict_2)
     
     results_df = format_ELEC_results(results)
@@ -250,4 +251,4 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_1 = density_map(results_df)
     fig_2 = ghg_capa_ww_plot(results_df)
 
-    return fig_1, fig_2
+    return fig_1, fig_2, {}

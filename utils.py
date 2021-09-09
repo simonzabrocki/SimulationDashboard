@@ -97,7 +97,7 @@ def get_menu(active_tab):
         'Models': "Evidence Library",
         'Codes': "Evidence Library",
         'Simulation': "Simulation Tool",
-        'Spatial Analysis': "Simulation Tool",
+        #'Spatial Analysis': "Simulation Tool",
     }
 
     tabs_links = {
@@ -142,7 +142,7 @@ def page_menu(active_tab):
 def simtool_menu(active_tab):
     name_link_list = [
         {'label': 'Simulation', 'value': '/SimulationDashBoard/simulation'},
-        {'label': 'Spatial Analysis', 'value': '/SimulationDashBoard/spatial'},
+        #{'label': 'Spatial Analysis', 'value': '/SimulationDashBoard/spatial'},
     ]
     div_list = get_menu_div_list(name_link_list, active_tab, className='tab')
 
