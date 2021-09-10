@@ -1,0 +1,11 @@
+{
+    "BIOGAS_model": {
+        "description": "To calculate the total biogas potential from animal manure, the manure available bioenergy, MBioEi are multiplied with their respective biogas yields . First the manure production per animal is calculated in kilograms, following and the IPCC guidelines. Both the manure production in tonnes ManureKGi and in volatile solids ManureVSi  per year are computed. The methane yields BiogasYi stem from",
+        "display_name": "Bio energy and fuels model",
+        "model": "BIOGAS_model",
+        "model_group": "Landuse",
+        "indicator": "GE3",
+        "status": "🚧",
+        "source": ["Meyer et al., 2018", "Vermeulen et al. 2017", "Dong et al., 2020", "Safley et al., 1993", "Vermeulen et al., 2017", "Jørgensen & PlanEnergi, 2009"]
+    }
+}
