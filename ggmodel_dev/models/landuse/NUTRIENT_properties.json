@@ -1,0 +1,11 @@
+{
+    "NUTRIENT_model": {
+        "description": "The nutrient balance SL1 is the total manure that is applied to the soil, fertilizer inputs, biologicalfixation and atmospheric deposition of nitrogen minus the nitrogen content of crops.",
+        "display_name": "Nutrient Balance model",
+        "model": "NUTRIENT_model",
+        "model_group": "Landuse",
+        "indicator": "SL1",
+        "status": "🚧",
+        "source": [""]
+    }
+}

@@ -29,7 +29,7 @@ SL1_nodes = {'FDTi': {'type': 'input',
                       'unit': 'kgN',
                       'name': 'Vector manure applied to soil'},
              'SL1': {'type': 'output',
-                     'unit': 'tonnesN',
+                     'unit': 'tonnes N',
                      'name': 'Nutrient balance',
                      'computation': lambda MASi, IN_F, BF, AD, OUT_C, **kwargs: MASi * 1e-3 + IN_F + BF + AD - OUT_C
                      }
