@@ -1,0 +1,11 @@
+{
+    "BIOMASS_model": {
+        "description": "The change in above ground biomass the difference between the biomass growth and biomass losses. The total area of forest that stays forest A i,j is multiplied by the mean annual biomass growth G total i,j and the carbon fraction. This is done for each of the different ecological zones in the respective country.",
+        "display_name": "Biomass model",
+        "model": "BIOMASS_model",
+        "model_group": "Landuse",
+        "indicator": "GE3",
+        "status": "🚧",
+        "source": ["Marklund & Schoene, 2006", "Aalde et al., 2006", "Land, 1996"]
+    }
+}
