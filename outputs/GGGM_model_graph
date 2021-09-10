@@ -91,49 +91,6 @@ digraph {
 	CL_corr_coef [label=CL_corr_coef color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Correction coefficient 
  (CL_corr_coef) 
  1" peripheries=1 shape=rectangle style=filled]
-	NFI [label=NFI color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Net natural forest increment rate 
- (NFI) 
- m3/ha" peripheries=1 shape=rectangle style=filled]
-	CSF [label=CSF color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Climate smart forestry practices 
- (CSF) 
- m3/ha" peripheries=1 shape=rectangle style=filled]
-	FBI [label=FBI color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Forest biomass increment 
- (FBI) 
- m3/ha" peripheries=1 shape=rectangle style=filled]
-	FBI_comp [label=FBI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CSF + NFI" peripheries=1 shape=rectangle style=""]
-	HR [label=HR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Harvest rate 
- (HR) 
- %" peripheries=1 shape=rectangle style=filled]
-	BE3 [label=BE3 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="net change forest biomass 
- (BE3) 
- tonnes/ha" peripheries=1 shape=rectangle style=filled]
-	BE3_comp [label=BE3_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="FBI * (1 - HR * 1e-2) * m3_to_tonnes" peripheries=1 shape=rectangle style=""]
-	FDTi [label=FDTi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total food demand per food group 
- (FDTi) 
- 1000 tonnes" peripheries=1 shape=rectangle style=filled]
-	CNYi [label=CNYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Crop nitrogen yield per unit of output 
- (CNYi) 
- N/tonnes" peripheries=1 shape=rectangle style=filled]
-	OUT_C [label=OUT_C color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Crop output 
- (OUT_C) 
- tonnesN" peripheries=1 shape=rectangle style=filled]
-	OUT_C_comp [label=OUT_C_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="FDTi.loc[crop_group] * CNYi * 1e3" peripheries=1 shape=rectangle style=""]
-	BF [label=BF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biological N fixation 
- (BF) 
- tonnesN" peripheries=1 shape=rectangle style=filled]
-	AD [label=AD color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Atmospheric N deposition 
- (AD) 
- tonnesN" peripheries=1 shape=rectangle style=filled]
-	IN_F [label=IN_F color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Agricultural Use in nutrients 
- (IN_F) 
- kg" peripheries=1 shape=rectangle style=filled]
-	MASi [label=MASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Vector manure applied to soil 
- (MASi) 
- kgN" peripheries=1 shape=rectangle style=filled]
-	SL1 [label=SL1 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Nutrient balance 
- (SL1) 
- tonnesN" peripheries=1 shape=rectangle style=filled]
-	SL1_comp [label=SL1_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MASi * 1e-3 + IN_F + BF + AD - OUT_C" peripheries=1 shape=rectangle style=""]
 	TAi [label=TAi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total animal population 
  (TAi) 
  head" peripheries=1 shape=rectangle style=filled]
@@ -215,6 +172,10 @@ digraph {
  (TEE_CO2eq) 
  gigagrams (CO2eq)" peripheries=1 shape=rectangle style=filled]
 	TEE_CO2eq_comp [label=TEE_CO2eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="kg_to_Gg * GWPCH4 * (TAi * EF_EEi)" peripheries=1 shape=rectangle style=""]
+	IN_F [label=IN_F color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Agricultural Use in nutrients 
+ (IN_F) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	IN_F_comp [label=IN_F_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1, # Missing delta_C" peripheries=1 shape=rectangle style=""]
 	EF_F [label=EF_F color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Implied emission factor for N2O (Synthetic fertilizers) 
  (EF_F) 
  kg N2O-N/kg N" peripheries=1 shape=rectangle style=filled]
@@ -466,15 +427,289 @@ digraph {
 	VEHC_rate [label=VEHC_rate color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Vehicle ownership growth rate 
  (VEHC_rate) 
  capita / constant 2010 US dollar" peripheries=1 shape=rectangle style=filled]
+	ELECGHGi [label=ELECGHGi color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="CO2 emissions per electric plant 
+ (ELECGHGi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	ELECGHGi_comp [label=ELECGHGi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="3.6 * ELECPRODi * EFELECGHGi" peripheries=1 shape=rectangle style=""]
+	EFELECGHGi [label=EFELECGHGi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="CO2 emissions per TJ per fuel 
+ (EFELECGHGi) 
+ CO2 / TJ" peripheries=1 shape=rectangle style=filled]
+	ELECPRODi [label=ELECPRODi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Electricity production per electric plant 
+ (ELECPRODi) 
+ GWh" peripheries=1 shape=rectangle style=filled]
+	ELECWWi [label=ELECWWi color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Water withdrawal per electric plant 
+ (ELECWWi) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	ELECWWi_comp [label=ELECWWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(ELECPRODi * WWFUELCOOLi).reorder_levels(ELECPRODi.index.names)" peripheries=1 shape=rectangle style=""]
+	WWFUELCOOLi [label=WWFUELCOOLi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="water withdrawal intensity per fuel and cooling sytem 
+ (WWFUELCOOLi) 
+ m3 / GWh" peripheries=1 shape=rectangle style=filled]
+	BioCropMixi [label=BioCropMixi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Allocation of crops for biodiesel production 
+ (BioCropMixi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	BioDiesLandi [label=BioDiesLandi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total land for biodiesel crops 
+ (BioDiesLandi) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	BioDiesLandi_comp [label=BioDiesLandi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CropBioDiesSupplyi / CropBioDiesYi" peripheries=1 shape=rectangle style=""]
+	BioDieselDemand [label=BioDieselDemand color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total demand for biodiesel 
+ (BioDieselDemand) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	BioDieselResiduei [label=BioDieselResiduei color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Residues for biodiesel  (i.e. animal fats) 
+ (BioDieselResiduei) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	BioDieselYi [label=BioDieselYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biodiesel yields 
+ (BioDieselYi) 
+ L/kg residue" peripheries=1 shape=rectangle style=filled]
+	BioEthConversionMJ [label=BioEthConversionMJ color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Conversion factor bioethanol 
+ (BioEthConversionMJ) 
+ L/TJ" peripheries=1 shape=rectangle style=filled]
+	BioEthDemand [label=BioEthDemand color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total demand for bioethanol 
+ (BioEthDemand) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	BioEthLandi [label=BioEthLandi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total land for bioethanol crops 
+ (BioEthLandi) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	BioEthLandi_comp [label=BioEthLandi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CropBioEthSupply / CropBioEthYi" peripheries=1 shape=rectangle style=""]
+	BiogasConversionMJ [label=BiogasConversionMJ color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Conversion factor biogas 
+ (BiogasConversionMJ) 
+ m3/MJ" peripheries=1 shape=rectangle style=filled]
+	BiogasYi [label=BiogasYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Methane yields from manure 
+ (BiogasYi) 
+ m3/kg VS" peripheries=1 shape=rectangle style=filled]
+	BodyMassi [label=BodyMassi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Average adult body mass of animal 
+ (BodyMassi) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	CLBIO [label=CLBIO color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Total land demand for biofuels 
+ (CLBIO) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	CLBIO_comp [label=CLBIO_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="BioEthLandi.sum() + BioDiesLandi.sum()" peripheries=1 shape=rectangle style=""]
+	CropBioDiesSupplyi [label=CropBioDiesSupplyi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total demand for biodiesel from dedicated crops 
+ (CropBioDiesSupplyi) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	CropBioDiesSupplyi_comp [label=CropBioDiesSupplyi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="BioCropMixi * (BioDieselDemand - RBioDiesSupplyi)" peripheries=1 shape=rectangle style=""]
+	CropBioDiesYi [label=CropBioDiesYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biodiesel yields from crops 
+ (CropBioDiesYi) 
+ TJ/km2" peripheries=1 shape=rectangle style=filled]
+	CropBioEthSupply [label=CropBioEthSupply color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total demand for bioethanol from dedicated crops 
+ (CropBioEthSupply) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	CropBioEthSupply_comp [label=CropBioEthSupply_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="EthCropMixi * (BioEthDemand - RBioEthSupply)" peripheries=1 shape=rectangle style=""]
+	CropBioEthYi [label=CropBioEthYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Bioethanol yields from crops 
+ (CropBioEthYi) 
+ TJ/km2" peripheries=1 shape=rectangle style=filled]
+	EthCropMixi [label=EthCropMixi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Allocation of crops for bioethanol production 
+ (EthCropMixi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	EthYi [label=EthYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Bioethanol yields 
+ (EthYi) 
+ L/kg dm biomass" peripheries=1 shape=rectangle style=filled]
+	MBiogasTJ [label=MBiogasTJ color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total biogas production from manure 
+ (MBiogasTJ) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	MBiogasTJ_comp [label=MBiogasTJ_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(Mbiogasi * BiogasConversionMJ).sum()" peripheries=1 shape=rectangle style=""]
+	MMASi [label=MMASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="% of total manure applied to soils 
+ (MMASi) 
+ %" peripheries=1 shape=rectangle style=filled]
+	MMLPi [label=MMLPi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fraction of manure left on pasture 
+ (MMLPi) 
+ %" peripheries=1 shape=rectangle style=filled]
+	ManureKGi [label=ManureKGi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total manure production in kg 
+ (ManureKGi) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	ManureKGi_comp [label=ManureKGi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label=1 peripheries=1 shape=rectangle style=""]
+	ManureVSi [label=ManureVSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="total manure production in kg volatile solids 
+ (ManureVSi) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	ManureVSi_comp [label=ManureVSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="TAi * BodyMassi * VSprodDAYi * 365 * 1e-6" peripheries=1 shape=rectangle style=""]
+	Mbioenergyi [label=Mbioenergyi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Manure available for bioenergy 
+ (Mbioenergyi) 
+ kg VS" peripheries=1 shape=rectangle style=filled]
+	Mbioenergyi_comp [label=Mbioenergyi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="ManureVSi * (1 - MMLPi) * MMASi" peripheries=1 shape=rectangle style=""]
+	Mbiogasi [label=Mbiogasi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total biogas production from manure 
+ (Mbiogasi) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	Mbiogasi_comp [label=Mbiogasi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="Mbioenergyi * BiogasYi" peripheries=1 shape=rectangle style=""]
+	MprodDAYi [label=MprodDAYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure production per day 
+ (MprodDAYi) 
+ kg / day per 1000 kg body mass" peripheries=1 shape=rectangle style=filled]
+	RBioDiesSupplyi [label=RBioDiesSupplyi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Biodiesel from residue streams 
+ (RBioDiesSupplyi) 
+ L" peripheries=1 shape=rectangle style=filled]
+	RBioDiesSupplyi_comp [label=RBioDiesSupplyi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="BioDieselResiduei * BioDieselYi" peripheries=1 shape=rectangle style=""]
+	RBioEthSupply [label=RBioEthSupply color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total bioethanol from residue crops 
+ (RBioEthSupply) 
+ TJ" peripheries=1 shape=rectangle style=filled]
+	RBioEthSupply_comp [label=RBioEthSupply_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(RBioEthi * BioEthConversionMJ).sum()" peripheries=1 shape=rectangle style=""]
+	RBioEthi [label=RBioEthi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Bioethanol from residue crops 
+ (RBioEthi) 
+ L" peripheries=1 shape=rectangle style=filled]
+	RBioEthi_comp [label=RBioEthi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="ResiduesRemovedi * EthYi" peripheries=1 shape=rectangle style=""]
+	ResiduesRemovedi [label=ResiduesRemovedi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Residues removed from cropland 
+ (ResiduesRemovedi) 
+ kg dm" peripheries=1 shape=rectangle style=filled]
+	VSprodDAYi [label=VSprodDAYi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Manure production per day in Volatile solids 
+ (VSprodDAYi) 
+ kg VS / day per 1000 kg body mass" peripheries=1 shape=rectangle style=filled]
+	AD [label=AD color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Atmospheric N deposition 
+ (AD) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	BF [label=BF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biological N fixation 
+ (BF) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	CNObaseline [label=CNObaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total nitrogen content of crops in the baseline year 
+ (CNObaseline) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	CNYbaseline [label=CNYbaseline color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Crop nitrogen yields per unit of output 
+ (CNYbaseline) 
+ N/tonnes" peripheries=1 shape=rectangle style=filled]
+	CNYbaseline_comp [label=CNYbaseline_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CNObaseline * FPi.sum() * 1e3" peripheries=1 shape=rectangle style=""]
+	FU [label=FU color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total fertilizer use 
+ (FU) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	FU_comp [label=FU_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CL * FUrate" peripheries=1 shape=rectangle style=""]
+	FUBaseline [label=FUBaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total fertilizer use in the baseline year 
+ (FUBaseline) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	FUrate [label=FUrate color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Cropland fertilizer application rate 
+ (FUrate) 
+ kg/ha" peripheries=1 shape=rectangle style=filled]
+	FUrate_comp [label=FUrate_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="\"computation\": lambda FUBaseline, TDCbaseline, **kwargs : FUBaseline / TDCbaseline" peripheries=1 shape=rectangle style=""]
+	F_subsidy [label=F_subsidy color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fertilizer subsidy 
+ (F_subsidy) 
+ Million $" peripheries=1 shape=rectangle style=filled]
+	MASi [label=MASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Vector manure applied to soil 
+ (MASi) 
+ kg N" peripheries=1 shape=rectangle style=filled]
+	OUT_C [label=OUT_C color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Crop output 
+ (OUT_C) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	OUT_C_comp [label=OUT_C_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(FPi * CNYbaseline) * 1e3" peripheries=1 shape=rectangle style=""]
+	P_fu [label=P_fu color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fertilizer price 
+ (P_fu) 
+ $/mt" peripheries=1 shape=rectangle style=filled]
+	SL1 [label=SL1 color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nutrient balance 
+ (SL1) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	SL1_comp [label=SL1_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MASi.sum() * 1e-3 + IN_F + BF + AD - OUT_C" peripheries=1 shape=rectangle style=""]
+	TDCbaseline [label=TDCbaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total cropland area in the baseline year 
+ (TDCbaseline) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	deltaFU [label=deltaFU color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Change in fertilizer consumption 
+ (deltaFU) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	deltaFU_comp [label=deltaFU_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1 /2 * ((-FU + np.sqrt(FU ** 2 - 4 * epsilon_fertilizer * P_fu * FI * F_subsidy) / P_fu))" peripheries=1 shape=rectangle style=""]
+	epsilon_fertilizer [label=epsilon_fertilizer color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Price elasticity for fertilizer 
+ (epsilon_fertilizer) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	C_fr [label=C_fr color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Carbon fraction of dry matter 
+ (C_fr) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	G_w [label=G_w color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="average annual above-ground biomass growth 
+ (G_w) 
+ tonnes dry matter/ha" peripheries=1 shape=rectangle style=filled]
+	Cg [label=Cg color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual increase in carbon stocks duo to biomass growth 
+ (Cg) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	Cg_comp [label=Cg_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="sum(FLi*G_w*C_fr)" peripheries=1 shape=rectangle style=""]
+	FLi [label=FLi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Forest land by forest type 
+ (FLi) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	Hi [label=Hi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Annual industrial roundwood removals 
+ (Hi) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	BCEFr [label=BCEFr color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biomass conversion & expansion factor for biomass removal 
+ (BCEFr) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	L_wood_removals [label=L_wood_removals color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Carbon loss due to wood removals 
+ (L_wood_removals) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	L_wood_removals_comp [label=L_wood_removals_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="sum(Hi*BCEFr*C_fr)" peripheries=1 shape=rectangle style=""]
+	L_fuelwood [label=L_fuelwood color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual carbon loss in biomass of fuelwood removal 
+ (L_fuelwood) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	L_fuelwood_comp [label=L_fuelwood_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="sum(FG_tree*BCEFr*C_fr)" peripheries=1 shape=rectangle style=""]
+	FG_tree [label=FG_tree color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Volume of fuel wood removal as tree parts 
+ (FG_tree) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	A_disturbance [label=A_disturbance color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Area affected by disturbances 
+ (A_disturbance) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	B_w [label=B_w color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Average above-ground biomass of land areas affected by disturbances 
+ (B_w) 
+ tonnes/ha" peripheries=1 shape=rectangle style=filled]
+	L_disturbance [label=L_disturbance color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual carbon loss in biomass due to disturbances 
+ (L_disturbance) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	L_disturbance_comp [label=L_disturbance_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="sum(A_disturbance*B_w*C_fr*1)" peripheries=1 shape=rectangle style=""]
+	C_losses [label=C_losses color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual decrease in carbon stocks due to biomass loss 
+ (C_losses) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	C_losses_comp [label=C_losses_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="L_wood_removals+L_fuelwood+L_disturbance" peripheries=1 shape=rectangle style=""]
+	Change_biomass [label=Change_biomass color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual change in carbon stocks in biomass 
+ (Change_biomass) 
+ tonnes carbon" peripheries=1 shape=rectangle style=filled]
+	Change_biomass_comp [label=Change_biomass_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="Cg - C_losses" peripheries=1 shape=rectangle style=""]
+	delta_BE3 [label=delta_BE3 color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Annual change in carbon stocks in biomass 
+ (delta_BE3) 
+ tonnes carbon/ha" peripheries=1 shape=rectangle style=filled]
+	delta_BE3_comp [label=delta_BE3_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="Change_biomass/sum(FLi)" peripheries=1 shape=rectangle style=""]
+	BE3_baseline [label=BE3_baseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Carbon content of above-ground biomass t-1 
+ (BE3_baseline) 
+ tonnes carbon/ha" peripheries=1 shape=rectangle style=filled]
+	BE3 [label=BE3 color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Above-ground biomass 
+ (BE3) 
+ tonnes carbon/ha" peripheries=1 shape=rectangle style=filled]
+	BE3_comp [label=BE3_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="BE3_baseline + delta_BE3" peripheries=1 shape=rectangle style=""]
+	AEUi [label=AEUi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total agricultural energy use per type 
+ (AEUi) 
+ TWH" peripheries=1 shape=rectangle style=filled]
+	BMB [label=BMB color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total biomass burned 
+ (BMB) 
+ kg dm" peripheries=1 shape=rectangle style=filled]
+	ECR_PM25eq [label=ECR_PM25eq color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="PM25 emissions from burning crop residues 
+ (ECR_PM25eq) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	ECR_PM25eq_comp [label=ECR_PM25eq_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="BMB * EFCRBI_pm25" peripheries=1 shape=rectangle style=""]
+	EFCRBI_pm25 [label=EFCRBI_pm25 color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emission factors burning crop residues 
+ (EFCRBI_pm25) 
+ kg/mg waste" peripheries=1 shape=rectangle style=filled]
+	EFPM25Ai [label=EFPM25Ai color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emission factor PM2.5 from live animals 
+ (EFPM25Ai) 
+ kg/heads" peripheries=1 shape=rectangle style=filled]
+	EFPM25Ci [label=EFPM25Ci color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emission factors PM2.5 from crops 
+ (EFPM25Ci) 
+ kg/ha" peripheries=1 shape=rectangle style=filled]
+	EFPM25Ei [label=EFPM25Ei color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Emission factors PM2.5 agricultural fuel consumption 
+ (EFPM25Ei) 
+ g/tonne fuel" peripheries=1 shape=rectangle style=filled]
+	PM25 [label=PM25 color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total agricultural PM25 emissions 
+ (PM25) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	PM25_comp [label=PM25_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PM25A + PM25C + PM25E + ECR_PM25eq" peripheries=1 shape=rectangle style=""]
+	PM25A [label=PM25A color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="PM25 emissions from live animals 
+ (PM25A) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	PM25A_comp [label=PM25A_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(TAi * EFPM25Ai).sum()" peripheries=1 shape=rectangle style=""]
+	PM25C [label=PM25C color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="PM25 emissions from crops 
+ (PM25C) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	PM25C_comp [label=PM25C_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(TCLDi * EFPM25Ci).sum()" peripheries=1 shape=rectangle style=""]
+	PM25E [label=PM25E color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="PM25 emissions from agricultural energy use 
+ (PM25E) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	PM25E_comp [label=PM25E_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(AEUi * EFPM25Ei).sum()" peripheries=1 shape=rectangle style=""]
 	TCLDi -> CL_comp [color="#A9A9A9"]
 	TCLDi -> BM_burni_comp [color="#A9A9A9"]
 	TCLDi -> E_OSC_comp [color="#A9A9A9"]
 	TCLDi -> DRCLi_comp [color="#A9A9A9"]
+	TCLDi -> PM25C_comp [color="#A9A9A9"]
 	TCLDi_comp -> TCLDi [color="#A9A9A9"]
 	CYi -> TCLDi_comp [color="#A9A9A9"]
 	CYi -> CDRYi_comp [color="#A9A9A9"]
 	FPi -> TCLDi_comp [color="#A9A9A9"]
 	FPi -> ANPi_comp [color="#A9A9A9"]
+	FPi -> CNYbaseline_comp [color="#A9A9A9"]
+	FPi -> OUT_C_comp [color="#A9A9A9"]
 	FPi_comp -> FPi [color="#A9A9A9"]
 	FLOi -> FDPi_comp [color="#A9A9A9"]
 	FDKGi -> FDPi_comp [color="#A9A9A9"]
@@ -494,6 +729,7 @@ digraph {
 	Pop -> MWU_comp [color="#A9A9A9"]
 	CL -> delta_CL_comp [color="#A9A9A9"]
 	CL -> PAIR_comp [color="#A9A9A9"]
+	CL -> FU_comp [color="#A9A9A9"]
 	CL_comp -> CL [color="#A9A9A9"]
 	CL_baseline -> delta_CL_comp [color="#A9A9A9"]
 	delta_CL -> IL_comp [color="#A9A9A9"]
@@ -512,25 +748,12 @@ digraph {
 	FL_RF_comp -> FL_RF [color="#A9A9A9"]
 	BE2_comp -> BE2 [color="#A9A9A9"]
 	CL_corr_coef -> CL_comp [color="#A9A9A9"]
-	NFI -> FBI_comp [color="#A9A9A9"]
-	CSF -> FBI_comp [color="#A9A9A9"]
-	FBI -> BE3_comp [color="#A9A9A9"]
-	FBI_comp -> FBI [color="#A9A9A9"]
-	HR -> BE3_comp [color="#A9A9A9"]
-	BE3_comp -> BE3 [color="#A9A9A9"]
-	FDTi -> OUT_C_comp [color="#A9A9A9"]
-	CNYi -> OUT_C_comp [color="#A9A9A9"]
-	OUT_C -> SL1_comp [color="#A9A9A9"]
-	OUT_C_comp -> OUT_C [color="#A9A9A9"]
-	BF -> SL1_comp [color="#A9A9A9"]
-	AD -> SL1_comp [color="#A9A9A9"]
-	IN_F -> SL1_comp [color="#A9A9A9"]
-	IN_F -> FE_CO2eq_comp [color="#A9A9A9"]
-	MASi -> SL1_comp [color="#A9A9A9"]
-	SL1_comp -> SL1 [color="#A9A9A9"]
 	TAi -> TMi_comp [color="#A9A9A9"]
 	TAi -> E_TCH4i_comp [color="#A9A9A9"]
 	TAi -> TEE_CO2eq_comp [color="#A9A9A9"]
+	TAi -> ManureKGi_comp [color="#A9A9A9"]
+	TAi -> ManureVSi_comp [color="#A9A9A9"]
+	TAi -> PM25A_comp [color="#A9A9A9"]
 	TAi_comp -> TAi [color="#A9A9A9"]
 	MYi -> TMi_comp [color="#A9A9A9"]
 	TMi -> M_Ti_comp [color="#A9A9A9"]
@@ -567,6 +790,9 @@ digraph {
 	EF_EEi -> TEE_CO2eq_comp [color="#A9A9A9"]
 	TEE_CO2eq -> GE3_comp [color="#A9A9A9"]
 	TEE_CO2eq_comp -> TEE_CO2eq [color="#A9A9A9"]
+	IN_F -> FE_CO2eq_comp [color="#A9A9A9"]
+	IN_F -> SL1_comp [color="#A9A9A9"]
+	IN_F_comp -> IN_F [color="#A9A9A9"]
 	EF_F -> FE_CO2eq_comp [color="#A9A9A9"]
 	FE_CO2eq -> GE3_comp [color="#A9A9A9"]
 	FE_CO2eq_comp -> FE_CO2eq [color="#A9A9A9"]
@@ -675,4 +901,116 @@ digraph {
 	MAX_sat -> VEHC_comp [color="#A9A9A9"]
 	VEHC_mid -> VEHC_comp [color="#A9A9A9"]
 	VEHC_rate -> VEHC_comp [color="#A9A9A9"]
+	ELECGHGi_comp -> ELECGHGi [color="#A9A9A9"]
+	EFELECGHGi -> ELECGHGi_comp [color="#A9A9A9"]
+	ELECPRODi -> ELECGHGi_comp [color="#A9A9A9"]
+	ELECPRODi -> ELECWWi_comp [color="#A9A9A9"]
+	ELECWWi_comp -> ELECWWi [color="#A9A9A9"]
+	WWFUELCOOLi -> ELECWWi_comp [color="#A9A9A9"]
+	BioCropMixi -> CropBioDiesSupplyi_comp [color="#A9A9A9"]
+	BioDiesLandi -> CLBIO_comp [color="#A9A9A9"]
+	BioDiesLandi_comp -> BioDiesLandi [color="#A9A9A9"]
+	BioDieselDemand -> CropBioDiesSupplyi_comp [color="#A9A9A9"]
+	BioDieselResiduei -> RBioDiesSupplyi_comp [color="#A9A9A9"]
+	BioDieselYi -> RBioDiesSupplyi_comp [color="#A9A9A9"]
+	BioEthConversionMJ -> RBioEthSupply_comp [color="#A9A9A9"]
+	BioEthDemand -> CropBioEthSupply_comp [color="#A9A9A9"]
+	BioEthLandi -> CLBIO_comp [color="#A9A9A9"]
+	BioEthLandi_comp -> BioEthLandi [color="#A9A9A9"]
+	BiogasConversionMJ -> MBiogasTJ_comp [color="#A9A9A9"]
+	BiogasYi -> Mbiogasi_comp [color="#A9A9A9"]
+	BodyMassi -> ManureKGi_comp [color="#A9A9A9"]
+	BodyMassi -> ManureVSi_comp [color="#A9A9A9"]
+	CLBIO_comp -> CLBIO [color="#A9A9A9"]
+	CropBioDiesSupplyi -> BioDiesLandi_comp [color="#A9A9A9"]
+	CropBioDiesSupplyi_comp -> CropBioDiesSupplyi [color="#A9A9A9"]
+	CropBioDiesYi -> BioDiesLandi_comp [color="#A9A9A9"]
+	CropBioEthSupply -> BioEthLandi_comp [color="#A9A9A9"]
+	CropBioEthSupply_comp -> CropBioEthSupply [color="#A9A9A9"]
+	CropBioEthYi -> BioEthLandi_comp [color="#A9A9A9"]
+	EthCropMixi -> CropBioEthSupply_comp [color="#A9A9A9"]
+	EthYi -> RBioEthi_comp [color="#A9A9A9"]
+	MBiogasTJ_comp -> MBiogasTJ [color="#A9A9A9"]
+	MMASi -> Mbioenergyi_comp [color="#A9A9A9"]
+	MMLPi -> Mbioenergyi_comp [color="#A9A9A9"]
+	ManureKGi_comp -> ManureKGi [color="#A9A9A9"]
+	ManureVSi -> Mbioenergyi_comp [color="#A9A9A9"]
+	ManureVSi_comp -> ManureVSi [color="#A9A9A9"]
+	Mbioenergyi -> Mbiogasi_comp [color="#A9A9A9"]
+	Mbioenergyi_comp -> Mbioenergyi [color="#A9A9A9"]
+	Mbiogasi -> MBiogasTJ_comp [color="#A9A9A9"]
+	Mbiogasi_comp -> Mbiogasi [color="#A9A9A9"]
+	MprodDAYi -> ManureKGi_comp [color="#A9A9A9"]
+	RBioDiesSupplyi -> CropBioDiesSupplyi_comp [color="#A9A9A9"]
+	RBioDiesSupplyi_comp -> RBioDiesSupplyi [color="#A9A9A9"]
+	RBioEthSupply -> CropBioEthSupply_comp [color="#A9A9A9"]
+	RBioEthSupply_comp -> RBioEthSupply [color="#A9A9A9"]
+	RBioEthi -> RBioEthSupply_comp [color="#A9A9A9"]
+	RBioEthi_comp -> RBioEthi [color="#A9A9A9"]
+	ResiduesRemovedi -> RBioEthi_comp [color="#A9A9A9"]
+	VSprodDAYi -> ManureVSi_comp [color="#A9A9A9"]
+	AD -> SL1_comp [color="#A9A9A9"]
+	BF -> SL1_comp [color="#A9A9A9"]
+	CNObaseline -> CNYbaseline_comp [color="#A9A9A9"]
+	CNYbaseline -> OUT_C_comp [color="#A9A9A9"]
+	CNYbaseline_comp -> CNYbaseline [color="#A9A9A9"]
+	FU -> IN_F_comp [color="#A9A9A9"]
+	FU -> deltaFU_comp [color="#A9A9A9"]
+	FU_comp -> FU [color="#A9A9A9"]
+	FUBaseline -> FUrate_comp [color="#A9A9A9"]
+	FUrate -> FU_comp [color="#A9A9A9"]
+	FUrate_comp -> FUrate [color="#A9A9A9"]
+	F_subsidy -> deltaFU_comp [color="#A9A9A9"]
+	MASi -> SL1_comp [color="#A9A9A9"]
+	OUT_C -> SL1_comp [color="#A9A9A9"]
+	OUT_C_comp -> OUT_C [color="#A9A9A9"]
+	P_fu -> deltaFU_comp [color="#A9A9A9"]
+	SL1_comp -> SL1 [color="#A9A9A9"]
+	TDCbaseline -> FUrate_comp [color="#A9A9A9"]
+	deltaFU_comp -> deltaFU [color="#A9A9A9"]
+	epsilon_fertilizer -> deltaFU_comp [color="#A9A9A9"]
+	C_fr -> Cg_comp [color="#A9A9A9"]
+	C_fr -> L_wood_removals_comp [color="#A9A9A9"]
+	C_fr -> L_fuelwood_comp [color="#A9A9A9"]
+	C_fr -> L_disturbance_comp [color="#A9A9A9"]
+	G_w -> Cg_comp [color="#A9A9A9"]
+	Cg -> Change_biomass_comp [color="#A9A9A9"]
+	Cg_comp -> Cg [color="#A9A9A9"]
+	FLi -> Cg_comp [color="#A9A9A9"]
+	FLi -> delta_BE3_comp [color="#A9A9A9"]
+	Hi -> L_wood_removals_comp [color="#A9A9A9"]
+	BCEFr -> L_wood_removals_comp [color="#A9A9A9"]
+	BCEFr -> L_fuelwood_comp [color="#A9A9A9"]
+	L_wood_removals -> C_losses_comp [color="#A9A9A9"]
+	L_wood_removals_comp -> L_wood_removals [color="#A9A9A9"]
+	L_fuelwood -> C_losses_comp [color="#A9A9A9"]
+	L_fuelwood_comp -> L_fuelwood [color="#A9A9A9"]
+	FG_tree -> L_fuelwood_comp [color="#A9A9A9"]
+	A_disturbance -> L_disturbance_comp [color="#A9A9A9"]
+	B_w -> L_disturbance_comp [color="#A9A9A9"]
+	L_disturbance -> C_losses_comp [color="#A9A9A9"]
+	L_disturbance_comp -> L_disturbance [color="#A9A9A9"]
+	C_losses -> Change_biomass_comp [color="#A9A9A9"]
+	C_losses_comp -> C_losses [color="#A9A9A9"]
+	Change_biomass -> delta_BE3_comp [color="#A9A9A9"]
+	Change_biomass_comp -> Change_biomass [color="#A9A9A9"]
+	delta_BE3 -> BE3_comp [color="#A9A9A9"]
+	delta_BE3_comp -> delta_BE3 [color="#A9A9A9"]
+	BE3_baseline -> BE3_comp [color="#A9A9A9"]
+	BE3_comp -> BE3 [color="#A9A9A9"]
+	AEUi -> PM25E_comp [color="#A9A9A9"]
+	BMB -> ECR_PM25eq_comp [color="#A9A9A9"]
+	ECR_PM25eq -> PM25_comp [color="#A9A9A9"]
+	ECR_PM25eq_comp -> ECR_PM25eq [color="#A9A9A9"]
+	EFCRBI_pm25 -> ECR_PM25eq_comp [color="#A9A9A9"]
+	EFPM25Ai -> PM25A_comp [color="#A9A9A9"]
+	EFPM25Ci -> PM25C_comp [color="#A9A9A9"]
+	EFPM25Ei -> PM25E_comp [color="#A9A9A9"]
+	PM25_comp -> PM25 [color="#A9A9A9"]
+	PM25A -> PM25_comp [color="#A9A9A9"]
+	PM25A_comp -> PM25A [color="#A9A9A9"]
+	PM25C -> PM25_comp [color="#A9A9A9"]
+	PM25C_comp -> PM25C [color="#A9A9A9"]
+	PM25E -> PM25_comp [color="#A9A9A9"]
+	PM25E_comp -> PM25E [color="#A9A9A9"]
 }

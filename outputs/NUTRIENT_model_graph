@@ -1,0 +1,89 @@
+digraph {
+	graph [splines=ortho]
+	AD [label=AD color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Atmospheric N deposition 
+ (AD) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	BF [label=BF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Biological N fixation 
+ (BF) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	CL [label=CL color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Cropland 
+ (CL) 
+ 1000 ha" peripheries=1 shape=rectangle style=filled]
+	CNObaseline [label=CNObaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total nitrogen content of crops in the baseline year 
+ (CNObaseline) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	CNYbaseline [label=CNYbaseline color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Crop nitrogen yields per unit of output 
+ (CNYbaseline) 
+ N/tonnes" peripheries=1 shape=rectangle style=filled]
+	CNYbaseline_comp [label=CNYbaseline_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CNObaseline * FPi.sum() * 1e3" peripheries=1 shape=rectangle style=""]
+	FPi [label=FPi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Food production per food group 
+ (FPi) 
+ 1000 tonnes" peripheries=1 shape=rectangle style=filled]
+	FU [label=FU color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Total fertilizer use 
+ (FU) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	FU_comp [label=FU_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="CL * FUrate" peripheries=1 shape=rectangle style=""]
+	FUBaseline [label=FUBaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total fertilizer use in the baseline year 
+ (FUBaseline) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	FUrate [label=FUrate color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Cropland fertilizer application rate 
+ (FUrate) 
+ kg/ha" peripheries=1 shape=rectangle style=filled]
+	FUrate_comp [label=FUrate_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="\"computation\": lambda FUBaseline, TDCbaseline, **kwargs : FUBaseline / TDCbaseline" peripheries=1 shape=rectangle style=""]
+	F_subsidy [label=F_subsidy color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fertilizer subsidy 
+ (F_subsidy) 
+ Million $" peripheries=1 shape=rectangle style=filled]
+	IN_F [label=IN_F color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Agricultural Use in nutrients 
+ (IN_F) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	IN_F_comp [label=IN_F_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1, # Missing delta_C" peripheries=1 shape=rectangle style=""]
+	MASi [label=MASi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Vector manure applied to soil 
+ (MASi) 
+ kg N" peripheries=1 shape=rectangle style=filled]
+	OUT_C [label=OUT_C color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Crop output 
+ (OUT_C) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	OUT_C_comp [label=OUT_C_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(FPi * CNYbaseline) * 1e3" peripheries=1 shape=rectangle style=""]
+	P_fu [label=P_fu color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fertilizer price 
+ (P_fu) 
+ $/mt" peripheries=1 shape=rectangle style=filled]
+	SL1 [label=SL1 color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nutrient balance 
+ (SL1) 
+ tonnes N" peripheries=1 shape=rectangle style=filled]
+	SL1_comp [label=SL1_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="MASi.sum() * 1e-3 + IN_F + BF + AD - OUT_C" peripheries=1 shape=rectangle style=""]
+	TDCbaseline [label=TDCbaseline color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Total cropland area in the baseline year 
+ (TDCbaseline) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	deltaFU [label=deltaFU color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Change in fertilizer consumption 
+ (deltaFU) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	deltaFU_comp [label=deltaFU_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1 /2 * ((-FU + np.sqrt(FU ** 2 - 4 * epsilon_fertilizer * P_fu * FI * F_subsidy) / P_fu))" peripheries=1 shape=rectangle style=""]
+	epsilon_fertilizer [label=epsilon_fertilizer color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Price elasticity for fertilizer 
+ (epsilon_fertilizer) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	AD -> SL1_comp [color="#A9A9A9"]
+	BF -> SL1_comp [color="#A9A9A9"]
+	CL -> FU_comp [color="#A9A9A9"]
+	CNObaseline -> CNYbaseline_comp [color="#A9A9A9"]
+	CNYbaseline -> OUT_C_comp [color="#A9A9A9"]
+	CNYbaseline_comp -> CNYbaseline [color="#A9A9A9"]
+	FPi -> CNYbaseline_comp [color="#A9A9A9"]
+	FPi -> OUT_C_comp [color="#A9A9A9"]
+	FU -> IN_F_comp [color="#A9A9A9"]
+	FU -> deltaFU_comp [color="#A9A9A9"]
+	FU_comp -> FU [color="#A9A9A9"]
+	FUBaseline -> FUrate_comp [color="#A9A9A9"]
+	FUrate -> FU_comp [color="#A9A9A9"]
+	FUrate_comp -> FUrate [color="#A9A9A9"]
+	F_subsidy -> deltaFU_comp [color="#A9A9A9"]
+	IN_F -> SL1_comp [color="#A9A9A9"]
+	IN_F_comp -> IN_F [color="#A9A9A9"]
+	MASi -> SL1_comp [color="#A9A9A9"]
+	OUT_C -> SL1_comp [color="#A9A9A9"]
+	OUT_C_comp -> OUT_C [color="#A9A9A9"]
+	P_fu -> deltaFU_comp [color="#A9A9A9"]
+	SL1_comp -> SL1 [color="#A9A9A9"]
+	TDCbaseline -> FUrate_comp [color="#A9A9A9"]
+	deltaFU_comp -> deltaFU [color="#A9A9A9"]
+	epsilon_fertilizer -> deltaFU_comp [color="#A9A9A9"]
+}

@@ -1,0 +1,26 @@
+digraph {
+	graph [splines=ortho]
+	ELECGHGi [label=ELECGHGi color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="CO2 emissions per electric plant 
+ (ELECGHGi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	ELECGHGi_comp [label=ELECGHGi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="3.6 * ELECPRODi * EFELECGHGi" peripheries=1 shape=rectangle style=""]
+	EFELECGHGi [label=EFELECGHGi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="CO2 emissions per TJ per fuel 
+ (EFELECGHGi) 
+ CO2 / TJ" peripheries=1 shape=rectangle style=filled]
+	ELECPRODi [label=ELECPRODi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Electricity production per electric plant 
+ (ELECPRODi) 
+ GWh" peripheries=1 shape=rectangle style=filled]
+	ELECWWi [label=ELECWWi color="#eeeeee" fillcolor="#2a9d8f" fontcolor="#eeeeee" fontname=roboto label="Water withdrawal per electric plant 
+ (ELECWWi) 
+ m3" peripheries=1 shape=rectangle style=filled]
+	ELECWWi_comp [label=ELECWWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(ELECPRODi * WWFUELCOOLi).reorder_levels(ELECPRODi.index.names)" peripheries=1 shape=rectangle style=""]
+	WWFUELCOOLi [label=WWFUELCOOLi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="water withdrawal intensity per fuel and cooling sytem 
+ (WWFUELCOOLi) 
+ m3 / GWh" peripheries=1 shape=rectangle style=filled]
+	ELECGHGi_comp -> ELECGHGi [color="#A9A9A9"]
+	EFELECGHGi -> ELECGHGi_comp [color="#A9A9A9"]
+	ELECPRODi -> ELECGHGi_comp [color="#A9A9A9"]
+	ELECPRODi -> ELECWWi_comp [color="#A9A9A9"]
+	ELECWWi_comp -> ELECWWi [color="#A9A9A9"]
+	WWFUELCOOLi -> ELECWWi_comp [color="#A9A9A9"]
+}

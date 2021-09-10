@@ -48,7 +48,7 @@ PM25_nodes = {
         "name": "PM25 emissions from live animals",
         "type": "variable",
         "unit": "tonnes",
-        "computation": lambda TAi, EFPM25Ei, **kwargs: (TAi * EFPM25Ai).sum() 
+        "computation": lambda TAi, EFPM25Ai, **kwargs: (TAi * EFPM25Ai).sum() 
     },
     "PM25C": {
         "name": "PM25 emissions from crops",
