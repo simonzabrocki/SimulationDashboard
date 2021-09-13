@@ -73,6 +73,27 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
+def get_missing_values_stat(data, indicator_properties, max_year=2019):
+    data = data[(data.Year >= 2005) & (data.Year <= max_year)]
+    data = pd.merge(data, indicator_properties, on='Indicator')
+    data['Year'] = data['Year'].astype(int)
+    
+    agg = ['ISO', 'Dimension']
+    df = data.groupby(agg).apply(lambda x: x['Imputed'].sum() / x.shape[0] * 100)
+    df = pd.DataFrame(df, columns=['% of imputed data'])
+    df['imputed data points'] = data.groupby(
+        agg).apply(lambda x: x['Imputed'].sum())
+
+    df['corrected data points'] = data.groupby(
+        agg).apply(lambda x: x['Corrected'].sum())
+
+    df['% of corrected data points'] = data.groupby(agg).apply(
+        lambda x: x['Corrected'].sum() / x.shape[0] * 100)
+
+    df['Total data points'] = data.groupby(agg).apply(lambda x: x.shape[0])
+    return df
+
+
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
 
@@ -81,6 +102,8 @@ def load_all_data(max_year=2019):
     data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(
     ), left_on='Variable', right_on='Category', how='left')
 
+
+    missing_data = get_missing_values_stat(indicator_data, indicator_properties)
     ISO_options = get_ISO_options(data)
 
-    return data, indicator_data, indicator_properties, dimension_properties, ISO_options
+    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data

@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header
-from app import app, data, ISO_options, INDEX_YEAR
+from app import app, data, missing_data, ISO_options, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
@@ -412,6 +412,42 @@ def time_series_Index(ISO):
     return fig
 
 
+def missing_bar_plot(ISO):
+
+    conversion = {
+        "Efficient and Sustainable Resource Use": 'ESRU',
+        "Green Economic Opportunities": 'GEO',
+        "Natural Capital Protection": 'NCP',
+        'Social Inclusion': "SI",
+    } # Ugly, needs to be changed
+    plot_df = missing_data.loc[ISO].reset_index()
+    plot_df['Dimension_code'] = plot_df['Dimension'].replace(conversion)
+    plot_df['s'] = plot_df['Dimension_code'].replace({'SI': 0, 'NCP': 1, 'ESRU': 2, "GEO": 3})
+    plot_df = plot_df.sort_values(by='s')
+
+    plot_df = plot_df.melt(id_vars=['Dimension', "Dimension_code"], value_name='count').query('variable in ["Total data points", "imputed data points", "corrected data points"]')
+    fig = px.bar(plot_df,
+             x='Dimension_code',
+             y='count',
+             color='variable',
+             hover_data={'Dimension': True, 'Dimension_code': False},
+             barmode='group',
+             color_discrete_map={
+                         "corrected data points": "#86BBD8",
+                         "imputed data points": "#D8A488",
+                         "Total data points": "#2db29b",
+    }).update_layout(legend=dict(
+        orientation="h",
+        yanchor="top",
+        y=-0.05,
+        xanchor="center",
+        x=0,
+        title='',
+    ),
+    xaxis_title=None)
+    return fig
+
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Country Profile')]),
@@ -436,6 +472,12 @@ layout = html.Div(
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='circular_plot',
+                                  config={'displayModeBar': False}),
+                        html.H6(
+                            "Data availability",
+                            className="subtitle padded",
+                        ),
+                        dcc.Graph(id='missing_data_plot',
                                   config={'displayModeBar': False}),
                     ],
                     className='pretty_container four columns'),
@@ -496,6 +538,13 @@ def update_HTML(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_circular_plot(ISO):
     return circular_plot(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('missing_data_plot', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_missing_plot(ISO):
+    return missing_bar_plot(ISO)
 
 
 @app.callback(
