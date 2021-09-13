@@ -1,0 +1,12 @@
+{
+    "RECYCLE_model": {
+        "description": "",
+        "display_name": "Material recycling model",
+        "model": "RECYCLE_model",
+        "model_group": "Material",
+        "indicator": "BE2",
+        "status": "🚧",
+        "source": [""]
+
+    }
+}

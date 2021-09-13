@@ -5,6 +5,7 @@ from ggmodel_dev.models.water import EW
 from ggmodel_dev.models.transport import VEHC
 from ggmodel_dev.models.energy import ELEC
 
+from ggmodel_dev.models.material import RECYCLE
 
 def flatten_dictionary(dictionary):
     
@@ -31,6 +32,7 @@ def merge_model_dictionary():
     model_dictionary['NUTRIENT'] = NUTRIENT.model_dictionnary
     model_dictionary['BIOMASS'] = BIOMASS.model_dictionnary
     model_dictionary['PM25'] = PM25.model_dictionnary
+    model_dictionary['RECYCLE'] = RECYCLE.model_dictionnary
 
 
     return flatten_dictionary(model_dictionary)
@@ -50,6 +52,7 @@ def merge_model_properties():
     model_properties['NUTRIENT'] = NUTRIENT.model_properties
     model_properties['BIOMASS'] = BIOMASS.model_properties
     model_properties['PM25'] = PM25.model_properties
+    model_properties['RECYCLE'] = RECYCLE.model_properties
 
 
     return flatten_dictionary(model_properties)
