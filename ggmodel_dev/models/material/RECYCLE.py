@@ -33,7 +33,7 @@ RECYCLE_nodes = {
                'name': 'Processing Losses per material'
            },
     'DMCi': {'type': 'input',
-             'unit': 'Tonnes',
+             'unit': 'tonnes',
              'name': 'Domestic Material Consumption per material'
              },
     'MLOSSi': {'type': 'parameter', 
@@ -41,7 +41,7 @@ RECYCLE_nodes = {
            'name': 'Manufacturing Losses'
            },
     'SBMi': {'type': 'variable',
-           'unit': 'Tonnes',
+           'unit': 'tonnes',
            'name': 'Stock Building Materials per material',
            'computation': lambda DMCi, PLOSSi, **kwargs: DMCi * PLOSSi
            },
