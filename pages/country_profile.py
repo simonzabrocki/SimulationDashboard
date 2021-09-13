@@ -3,9 +3,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
+from plotly.subplots import make_subplots
 
 from utils import Header
-from app import app, data, missing_data, ISO_options, INDEX_YEAR
+from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
@@ -448,6 +449,62 @@ def missing_bar_plot(ISO):
     return fig
 
 
+def Indicator_lolipop(ISO):
+    df = data[(data.Aggregation == 'Indicator_normed') & (data.Year == 2019) & (data.ISO == ISO)].drop(columns=['Category', 'Dimension']).merge(indicator_properties, left_on='Variable', right_on='Indicator')
+
+    df = df.round(2).sort_values(by=['Dimension', 'Variable'], ascending=False)
+    fig = px.scatter(df,
+                     y='Variable',
+                     x='Value',
+                     color='Dimension',
+                     facet_col='Dimension',
+                     facet_col_spacing=0.05,
+                     hover_data={'Value': True, 'Variable': False, "display_name": True},
+                     labels={'Variable': 'Indicator', 'Value': 'Score'},
+                     color_discrete_map={
+                         "Social Inclusion": "#d9b5c9",
+                         "Natural Capital Protection": "#f7be49",
+                         "Efficient and Sustainable Resource Use": "#8fd1e7",
+                         "Green Economic Opportunities": "#9dcc93",
+                     },
+                     height=600,
+                     )
+    fig.update_xaxes(showgrid=True, range=[0, 110], tickvals=[
+                     20, 40, 60, 80, 100], visible=True, title='')
+    fig.update_yaxes(showgrid=False, range=[-1, 12], matches=None, showticklabels=True)
+
+    fig.update_traces(marker=dict(size=12, opacity=0.8))
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+
+    bars = px.bar(df,
+                  y='Variable',
+                  x='Value',
+                  facet_col='Dimension',
+                  facet_col_spacing=0.05,
+                  hover_data={'Value': True},
+                  labels={'Variable': 'Indicator', 'Value': ''},
+                  orientation='h',
+                  opacity=0.6,
+                  height=600,
+                  )
+
+    bars.update_traces(marker_color='lightgrey',
+                       width=0.1,
+                       marker_line_width=0.1, opacity=0.8)
+
+    fig.add_traces(bars.data)
+
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="top",
+        y=-0.1,
+        xanchor="right",
+        x=1,
+        title=''
+    ))
+    return fig
+
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Country Profile')]),
@@ -504,12 +561,22 @@ layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.H6([f"{INDEX_YEAR} Indicators"],
+                                        html.H6([f"{INDEX_YEAR} Categories"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='Perf_ISO',
                                                   config={'displayModeBar': False}),
                                     ],
                                     className="six columns",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H6([f"{INDEX_YEAR} Indicators"],
+                                                className="subtitle padded"),
+                                        dcc.Graph(id='indic_ISO',
+                                                  config={'displayModeBar': False}),
+
+                                    ],
+                                    className="twelve columns",
                                 ),
                             ],
                             className="row",
@@ -545,6 +612,25 @@ def update_circular_plot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_missing_plot(ISO):
     return missing_bar_plot(ISO)
+
+
+
+
+@app.callback(
+    dash.dependencies.Output('indic_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_gauge_plot(ISO):
+    return Indicator_lolipop(ISO)
+
+
+# @app.callback(
+#     dash.dependencies.Output('indic_ISO_SI', 'figure'),
+#     dash.dependencies.Output('indic_ISO_ESRU', 'figure'),
+#     dash.dependencies.Output('indic_ISO_NCP', 'figure'),
+#     dash.dependencies.Output('indic_ISO_GEO', 'figure'),
+#     [dash.dependencies.Input('ISO_select', 'value')])
+# def update_gauge_plot(ISO):
+#     return indicator_gauge(ISO)
 
 
 @app.callback(

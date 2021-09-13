@@ -104,6 +104,7 @@ def load_all_data(max_year=2019):
 
 
     missing_data = get_missing_values_stat(indicator_data, indicator_properties)
+
     ISO_options = get_ISO_options(data)
 
     return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data
