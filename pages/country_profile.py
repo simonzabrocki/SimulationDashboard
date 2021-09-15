@@ -413,40 +413,57 @@ def time_series_Index(ISO):
     return fig
 
 
+
 def missing_bar_plot(ISO):
+    cats = ['EE', 'EW', 'SL', 'ME',
+            'EQ', 'GE', 'BE', 'CV',
+            'AB', 'GB', 'SE', 'SP',
+            'GV', 'GT', 'GJ', 'GN']
+    
 
-    conversion = {
-        "Efficient and Sustainable Resource Use": 'ESRU',
-        "Green Economic Opportunities": 'GEO',
-        "Natural Capital Protection": 'NCP',
-        'Social Inclusion': "SI",
-    } # Ugly, needs to be changed
-    plot_df = missing_data.loc[ISO].reset_index()
-    plot_df['Dimension_code'] = plot_df['Dimension'].replace(conversion)
-    plot_df['s'] = plot_df['Dimension_code'].replace({'SI': 0, 'NCP': 1, 'ESRU': 2, "GEO": 3})
-    plot_df = plot_df.sort_values(by='s')
+    plot_df = (
+        missing_data.loc[ISO].reset_index().merge(indicator_properties[['Category', "Dimension"]].drop_duplicates(), on='Category')
+                    .merge(data[['Variable_name', 'Variable']].drop_duplicates(), left_on='Category', right_on='Variable')
+    )
+    plot_df_bis = plot_df.copy().assign(Dimension='Missing')
+    plot_df_bis['Data availability (%)'] = (100 - plot_df_bis['Data availability (%)']).round(2)
 
-    plot_df = plot_df.melt(id_vars=['Dimension', "Dimension_code"], value_name='count').query('variable in ["Total data points", "imputed data points", "corrected data points"]')
+    plot_df = pd.concat([plot_df, plot_df_bis])
     fig = px.bar(plot_df,
-             x='Dimension_code',
-             y='count',
-             color='variable',
-             hover_data={'Dimension': True, 'Dimension_code': False},
-             barmode='group',
-             color_discrete_map={
-                         "corrected data points": "#86BBD8",
-                         "imputed data points": "#D8A488",
-                         "Total data points": "#2db29b",
-    }).update_layout(legend=dict(
-        orientation="h",
+             y='Category',
+             x='Data availability (%)',
+             color='Dimension',
+             barmode='stack',
+             orientation='h',
+            text='Data availability (%)',
+             hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
+            labels={'Variable_name': 'Category'},
+            color_discrete_map={
+                           "Social Inclusion": "#d9b5c9",
+                           "Natural Capital Protection": "#f7be49",
+                           "Efficient and Sustainable Resource Use": "#8fd1e7",
+                           "Green Economic Opportunities": "#9dcc93",
+                           "Missing": '#D3D3D3'
+                       },
+                ).update_layout(height=1000,
+                                plot_bgcolor='rgba(0, 0, 0, 0)',
+                                legend=dict(
         yanchor="top",
         y=-0.05,
         xanchor="center",
         x=0,
-        title='',
+        title=''
+        
     ),
-    xaxis_title=None)
+    ).update_traces(texttemplate='%{text:.2s}%', textposition='inside', textfont=dict(
+        family="sans serif",
+        size=18,
+        color="white"
+    )).update_yaxes(title="").update_xaxes(showticklabels=False)
+
     return fig
+
+
 
 
 def Indicator_lolipop(ISO):

@@ -73,25 +73,22 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
-def get_missing_values_stat(data, indicator_properties, max_year=2019):
-    data = data[(data.Year >= 2005) & (data.Year <= max_year)]
-    data = pd.merge(data, indicator_properties, on='Indicator')
-    data['Year'] = data['Year'].astype(int)
+def get_missing_values_stat(data, indicator_properties, max_year=2019, min_year=2005):
+    data = data[(data.Year >= min_year) & (data.Year <= max_year)]
+    data = pd.merge(data, indicator_properties, on='Indicator').astype({'Year': int})
+
     
-    agg = ['ISO', 'Dimension']
-    df = data.groupby(agg).apply(lambda x: x['Imputed'].sum() / x.shape[0] * 100)
-    df = pd.DataFrame(df, columns=['% of imputed data'])
-    df['imputed data points'] = data.groupby(
-        agg).apply(lambda x: x['Imputed'].sum())
+    total_points = (indicator_properties.groupby('Category').Indicator.count() * (max_year - min_year + 1))
+    
+    df =  data.groupby(['ISO', 'Category']).apply(lambda x: x['Imputed'].sum()).divide(total_points) * 100
+    
+    ISOs = data.ISO.unique()
+    Categorys = indicator_properties.Category.unique()
+    full_index = pd.MultiIndex.from_product([ISOs, Categorys],
+                               names=['ISO', 'Category'])
+    
+    return (100 - df.reindex(full_index, fill_value=100)).to_frame(name='Data availability (%)')
 
-    df['corrected data points'] = data.groupby(
-        agg).apply(lambda x: x['Corrected'].sum())
-
-    df['% of corrected data points'] = data.groupby(agg).apply(
-        lambda x: x['Corrected'].sum() / x.shape[0] * 100)
-
-    df['Total data points'] = data.groupby(agg).apply(lambda x: x.shape[0])
-    return df
 
 
 def load_all_data(max_year=2019):
