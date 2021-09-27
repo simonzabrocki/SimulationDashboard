@@ -106,6 +106,15 @@ def scenario_building_box():
                         color='#14ac9c',
                         type="dot",
                     ),
+                    html.Button('Download', id='btn-download', n_clicks=0,
+                                style={'font-size': 20,
+                                       'font-weight': 'normal',
+                                       'color': '#ffffff',
+                                       'background': '#D3D3D3',
+                                       'border': '#D3D3D3',
+                                       }),
+                    dcc.Download(id="download-xls"),
+
                 ],
                 className='row'
             ),
@@ -234,6 +243,16 @@ def update_scenario_box(model_name):
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
 
 
+@app.callback(
+    Output("download-xls", "data"),
+    [
+        Input("btn-download", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(n_clicks):
+    if is_btn_clicked('btn-download'):
+        return dcc.send_file(f'outputs/simulation_results.xlsx')
 
 
 def get_spatial_tab():

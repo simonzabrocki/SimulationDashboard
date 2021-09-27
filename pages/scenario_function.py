@@ -8,8 +8,8 @@ from ggmodel_dev.models.water import EW_scenario, EW
 from ggmodel_dev.models.transport import VEHC_scenario, VEHC
 from ggmodel_dev.models.energy import ELEC, ELEC_scenario
 from ggmodel_dev.models.material import RECYCLE, RECYCLE_scenario
-
 from ggmodel_dev.projection import run_projection
+from ggmodel_dev.utils import results_to_excel
 
 
 def format_var_results(scenarios_results, var):
@@ -288,6 +288,8 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['BAU'] = RECYCLE_scenario.run_scenario(data_dict, RRi=0.1)
     scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
+
+    results_to_excel(scenarios_results, RECYCLE.model_dictionnary['RECYCLE_model'], 'outputs/simulation_results.xlsx')
 
     df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario'])
 
