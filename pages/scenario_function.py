@@ -257,6 +257,17 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
 
 
 
+def format_RECYCLE_result(results):
+    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi', 'SBMi']], axis=1)
+    return df
+
+def format_RECYLE(scenarios_results):
+    dfs = []
+    for scenario, results in scenarios_results.items():
+        dfs.append(format_RECYCLE_result(results).assign(scenario=scenario))
+
+    return pd.concat(dfs, axis=0)
+
 def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
 
     scenarios_results = {}
@@ -278,8 +289,8 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
 
-    df_1 = format_var_results(scenarios_results, 'RMSi')
-    df_2 = format_var_results(scenarios_results, 'INFLOWi')
+    df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']")
 
-    print(df_1)
-    return {}, {}, {}
+    fig_1 = px.line(df, x='Year', y='RMSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
+    fig_2 = px.line(df, x='Year', y='MSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
+    return fig_1, fig_2, {}
