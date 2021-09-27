@@ -258,7 +258,7 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
 
 
 def format_RECYCLE_result(results):
-    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi', 'SBMi']], axis=1)
+    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi', 'SBMi', 'WASTEi']], axis=1)
     return df
 
 def format_RECYLE(scenarios_results):
@@ -289,8 +289,26 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
 
-    df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']")
+    df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario'])
 
-    fig_1 = px.line(df, x='Year', y='RMSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
-    fig_2 = px.line(df, x='Year', y='MSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
+    # fig_1 = px.line(df, x='Year', y='RMSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
+    # fig_2 = px.line(df, x='Year', y='MSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
+
+    fig_1 = px.line(df.query("variable in ['INFLOWi', 'MSi']"),
+            x='Year',
+            y='value',
+            facet_col='Item',
+            facet_row='variable',
+            color='scenario',
+             height=800,
+       width=1200).update_yaxes(matches=None, showticklabels=True)
+
+    fig_2 = px.line(df.query("variable in ['RMSi', 'WASTEi']"),
+        x='Year',
+        y='value',
+        facet_col='Item',
+        facet_row='variable',
+        color='scenario',
+         height=800,
+       width=1200).update_yaxes(matches=None, showticklabels=True)
     return fig_1, fig_2, {}
