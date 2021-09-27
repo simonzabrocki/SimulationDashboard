@@ -183,15 +183,7 @@ layout = html.Div(
             className="pretty_container four columns",
         ),
         html.Div(
-            [
-                # dcc.Tabs(id='sim-spatial-tabs', value='sim', persistence=True, children=[
-                #     dcc.Tab(label='Simulation Results', value='sim',
-                #             className='subtab', selected_className='subtab--selected'),
-                #     # dcc.Tab(label='Spatial Analysis', value='spatial',
-                #     #         className='subtab', selected_className='subtab--selected'),
-                # ],
-                # className='container twelve columns'),
-                
+            [                
                 html.Div([get_sim_tab()], id='sim-spatial-tabs-content', className='pretty_container eight columns'),
             ],
             className='row'
