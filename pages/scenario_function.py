@@ -7,6 +7,8 @@ from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario, GE3, BE2
 from ggmodel_dev.models.water import EW_scenario, EW
 from ggmodel_dev.models.transport import VEHC_scenario, VEHC
 from ggmodel_dev.models.energy import ELEC, ELEC_scenario
+from ggmodel_dev.models.material import RECYCLE, RECYCLE_scenario
+
 from ggmodel_dev.projection import run_projection
 
 
@@ -252,3 +254,32 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = ghg_capa_ww_plot(results_df)
 
     return fig_1, fig_2, {}
+
+
+
+def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
+
+    scenarios_results = {}
+
+    data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
+
+    # TO BE PUT IN DB !!!!!
+    LDi_mu = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[0, 0, 40, 8.5])
+    LDi_std = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1e-10, 1e-10, 16, 80])
+    data_dict['LDi_mu'] = LDi_mu
+    data_dict['LDi_std'] = LDi_std
+
+    # TO BE PUT IN SCENARIO
+    data_dict['PLOSSi'] = 1
+    data_dict['MLOSSi'] = 1   
+
+
+    scenarios_results['BAU'] = RECYCLE_scenario.run_scenario(data_dict, RRi=0.1)
+    scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
+
+    df_1 = format_var_results(scenarios_results, 'RMSi')
+    df_2 = format_var_results(scenarios_results, 'INFLOWi')
+
+    print(df_1)
+    return {}, {}, {}

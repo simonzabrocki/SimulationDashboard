@@ -9,13 +9,15 @@ from pages.scenario_box import (GE3_scenario_box,
                                 BE2_scenario_box,
                                 water_scenario_box,
                                 VEHC_scenario_box,
-                                ELEC_scenario_box
+                                ELEC_scenario_box,
+                                RECYCLE_scenario_box,
                                 )
 
 from pages.scenario_function import (run_all_scenarios_VEHC, run_all_scenarios_water,
                                      run_all_scenarios_BE2,
                                      run_all_scenarios_GE3,
                                      run_all_scenarios_ELEC,
+                                     run_all_scenarios_RECYCLE,
                                      get_data_dict_from_folder,
                                      get_data_dict_from_folder_parquet
                                      )
@@ -44,7 +46,9 @@ def model_selection_box():
                              'value': 'BE2_model'},
                             {'label': 'Electric Power Plants Model (Energy)', 'value': 'ELEC_model'},
                             {'label': 'Agricultural Emissions Model (Landuse)', 'value': 'GE3_model'},
-                            {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'}
+                            {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'},
+                            {'label': 'Recycled material Model (Material)', 'value': 'RECYCLE_model'}
+
                          ],
                          value='EW_models'
                          )
@@ -194,6 +198,7 @@ scenario_box_dictionnary = {
     'GE3_model': GE3_scenario_box,
     'VEHC_model': VEHC_scenario_box,
     'ELEC_model': ELEC_scenario_box,
+    'RECYCLE_model': RECYCLE_scenario_box,
 }
 
 scenario_data_dictionnary = {
@@ -202,6 +207,8 @@ scenario_data_dictionnary = {
     'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
     'VEHC_model': get_data_dict_from_folder('data/sim/VEHC'),
     'ELEC_model': get_data_dict_from_folder('data/sim/ELEC'),
+    'RECYCLE_model': get_data_dict_from_folder('data/sim/RECYCLE'),
+
 }
 
 scenario_function_dictionnary = {
@@ -210,6 +217,7 @@ scenario_function_dictionnary = {
     'GE3_model': run_all_scenarios_GE3,
     'VEHC_model': run_all_scenarios_VEHC,
     'ELEC_model': run_all_scenarios_ELEC,
+    'RECYCLE_model': run_all_scenarios_RECYCLE,
 
 }
 

@@ -300,3 +300,34 @@ def ELEC_scenario_box(scenario_id='_one'):
         className='row')
 
     return layout
+
+
+def RECYCLE_scenario_box(scenario_id='_one'):
+
+    Scenario_name = scenario_properties[f'Scenario{scenario_id}']['name']
+
+    layout = html.Div(
+
+        [
+            html.H5(Scenario_name),
+            html.Br([]),
+            html.P('Recycled fraction',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'RRi{scenario_id}',
+                step=0.05,
+                value=0.25,
+                min=0,  # To update later
+                max=0.5,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    0.25: {'label': '25%', 'style': {'color': 'white'}},
+                    0.5: {'label': '50%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+        ],
+        className='row')
+
+    return layout
