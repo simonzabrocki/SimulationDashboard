@@ -4,7 +4,7 @@ import pandas as pd
 from scipy.stats import norm
 
 
-def compute_LDi(LDi_mu, LDi_std, INFLOWi):
+def compute_LDi(LDi_mu, LDi_std, INFLOWi, year):
 
     LDi = pd.concat([
         LDi_mu.to_frame(name='mu_'),
@@ -14,12 +14,9 @@ def compute_LDi(LDi_mu, LDi_std, INFLOWi):
     dt = (
         INFLOWi.reset_index()[['Item', 'Year']]
                          .drop_duplicates()
-    )
+    )    
 
-    current_year = max(INFLOWi.index.get_level_values('Year'))
-    
-
-    dt['Value'] = current_year - dt['Year']
+    dt['Value'] = year - dt['Year']
     dt = dt.set_index(['Item', 'Year']).Value
     
     compute_df = dt.to_frame(name='dt').reset_index().merge(LDi, on='Item')
@@ -52,7 +49,7 @@ RECYCLE_nodes = {
     'INFLOWi': {'type': 'variable',
             'unit': 'tonnes',
             'name': 'Material Inflow per material',
-            'computation': lambda SBMi, MLOSSi, RMSi_t_minus_1,  **kwargs: (SBMi + RMSi_t_minus_1) * MLOSSi
+            'computation': lambda SBMi, MLOSSi, RMSi_t_minus_1,  **kwargs: (SBMi +  RMSi_t_minus_1) * MLOSSi
             },
     'LDi_mu': {'type': 'input', ##pre-calculate for aggregated metals and non-metals
                 'unit': '1',
@@ -65,12 +62,17 @@ RECYCLE_nodes = {
     'LDi': {'type': 'variable', ##pre-calculate for aggregated metals and non-metals
                 'unit': '1',
                 'name': 'Lifetime Distribution Function per material',
-                'computation': lambda INFLOWi, LDi_std, LDi_mu, **kwargs: compute_LDi(LDi_mu, LDi_std, INFLOWi) 
+                'computation': lambda INFLOWi, LDi_std, LDi_mu, year, **kwargs: compute_LDi(LDi_mu, LDi_std, INFLOWi, year) 
                   },
     'DMSi': {'type': 'variable', 
             'unit': 'tonnes', 
             'name': 'Discarded Material Stock per material',
-            'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby('ISO').cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            },
+    'MSi': {'type': 'variable', 
+            'unit': 'tonnes', 
+            'name': 'Material Stock per material',
+            'computation': lambda INFLOWi, DMSi, **kwargs: (INFLOWi - DMSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
             },
     'RRi': {'type': 'parameter',
             'unit': '1',
@@ -85,7 +87,12 @@ RECYCLE_nodes = {
               'unit': 'tonnes',
               'name': 'Material Waste to Landfill per material',
               'computation': lambda DMSi, RMSi, **kwargs: DMSi - RMSi
-              }
+              },
+    'year': {
+        'type': 'input',
+        'unit': 'year',
+        'name': 'current year'
+    }
 }
 
 RECYCLE_model = GraphModel(RECYCLE_nodes)

@@ -216,6 +216,41 @@ class GraphModel(nx.DiGraph):
         return GraphDrawer(draw_properties).draw_computation(self, inputs_parameters)
 
 
+    def run_recursive(self,
+                      X,
+                      rec_vars,
+                      initials,
+                      t0,
+                      tmax,
+                      templates
+                      ):
+            
+        X = X.copy()
+        
+        # Initialize
+        for (_, var_t_minus_1), inital, template in zip(rec_vars, initials, templates):
+            df = template.copy()
+            
+            df[df.index.get_level_values(level='Year') == t0] = inital
+
+            X[var_t_minus_1] = df
+                    
+        for year in range(t0 + 1, tmax):
+            
+            X['year'] = year
+            res = self.run(X)
+            
+            for var_t, var_t_minus_1 in rec_vars:
+                s_t = res[var_t]
+                s_t_minus_1 = X[var_t_minus_1]
+                s_t_minus_1.loc[:, :, year] = s_t.loc[:, :, year-1]
+                X[var_t_minus_1] = s_t_minus_1
+                
+
+        return  res
+
+
+
 class GraphDrawer():
     '''A class to draw the Graph models.
 
