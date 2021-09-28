@@ -52,6 +52,7 @@ def load_index_data(max_year):
         pd.read_csv('data/GGIs_2005_2020.csv')
           .query(f"Year <=  {max_year}")
           .replace('America', 'Americas')
+          .round(2)
     )
 
     data = format_data(data)
