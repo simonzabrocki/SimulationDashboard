@@ -15,26 +15,26 @@ def reindex_series_itemized(df, min_year=2000, max_year=2050):
     return df.reindex(multi_index)
 
 
-def apply_percent_target_projection(series, percent_target=0, baseline_year=2018, target_year=2050):
+def apply_percent_target_projection(series, percent_target=0, min_year=2000, baseline_year=2018, target_year=2050):
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=target_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=target_year)
     series.loc[:, target_year, :] = percent_target * \
         series.loc[:, baseline_year, :].values
     return series.interpolate()
 
 
-def apply_target_projection(series, target=0, baseline_year=2018, target_year=2050, final_year=2050):
+def apply_target_projection(series, target=0, min_year=2000, baseline_year=2018, target_year=2050, final_year=2050):
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=final_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=final_year)
     series.loc[:, target_year:final_year+1, :] = target
     return series.interpolate()
 
 
 
-def apply_itemized_percent_target_projection(series, percent_target=0, baseline_year=2018, target_year=2050):
+def apply_itemized_percent_target_projection(series, percent_target=0, min_year=2000, baseline_year=2018, target_year=2050):
     '''To improve: Apply item wise projection'''
     series = series.copy()
-    series = reindex_series_itemized(series, max_year=target_year)
+    series = reindex_series_itemized(series, min_year=min_year, max_year=target_year)
 
     series.loc[:, baseline_year+1:, :] = np.nan # remove points after baseline year to have consistent projection
     series.loc[:, target_year, :] = percent_target * \
@@ -43,9 +43,9 @@ def apply_itemized_percent_target_projection(series, percent_target=0, baseline_
     return series.groupby(level=['ISO', 'Item']).apply(lambda x: x.interpolate())
 
 
-def apply_annual_rate_projection(series, rate=1, baseline_year=2018, target_year=2050):
+def apply_annual_rate_projection(series, rate=1, min_year=2000, baseline_year=2018, target_year=2050):
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=target_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=target_year)
 
     year = series.loc[:, baseline_year:].index.get_level_values(
         level='Year').values
@@ -56,33 +56,33 @@ def apply_annual_rate_projection(series, rate=1, baseline_year=2018, target_year
     return series
 
 
-def apply_constant_projection(series, constant=0, baseline_year=2018, target_year=2050):
+def apply_constant_projection(series, constant=0, min_year=2000, baseline_year=2018, target_year=2050):
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=target_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=target_year)
     series.loc[:, baseline_year:] = constant
 
     return series
 
 
-def apply_itemized_ffill_projection(series, target_year=2050):
+def apply_itemized_ffill_projection(series,min_year=2000, target_year=2050):
     '''To improve: Apply item wise projection'''
     series = series.copy()
-    series = reindex_series_itemized(series, max_year=target_year)
+    series = reindex_series_itemized(series, min_year=min_year, max_year=target_year)
 
     return series.groupby(['ISO', 'Item']).fillna(method='ffill')
 
 
-def apply_ffill_projection(series, target_year=2050):
+def apply_ffill_projection(series, min_year=2000, target_year=2050):
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=target_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=target_year)
 
     return series.groupby(['ISO']).fillna(method='ffill')
 
 
-def apply_Holt_projection(series, baseline_year=2018, target_year=2050, smoothing_level=0.3):
+def apply_Holt_projection(series, min_year=2000, baseline_year=2018, target_year=2050, smoothing_level=0.3):
     '''Improve choice of smoothing methods'''
     series = series.copy()
-    series = reindex_series_non_itemized(series, max_year=target_year)
+    series = reindex_series_non_itemized(series, min_year=min_year, max_year=target_year)
 
     for ISO in series.index.get_level_values('ISO').unique():
         fit = Holt(series.loc[ISO, :baseline_year].values).fit(
