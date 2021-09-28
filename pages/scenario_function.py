@@ -75,6 +75,9 @@ def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = EW_scenario.run_scenario(
         data_dict, **args_dict_2)
 
+    results_to_excel(scenarios_results, EW.model_dictionnary['EW_model'], 'outputs/simulation_results.xlsx')
+
+
     df_1 = format_var_results(scenarios_results, 'EW1')
     df_2 = format_var_results(scenarios_results, 'EW2')
     df_3 = format_var_results(scenarios_results, 'GDPC')
@@ -102,6 +105,7 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = BE2_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
 
+    results_to_excel(scenarios_results, BE2.model_dictionnary['BE2_model'], 'outputs/simulation_results.xlsx')
 
 
     df_1 = format_var_results(scenarios_results, 'BE2')
@@ -126,6 +130,8 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
         data_dict=data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
+
+    results_to_excel(scenarios_results, GE3.model_dictionnary['GE3_model'], 'outputs/simulation_results.xlsx')
 
     displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
@@ -176,6 +182,9 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
         data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = VEHC_scenario.run_scenario(
         data_dict, **args_dict_2)
+    
+    results_to_excel(scenarios_results, VEHC.model_dictionnary['VEHC_model'], 'outputs/simulation_results.xlsx')
+
 
     df_1 = format_var_results(scenarios_results, 'VEHC')
     df_2 = format_var_results(scenarios_results, 'GDPC')
@@ -242,12 +251,15 @@ def format_ELEC_results(results):
     )
 
 def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
+    scenarios_results = {}
 
     data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
     
     
     results = ELEC_scenario.run_scenario(data_dict, **args_dict_1, **args_dict_2)
-    
+    scenarios_results['BAU'] = results
+    results_to_excel(scenarios_results, ELEC.model_dictionnary['ELEC_model'], 'outputs/simulation_results.xlsx')
+
     results_df = format_ELEC_results(results)
     
     fig_1 = density_map(results_df)

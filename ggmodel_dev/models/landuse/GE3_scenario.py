@@ -68,9 +68,12 @@ def run_scenario(data_dict,
     data_dict = data_dict.copy()
     
     
-    data_dict['MM_Ti'] = MM_Ti
-    data_dict['MM_ASi'] = MM_ASi
-    data_dict['MM_LPi'] = MM_LPi
+    # data_dict['MM_Ti'] = MM_Ti
+    # data_dict['MM_ASi'] = MM_ASi
+    # data_dict['MM_LPi'] = MM_LPi
+    data_dict['MM_Ti'] = pd.Series(data=MM_Ti, index=data_dict['MM_Ti'].index)
+    data_dict['MM_ASi'] = pd.Series(data=MM_ASi, index=data_dict['MM_Ti'].index)
+    data_dict['MM_LPi'] = pd.Series(data=MM_LPi, index=data_dict['MM_Ti'].index)
     
     TAi_pct_target = pd.Series(index=['Asses', 'Cattle, dairy','Cattle, non-dairy',
                                   'Chickens, broilers', 'Chickens, layers', 'Ducks', 'Goats',
