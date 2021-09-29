@@ -4,7 +4,7 @@ from app import app, ISO_options
 from dash.dependencies import Input, Output
 from utils import Header, is_btn_clicked
 from dash.exceptions import PreventUpdate
-from ggmodel_dev.utils import get_data_dict_from_folder, get_data_dict_from_folder_parquet
+from ggmodel_dev.utils import get_data_dict_from_folder, get_data_dict_from_folder_parquet, results_to_excel
 
 from pages.scenario_box import (GE3_scenario_box,
                                 BE2_scenario_box,
@@ -77,7 +77,6 @@ def model_selection_box():
                             {'label': 'Agricultural Emissions Model (Landuse)', 'value': 'GE3_model'},
                             {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'},
                             {'label': 'Recycled material Model (Material)', 'value': 'RECYCLE_model'}
-
                          ],
                          value='EW_models'
                          )
@@ -143,6 +142,11 @@ def scenario_building_box():
                                        'border': '#D3D3D3',
                                        }),
                     dcc.Download(id="download-xls"),
+                    dcc.Loading(
+                        children=html.Div(id='loading-download'),
+                        color='#14ac9c',
+                        type="dot",
+                    ),
 
                 ],
                 className='row'
@@ -276,8 +280,9 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
         try:
             scenario_function = scenario_function_dictionnary[model]
             data = scenario_data_dictionnary[model]
-            fig_1, fig_2, fig_3, scenarios_results = scenario_function(
+            fig_1, fig_2, fig_3, scenarios_results, scenario = scenario_function(
                 data, ISO, args_dict_1, args_dict_2)
+                
 
         except Exception as e:
             print(e)
@@ -289,31 +294,47 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
         raise PreventUpdate
 
 
-# @app.callback(
-#     Output("download-xls", "data"),
-#     [
-#         Input('scenario_box_1', 'children'),
-#         Input('scenario_box_2', 'children'),
-#         Input('ISO_run_results', 'value'),
-#         Input('dropdown-simulation-model', 'value'),
-#         Input("btn-download", "n_clicks"),
-#     ],
-#     prevent_initial_call=True,
-# )
-# def downdload_table(box_1, box_2, ISO, model, n_clicks):
-#     if is_btn_clicked('btn-download'):
-#         args_dict_1 = get_args_dict_from_scenario_box(box_1)
-#         args_dict_2 = get_args_dict_from_scenario_box(box_2)
+@app.callback(
+    Output("download-xls", "data"),
+    Output("loading-download", "children"),
+    [
+        Input('scenario_box_1', 'children'),
+        Input('scenario_box_2', 'children'),
+        Input('ISO_run_results', 'value'),
+        Input('dropdown-simulation-model', 'value'),
+        Input("btn-download", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(box_1, box_2, ISO, model, n_clicks):
+    if is_btn_clicked('btn-download'):
+        args_dict_1 = get_args_dict_from_scenario_box(box_1)
+        args_dict_2 = get_args_dict_from_scenario_box(box_2)
 
-#         t = round(time.time()*100)
+        #print(round(time.time()*100))
 
-#         #return dcc.send_file(f'outputs/simulation_results.xlsx')
+        try:
+            scenario_function = scenario_function_dictionnary[model]
+            data = scenario_data_dictionnary[model]
+            fig_1, fig_2, fig_3, scenarios_results, scenario = scenario_function(
+                data, ISO, args_dict_1, args_dict_2)
 
-#         try:
-#             scenario_function = scenario_function_dictionnary[model]
-#             data = scenario_data_dictionnary[model]
-#             fig_1, fig_2, fig_3, scenarios_results = scenario_function(
-#                 data, ISO, args_dict_1, args_dict_2)
+            results_to_excel(scenarios_results, scenario.MODEL, 'outputs/simulation_results.xlsx')
+
+                
+
+        except Exception as e:
+            print(e)
+            return None, None
+
+        return dcc.send_file(f'outputs/simulation_results.xlsx'), None
+
+    else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+        raise PreventUpdate
+
+
+
+
 
 
 #         except Exception as e:

@@ -50,8 +50,6 @@ def results_to_excel(results, model, filepath):
     writer.save()
 
 
-
-
 def get_data_dict_from_folder(folder_name):
     files = os.listdir(folder_name)
     data_dict = {file.split('.')[0]: pd.read_csv(

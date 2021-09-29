@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 import plotly.express as px
 from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
 from plots.simulation.ELEC_plots import density_map, ghg_capa_ww_plot
@@ -23,6 +22,8 @@ def format_var_results(scenarios_results, var):
     return df
 
 
+# WATER
+
 def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
 
     data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items()}
@@ -39,8 +40,9 @@ def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('EW2', df_2, ISO, summary_df)
     fig_3 = scenario_line_plot('GDPC', df_3, ISO, summary_df)
 
-    return fig_1, fig_2, fig_3, scenarios_results
+    return fig_1, fig_2, fig_3, scenarios_results, EW_scenario
 
+# BE2
 
 def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     
@@ -58,8 +60,9 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('delta_CL', df_2, ISO, summary_df)
     fig_3 = {}
 
-    return fig_1, fig_2, fig_3, scenarios_results
+    return fig_1, fig_2, fig_3, scenarios_results, BE2_scenario
 
+# GE3
 
 def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     data_dict = {k: v.loc[ISO, 2018, :] for k, v in data_dict.items()}
@@ -101,8 +104,10 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
 
     fig_2 = sankeyplot(df, 'name_source', 'name_target').update_layout(
         title="Agriculture non CO2 emissions sankey diagram").update_layout(height=600)
-    return fig_1, fig_2, {}, scenarios_results
+    return fig_1, fig_2, {}, scenarios_results, GE3_scenario
 
+
+# VEHC
 
 def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
@@ -119,11 +124,10 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('GDPC', df_2, ISO, summary_df)
     fig_3 = {}
 
-    return fig_1, fig_2, fig_3, scenarios_results
+    return fig_1, fig_2, fig_3, scenarios_results, VEHC_scenario
 
 
-
-# ELEC TO CLEAN UP
+# ELEC
 
 def format_ELEC_results(results):
     df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['ELECPRODi', 'ELECWWi', 'ELECGHGi']], axis=1)
@@ -145,9 +149,9 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_1 = density_map(results_df)
     fig_2 = ghg_capa_ww_plot(results_df)
 
-    return fig_1, fig_2, {}, scenarios_results
+    return fig_1, fig_2, {}, scenarios_results, ELEC_scenario
 
-
+# RECYCLE
 
 def format_RECYCLE_result(results):
     df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi', 'SBMi', 'WASTEi']], axis=1)
@@ -186,4 +190,5 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
         color='scenario',
          height=800,
        width=1200).update_yaxes(matches=None, showticklabels=True)
-    return fig_1, fig_2, {}, scenarios_results
+
+    return fig_1, fig_2, {}, scenarios_results, RECYCLE_scenario
