@@ -1,6 +1,7 @@
 from ggmodel_dev.projection import *
 from ggmodel_dev.models.transport.VEHC import model_dictionnary
 
+MODEL = model_dictionnary['VEHC_model']
 
 def run_scenario(data_dict, MAX_sat=1000, GDPC_rate=1.05):
 
@@ -16,6 +17,15 @@ def run_scenario(data_dict, MAX_sat=1000, GDPC_rate=1.05):
 
     data_dict = run_projection(scenario_projection_dict, data_dict)
 
-    results = model_dictionnary['VEHC_model'].run(data_dict)
+    results = MODEL.run(data_dict)
 
     return results
+
+def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
+    scenarios_results = {}
+
+    scenarios_results['BAU'] = run_scenario(data_dict, MAX_sat=data_dict['MAX_sat'], GDPC_rate=1.02)
+    scenarios_results['scenario_one'] = run_scenario(data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = run_scenario(data_dict, **args_dict_2)
+
+    return scenarios_results
