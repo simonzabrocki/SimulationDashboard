@@ -1,14 +1,12 @@
 import pandas as pd
 import os
 import plotly.express as px
-
 from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
-from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario, GE3, BE2
-from ggmodel_dev.models.water import EW_scenario, EW
-from ggmodel_dev.models.transport import VEHC_scenario, VEHC
-from ggmodel_dev.models.energy import ELEC, ELEC_scenario
-from ggmodel_dev.models.material import RECYCLE, RECYCLE_scenario
-from ggmodel_dev.projection import run_projection
+from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario
+from ggmodel_dev.models.water import EW_scenario
+from ggmodel_dev.models.transport import VEHC_scenario
+from ggmodel_dev.models.energy import ELEC_scenario
+from ggmodel_dev.models.material import RECYCLE_scenario
 
 
 def format_var_results(scenarios_results, var):
@@ -71,7 +69,7 @@ def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
     df_2 = format_var_results(scenarios_results, 'EW2')
     df_3 = format_var_results(scenarios_results, 'GDPC')
 
-    summary_df = EW.model_dictionnary['EW_model'].summary_df
+    summary_df = EW_scenario.MODEL.summary_df
 
     fig_1 = scenario_line_plot('EW1', df_1, ISO, summary_df)
     fig_2 = scenario_line_plot('EW2', df_2, ISO, summary_df)
@@ -90,7 +88,7 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     df_1 = format_var_results(scenarios_results, 'BE2')
     df_2 = format_var_results(scenarios_results, 'delta_CL')
 
-    summary_df = BE2.model_dictionnary['BE2_model'].summary_df
+    summary_df = BE2_scenario.MODEL.summary_df
 
     fig_1 = scenario_line_plot('BE2', df_1, ISO, summary_df)
     fig_2 = scenario_line_plot('delta_CL', df_2, ISO, summary_df)
@@ -106,6 +104,9 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
 
     displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
+
+    summary_df = GE3_scenario.MODEL.summary_df
+
     df_0 = emission_data_dict_to_df(
         {k: v for k, v in scenarios_results['BAU'].items() if k in displayed_variables})
     df_1 = emission_data_dict_to_df(
@@ -116,8 +117,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     df = pd.concat([df_0.assign(scenario='BAU'), df_1.assign(
         scenario='scenario 1'), df_2.assign(scenario='scenario 2')], axis=0)
 
-    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[[
-                  'name', 'unit']], left_on='Variable', right_index=True, how='left')
+    df = df.merge(summary_df[['name', 'unit']], left_on='Variable', right_index=True, how='left')
 
     fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={
                        'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'}, height=600).update_layout(title="Agriculture non CO2 emissions Tree Map")
@@ -126,8 +126,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     df.loc[df.Variable == 'GE3_partial',
            'name'] = 'Non-CO2 agricultural emissions'
 
-    df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[[
-                  'name']], left_on='Item', right_index=True, how='left', suffixes=('_target', '_source'))
+    df = df.merge(summary_df[['name']], left_on='Item', right_index=True, how='left', suffixes=('_target', '_source'))
     df['name'] = df['name_target']
     df.loc[df.name_source.isna(), 'name'] = df.loc[df.name_source.isna(), 'Item']
 
@@ -151,7 +150,7 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
     df_2 = format_var_results(scenarios_results, 'GDPC')
 
     # to standardize and automize
-    summary_df = VEHC.model_dictionnary['VEHC_model'].summary_df
+    summary_df = VEHC_scenario.MODEL.summary_df
     fig_1 = scenario_line_plot('VEHC', df_1, ISO, summary_df)
     fig_2 = scenario_line_plot('GDPC', df_2, ISO, summary_df)
     fig_3 = {}
