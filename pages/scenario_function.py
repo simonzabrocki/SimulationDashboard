@@ -145,16 +145,7 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
     scenarios_results = {}
     data_dict = {k: v.loc[[ISO]] for k, v in data_dict.items()}
-
-    scenarios_results['BAU'] = VEHC_scenario.run_scenario(
-        data_dict, MAX_sat=data_dict['MAX_sat'], GDPC_rate=1.02)
-    scenarios_results['scenario_one'] = VEHC_scenario.run_scenario(
-        data_dict, **args_dict_1)
-    scenarios_results['scenario_two'] = VEHC_scenario.run_scenario(
-        data_dict, **args_dict_2)
-    
-    #results_to_excel(scenarios_results, VEHC.model_dictionnary['VEHC_model'], 'outputs/simulation_results.xlsx')
-
+    scenarios_results = VEHC_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
     df_1 = format_var_results(scenarios_results, 'VEHC')
     df_2 = format_var_results(scenarios_results, 'GDPC')
@@ -221,14 +212,11 @@ def format_ELEC_results(results):
     )
 
 def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
-    scenarios_results = {}
 
     data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
     
-    
-    results = ELEC_scenario.run_scenario(data_dict, **args_dict_1, **args_dict_2)
-    scenarios_results['BAU'] = results
-    #results_to_excel(scenarios_results, ELEC.model_dictionnary['ELEC_model'], 'outputs/simulation_results.xlsx')
+    scenarios_results = ELEC_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
+    results = scenarios_results['BAU']
 
     results_df = format_ELEC_results(results)
     
@@ -252,26 +240,10 @@ def format_RECYLE(scenarios_results):
 
 def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
 
-    scenarios_results = {}
 
     data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
 
-    # TO BE PUT IN DB !!!!!
-    LDi_mu = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[0, 0, 40, 8.5])
-    LDi_std = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1e-10, 1e-10, 16, 80])
-    data_dict['LDi_mu'] = LDi_mu
-    data_dict['LDi_std'] = LDi_std
-
-    # TO BE PUT IN SCENARIO
-    data_dict['PLOSSi'] = 1
-    data_dict['MLOSSi'] = 1   
-
-
-    scenarios_results['BAU'] = RECYCLE_scenario.run_scenario(data_dict, RRi=0.1)
-    scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
-    scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
-
-    #results_to_excel(scenarios_results, RECYCLE.model_dictionnary['RECYCLE_model'], 'outputs/simulation_results.xlsx')
+    scenarios_results = RECYCLE_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
     df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario'])
 
