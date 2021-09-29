@@ -1,7 +1,10 @@
 from ggmodel_dev.projection import *
 from ggmodel_dev.models.landuse.BE2 import model_dictionnary
 
-projection_dict = {
+
+MODEL = model_dictionnary['BE2_model']
+
+PROJECTION_DICT = {
     'FDi': lambda x: apply_itemized_ffill_projection(x, min_year=2018),
     'SSRi': lambda x: apply_itemized_ffill_projection(x, min_year=2018),
     'SVi': lambda x: apply_itemized_ffill_projection(x, min_year=2018),
@@ -36,10 +39,22 @@ def run_scenario(data_dict, FDKGi_target=1, FLOi_target=1, CYi_target=1, R_rate=
 
     data_dict = run_projection(projection_dict, data_dict)
 
-    results = model_dictionnary['BE2_model'].run(data_dict)
+    results = MODEL.run(data_dict)
 
     results['CL_baseline'] = pd.Series(results['CL'].loc[:, 2018].values[0], index=results['CL'].index) # to avoid discontinuty, to improve
     
-    results = model_dictionnary['BE2_model'].run(results)
+    results = MODEL.run(results)
 
     return results
+
+
+def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
+    scenarios_results = {}
+
+    data_dict = run_projection(PROJECTION_DICT, data_dict)
+
+    scenarios_results['BAU'] = run_scenario(data_dict)
+    scenarios_results['scenario_one'] = run_scenario(data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = run_scenario(data_dict, **args_dict_2)
+
+    return scenarios_results
