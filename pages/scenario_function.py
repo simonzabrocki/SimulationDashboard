@@ -100,17 +100,9 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
 
 
 def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
-    scenarios_results = {}
     data_dict = {k: v.loc[ISO, 2018, :] for k, v in data_dict.items()}
 
-    scenarios_results['BAU'] = GE3_scenario.run_scenario(
-        data_dict=data_dict, MM_Ti=data_dict['MM_Ti'], MM_ASi=data_dict['MM_ASi'])
-    scenarios_results['scenario_one'] = GE3_scenario.run_scenario(
-        data_dict=data_dict, **args_dict_1)
-    scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
-        data_dict=data_dict, **args_dict_2)
-
-    #results_to_excel(scenarios_results, GE3.model_dictionnary['GE3_model'], 'outputs/simulation_results.xlsx')
+    scenarios_results = GE3_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
     displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
