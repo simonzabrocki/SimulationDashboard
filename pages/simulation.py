@@ -4,6 +4,7 @@ from app import app, ISO_options
 from dash.dependencies import Input, Output
 from utils import Header, is_btn_clicked
 from dash.exceptions import PreventUpdate
+from ggmodel_dev.utils import get_data_dict_from_folder, get_data_dict_from_folder_parquet
 
 from pages.scenario_box import (GE3_scenario_box,
                                 BE2_scenario_box,
@@ -13,13 +14,12 @@ from pages.scenario_box import (GE3_scenario_box,
                                 RECYCLE_scenario_box,
                                 )
 
-from pages.scenario_function import (run_all_scenarios_VEHC, run_all_scenarios_water,
+from pages.scenario_function import (run_all_scenarios_VEHC,
+                                     run_all_scenarios_EW,
                                      run_all_scenarios_BE2,
                                      run_all_scenarios_GE3,
                                      run_all_scenarios_ELEC,
                                      run_all_scenarios_RECYCLE,
-                                     get_data_dict_from_folder,
-                                     get_data_dict_from_folder_parquet
                                      )
 
 
@@ -27,6 +27,35 @@ scenario_properties = {
     'Scenario_one': {"name": 'Scenario 1'},
     'Scenario_two': {'name': 'Scenario 2'},
     'BAU': {'name': 'Business as Usual'},
+}
+
+scenario_box_dictionnary = {
+    'EW_models': water_scenario_box,
+    'BE2_model': BE2_scenario_box,
+    'GE3_model': GE3_scenario_box,
+    'VEHC_model': VEHC_scenario_box,
+    'ELEC_model': ELEC_scenario_box,
+    'RECYCLE_model': RECYCLE_scenario_box,
+}
+
+scenario_data_dictionnary = {
+    'EW_models': get_data_dict_from_folder('data/sim/EW'),
+    'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
+    'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
+    'VEHC_model': get_data_dict_from_folder('data/sim/VEHC'),
+    'ELEC_model': get_data_dict_from_folder('data/sim/ELEC'),
+    'RECYCLE_model': get_data_dict_from_folder('data/sim/RECYCLE'),
+
+}
+
+scenario_function_dictionnary = {
+    'EW_models': run_all_scenarios_EW,
+    'BE2_model': run_all_scenarios_BE2,
+    'GE3_model': run_all_scenarios_GE3,
+    'VEHC_model': run_all_scenarios_VEHC,
+    'ELEC_model': run_all_scenarios_ELEC,
+    'RECYCLE_model': run_all_scenarios_RECYCLE,
+
 }
 
 
@@ -193,34 +222,6 @@ layout = html.Div(
 )
 
 
-scenario_box_dictionnary = {
-    'EW_models': water_scenario_box,
-    'BE2_model': BE2_scenario_box,
-    'GE3_model': GE3_scenario_box,
-    'VEHC_model': VEHC_scenario_box,
-    'ELEC_model': ELEC_scenario_box,
-    'RECYCLE_model': RECYCLE_scenario_box,
-}
-
-scenario_data_dictionnary = {
-    'EW_models': get_data_dict_from_folder('data/sim/EW'),
-    'BE2_model': get_data_dict_from_folder('data/sim/BE2'),
-    'GE3_model': get_data_dict_from_folder_parquet('data/sim/GE3'),
-    'VEHC_model': get_data_dict_from_folder('data/sim/VEHC'),
-    'ELEC_model': get_data_dict_from_folder('data/sim/ELEC'),
-    'RECYCLE_model': get_data_dict_from_folder('data/sim/RECYCLE'),
-
-}
-
-scenario_function_dictionnary = {
-    'EW_models': run_all_scenarios_water,
-    'BE2_model': run_all_scenarios_BE2,
-    'GE3_model': run_all_scenarios_GE3,
-    'VEHC_model': run_all_scenarios_VEHC,
-    'ELEC_model': run_all_scenarios_ELEC,
-    'RECYCLE_model': run_all_scenarios_RECYCLE,
-
-}
 
 
 @app.callback(
@@ -233,18 +234,6 @@ scenario_function_dictionnary = {
 def update_scenario_box(model_name):
     scenario_box_function = scenario_box_dictionnary[model_name]
     return scenario_box_function(scenario_id='_one'), scenario_box_function(scenario_id='_two')
-
-
-@app.callback(
-    Output("download-xls", "data"),
-    [
-        Input("btn-download", "n_clicks"),
-    ],
-    prevent_initial_call=True,
-)
-def downdload_table(n_clicks):
-    if is_btn_clicked('btn-download'):
-        return dcc.send_file(f'outputs/simulation_results.xlsx')
 
 
 def get_spatial_tab():
@@ -282,10 +271,12 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
         args_dict_1 = get_args_dict_from_scenario_box(box_1)
         args_dict_2 = get_args_dict_from_scenario_box(box_2)
 
+        #print(round(time.time()*100))
+
         try:
             scenario_function = scenario_function_dictionnary[model]
             data = scenario_data_dictionnary[model]
-            fig_1, fig_2, fig_3 = scenario_function(
+            fig_1, fig_2, fig_3, scenarios_results = scenario_function(
                 data, ISO, args_dict_1, args_dict_2)
 
         except Exception as e:
@@ -296,3 +287,38 @@ def run_scenario(box_1, box_2, ISO, model, n_clicks):
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
+
+
+# @app.callback(
+#     Output("download-xls", "data"),
+#     [
+#         Input('scenario_box_1', 'children'),
+#         Input('scenario_box_2', 'children'),
+#         Input('ISO_run_results', 'value'),
+#         Input('dropdown-simulation-model', 'value'),
+#         Input("btn-download", "n_clicks"),
+#     ],
+#     prevent_initial_call=True,
+# )
+# def downdload_table(box_1, box_2, ISO, model, n_clicks):
+#     if is_btn_clicked('btn-download'):
+#         args_dict_1 = get_args_dict_from_scenario_box(box_1)
+#         args_dict_2 = get_args_dict_from_scenario_box(box_2)
+
+#         t = round(time.time()*100)
+
+#         #return dcc.send_file(f'outputs/simulation_results.xlsx')
+
+#         try:
+#             scenario_function = scenario_function_dictionnary[model]
+#             data = scenario_data_dictionnary[model]
+#             fig_1, fig_2, fig_3, scenarios_results = scenario_function(
+#                 data, ISO, args_dict_1, args_dict_2)
+
+
+#         except Exception as e:
+#             print(e)
+#             return {}, {}, {}, None
+
+#     else: 
+#         raise PreventUpdate

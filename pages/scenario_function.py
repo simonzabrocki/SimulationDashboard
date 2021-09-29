@@ -2,6 +2,9 @@ import pandas as pd
 import os
 import plotly.express as px
 from plots.simulation.GE3_plots import sankeyplot, emission_data_dict_to_df
+from plots.simulation.ELEC_plots import density_map, ghg_capa_ww_plot
+from plots.simulation.base_plots import scenario_line_plot
+
 from ggmodel_dev.models.landuse import BE2_scenario, GE3_scenario
 from ggmodel_dev.models.water import EW_scenario
 from ggmodel_dev.models.transport import VEHC_scenario
@@ -20,46 +23,7 @@ def format_var_results(scenarios_results, var):
     return df
 
 
-def scenario_line_plot(var, df, ISO, summary_df):  # ugly af
-
-    var_info = summary_df.loc[var]
-    var_name = var_info['name']
-    df = df.rename(columns={var: var_name})
-    fig = px.line(df.query(f"ISO == '{ISO}' and Year >= 2000"),
-                  x='Year',
-                  y=var_name,
-                  color='scenario',
-                  color_discrete_map={'Scenario 1': '#D8A488',
-                                      'Scenario 2': '#86BBD8',
-                                      'BAU': '#A9A9A9'},
-                  )
-
-    fig.add_vline(x=2019, line_width=3, line_dash="dash", line_color="green")
-    fig.update_layout(hovermode="x")
-    fig.update_layout(legend_title_text='Scenario')
-    return fig
-
-
-def get_data_dict_from_folder(folder_name):
-    files = os.listdir(folder_name)
-    data_dict = {file.split('.')[0]: pd.read_csv(
-        f'{folder_name}/{file}') for file in files}
-
-    data_dict = {name: df.set_index([col for col in df.columns if col != name]).squeeze(
-    ) for name, df in data_dict.items()}
-
-    return data_dict
-
-
-def get_data_dict_from_folder_parquet(folder_name):
-    files = os.listdir(folder_name)
-    data_dict = {file.split('.')[0]: pd.read_parquet(
-        f'{folder_name}/{file}') for file in files}
-    data_dict = {name: df[name] for name, df in data_dict.items()}
-    return data_dict
-
-
-def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
+def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
 
     data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items()}
 
@@ -160,47 +124,6 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
 
 # ELEC TO CLEAN UP
-
-def density_map(df):
-    fig =   px.density_mapbox(df,
-                     lat='latitude',
-                     lon='longitude',
-                     z='Water Withdrawal (m3)',
-                     hover_data={'Name':True, 'Generation (GWh)':True, 'latitude': False, 'longitude': False, 'Fuel': True},
-                     width=1200,
-                     height=1000,
-                     radius=35,
-                     zoom=5.3,
-                     opacity=None,
-                     ).update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
-                                    geo=dict(showframe=False,
-                                             resolution=50,
-                                             showcoastlines=False,
-                                             visible=True,
-                                             fitbounds="locations",
-                                             showcountries=True
-                                             ),
-                                     legend=dict(orientation="h"),
-                                     mapbox_style="carto-positron",
-                                     dragmode=False,
-                                     
-                                     )
-    return fig
-
-
-def ghg_capa_ww_plot(df):
-    fig = px.bar(df.groupby('Fuel')[['CO2 emissions (tonnes)','Generation (GWh)', 'Water Withdrawal (m3)']].sum().reset_index().melt(id_vars=['Fuel']),
-                 x='Fuel',
-                 y='value',
-                 color='Fuel',
-                 facet_col='variable',
-                 facet_col_spacing=0.05,
-                 width=1200,
-                 height=500,
-                 ).update_yaxes(matches=None, showticklabels=True, )
-
-    return fig
-
 
 def format_ELEC_results(results):
     df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['ELECPRODi', 'ELECWWi', 'ELECGHGi']], axis=1)
