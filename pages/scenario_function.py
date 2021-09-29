@@ -9,7 +9,6 @@ from ggmodel_dev.models.transport import VEHC_scenario, VEHC
 from ggmodel_dev.models.energy import ELEC, ELEC_scenario
 from ggmodel_dev.models.material import RECYCLE, RECYCLE_scenario
 from ggmodel_dev.projection import run_projection
-from ggmodel_dev.utils import results_to_excel
 
 
 def format_var_results(scenarios_results, var):
@@ -63,20 +62,10 @@ def get_data_dict_from_folder_parquet(folder_name):
 
 
 def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
-    scenarios_results = {}
 
     data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items()}
 
-    data_dict = run_projection(EW_scenario.projection_dict, data_dict)
-
-    scenarios_results['BAU'] = EW_scenario.run_scenario(data_dict)
-    scenarios_results['scenario_one'] = EW_scenario.run_scenario(
-        data_dict, **args_dict_1)
-    scenarios_results['scenario_two'] = EW_scenario.run_scenario(
-        data_dict, **args_dict_2)
-
-    results_to_excel(scenarios_results, EW.model_dictionnary['EW_model'], 'outputs/simulation_results.xlsx')
-
+    scenarios_results = EW_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
     df_1 = format_var_results(scenarios_results, 'EW1')
     df_2 = format_var_results(scenarios_results, 'EW2')
@@ -88,7 +77,7 @@ def run_all_scenarios_water(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('EW2', df_2, ISO, summary_df)
     fig_3 = scenario_line_plot('GDPC', df_3, ISO, summary_df)
 
-    return fig_1, fig_2, fig_3
+    return fig_1, fig_2, fig_3, scenarios_results
 
 
 def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
@@ -105,7 +94,7 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = BE2_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
 
-    results_to_excel(scenarios_results, BE2.model_dictionnary['BE2_model'], 'outputs/simulation_results.xlsx')
+    #results_to_excel(scenarios_results, BE2.model_dictionnary['BE2_model'], 'outputs/simulation_results.xlsx')
 
 
     df_1 = format_var_results(scenarios_results, 'BE2')
@@ -117,7 +106,7 @@ def run_all_scenarios_BE2(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('delta_CL', df_2, ISO, summary_df)
     fig_3 = {}
 
-    return fig_1, fig_2, fig_3
+    return fig_1, fig_2, fig_3, scenarios_results
 
 
 def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
@@ -131,7 +120,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = GE3_scenario.run_scenario(
         data_dict=data_dict, **args_dict_2)
 
-    results_to_excel(scenarios_results, GE3.model_dictionnary['GE3_model'], 'outputs/simulation_results.xlsx')
+    #results_to_excel(scenarios_results, GE3.model_dictionnary['GE3_model'], 'outputs/simulation_results.xlsx')
 
     displayed_variables = ['TEE_CO2eq', 'TMA_CO2eq', 'TMT_CO2eq', 'TMP_CO2eq']
 
@@ -148,7 +137,6 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
     df = df.merge(GE3.model_dictionnary['GE3_model'].summary_df[[
                   'name', 'unit']], left_on='Variable', right_index=True, how='left')
 
-    #fig_2 = px.treemap(df.query('Variable != "GE3_partial"'), path=['Item', 'name', 'scenario'], values='Value', )
     fig_1 = px.treemap(df.query('Variable != "GE3_partial"'), path=['scenario', 'Item', 'name'], values='Value',  color='scenario', color_discrete_map={
                        'BAU': 'grey', 'scenario 1': '#D8A488', 'scenario 2': '#86BBD8'}, height=600).update_layout(title="Agriculture non CO2 emissions Tree Map")
 
@@ -168,7 +156,7 @@ def run_all_scenarios_GE3(data_dict, ISO, args_dict_1, args_dict_2):
 
     fig_2 = sankeyplot(df, 'name_source', 'name_target').update_layout(
         title="Agriculture non CO2 emissions sankey diagram").update_layout(height=600)
-    return fig_1, fig_2, {}
+    return fig_1, fig_2, {}, scenarios_results
 
 
 def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
@@ -183,7 +171,7 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_two'] = VEHC_scenario.run_scenario(
         data_dict, **args_dict_2)
     
-    results_to_excel(scenarios_results, VEHC.model_dictionnary['VEHC_model'], 'outputs/simulation_results.xlsx')
+    #results_to_excel(scenarios_results, VEHC.model_dictionnary['VEHC_model'], 'outputs/simulation_results.xlsx')
 
 
     df_1 = format_var_results(scenarios_results, 'VEHC')
@@ -195,7 +183,7 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
     fig_2 = scenario_line_plot('GDPC', df_2, ISO, summary_df)
     fig_3 = {}
 
-    return fig_1, fig_2, fig_3
+    return fig_1, fig_2, fig_3, scenarios_results
 
 
 
@@ -258,14 +246,14 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
     
     results = ELEC_scenario.run_scenario(data_dict, **args_dict_1, **args_dict_2)
     scenarios_results['BAU'] = results
-    results_to_excel(scenarios_results, ELEC.model_dictionnary['ELEC_model'], 'outputs/simulation_results.xlsx')
+    #results_to_excel(scenarios_results, ELEC.model_dictionnary['ELEC_model'], 'outputs/simulation_results.xlsx')
 
     results_df = format_ELEC_results(results)
     
     fig_1 = density_map(results_df)
     fig_2 = ghg_capa_ww_plot(results_df)
 
-    return fig_1, fig_2, {}
+    return fig_1, fig_2, {}, scenarios_results
 
 
 
@@ -301,12 +289,9 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results['scenario_one'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = RECYCLE_scenario.run_scenario(data_dict, **args_dict_2)
 
-    results_to_excel(scenarios_results, RECYCLE.model_dictionnary['RECYCLE_model'], 'outputs/simulation_results.xlsx')
+    #results_to_excel(scenarios_results, RECYCLE.model_dictionnary['RECYCLE_model'], 'outputs/simulation_results.xlsx')
 
     df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario'])
-
-    # fig_1 = px.line(df, x='Year', y='RMSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
-    # fig_2 = px.line(df, x='Year', y='MSi', facet_col='Item', color='scenario').update_yaxes(matches=None, showticklabels=True)
 
     fig_1 = px.line(df.query("variable in ['INFLOWi', 'MSi']"),
             x='Year',
@@ -325,4 +310,4 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
         color='scenario',
          height=800,
        width=1200).update_yaxes(matches=None, showticklabels=True)
-    return fig_1, fig_2, {}
+    return fig_1, fig_2, {}, scenarios_results

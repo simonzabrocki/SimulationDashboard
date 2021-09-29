@@ -1,8 +1,10 @@
 from ggmodel_dev.projection import *
 from ggmodel_dev.models.water.EW import model_dictionnary
 
+MODEL = model_dictionnary['EW_model']
 
-projection_dict = {
+
+PROJECTION_DICT = {
     'IGVA': lambda x: apply_Holt_projection(x),
     'SGVA': lambda x: apply_Holt_projection(x),
     'AGVA': lambda x: apply_Holt_projection(x),
@@ -33,7 +35,18 @@ def run_scenario(data_dict, WP_rate=1.0, WRR_rate=1.00):
     
     data_dict = run_projection(scenario_projection_dict, data_dict)
 
-    results = model_dictionnary['EW_model'].run(data_dict)
+    results = MODEL.run(data_dict)
 
     return results
     
+
+def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
+    scenarios_results = {}
+
+    data_dict = run_projection(PROJECTION_DICT, data_dict)
+
+    scenarios_results['BAU'] = run_scenario(data_dict)
+    scenarios_results['scenario_one'] = run_scenario(data_dict, **args_dict_1)
+    scenarios_results['scenario_two'] = run_scenario(data_dict, **args_dict_2)
+
+    return scenarios_results
