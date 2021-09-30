@@ -5,13 +5,13 @@ digraph {
  1" peripheries=1 shape=rectangle style=filled]
 	DMCi [label=DMCi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Domestic Material Consumption per material 
  (DMCi) 
- Tonnes" peripheries=1 shape=rectangle style=filled]
+ tonnes" peripheries=1 shape=rectangle style=filled]
 	MLOSSi [label=MLOSSi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Manufacturing Losses 
  (MLOSSi) 
  1" peripheries=1 shape=rectangle style=filled]
 	SBMi [label=SBMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Stock Building Materials per material 
  (SBMi) 
- Tonnes" peripheries=1 shape=rectangle style=filled]
+ tonnes" peripheries=1 shape=rectangle style=filled]
 	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * PLOSSi" peripheries=1 shape=rectangle style=""]
 	RMSi_t_minus_1 [label=RMSi_t_minus_1 color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Recycled Material Stock previous year 
  (RMSi_t_minus_1) 
@@ -19,7 +19,7 @@ digraph {
 	INFLOWi [label=INFLOWi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Inflow per material 
  (INFLOWi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi + RMSi_t_minus_1) * MLOSSi" peripheries=1 shape=rectangle style=""]
+	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi +  RMSi_t_minus_1) * MLOSSi" peripheries=1 shape=rectangle style=""]
 	LDi_mu [label=LDi_mu color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Lifetime Distribution Function mean per material 
  (LDi_mu) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -29,11 +29,15 @@ digraph {
 	LDi [label=LDi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Lifetime Distribution Function per material 
  (LDi) 
  1" peripheries=1 shape=rectangle style=filled]
-	LDi_comp [label=LDi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="compute_LDi(LDi_mu, LDi_std, INFLOWi)" peripheries=1 shape=rectangle style=""]
+	LDi_comp [label=LDi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="compute_LDi(LDi_mu, LDi_std, INFLOWi, year)" peripheries=1 shape=rectangle style=""]
 	DMSi [label=DMSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Discarded Material Stock per material 
  (DMSi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	DMSi_comp [label=DMSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby('ISO').cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
+	DMSi_comp [label=DMSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
+	MSi [label=MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock per material 
+ (MSi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	MSi_comp [label=MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi - DMSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
 	RRi [label=RRi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Recycling Rate 
  (RRi) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -45,6 +49,9 @@ digraph {
  (WASTEi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
 	WASTEi_comp [label=WASTEi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMSi - RMSi" peripheries=1 shape=rectangle style=""]
+	year [label=year color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="current year 
+ (year) 
+ year" peripheries=1 shape=rectangle style=filled]
 	PLOSSi -> SBMi_comp [color="#A9A9A9"]
 	DMCi -> SBMi_comp [color="#A9A9A9"]
 	MLOSSi -> INFLOWi_comp [color="#A9A9A9"]
@@ -53,16 +60,20 @@ digraph {
 	RMSi_t_minus_1 -> INFLOWi_comp [color="#A9A9A9"]
 	INFLOWi -> LDi_comp [color="#A9A9A9"]
 	INFLOWi -> DMSi_comp [color="#A9A9A9"]
+	INFLOWi -> MSi_comp [color="#A9A9A9"]
 	INFLOWi_comp -> INFLOWi [color="#A9A9A9"]
 	LDi_mu -> LDi_comp [color="#A9A9A9"]
 	LDi_std -> LDi_comp [color="#A9A9A9"]
 	LDi -> DMSi_comp [color="#A9A9A9"]
 	LDi_comp -> LDi [color="#A9A9A9"]
+	DMSi -> MSi_comp [color="#A9A9A9"]
 	DMSi -> RMSi_comp [color="#A9A9A9"]
 	DMSi -> WASTEi_comp [color="#A9A9A9"]
 	DMSi_comp -> DMSi [color="#A9A9A9"]
+	MSi_comp -> MSi [color="#A9A9A9"]
 	RRi -> RMSi_comp [color="#A9A9A9"]
 	RMSi -> WASTEi_comp [color="#A9A9A9"]
 	RMSi_comp -> RMSi [color="#A9A9A9"]
 	WASTEi_comp -> WASTEi [color="#A9A9A9"]
+	year -> LDi_comp [color="#A9A9A9"]
 }

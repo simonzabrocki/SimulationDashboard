@@ -444,6 +444,33 @@ digraph {
 	WWFUELCOOLi [label=WWFUELCOOLi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="water withdrawal intensity per fuel and cooling sytem 
  (WWFUELCOOLi) 
  m3 / GWh" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPNRJ [label=SOLARPUMPNRJ color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Energy required for solar pumping 
+ (SOLARPUMPNRJ) 
+ kWh/year" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPNRJ_comp [label=SOLARPUMPNRJ_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(1e9 * IWR * rho_water * g * WATERDEPTH) / (3.6e6 * SOLARPANELEFF * PUMPEFF)" peripheries=1 shape=rectangle style=""]
+	SOLARPUMPPOW [label=SOLARPUMPPOW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar power required for pumping 
+ (SOLARPUMPPOW) 
+ kW/year" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPPOW_comp [label=SOLARPUMPPOW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARPUMPNRJ / SUNDUR" peripheries=1 shape=rectangle style=""]
+	SOLARSURF [label=SOLARSURF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar Panel surface 
+ (SOLARSURF) 
+ m2" peripheries=1 shape=rectangle style=filled]
+	SOLARSURF_comp [label=SOLARSURF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARPUMPNRJ / SOLARIRRAD" peripheries=1 shape=rectangle style=""]
+	WATERDEPTH [label=WATERDEPTH color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Water depth level 
+ (WATERDEPTH) 
+ m" peripheries=1 shape=rectangle style=filled]
+	SOLARIRRAD [label=SOLARIRRAD color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Yearly solar irradiation 
+ (SOLARIRRAD) 
+ kWh/m2/year" peripheries=1 shape=rectangle style=filled]
+	SUNDUR [label=SUNDUR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Sunshine duration 
+ (SUNDUR) 
+ h / year" peripheries=1 shape=rectangle style=filled]
+	PUMPEFF [label=PUMPEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Pump efficiency 
+ (PUMPEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	SOLARPANELEFF [label=SOLARPANELEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Solar panel efficiency 
+ (SOLARPANELEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
 	BioCropMixi [label=BioCropMixi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Allocation of crops for biodiesel production 
  (BioCropMixi) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -703,13 +730,13 @@ digraph {
  1" peripheries=1 shape=rectangle style=filled]
 	DMCi [label=DMCi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Domestic Material Consumption per material 
  (DMCi) 
- Tonnes" peripheries=1 shape=rectangle style=filled]
+ tonnes" peripheries=1 shape=rectangle style=filled]
 	MLOSSi [label=MLOSSi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Manufacturing Losses 
  (MLOSSi) 
  1" peripheries=1 shape=rectangle style=filled]
 	SBMi [label=SBMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Stock Building Materials per material 
  (SBMi) 
- Tonnes" peripheries=1 shape=rectangle style=filled]
+ tonnes" peripheries=1 shape=rectangle style=filled]
 	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * PLOSSi" peripheries=1 shape=rectangle style=""]
 	RMSi_t_minus_1 [label=RMSi_t_minus_1 color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Recycled Material Stock previous year 
  (RMSi_t_minus_1) 
@@ -717,7 +744,7 @@ digraph {
 	INFLOWi [label=INFLOWi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Inflow per material 
  (INFLOWi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi + RMSi_t_minus_1) * MLOSSi" peripheries=1 shape=rectangle style=""]
+	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi +  RMSi_t_minus_1) * MLOSSi" peripheries=1 shape=rectangle style=""]
 	LDi_mu [label=LDi_mu color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Lifetime Distribution Function mean per material 
  (LDi_mu) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -727,11 +754,15 @@ digraph {
 	LDi [label=LDi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Lifetime Distribution Function per material 
  (LDi) 
  1" peripheries=1 shape=rectangle style=filled]
-	LDi_comp [label=LDi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="compute_LDi(LDi_mu, LDi_std, INFLOWi)" peripheries=1 shape=rectangle style=""]
+	LDi_comp [label=LDi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="compute_LDi(LDi_mu, LDi_std, INFLOWi, year)" peripheries=1 shape=rectangle style=""]
 	DMSi [label=DMSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Discarded Material Stock per material 
  (DMSi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	DMSi_comp [label=DMSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby('ISO').cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
+	DMSi_comp [label=DMSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
+	MSi [label=MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock per material 
+ (MSi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	MSi_comp [label=MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi - DMSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
 	RRi [label=RRi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Recycling Rate 
  (RRi) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -743,6 +774,9 @@ digraph {
  (WASTEi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
 	WASTEi_comp [label=WASTEi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMSi - RMSi" peripheries=1 shape=rectangle style=""]
+	year [label=year color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="current year 
+ (year) 
+ year" peripheries=1 shape=rectangle style=filled]
 	TCLDi -> CL_comp [color="#A9A9A9"]
 	TCLDi -> BM_burni_comp [color="#A9A9A9"]
 	TCLDi -> E_OSC_comp [color="#A9A9A9"]
@@ -908,6 +942,7 @@ digraph {
 	Arice -> IWR_comp [color="#A9A9A9"]
 	WRR -> IWW_comp [color="#A9A9A9"]
 	IWR -> IWW_comp [color="#A9A9A9"]
+	IWR -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
 	IWR_comp -> IWR [color="#A9A9A9"]
 	IWW -> AWU_comp [color="#A9A9A9"]
 	IWW_comp -> IWW [color="#A9A9A9"]
@@ -952,6 +987,16 @@ digraph {
 	ELECPRODi -> ELECWWi_comp [color="#A9A9A9"]
 	ELECWWi_comp -> ELECWWi [color="#A9A9A9"]
 	WWFUELCOOLi -> ELECWWi_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ -> SOLARPUMPPOW_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ -> SOLARSURF_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ_comp -> SOLARPUMPNRJ [color="#A9A9A9"]
+	SOLARPUMPPOW_comp -> SOLARPUMPPOW [color="#A9A9A9"]
+	SOLARSURF_comp -> SOLARSURF [color="#A9A9A9"]
+	WATERDEPTH -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+	SOLARIRRAD -> SOLARSURF_comp [color="#A9A9A9"]
+	SUNDUR -> SOLARPUMPPOW_comp [color="#A9A9A9"]
+	PUMPEFF -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+	SOLARPANELEFF -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
 	BioCropMixi -> CropBioDiesSupplyi_comp [color="#A9A9A9"]
 	BioDiesLandi -> CLBIO_comp [color="#A9A9A9"]
 	BioDiesLandi_comp -> BioDiesLandi [color="#A9A9A9"]
@@ -1066,16 +1111,20 @@ digraph {
 	RMSi_t_minus_1 -> INFLOWi_comp [color="#A9A9A9"]
 	INFLOWi -> LDi_comp [color="#A9A9A9"]
 	INFLOWi -> DMSi_comp [color="#A9A9A9"]
+	INFLOWi -> MSi_comp [color="#A9A9A9"]
 	INFLOWi_comp -> INFLOWi [color="#A9A9A9"]
 	LDi_mu -> LDi_comp [color="#A9A9A9"]
 	LDi_std -> LDi_comp [color="#A9A9A9"]
 	LDi -> DMSi_comp [color="#A9A9A9"]
 	LDi_comp -> LDi [color="#A9A9A9"]
+	DMSi -> MSi_comp [color="#A9A9A9"]
 	DMSi -> RMSi_comp [color="#A9A9A9"]
 	DMSi -> WASTEi_comp [color="#A9A9A9"]
 	DMSi_comp -> DMSi [color="#A9A9A9"]
+	MSi_comp -> MSi [color="#A9A9A9"]
 	RRi -> RMSi_comp [color="#A9A9A9"]
 	RMSi -> WASTEi_comp [color="#A9A9A9"]
 	RMSi_comp -> RMSi [color="#A9A9A9"]
 	WASTEi_comp -> WASTEi [color="#A9A9A9"]
+	year -> LDi_comp [color="#A9A9A9"]
 }

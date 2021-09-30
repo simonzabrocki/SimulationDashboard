@@ -1,0 +1,44 @@
+digraph {
+	graph [splines=ortho]
+	IWR [label=IWR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label=" Irrigation Water Requirement 
+ (IWR) 
+ 1e9 m3/year" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPNRJ [label=SOLARPUMPNRJ color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Energy required for solar pumping 
+ (SOLARPUMPNRJ) 
+ kWh/year" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPNRJ_comp [label=SOLARPUMPNRJ_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(1e9 * IWR * rho_water * g * WATERDEPTH) / (3.6e6 * SOLARPANELEFF * PUMPEFF)" peripheries=1 shape=rectangle style=""]
+	SOLARPUMPPOW [label=SOLARPUMPPOW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar power required for pumping 
+ (SOLARPUMPPOW) 
+ kW/year" peripheries=1 shape=rectangle style=filled]
+	SOLARPUMPPOW_comp [label=SOLARPUMPPOW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARPUMPNRJ / SUNDUR" peripheries=1 shape=rectangle style=""]
+	SOLARSURF [label=SOLARSURF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar Panel surface 
+ (SOLARSURF) 
+ m2" peripheries=1 shape=rectangle style=filled]
+	SOLARSURF_comp [label=SOLARSURF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARPUMPNRJ / SOLARIRRAD" peripheries=1 shape=rectangle style=""]
+	WATERDEPTH [label=WATERDEPTH color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Water depth level 
+ (WATERDEPTH) 
+ m" peripheries=1 shape=rectangle style=filled]
+	SOLARIRRAD [label=SOLARIRRAD color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Yearly solar irradiation 
+ (SOLARIRRAD) 
+ kWh/m2/year" peripheries=1 shape=rectangle style=filled]
+	SUNDUR [label=SUNDUR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Sunshine duration 
+ (SUNDUR) 
+ h / year" peripheries=1 shape=rectangle style=filled]
+	PUMPEFF [label=PUMPEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Pump efficiency 
+ (PUMPEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	SOLARPANELEFF [label=SOLARPANELEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Solar panel efficiency 
+ (SOLARPANELEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	IWR -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ -> SOLARPUMPPOW_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ -> SOLARSURF_comp [color="#A9A9A9"]
+	SOLARPUMPNRJ_comp -> SOLARPUMPNRJ [color="#A9A9A9"]
+	SOLARPUMPPOW_comp -> SOLARPUMPPOW [color="#A9A9A9"]
+	SOLARSURF_comp -> SOLARSURF [color="#A9A9A9"]
+	WATERDEPTH -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+	SOLARIRRAD -> SOLARSURF_comp [color="#A9A9A9"]
+	SUNDUR -> SOLARPUMPPOW_comp [color="#A9A9A9"]
+	PUMPEFF -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+	SOLARPANELEFF -> SOLARPUMPNRJ_comp [color="#A9A9A9"]
+}
