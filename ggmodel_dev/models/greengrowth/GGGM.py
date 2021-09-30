@@ -3,7 +3,7 @@ from ggmodel_dev.utils import get_model_properties
 from ggmodel_dev.models.landuse import BE2, SL1_BE3, GE3, OE_CO2eq, BIOGAS, NUTRIENT, BIOMASS, PM25
 from ggmodel_dev.models.water import EW
 from ggmodel_dev.models.transport import VEHC
-from ggmodel_dev.models.energy import ELEC
+from ggmodel_dev.models.energy import ELEC, SOLARIRR
 
 from ggmodel_dev.models.material import RECYCLE
 
@@ -28,6 +28,8 @@ def merge_model_dictionary():
     model_dictionary['EW'] = EW.model_dictionnary
     model_dictionary['VEHC'] = VEHC.model_dictionnary
     model_dictionary['ELEC'] = ELEC.model_dictionnary
+    model_dictionary['SOLARIRR'] = SOLARIRR.model_dictionnary
+
     model_dictionary['BIOGAS'] = BIOGAS.model_dictionnary
     model_dictionary['NUTRIENT'] = NUTRIENT.model_dictionnary
     model_dictionary['BIOMASS'] = BIOMASS.model_dictionnary
@@ -48,6 +50,8 @@ def merge_model_properties():
     model_properties['EW'] = EW.model_properties
     model_properties['VEHC'] = VEHC.model_properties
     model_properties['ELEC'] = ELEC.model_properties
+    model_properties['SOLARIRR'] = SOLARIRR.model_properties
+
     model_properties['BIOGAS'] = BIOGAS.model_properties
     model_properties['NUTRIENT'] = NUTRIENT.model_properties
     model_properties['BIOMASS'] = BIOMASS.model_properties
