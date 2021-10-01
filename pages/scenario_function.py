@@ -171,7 +171,7 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
 
     scenarios_results = RECYCLE_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
-    df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario'])
+    df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario']).replace({'scenario_one': 'Scenario 1','scenario_two': 'Scenario 2'})
 
     fig_1 = px.line(df.query("variable in ['INFLOWi', 'MSi']"),
             x='Year',
@@ -179,6 +179,9 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
             facet_col='Item',
             facet_row='variable',
             color='scenario',
+            color_discrete_map={'Scenario 1': '#D8A488',
+                                      'Scenario 2': '#86BBD8',
+                                      'BAU': '#A9A9A9'},  
              height=800,
        width=1200).update_yaxes(matches=None, showticklabels=True)
 
@@ -188,7 +191,10 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
         facet_col='Item',
         facet_row='variable',
         color='scenario',
-         height=800,
+        color_discrete_map={'Scenario 1': '#D8A488',
+                            'Scenario 2': '#86BBD8',
+                            'BAU': '#A9A9A9'},        
+        height=800,
        width=1200).update_yaxes(matches=None, showticklabels=True)
 
     return fig_1, fig_2, {}, scenarios_results, RECYCLE_scenario
