@@ -64,15 +64,21 @@ RECYCLE_nodes = {
                 'name': 'Lifetime Distribution Function per material',
                 'computation': lambda INFLOWi, LDi_std, LDi_mu, year, **kwargs: compute_LDi(LDi_mu, LDi_std, INFLOWi, year) 
                   },
-    'DMSi': {'type': 'variable', 
+    'OUTFLOWi': {'type': 'variable', 
             'unit': 'tonnes', 
-            'name': 'Discarded Material Stock per material',
+            'name': 'Material outflow per material',
             'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
             },
+    'delta_MSi':{
+            'type': 'variable',
+            'unit': 'tonnes',
+            'name': 'Material stock variation',
+            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: INFLOWi - OUTFLOWi
+    },
     'MSi': {'type': 'variable', 
             'unit': 'tonnes', 
             'name': 'Material Stock per material',
-            'computation': lambda INFLOWi, DMSi, **kwargs: (INFLOWi - DMSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            'computation': lambda delta_MSi, **kwargs: (delta_MSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
             },
     'RRi': {'type': 'parameter',
             'unit': '1',
@@ -80,13 +86,13 @@ RECYCLE_nodes = {
               },    
     'RMSi': {'type': 'variable',
                  'unit': 'tonnes',
-                 'name': 'Recycled Material Stock',
-                 'computation': lambda DMSi, RRi, **kwargs: DMSi * RRi
+                 'name': 'Recycled Material Stock per material',
+                 'computation': lambda OUTFLOWi, RRi, **kwargs: OUTFLOWi * RRi
                  },
     'WASTEi': {'type': 'output',
               'unit': 'tonnes',
               'name': 'Material Waste to Landfill per material',
-              'computation': lambda DMSi, RMSi, **kwargs: DMSi - RMSi
+              'computation': lambda OUTFLOWi, RMSi, **kwargs: OUTFLOWi - RMSi
               },
     'year': {
         'type': 'input',
