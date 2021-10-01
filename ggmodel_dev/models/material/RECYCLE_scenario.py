@@ -12,6 +12,36 @@ PROJECTION_DICT = {
  }
 
 
+
+def run_recursive(X, t0, tmax):
+    X = X.copy()
+    X['SBMi'] = model_dictionnary['SBMi_model'].run(X)
+    X['RMSi_t_minus_1'] = pd.Series(data=0, index=X['DMCi'].index)
+    
+    RMSi = pd.Series(data=np.nan, index=X['DMCi'].index)
+    OUTFLOWi = pd.Series(data=np.nan, index=X['DMCi'].index)
+    MSi = pd.Series(data=np.nan, index=X['DMCi'].index)
+    WASTEi = pd.Series(data=np.nan, index=X['DMCi'].index)
+    
+    for year in range(t0 + 1, tmax):
+        X['year'] = year
+        res = model_dictionnary['MUE_model'].run(X)
+        X['RMSi_t_minus_1'].loc[:, :, year] = res['RMSi']
+        
+        RMSi.loc[:, :, year-1] = res['RMSi']
+        OUTFLOWi.loc[:, :, year-1] = res['OUTFLOWi']
+        MSi.loc[:, :, year-1] = res['MSi']
+        WASTEi.loc[:, :, year-1] = res['WASTEi']
+        
+    res['RMSi'] = RMSi
+    res['OUTFLOWi'] = OUTFLOWi
+    res['MSi'] = MSi
+    res['WASTEi'] = WASTEi
+
+    return res
+
+
+
 def run_scenario(data_dict, RRi=0.1, MLOSSi=0, PLOSSi=0):
     
     data_dict = data_dict.copy()
@@ -26,13 +56,7 @@ def run_scenario(data_dict, RRi=0.1, MLOSSi=0, PLOSSi=0):
     data_dict['PLOSSi'] = PLOSSi
     data_dict['MLOSSi'] = MLOSSi 
 
-    results = MODEL.run_recursive(data_dict,
-                                  rec_vars=[('RMSi', 'RMSi_t_minus_1')],
-                                  initials=[1e6],
-                                  t0=1970,
-                                  tmax=2017,
-                  templates=[pd.Series(data=np.nan, index=data_dict['DMCi'].index)])
-
+    results = run_recursive(data_dict, t0=1970, tmax=2017)
     return results
     
 

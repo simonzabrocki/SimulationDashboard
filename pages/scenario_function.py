@@ -154,7 +154,7 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
 # RECYCLE
 
 def format_RECYCLE_result(results):
-    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi', 'SBMi', 'WASTEi']], axis=1)
+    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi','OUTFLOWi', 'SBMi', 'WASTEi']], axis=1)
     return df
 
 def format_RECYLE(scenarios_results):
@@ -173,7 +173,7 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
 
     df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario']).replace({'scenario_one': 'Scenario 1','scenario_two': 'Scenario 2'})
 
-    fig_1 = px.line(df.query("variable in ['INFLOWi', 'MSi']"),
+    fig_1 = px.line(df.query("variable in ['INFLOWi', 'OUTFLOWi']"),
             x='Year',
             y='value',
             facet_col='Item',
