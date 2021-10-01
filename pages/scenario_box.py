@@ -316,17 +316,50 @@ def RECYCLE_scenario_box(scenario_id='_one'):
             dcc.Slider(
                 id=f'RRi{scenario_id}',
                 step=0.05,
-                value=0.25,
+                value=0.5,
                 min=0,  # To update later
-                max=0.5,
+                max=1,
                 marks={
                     0: {'label': '0%', 'style': {'color': 'white'}},
-                    0.25: {'label': '25%', 'style': {'color': 'white'}},
                     0.5: {'label': '50%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
                 },
                 included=False,
             ),
             html.Br([]),
+            html.P('Manufacturing losses',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'MLOSSi{scenario_id}',
+                step=0.05,
+                value=0.1,
+                min=0,  # To update later
+                max=1,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    0.5: {'label': '50%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+            html.P('Processing losses',
+                   style={'font-size': 17}),
+            dcc.Slider(
+                id=f'PLOSSi{scenario_id}',
+                step=0.05,
+                value=0.1,
+                min=0,  # To update later
+                max=1,
+                marks={
+                    0: {'label': '0%', 'style': {'color': 'white'}},
+                    0.5: {'label': '50%', 'style': {'color': 'white'}},
+                    1: {'label': '100%', 'style': {'color': 'white'}},
+                },
+                included=False,
+            ),
+            html.Br([]),
+            
         ],
         className='row')
 

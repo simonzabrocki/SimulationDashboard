@@ -12,10 +12,12 @@ PROJECTION_DICT = {
  }
 
 
-def run_scenario(data_dict, RRi=0.1):
+def run_scenario(data_dict, RRi=0.1, MLOSSi=0, PLOSSi=0):
     
     data_dict = data_dict.copy()
     data_dict['RRi'] = RRi
+    data_dict['PLOSSi'] = PLOSSi
+    data_dict['MLOSSi'] = MLOSSi 
 
     results = MODEL.run_recursive(data_dict,
                                   rec_vars=[('RMSi', 'RMSi_t_minus_1')],
@@ -37,9 +39,6 @@ def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
     data_dict['LDi_mu'] = LDi_mu
     data_dict['LDi_std'] = LDi_std
 
-    # TO BE PUT AS SCENARI
-    data_dict['PLOSSi'] = 0
-    data_dict['MLOSSi'] = 0 
 
     #data_dict = run_projection(PROJECTION_DICT, data_dict)
 
