@@ -16,6 +16,13 @@ def run_scenario(data_dict, RRi=0.1, MLOSSi=0, PLOSSi=0):
     
     data_dict = data_dict.copy()
     data_dict['RRi'] = RRi
+
+
+    MLOSSi = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1, 1, 0.1255, 0.04])
+    PLOSSi = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1, 1, 0.6925, 0.35])
+    MLOSSi.index.name = 'Item'
+    PLOSSi.index.name = 'Item'
+
     data_dict['PLOSSi'] = PLOSSi
     data_dict['MLOSSi'] = MLOSSi 
 
