@@ -32,14 +32,14 @@ def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
 
 
     # TO BE PUT IN DB !!!!!
-    LDi_mu = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[0, 0, 40, 8.5])
-    LDi_std = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1e-10, 1e-10, 16, 80])
+    LDi_mu = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[0, 0, 26, 50])
+    LDi_std = pd.Series(index=['Biomass', 'Fossil fuels', 'Metal ores', 'Non-metallic minerals'], data=[1e-10, 1e-10, 8, 16.6])
     data_dict['LDi_mu'] = LDi_mu
     data_dict['LDi_std'] = LDi_std
 
-    # TO BE PUT AS SCENARIO
-    data_dict['PLOSSi'] = 1
-    data_dict['MLOSSi'] = 1   
+    # TO BE PUT AS SCENARI
+    data_dict['PLOSSi'] = 0
+    data_dict['MLOSSi'] = 0 
 
     #data_dict = run_projection(PROJECTION_DICT, data_dict)
 

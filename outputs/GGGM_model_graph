@@ -737,14 +737,14 @@ digraph {
 	SBMi [label=SBMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Stock Building Materials per material 
  (SBMi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * PLOSSi" peripheries=1 shape=rectangle style=""]
+	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * (1 - PLOSSi)" peripheries=1 shape=rectangle style=""]
 	RMSi_t_minus_1 [label=RMSi_t_minus_1 color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Recycled Material Stock previous year 
  (RMSi_t_minus_1) 
  tonnes" peripheries=1 shape=rectangle style=filled]
 	INFLOWi [label=INFLOWi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Inflow per material 
  (INFLOWi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi +  RMSi_t_minus_1) * MLOSSi" peripheries=1 shape=rectangle style=""]
+	INFLOWi_comp [label=INFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(SBMi +  RMSi_t_minus_1) * (1 - MLOSSi)" peripheries=1 shape=rectangle style=""]
 	LDi_mu [label=LDi_mu color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Lifetime Distribution Function mean per material 
  (LDi_mu) 
  1" peripheries=1 shape=rectangle style=filled]

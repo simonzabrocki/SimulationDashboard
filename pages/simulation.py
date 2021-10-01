@@ -76,7 +76,7 @@ def model_selection_box():
                             {'label': 'Electric Power Plants Model (Energy)', 'value': 'ELEC_model'},
                             {'label': 'Agricultural Emissions Model (Landuse)', 'value': 'GE3_model'},
                             {'label': 'Vehicle Ownership rate Model (Transport)', 'value': 'VEHC_model'},
-                            {'label': 'Recycled material Model (Material)', 'value': 'RECYCLE_model'}
+                            {'label': 'Material use efficiency Model (Material)', 'value': 'RECYCLE_model'}
                          ],
                          value='EW_models'
                          )

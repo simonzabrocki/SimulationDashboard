@@ -1,7 +1,7 @@
 {
     "RECYCLE_model": {
         "description": "",
-        "display_name": "Material recycling model",
+        "display_name": "Material use efficiency model",
         "model": "RECYCLE_model",
         "model_group": "Material",
         "indicator": "BE2",

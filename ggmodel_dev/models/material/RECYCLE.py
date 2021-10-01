@@ -40,7 +40,7 @@ RECYCLE_nodes = {
     'SBMi': {'type': 'variable',
            'unit': 'tonnes',
            'name': 'Stock Building Materials per material',
-           'computation': lambda DMCi, PLOSSi, **kwargs: DMCi * PLOSSi
+           'computation': lambda DMCi, PLOSSi, **kwargs: DMCi * (1 - PLOSSi)
            },
     'RMSi_t_minus_1': {'type': 'input',
                        'unit': 'tonnes',
@@ -49,7 +49,7 @@ RECYCLE_nodes = {
     'INFLOWi': {'type': 'variable',
             'unit': 'tonnes',
             'name': 'Material Inflow per material',
-            'computation': lambda SBMi, MLOSSi, RMSi_t_minus_1,  **kwargs: (SBMi +  RMSi_t_minus_1) * MLOSSi
+            'computation': lambda SBMi, MLOSSi, RMSi_t_minus_1,  **kwargs: (SBMi +  RMSi_t_minus_1) * (1 - MLOSSi)
             },
     'LDi_mu': {'type': 'input', ##pre-calculate for aggregated metals and non-metals
                 'unit': '1',
