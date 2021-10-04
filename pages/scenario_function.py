@@ -182,7 +182,7 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
             color_discrete_map={'Scenario 1': '#D8A488',
                                       'Scenario 2': '#86BBD8',
                                       'BAU': '#A9A9A9'},  
-             height=800,
+             height=1200,
        width=1200).update_yaxes(matches=None, showticklabels=True).for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
     fig_2 = px.line(df.query("variable in ['MSi', 'RMSi', 'WASTEi']").replace({'RMSi': 'Recycled materials (tonnes)', 'WASTEi': 'Waste (tonnes)' , 'MSi': 'Material Stock (Tonnes)'}),
