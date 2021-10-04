@@ -1,7 +1,7 @@
 from ggmodel_dev.graphmodel import merge_models
 from ggmodel_dev.utils import get_model_properties
-from ggmodel_dev.models.landuse import BE2, SL1_BE3, GE3, OE_CO2eq, BIOGAS, NUTRIENT, BIOMASS, PM25
-from ggmodel_dev.models.water import EW
+from ggmodel_dev.models.landuse import BE2, GE3, OE_CO2eq, BIOGAS, NUTRIENT, BIOMASS, PM25
+from ggmodel_dev.models.water import EW, WATERQUAL
 from ggmodel_dev.models.transport import VEHC
 from ggmodel_dev.models.energy import ELEC, SOLARIRR
 
@@ -25,7 +25,10 @@ def merge_model_dictionary():
     #model_dictionary['SL1_BE3'] = SL1_BE3.model_dictionnary
     model_dictionary['GE3'] = GE3.model_dictionnary
     model_dictionary['OE_CO2eq'] = OE_CO2eq.model_dictionnary
+
     model_dictionary['EW'] = EW.model_dictionnary
+    model_dictionary['WATERQUAL'] = WATERQUAL.model_dictionnary
+
     model_dictionary['VEHC'] = VEHC.model_dictionnary
     model_dictionary['ELEC'] = ELEC.model_dictionnary
     model_dictionary['SOLARIRR'] = SOLARIRR.model_dictionnary
@@ -48,6 +51,8 @@ def merge_model_properties():
     model_properties['GE3'] = GE3.model_properties
     model_properties['OE_CO2eq'] = OE_CO2eq.model_properties
     model_properties['EW'] = EW.model_properties
+    model_properties['WATERQUAL'] = WATERQUAL.model_properties
+
     model_properties['VEHC'] = VEHC.model_properties
     model_properties['ELEC'] = ELEC.model_properties
     model_properties['SOLARIRR'] = SOLARIRR.model_properties

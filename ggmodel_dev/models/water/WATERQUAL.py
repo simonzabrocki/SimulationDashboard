@@ -63,30 +63,46 @@ WATERQUAL_nodes = {
         'name': 'Gross domestic product per capita purchasing power parity',
         'unit': '$/capita'
     },
-    'PROTCONS':{
+    'NPROTINTAKE':{
+        'type': 'variable',
+        'name': 'National protein consumption',
+        'unit':'g/capita/day',
+        'computation': lambda NPROTCONTENT, GDPCPPP, **kwargs: NPROTCONTENT.min() + (NPROTCONTENT.max() - NPROTCONTENT.max()) * (GDPCPP / GDPCPP.max()) ** (1/3) # TO CLARIFY ! 
+    },
+    'NPROTCONTENT':{
         'type': 'input',
         'name': 'National protein consumption',
         'unit':'g/capita/day'
     },
     'NHUMEMI': {
-        'type': 'input',
+        'type': 'variable',
         'name': 'Human nitrogen emissions',
-        'unit': 'kg/capita'
+        'unit': 'kg/capita',
+        'computation': lambda NPROTINTAKE, **kwargs: 0.356 * NPROTINTAKE
     },
     'PHUMANEMI':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Human phosphorous emissions',
-        'unit': 'kg/capita'
+        'unit': 'kg/capita',
+        'computation': lambda NHUMEMI, **kwargs: 1/6 * NHUMEMI
     },
     'PCONSEW':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Phosphorous pollution from connected sewage network',
-        'unit': 'kg'
+        'unit': 'kg',
+        'computation': lambda PHUMANEMI, SEWSYSPOPi, WASTEWATTREATEFF, **kwargs: (1 - WASTEWATTREATEFF) * PHUMANEMI * SEWSYSPOPi
+    },
+    'NCONSEW':{
+        'type': 'variable',
+        'name': 'Nitrogen pollution from connected sewage network',
+        'unit': 'kg',
+        'computation': lambda SEWSYSPOPi, NHUMEMI, WASTEWATTREATEFF, **kwargs:WASTEWATTREATEFF *  NHUMEMI * SEWSYSPOPi
     },
     'NOPENDEFF':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Nitrogen pollution from open defecation',
-        'unit': 'kg'
+        'unit': 'kg',
+        'computation': lambda NHUMEMI, OPENDEFPOPi, **kwargs: NHUMEMI *  OPENDEFPOPi
     },
     'POPENDEFF':{
         'type': 'input',
@@ -94,14 +110,16 @@ WATERQUAL_nodes = {
         'unit': 'kg'
     },
     'PRIVER':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Phosphorous pollution to river system',
-        'unit': 'kg'
+        'unit': 'kg',
+        'computation': lambda POPENDEFF, PCONSEW, **kwargs: PCONSEW + POPENDEFF
     },
     'NRIVER':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Nitrogen pollution to river system',
-        'unit': 'kg'
+        'unit': 'kg',
+        'computation': lambda NOPENDEFF, NCONSEW, **kwargs: NOPENDEFF + NCONSEW
     },
     'BASINAREAi':{
         'type': 'input',

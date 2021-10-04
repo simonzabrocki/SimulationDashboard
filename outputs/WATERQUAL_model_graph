@@ -1,0 +1,126 @@
+digraph {
+	graph [splines=ortho]
+	OPENDEF [label=OPENDEF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fraction of open defection 
+ (OPENDEF) 
+ %" peripheries=1 shape=rectangle style=filled]
+	Pop [label=Pop color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population 
+ (Pop) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	URBRUPOPi [label=URBRUPOPi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population fraction per area 
+ (URBRUPOPi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	OPENDEFPOPi [label=OPENDEFPOPi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population under open defecation 
+ (OPENDEFPOPi) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	OPENDEFPOPi_comp [label=OPENDEFPOPi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="OPENDEF * URBRUPOPi * Pop" peripheries=1 shape=rectangle style=""]
+	SEWREMEFFi [label=SEWREMEFFi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Removal efficiency in sewage system per pollutant 
+ (SEWREMEFFi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	WASTEWATTREATDISi [label=WASTEWATTREATDISi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Waste water treatment distribution 
+ (WASTEWATTREATDISi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	WASTEWATTREATEFF [label=WASTEWATTREATEFF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Pollutant removal efficiency of waste water treatment 
+ (WASTEWATTREATEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	WASTEWATTREATEFF_comp [label=WASTEWATTREATEFF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(WASTEWATTREATDISi * SEWREMEFFi).sum()" peripheries=1 shape=rectangle style=""]
+	CONSEWSYS [label=CONSEWSYS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Connection to sewage system 
+ (CONSEWSYS) 
+ %" peripheries=1 shape=rectangle style=filled]
+	SEWSYSPOPi [label=SEWSYSPOPi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population connected to sewage system 
+ (SEWSYSPOPi) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	SEWSYSPOPi_comp [label=SEWSYSPOPi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="Pop * URBRUPOPi * CONSEWSYS" peripheries=1 shape=rectangle style=""]
+	GDPCPPP [label=GDPCPPP color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gross domestic product per capita purchasing power parity 
+ (GDPCPPP) 
+ $/capita" peripheries=1 shape=rectangle style=filled]
+	NPROTINTAKE [label=NPROTINTAKE color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="National protein consumption 
+ (NPROTINTAKE) 
+ g/capita/day" peripheries=1 shape=rectangle style=filled]
+	NPROTINTAKE_comp [label=NPROTINTAKE_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NPROTCONTENT.min() + (NPROTCONTENT.max() - NPROTCONTENT.max()) * (GDPCPP / GDPCPP.max()) ** (1/3) # TO CLARIFY !" peripheries=1 shape=rectangle style=""]
+	NPROTCONTENT [label=NPROTCONTENT color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="National protein consumption 
+ (NPROTCONTENT) 
+ g/capita/day" peripheries=1 shape=rectangle style=filled]
+	NHUMEMI [label=NHUMEMI color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Human nitrogen emissions 
+ (NHUMEMI) 
+ kg/capita" peripheries=1 shape=rectangle style=filled]
+	NHUMEMI_comp [label=NHUMEMI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="0.356 * NPROTINTAKE" peripheries=1 shape=rectangle style=""]
+	PHUMANEMI [label=PHUMANEMI color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Human phosphorous emissions 
+ (PHUMANEMI) 
+ kg/capita" peripheries=1 shape=rectangle style=filled]
+	PHUMANEMI_comp [label=PHUMANEMI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1/6 * NHUMEMI" peripheries=1 shape=rectangle style=""]
+	PCONSEW [label=PCONSEW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution from connected sewage network 
+ (PCONSEW) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	PCONSEW_comp [label=PCONSEW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(1 - WASTEWATTREATEFF) * PHUMANEMI * SEWSYSPOPi" peripheries=1 shape=rectangle style=""]
+	NCONSEW [label=NCONSEW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution from connected sewage network 
+ (NCONSEW) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	NCONSEW_comp [label=NCONSEW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="WASTEWATTREATEFF *  NHUMEMI * SEWSYSPOPi" peripheries=1 shape=rectangle style=""]
+	NOPENDEFF [label=NOPENDEFF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution from open defecation 
+ (NOPENDEFF) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	NOPENDEFF_comp [label=NOPENDEFF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NHUMEMI *  OPENDEFPOPi" peripheries=1 shape=rectangle style=""]
+	POPENDEFF [label=POPENDEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution from open defecation 
+ (POPENDEFF) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	PRIVER [label=PRIVER color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution to river system 
+ (PRIVER) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	PRIVER_comp [label=PRIVER_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PCONSEW + POPENDEFF" peripheries=1 shape=rectangle style=""]
+	NRIVER [label=NRIVER color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution to river system 
+ (NRIVER) 
+ kg" peripheries=1 shape=rectangle style=filled]
+	NRIVER_comp [label=NRIVER_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NOPENDEFF + NCONSEW" peripheries=1 shape=rectangle style=""]
+	BASINAREAi [label=BASINAREAi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Sub basin area per basin 
+ (BASINAREAi) 
+ km2" peripheries=1 shape=rectangle style=filled]
+	PLOADi [label=PLOADi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution per basin area 
+ (PLOADi) 
+ kg/km2" peripheries=1 shape=rectangle style=filled]
+	PLOADi_comp [label=PLOADi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PRIVER / BASINAREAi" peripheries=1 shape=rectangle style=""]
+	NLOADi [label=NLOADi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution per basin area 
+ (NLOADi) 
+ kg/km2" peripheries=1 shape=rectangle style=filled]
+	NLOADi_comp [label=NLOADi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NRIVER / BASINAREAi" peripheries=1 shape=rectangle style=""]
+	OPENDEF -> OPENDEFPOPi_comp [color="#A9A9A9"]
+	Pop -> OPENDEFPOPi_comp [color="#A9A9A9"]
+	Pop -> SEWSYSPOPi_comp [color="#A9A9A9"]
+	URBRUPOPi -> OPENDEFPOPi_comp [color="#A9A9A9"]
+	URBRUPOPi -> SEWSYSPOPi_comp [color="#A9A9A9"]
+	OPENDEFPOPi -> NOPENDEFF_comp [color="#A9A9A9"]
+	OPENDEFPOPi_comp -> OPENDEFPOPi [color="#A9A9A9"]
+	SEWREMEFFi -> WASTEWATTREATEFF_comp [color="#A9A9A9"]
+	WASTEWATTREATDISi -> WASTEWATTREATEFF_comp [color="#A9A9A9"]
+	WASTEWATTREATEFF -> PCONSEW_comp [color="#A9A9A9"]
+	WASTEWATTREATEFF -> NCONSEW_comp [color="#A9A9A9"]
+	WASTEWATTREATEFF_comp -> WASTEWATTREATEFF [color="#A9A9A9"]
+	CONSEWSYS -> SEWSYSPOPi_comp [color="#A9A9A9"]
+	SEWSYSPOPi -> PCONSEW_comp [color="#A9A9A9"]
+	SEWSYSPOPi -> NCONSEW_comp [color="#A9A9A9"]
+	SEWSYSPOPi_comp -> SEWSYSPOPi [color="#A9A9A9"]
+	GDPCPPP -> NPROTINTAKE_comp [color="#A9A9A9"]
+	NPROTINTAKE -> NHUMEMI_comp [color="#A9A9A9"]
+	NPROTINTAKE_comp -> NPROTINTAKE [color="#A9A9A9"]
+	NPROTCONTENT -> NPROTINTAKE_comp [color="#A9A9A9"]
+	NHUMEMI -> PHUMANEMI_comp [color="#A9A9A9"]
+	NHUMEMI -> NCONSEW_comp [color="#A9A9A9"]
+	NHUMEMI -> NOPENDEFF_comp [color="#A9A9A9"]
+	NHUMEMI_comp -> NHUMEMI [color="#A9A9A9"]
+	PHUMANEMI -> PCONSEW_comp [color="#A9A9A9"]
+	PHUMANEMI_comp -> PHUMANEMI [color="#A9A9A9"]
+	PCONSEW -> PRIVER_comp [color="#A9A9A9"]
+	PCONSEW_comp -> PCONSEW [color="#A9A9A9"]
+	NCONSEW -> NRIVER_comp [color="#A9A9A9"]
+	NCONSEW_comp -> NCONSEW [color="#A9A9A9"]
+	NOPENDEFF -> NRIVER_comp [color="#A9A9A9"]
+	NOPENDEFF_comp -> NOPENDEFF [color="#A9A9A9"]
+	POPENDEFF -> PRIVER_comp [color="#A9A9A9"]
+	PRIVER -> PLOADi_comp [color="#A9A9A9"]
+	PRIVER_comp -> PRIVER [color="#A9A9A9"]
+	NRIVER -> NLOADi_comp [color="#A9A9A9"]
+	NRIVER_comp -> NRIVER [color="#A9A9A9"]
+	BASINAREAi -> PLOADi_comp [color="#A9A9A9"]
+	BASINAREAi -> NLOADi_comp [color="#A9A9A9"]
+	PLOADi_comp -> PLOADi [color="#A9A9A9"]
+	NLOADi_comp -> NLOADi [color="#A9A9A9"]
+}
