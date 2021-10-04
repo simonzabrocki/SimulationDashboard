@@ -70,15 +70,15 @@ RECYCLE_nodes = {
             'name': 'Material Inflow per material',
             'computation': lambda SBMi, MLOSSi, RMSi_t_minus_1,  **kwargs: (SBMi +  RMSi_t_minus_1) * (1 - MLOSSi)
             },
-    'LDi_mu': {'type': 'input', ##pre-calculate for aggregated metals and non-metals
+    'LDi_mu': {'type': 'input',
                 'unit': '1',
                 'name': 'Lifetime Distribution Function mean per material'
                   },
-    'LDi_std': {'type': 'input', ##pre-calculate for aggregated metals and non-metals
+    'LDi_std': {'type': 'input', 
                 'unit': '1',
                 'name': 'Lifetime Distribution Function standard deviation per material'
                   },
-    'LDi': {'type': 'variable', ##pre-calculate for aggregated metals and non-metals
+    'LDi': {'type': 'variable',
                 'unit': '1',
                 'name': 'Lifetime Distribution Function per material',
                 'computation': lambda INFLOWi, LDi_std, LDi_mu, year, **kwargs: compute_LDi(LDi_mu, LDi_std, INFLOWi, year) 
@@ -88,11 +88,11 @@ RECYCLE_nodes = {
             'name': 'Material outflow per material',
             'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).sum()
             },
-    'delta_MSi': {'type': 'variable', 
-            'unit': 'tonnes', 
-            'name': 'Material Stock variation per material',
-            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).sum()
-            },
+    # 'delta_MSi': {'type': 'variable', 
+    #         'unit': 'tonnes', 
+    #         'name': 'Material Stock variation per material',
+    #         'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).sum()
+    #         },
     'RRi': {'type': 'parameter',
             'unit': '1',
             'name': 'Recycling Rate'
@@ -114,20 +114,38 @@ RECYCLE_nodes = {
     }
 }
 
-RECYCLE_model = GraphModel(RECYCLE_nodes)
-
+MS_nodes = {
+    'OUTFLOWi': {'type': 'input', 
+            'unit': 'tonnes', 
+            'name': 'Material outflow per material',
+            },
+    'INFLOWi': {'type': 'input',
+            'unit': 'tonnes',
+            'name': 'Material Inflow per material',
+            },
+    'delta_MSi': {'type': 'variable', 
+            'unit': 'tonnes', 
+            'name': 'Material Stock variation per material',
+            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).cumsum()
+            },
+    'MSi':{'type': 'variable', 
+            'unit': 'tonnes', 
+            'name': 'Material Stock per material',
+            'computation': lambda delta_MSi, **kwargs: (delta_MSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            },
+}
 
 RECYCLE_model = GraphModel(RECYCLE_nodes)
 SBMI_model = GraphModel(SBMi_nodes)
-MUE_model = GraphModel(concatenate_graph_specs([RECYCLE_nodes, SBMi_nodes]))
+MS_model = GraphModel(MS_nodes)
+MUE_model = GraphModel(concatenate_graph_specs([RECYCLE_nodes, SBMi_nodes, MS_nodes]))
 
 model_dictionnary = {
     'SBMi_model': SBMI_model,
     'RECYCLE_model': RECYCLE_model,
+    'MS_model': MS_model,
     'MUE_model': MUE_model
 }
-
-
 
 model_properties = get_model_properties('models/material/RECYCLE_properties.json')
 

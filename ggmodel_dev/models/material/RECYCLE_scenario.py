@@ -1,7 +1,7 @@
 from ggmodel_dev.projection import *
 from ggmodel_dev.models.material.RECYCLE import model_dictionnary
 
-MODEL = model_dictionnary['RECYCLE_model']
+MODEL = model_dictionnary['MUE_model']
 
 
 PROJECTION_DICT = {
@@ -25,19 +25,25 @@ def run_recursive(X, t0, tmax):
     
     for year in range(t0 + 1, tmax):
         X['year'] = year
-        res = model_dictionnary['MUE_model'].run(X)
+        res = model_dictionnary['RECYCLE_model'].run(X)
         X['RMSi_t_minus_1'].loc[:, :, year] = res['RMSi']
         
         RMSi.loc[:, :, year-1] = res['RMSi']
         OUTFLOWi.loc[:, :, year-1] = res['OUTFLOWi']
-        MSi.loc[:, :, year-1] = res['delta_MSi']
+        #MSi.loc[:, :, year-1] = res['delta_MSi']
         WASTEi.loc[:, :, year-1] = res['WASTEi']
         
     res['RMSi'] = RMSi
     res['OUTFLOWi'] = OUTFLOWi
-    res['delta_MSi'] = MSi
     res['WASTEi'] = WASTEi
 
+
+    MS = model_dictionnary['MS_model'].run(res)
+
+    res['delta_MSi'] = MS['delta_MSi']
+    res['MSi'] = MS['MSi']
+
+    
     return res
 
 
