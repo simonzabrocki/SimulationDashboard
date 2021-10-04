@@ -30,12 +30,12 @@ def run_recursive(X, t0, tmax):
         
         RMSi.loc[:, :, year-1] = res['RMSi']
         OUTFLOWi.loc[:, :, year-1] = res['OUTFLOWi']
-        MSi.loc[:, :, year-1] = res['MSi']
+        MSi.loc[:, :, year-1] = res['delta_MSi']
         WASTEi.loc[:, :, year-1] = res['WASTEi']
         
     res['RMSi'] = RMSi
     res['OUTFLOWi'] = OUTFLOWi
-    res['MSi'] = MSi
+    res['delta_MSi'] = MSi
     res['WASTEi'] = WASTEi
 
     return res
