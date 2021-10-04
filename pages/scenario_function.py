@@ -169,8 +169,11 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     scenarios_results = RECYCLE_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
 
     df = format_RECYLE(scenarios_results).reset_index().query("Item not in ['Biomass', 'Fossil fuels']").melt(id_vars=['ISO', 'Item', 'Year', 'scenario']).replace({'scenario_one': 'Scenario 1','scenario_two': 'Scenario 2'})
+    
+    summary_df = RECYCLE_scenario.MODEL.summary_df
+    #print(pd.merge(summary_df, df, left_index=True, right_on='variable'))
 
-    fig_1 = px.line(df.query("variable in ['INFLOWi', 'OUTFLOWi']"),
+    fig_1 = px.line(df.query("variable in ['INFLOWi', 'OUTFLOWi']").replace({'INFLOWi': 'Material Inflow (tonnes)', 'OUTFLOWi': 'Material Outflow (tonnes)' }),
             x='Year',
             y='value',
             facet_col='Item',
@@ -180,9 +183,9 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
                                       'Scenario 2': '#86BBD8',
                                       'BAU': '#A9A9A9'},  
              height=800,
-       width=1200).update_yaxes(matches=None, showticklabels=True)
+       width=1200).update_yaxes(matches=None, showticklabels=True).for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
-    fig_2 = px.line(df.query("variable in ['RMSi', 'WASTEi']"),
+    fig_2 = px.line(df.query("variable in ['RMSi', 'WASTEi']").replace({'RMSi': 'Recycled materials (tonnes)', 'WASTEi': 'Waste (tonnes)' }),
         x='Year',
         y='value',
         facet_col='Item',
@@ -192,6 +195,6 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
                             'Scenario 2': '#86BBD8',
                             'BAU': '#A9A9A9'},        
         height=800,
-       width=1200).update_yaxes(matches=None, showticklabels=True)
+       width=1200).update_yaxes(matches=None, showticklabels=True).for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
     return fig_1, fig_2, {}, scenarios_results, RECYCLE_scenario
