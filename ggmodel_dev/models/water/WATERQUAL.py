@@ -74,6 +74,17 @@ WATERQUAL_nodes = {
         'name': 'National protein consumption',
         'unit':'g/capita/day'
     },
+    'OOCYSTEXCRRATE':{
+      'type': 'input',
+      'unit': 'oocyst/capita/day',
+      'name': 'Average Oocyst Excretion Rate'
+    },
+    'CRYPTOCONSEW':{
+        'type': 'variable',
+        'unit': 'oocyst',
+        'name': 'Crypto pollution input from connected sewage network',
+        'computation': lambda OOCYSTEXCRRATE, SEWSYSPOPi, WASTEWATTREATEFF, **kwargs: (1 - WASTEWATTREATEFF) * OOCYSTEXCRRATE * SEWSYSPOPi
+    },
     'NHUMEMI': {
         'type': 'variable',
         'name': 'Human nitrogen emissions',
@@ -139,6 +150,38 @@ WATERQUAL_nodes = {
         'unit': 'kg/km2',
         'computation': lambda BASINAREAi, NRIVER, **kwargs: NRIVER / BASINAREAi
     },
+    'CRYPTOLOAD': {
+        'type': 'variable',
+        'name': 'Crypto emissions load per basin area',
+        'unit': 'oocyst/km2',
+        'computation': lambda CRYTPOEM, BASINAREAi, **kwargs: CRYTPOEM / BASINAREAi
+    },
+    'CRYTPOEM':{
+        'type': 'variable',
+        'name': 'Crypto pollution from sanitation sources',
+        'unit': 'oocyst',
+        'computation': lambda CRYPTOSEWSYS, CRYPTOURDDIRECT, CRYPTORURINDIRECT, CRYPTORURDIFF, **kwargs: CRYPTOSEWSYS + CRYPTOURDDIRECT + CRYPTORURINDIRECT + CRYPTORURDIFF
+    },
+    'CRYPTOSEWSYS':{
+        'type': 'input',
+        'name': 'Crypto pollution from connected to sewage system',
+        'unit': 'oocyst'
+    },
+    'CRYPTOURDDIRECT':{
+        'type': 'input',
+        'name': 'Crypto pollution input from urban direct sources',
+        'unit': 'oocyst'
+    },
+    'CRYPTORURINDIRECT': {
+        'type': 'input',
+        'name': 'Crypto pollution input from rural direct sources',
+        'unit': 'oocyst',
+    },
+    'CRYPTORURDIFF':{
+        'type': 'input',
+        'name': 'Crypto pollution input from rural diffuse sources',
+        'unit': 'oocyst'
+    }
 }
 
 # models

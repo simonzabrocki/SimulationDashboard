@@ -1,11 +1,11 @@
 {
     "WATERQUAL_model": {
-        "description": "",
+        "description": "TODO.",
         "display_name": "Water quality model",
         "model": "WATERQUAL_model",
         "model_group": "Water",
         "indicator": "EW1",
         "status": "🚧",
-        "source": [""]
+        "source": ["TODO."]
     }
 }
