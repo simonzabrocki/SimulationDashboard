@@ -128,7 +128,6 @@ def run_all_scenarios_VEHC(data_dict, ISO, args_dict_1, args_dict_2):
 
 
 # ELEC
-
 def format_ELEC_results(results):
     df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['ELECPRODi', 'ELECWWi', 'ELECGHGi']], axis=1)
     return (
@@ -152,9 +151,8 @@ def run_all_scenarios_ELEC(data_dict, ISO, args_dict_1, args_dict_2):
     return fig_1, fig_2, {}, scenarios_results, ELEC_scenario
 
 # RECYCLE
-
 def format_RECYCLE_result(results):
-    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'RMSi', 'INFLOWi','OUTFLOWi', 'SBMi', 'WASTEi']], axis=1)
+    df = pd.concat([s.to_frame(name=n) for n, s in results.items() if n in ['MSi', 'delta_MSi', 'RMSi', 'INFLOWi','OUTFLOWi', 'SBMi', 'WASTEi']], axis=1)
     return df
 
 def format_RECYLE(scenarios_results):
@@ -165,7 +163,6 @@ def format_RECYLE(scenarios_results):
     return pd.concat(dfs, axis=0)
 
 def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
-
 
     data_dict = {k: (v.loc[[ISO]] if 'ISO' in v.index.names else v) for k, v in data_dict.items()}
 
