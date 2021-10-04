@@ -98,7 +98,8 @@ def Table(data):
                                              },
                                  style_data_conditional=[{'if': {'row_index': 'odd'},
                                                           'backgroundColor': 'rgb(0, 0, 0, 0.1)',
-                                                          }],
+                                                          },
+                                                          ],
                                 export_format="csv",
                                  )
     return table

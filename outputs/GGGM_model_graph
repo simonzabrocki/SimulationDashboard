@@ -855,7 +855,7 @@ digraph {
 	delta_MSi [label=delta_MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock variation per material 
  (delta_MSi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	delta_MSi_comp [label=delta_MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).cumsum()" peripheries=1 shape=rectangle style=""]
+	delta_MSi_comp [label=delta_MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi - OUTFLOWi)" peripheries=1 shape=rectangle style=""]
 	MSi [label=MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock per material 
  (MSi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
