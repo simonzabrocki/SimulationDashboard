@@ -126,7 +126,7 @@ MS_nodes = {
     'delta_MSi': {'type': 'variable', 
             'unit': 'tonnes', 
             'name': 'Material Stock variation per material',
-            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).cumsum()
+            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi)
             },
     'MSi':{'type': 'variable', 
             'unit': 'tonnes', 

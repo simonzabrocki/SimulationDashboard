@@ -173,7 +173,7 @@ def run_all_scenarios_RECYCLE(data_dict, ISO, args_dict_1, args_dict_2):
     summary_df = RECYCLE_scenario.MODEL.summary_df
     #print(pd.merge(summary_df, df, left_index=True, right_on='variable'))
 
-    fig_1 = px.line(df.query("variable in ['INFLOWi', 'OUTFLOWi']").replace({'INFLOWi': 'Material Inflow (tonnes)', 'OUTFLOWi': 'Material Outflow (tonnes)' }),
+    fig_1 = px.line(df.query("variable in ['INFLOWi', 'OUTFLOWi', 'delta_MSi']").replace({'INFLOWi': 'Material Inflow (tonnes)', 'OUTFLOWi': 'Material Outflow (tonnes)', 'delta_MSi': 'Stock Variation (tonnes)'}),
             x='Year',
             y='value',
             facet_col='Item',
