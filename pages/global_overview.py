@@ -3,6 +3,8 @@ import dash_html_components as html
 import plotly.express as px
 import dash_table
 from utils import Header
+import dash
+from dash.dependencies import Input, Output
 from app import app, data, INDEX_YEAR
 
 
@@ -72,7 +74,7 @@ def Table(data):
                    'GEO': 'Green economic opportunities'
                    }
 
-    table = dash_table.DataTable(id='table',
+    table = dash_table.DataTable(id='index-table',
                                  columns=[{"name": i, "id": i}
                                           for i in table_df.columns],
                                  data=table_df.to_dict('records'),
@@ -99,6 +101,11 @@ def Table(data):
                                  style_data_conditional=[{'if': {'row_index': 'odd'},
                                                           'backgroundColor': 'rgb(0, 0, 0, 0.1)',
                                                           },
+                                                          {
+                                                            "if": {"state": "selected"},
+                                                            "backgroundColor": "rgba(45, 178, 155, 0.3)",
+                                                            "border": "1px solid green",
+                                                        }
                                                           ],
                                 export_format="csv",
                                  )
@@ -154,3 +161,29 @@ layout = html.Div(
     ],
     className="page",
 )
+
+@app.callback(
+    Output("index-table", "style_data_conditional"),
+    Input("index-table", "active_cell"),
+)
+def style_selected_rows(active_cell):
+    if active_cell is None:
+        return dash.no_update
+
+    css = [
+        {'if': {'row_index': 'odd'},
+    'backgroundColor': 'rgb(0, 0, 0, 0.1)',
+        },
+        {"if": {'row_index': active_cell['row']},
+            "backgroundColor": "rgba(45, 178, 155, 0.3)",
+            "border": "1px solid green",
+            },
+           {
+        # 'active' | 'selected'
+        "if": {"state": "selected"},
+        "backgroundColor": "rgba(45, 178, 155, 0.3)",
+        "border": "1px solid green",
+    }, 
+    
+    ]
+    return css
