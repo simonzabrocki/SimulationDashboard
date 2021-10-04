@@ -86,18 +86,12 @@ RECYCLE_nodes = {
     'OUTFLOWi': {'type': 'variable', 
             'unit': 'tonnes', 
             'name': 'Material outflow per material',
-            'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).sum()#.cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).sum()
             },
-    # 'delta_MSi':{
-    #         'type': 'variable',
-    #         'unit': 'tonnes',
-    #         'name': 'Material stock variation',
-    #         'computation': lambda INFLOWi, OUTFLOWi, **kwargs: INFLOWi - OUTFLOWi
-    # },
-    'MSi': {'type': 'variable', 
+    'delta_MSi': {'type': 'variable', 
             'unit': 'tonnes', 
-            'name': 'Material Stock per material',
-            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).sum()#.cumsum().reorder_levels(order=["ISO", 'Item', "Year"])
+            'name': 'Material Stock variation per material',
+            'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).sum()
             },
     'RRi': {'type': 'parameter',
             'unit': '1',
