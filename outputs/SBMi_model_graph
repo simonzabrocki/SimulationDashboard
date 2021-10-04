@@ -1,0 +1,16 @@
+digraph {
+	graph [splines=ortho]
+	PLOSSi [label=PLOSSi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Processing Losses per material 
+ (PLOSSi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	DMCi [label=DMCi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Domestic Material Consumption per material 
+ (DMCi) 
+ Tonnes" peripheries=1 shape=rectangle style=filled]
+	SBMi [label=SBMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Stock Building Materials per material 
+ (SBMi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * PLOSSi" peripheries=1 shape=rectangle style=""]
+	PLOSSi -> SBMi_comp [color="#A9A9A9"]
+	DMCi -> SBMi_comp [color="#A9A9A9"]
+	SBMi_comp -> SBMi [color="#A9A9A9"]
+}

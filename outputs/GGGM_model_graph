@@ -730,14 +730,14 @@ digraph {
  1" peripheries=1 shape=rectangle style=filled]
 	DMCi [label=DMCi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Domestic Material Consumption per material 
  (DMCi) 
- tonnes" peripheries=1 shape=rectangle style=filled]
-	MLOSSi [label=MLOSSi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Manufacturing Losses 
- (MLOSSi) 
- 1" peripheries=1 shape=rectangle style=filled]
+ Tonnes" peripheries=1 shape=rectangle style=filled]
 	SBMi [label=SBMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Stock Building Materials per material 
  (SBMi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * (1 - PLOSSi)" peripheries=1 shape=rectangle style=""]
+	SBMi_comp [label=SBMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="DMCi * PLOSSi" peripheries=1 shape=rectangle style=""]
+	MLOSSi [label=MLOSSi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Manufacturing Losses 
+ (MLOSSi) 
+ 1" peripheries=1 shape=rectangle style=filled]
 	RMSi_t_minus_1 [label=RMSi_t_minus_1 color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Recycled Material Stock previous year 
  (RMSi_t_minus_1) 
  tonnes" peripheries=1 shape=rectangle style=filled]
@@ -758,15 +758,7 @@ digraph {
 	OUTFLOWi [label=OUTFLOWi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material outflow per material 
  (OUTFLOWi) 
  tonnes" peripheries=1 shape=rectangle style=filled]
-	OUTFLOWi_comp [label=OUTFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
-	delta_MSi [label=delta_MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material stock variation 
- (delta_MSi) 
- tonnes" peripheries=1 shape=rectangle style=filled]
-	delta_MSi_comp [label=delta_MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="INFLOWi - OUTFLOWi" peripheries=1 shape=rectangle style=""]
-	MSi [label=MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock per material 
- (MSi) 
- tonnes" peripheries=1 shape=rectangle style=filled]
-	MSi_comp [label=MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(delta_MSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
+	OUTFLOWi_comp [label=OUTFLOWi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi * LDi).groupby(['ISO', 'Item']).sum()" peripheries=1 shape=rectangle style=""]
 	RRi [label=RRi color="#eeeeee" fillcolor="#e9c46a" fontcolor="#eeeeee" fontname=roboto label="Recycling Rate 
  (RRi) 
  1" peripheries=1 shape=rectangle style=filled]
@@ -781,6 +773,14 @@ digraph {
 	year [label=year color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="current year 
  (year) 
  year" peripheries=1 shape=rectangle style=filled]
+	delta_MSi [label=delta_MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock variation per material 
+ (delta_MSi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	delta_MSi_comp [label=delta_MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).cumsum()" peripheries=1 shape=rectangle style=""]
+	MSi [label=MSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Material Stock per material 
+ (MSi) 
+ tonnes" peripheries=1 shape=rectangle style=filled]
+	MSi_comp [label=MSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(delta_MSi).groupby(['ISO', 'Item']).cumsum().reorder_levels(order=[\"ISO\", 'Item', \"Year\"])" peripheries=1 shape=rectangle style=""]
 	TCLDi -> CL_comp [color="#A9A9A9"]
 	TCLDi -> BM_burni_comp [color="#A9A9A9"]
 	TCLDi -> E_OSC_comp [color="#A9A9A9"]
@@ -1109,9 +1109,9 @@ digraph {
 	PM25E_comp -> PM25E [color="#A9A9A9"]
 	PLOSSi -> SBMi_comp [color="#A9A9A9"]
 	DMCi -> SBMi_comp [color="#A9A9A9"]
-	MLOSSi -> INFLOWi_comp [color="#A9A9A9"]
 	SBMi -> INFLOWi_comp [color="#A9A9A9"]
 	SBMi_comp -> SBMi [color="#A9A9A9"]
+	MLOSSi -> INFLOWi_comp [color="#A9A9A9"]
 	RMSi_t_minus_1 -> INFLOWi_comp [color="#A9A9A9"]
 	INFLOWi -> LDi_comp [color="#A9A9A9"]
 	INFLOWi -> OUTFLOWi_comp [color="#A9A9A9"]
@@ -1121,16 +1121,16 @@ digraph {
 	LDi_std -> LDi_comp [color="#A9A9A9"]
 	LDi -> OUTFLOWi_comp [color="#A9A9A9"]
 	LDi_comp -> LDi [color="#A9A9A9"]
-	OUTFLOWi -> delta_MSi_comp [color="#A9A9A9"]
 	OUTFLOWi -> RMSi_comp [color="#A9A9A9"]
 	OUTFLOWi -> WASTEi_comp [color="#A9A9A9"]
+	OUTFLOWi -> delta_MSi_comp [color="#A9A9A9"]
 	OUTFLOWi_comp -> OUTFLOWi [color="#A9A9A9"]
-	delta_MSi -> MSi_comp [color="#A9A9A9"]
-	delta_MSi_comp -> delta_MSi [color="#A9A9A9"]
-	MSi_comp -> MSi [color="#A9A9A9"]
 	RRi -> RMSi_comp [color="#A9A9A9"]
 	RMSi -> WASTEi_comp [color="#A9A9A9"]
 	RMSi_comp -> RMSi [color="#A9A9A9"]
 	WASTEi_comp -> WASTEi [color="#A9A9A9"]
 	year -> LDi_comp [color="#A9A9A9"]
+	delta_MSi -> MSi_comp [color="#A9A9A9"]
+	delta_MSi_comp -> delta_MSi [color="#A9A9A9"]
+	MSi_comp -> MSi [color="#A9A9A9"]
 }
