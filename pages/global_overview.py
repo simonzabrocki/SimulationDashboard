@@ -62,8 +62,8 @@ def Map(data):
 
 def Table(data):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
-        index=['Country'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
-    table_df = table_df.reset_index()
+        index=['Country', 'Continent', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
 
     header_name = {'Index': 'Index',
                    'ESRU': 'Efficient and sustainable resource use',
@@ -79,11 +79,11 @@ def Table(data):
                                  sort_action="native",
                                  page_action="native",
                                  page_current=0,
-                                 page_size=20,
+                                 page_size=30,
                                  style_as_list_view=True,
                                  style_header={'backgroundColor': 'white',
                                                'fontWeight': 'bold',
-                                               'text_align': 'center',
+                                               'text_align': 'left',
                                                'font_size': '13px',
                                                'border': '1px solid rgb(0, 0, 0, 0.1)',
                                                },
@@ -91,14 +91,15 @@ def Table(data):
                                  tooltip_delay=0,
                                  tooltip_duration=None,
                                  style_cell={'font_family': 'roboto',
-                                             'font_size': '12px',
-                                             'text_align': 'center',
+                                             'font_size': '10px',
+                                             'text_align': 'left',
                                              'border': '0px solid rgb(0, 0, 0, 0.1)',
                                              'opacity': '0.7',
                                              },
                                  style_data_conditional=[{'if': {'row_index': 'odd'},
                                                           'backgroundColor': 'rgb(0, 0, 0, 0.1)',
-                                                          }]
+                                                          }],
+                                export_format="csv",
                                  )
     return table
 
