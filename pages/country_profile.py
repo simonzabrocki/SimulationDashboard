@@ -3,13 +3,24 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
-from plotly.subplots import make_subplots
 
 from utils import Header
 from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
+
+
+
+def dcc_config(file_name):
+    return {'toImageButtonOptions': {'format': 'png',
+                                     'filename': f'{file_name}',
+                                     'scale': 2,
+                                     },
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['zoom2d', 'pan2d',
+                                       'select2d', 'lasso2d',
+                                       'zoomIn2d', 'zoomOut2d', 'toggleSpikelines', 'autoScale2d']}
 
 
 def compute_group(data):
@@ -546,13 +557,13 @@ layout = html.Div(
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='circular_plot',
-                                  config={'displayModeBar': False}),
+                                  config=dcc_config('distance_to_target')),
                         html.H6(
                             "Data availability",
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='missing_data_plot',
-                                  config={'displayModeBar': False}),
+                                  config=dcc_config('data_availability')),
                     ],
                     className='pretty_container four columns'),
                 html.Div(
@@ -563,7 +574,7 @@ layout = html.Div(
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='index_time_series',
-                                  config={'displayModeBar': False}
+                                  config=dcc_config('index_trend'),
                                   ),
                         html.Div(
                             [
@@ -572,7 +583,7 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Dimensions"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='Dim_ISO',
-                                                  config={'displayModeBar': False}),
+                                                  config=dcc_config('dimensions')),
                                     ],
                                     className="six columns",
                                 ),
@@ -581,7 +592,7 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Categories"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='Perf_ISO',
-                                                  config={'displayModeBar': False}),
+                                                  config=dcc_config('categories')),
                                     ],
                                     className="six columns",
                                 ),
@@ -590,7 +601,7 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Indicators"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='indic_ISO',
-                                                  config={'displayModeBar': False}),
+                                                  config=dcc_config('indicators')),
 
                                     ],
                                     className="twelve columns",
@@ -618,54 +629,47 @@ def update_HTML(ISO):
 
 
 @app.callback(
+    dash.dependencies.Output('circular_plot', 'config'),
     dash.dependencies.Output('circular_plot', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_circular_plot(ISO):
-    return circular_plot(ISO)
+    return dcc_config(f'distance_to_target_{ISO}'), circular_plot(ISO)
 
 
 @app.callback(
+    dash.dependencies.Output('missing_data_plot', 'config'),
     dash.dependencies.Output('missing_data_plot', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_missing_plot(ISO):
-    return missing_bar_plot(ISO)
-
-
+    return dcc_config(f'data_availability_{ISO}'), missing_bar_plot(ISO)
 
 
 @app.callback(
+    dash.dependencies.Output('indic_ISO', 'config'),
     dash.dependencies.Output('indic_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_gauge_plot(ISO):
-    return Indicator_lolipop(ISO)
-
-
-# @app.callback(
-#     dash.dependencies.Output('indic_ISO_SI', 'figure'),
-#     dash.dependencies.Output('indic_ISO_ESRU', 'figure'),
-#     dash.dependencies.Output('indic_ISO_NCP', 'figure'),
-#     dash.dependencies.Output('indic_ISO_GEO', 'figure'),
-#     [dash.dependencies.Input('ISO_select', 'value')])
-# def update_gauge_plot(ISO):
-#     return indicator_gauge(ISO)
-
+    return dcc_config(f'indicators_{ISO}'), Indicator_lolipop(ISO)
 
 @app.callback(
+    dash.dependencies.Output('index_time_series', 'config'),
     dash.dependencies.Output('index_time_series', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_ts_ind(ISO):
-    return time_series_Index(ISO)
+    return dcc_config(f'index_trend_{ISO}'), time_series_Index(ISO)
 
 
 @app.callback(
+    dash.dependencies.Output('Dim_ISO', 'config'),
     dash.dependencies.Output('Dim_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_loliplot(ISO):
-    return loliplot(ISO)
+    return dcc_config(f'dimensions_{ISO}'), loliplot(ISO)
 
 
 @app.callback(
+    dash.dependencies.Output('Perf_ISO', 'config'),
     dash.dependencies.Output('Perf_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
-    return loliplot_2(ISO)
+    return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
