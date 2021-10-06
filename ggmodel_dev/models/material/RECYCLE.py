@@ -88,11 +88,6 @@ RECYCLE_nodes = {
             'name': 'Material outflow per material',
             'computation': lambda INFLOWi, LDi, **kwargs: (INFLOWi * LDi).groupby(['ISO', 'Item']).sum()
             },
-    # 'delta_MSi': {'type': 'variable', 
-    #         'unit': 'tonnes', 
-    #         'name': 'Material Stock variation per material',
-    #         'computation': lambda INFLOWi, OUTFLOWi, **kwargs: (INFLOWi - OUTFLOWi).groupby(['ISO', 'Item']).sum()
-    #         },
     'RRi': {'type': 'parameter',
             'unit': '1',
             'name': 'Recycling Rate'

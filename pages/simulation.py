@@ -331,15 +331,3 @@ def downdload_table(box_1, box_2, ISO, model, n_clicks):
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
-
-
-
-
-
-
-#         except Exception as e:
-#             print(e)
-#             return {}, {}, {}, None
-
-#     else: 
-#         raise PreventUpdate
