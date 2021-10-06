@@ -197,3 +197,14 @@ def get_menu_div_list(name_link_list, active_tab, className='thirdtabs', active_
 def is_btn_clicked(btn_id):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     return btn_id in changed_id
+
+
+def dcc_config(file_name):
+    return {'toImageButtonOptions': {'format': 'png',
+                                     'filename': f'{file_name}',
+                                     'scale': 2,
+                                     },
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['zoom2d', 'pan2d',
+                                       'select2d', 'lasso2d',
+                                       'zoomIn2d', 'zoomOut2d', 'toggleSpikelines', 'autoScale2d']}

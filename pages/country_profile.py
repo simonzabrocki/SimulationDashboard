@@ -4,23 +4,11 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
 
-from utils import Header
+from utils import Header, dcc_config
 from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
-
-
-
-def dcc_config(file_name):
-    return {'toImageButtonOptions': {'format': 'png',
-                                     'filename': f'{file_name}',
-                                     'scale': 2,
-                                     },
-            'displaylogo': False,
-            'modeBarButtonsToRemove': ['zoom2d', 'pan2d',
-                                       'select2d', 'lasso2d',
-                                       'zoomIn2d', 'zoomOut2d', 'toggleSpikelines', 'autoScale2d']}
 
 
 def compute_group(data):
@@ -192,8 +180,6 @@ def polar(ISO):
                                 })
 
     fig.update_traces(mode="markers", marker=dict(opacity=0.7, size=10))
-
-    # fig.update_traces(fill='toself')
 
     fig.add_trace(go.Scatterpolar(r=df[df.ISO == REF]['Value'],
                                   theta=df[df.ISO == REF]['Variable'],
