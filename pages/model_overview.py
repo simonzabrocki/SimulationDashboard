@@ -335,19 +335,16 @@ layout = html.Div(
                         html.H6(
                                 "Downloads: ",
                                      className="subtitle padded",),
-                        html.Div([
-                            html.Button('Download Summary Table',
+                        html.Div([html.Div([
+                            html.Div([html.Button('Summary Table',
                                         id='btn-download', n_clicks=0),
-                            dcc.Download(id="download-summary-csv"),
-                            html.P(),
-                            html.Button('Download graph model',
+                            dcc.Download(id="download-summary-csv"),],
+                            className='bare_container six columns'),
+                            html.Div([html.Button('Graph model',
                                         id='graph-download', n_clicks=0),
-                            dcc.Download(id="download-graph-pdf"),
-
+                            dcc.Download(id="download-graph-pdf"),],
+                            className='bare_container six columns'),   ], className='row')
                         ]),
-
-
-
                     ],
                     className="pretty_container four columns",
                     id="model-presentation-display",
