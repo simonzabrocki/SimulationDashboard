@@ -678,7 +678,7 @@ def downdload_table(ISO, n_clicks):
     if is_btn_clicked('btn-country-data'):
         df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
 
-        return dcc.send_data_frame(df.to_csv, f"{ISO}_data.csv")
+        return dcc.send_data_frame(df.set_index("ISO").to_csv, f"{ISO}_data.csv")
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise dash.exceptions.PreventUpdate
