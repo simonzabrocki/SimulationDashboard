@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
 
-from utils import Header, dcc_config
+from utils import Header, dcc_config, is_btn_clicked
 from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
 
 import numpy as np
@@ -68,6 +68,11 @@ def HTML_text(ISO):
                                        'font-size': '15px'},
                                 className="row",
                             ),
+                            html.Button(f'Download {Country}\'s data', id='btn-country-data', n_clicks=0,
+                                style={'font-size': 10,
+                                        'color': '#ffffff',}),
+                            dcc.Download(id="download-country-data"),
+
                         ],
                         className="product",
                     )
@@ -659,3 +664,21 @@ def update_loliplot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
     return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output("download-country-data", "data"),
+    [
+        dash.dependencies.Input('ISO_select', 'value'),
+        dash.dependencies.Input("btn-country-data", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(ISO, n_clicks):
+    if is_btn_clicked('btn-country-data'):
+        df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
+
+        return dcc.send_data_frame(df.to_csv, f"{ISO}_data.csv")
+
+    else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+        raise dash.exceptions.PreventUpdate
