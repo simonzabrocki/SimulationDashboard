@@ -97,7 +97,7 @@ def get_menu(active_tab):
         'Models': "Evidence Library",
         'Codes': "Evidence Library",
         'Simulation': "Simulation Tool",
-        #'Spatial Analysis': "Simulation Tool",
+        'Downloads': "Evidence Library",
     }
 
     tabs_links = {
@@ -133,7 +133,7 @@ def get_menu(active_tab):
 def page_menu(active_tab):
     if active_tab in ['Global Overview', 'Regional Outlook', 'Country Profile', 'Country Comparison']:
         return gg_index_menu(active_tab)
-    if active_tab in ['Models', 'Data', 'Codes']:
+    if active_tab in ['Models', 'Data', 'Codes', 'Downloads']:
         return evidence_lib_menu(active_tab)
     if active_tab in ['Simulation', 'Spatial Analysis']:
         return simtool_menu(active_tab)
@@ -167,6 +167,8 @@ def evidence_lib_menu(active_tab):
         {'label': 'Models', 'value': '/SimulationDashBoard/models'},
         {'label': 'Data', 'value': '/SimulationDashBoard/data'},
         {'label': 'Codes', 'value': '/SimulationDashBoard/codes'},
+        {'label': 'Downloads', 'value': '/SimulationDashBoard/downloads'},
+
 
     ]
     div_list = get_menu_div_list(name_link_list, active_tab,  className='tab')

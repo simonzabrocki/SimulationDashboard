@@ -12,7 +12,8 @@ from pages import (
     country_comparator,
     simulation,
     #spatial,
-    open_code
+    open_code,
+    downloads
 )
 
 
@@ -43,6 +44,8 @@ def display_page(pathname):
         return data_viz.layout
     elif pathname == "/SimulationDashBoard/codes":
         return open_code.layout
+    elif pathname == "/SimulationDashBoard/downloads":
+        return downloads.layout
     else:
         return global_overview.layout
     pass
