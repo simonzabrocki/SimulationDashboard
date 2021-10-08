@@ -188,7 +188,7 @@ a {
   border-right-style: none;
   color: black;
   padding: 10px 14px;
-  text-align: center;
+  /* text-align: center; */
   text-decoration: none;
   display: inline-block;
 }
