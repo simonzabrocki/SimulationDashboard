@@ -46,10 +46,10 @@ layout = html.Div(
         html.Div(
             [
                 html.Div([
-                    download_box('All Results', 'Index results.','data'),
-                    download_box('All Indicators', 'Raw Indicators.','ind'),
-                    download_box('All definitions', 'Indicators definitions.','def'),
-                    download_box('All Models', 'Models specifications.','model'),
+                    download_box('Index', 'All index results.','data'),
+                    download_box('Indicators', 'All raw Indicators.','ind'),
+                    download_box('Definitions', 'All indicators definitions.','def'),
+                    download_box('Models', 'All models specifications.','model'),
                     ],className="row")
                 
                 ],
