@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 
-from utils import Header, is_btn_clicked
+from utils import Header
 from app import app, data, indicator_data, indicator_properties
 from dash.dependencies import Input, Output
 from ggmodel_dev.models.utils import all_model_dictionary
@@ -46,11 +46,10 @@ layout = html.Div(
         html.Div(
             [
                 html.Div([
-                    download_box('All Results', 'Indicators, categories, dimensions and Index.','data'),
+                    download_box('All Results', 'Index results.','data'),
                     download_box('All Indicators', 'Raw Indicators.','ind'),
-                    download_box('All definitions', 'Indicators definition.','def'),
+                    download_box('All definitions', 'Indicators definitions.','def'),
                     download_box('All Models', 'Models specifications.','model'),
-
                     ],className="row")
                 
                 ],
@@ -70,8 +69,7 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def downdload_table(n_clicks):
-    if is_btn_clicked('model-download-btn'):
-        return dcc.send_data_frame(all_model_dictionary['GGGM_model'].summary_df.to_csv, f"GGI_models_summary.csv")
+    return dcc.send_data_frame(all_model_dictionary['GGGM_model'].summary_df.to_csv, f"GGI_models_summary.csv")
 
 
 @app.callback(
@@ -82,8 +80,7 @@ def downdload_table(n_clicks):
     prevent_initial_call=True,
 )
 def downdload_table(n_clicks):
-    if is_btn_clicked('data-download-btn'):
-        return dcc.send_data_frame(data.drop(columns=['Continent', 'UNregion', 'IncomeLevel', 'Region', 'Country', 'Variable_name', 'Category', 'Dimension']).to_csv, f"GGIndex_data.csv")
+    return dcc.send_data_frame(data.drop(columns=['Continent', 'UNregion', 'IncomeLevel', 'Region', 'Country', 'Variable_name', 'Category', 'Dimension']).to_csv, f"GGIndex_data.csv")
 
 
 
@@ -95,8 +92,7 @@ def downdload_table(n_clicks):
     prevent_initial_call=True,
 )
 def downdload_table(n_clicks):
-    if is_btn_clicked('ind-download-btn'):
-        return dcc.send_data_frame(indicator_data.to_csv, f"indicator_data.csv")
+    return dcc.send_data_frame(indicator_data.to_csv, f"indicator_data.csv")
 
 
 
@@ -108,5 +104,4 @@ def downdload_table(n_clicks):
     prevent_initial_call=True,
 )
 def downdload_table(n_clicks):
-    if is_btn_clicked('ind-download-btn'):
-        return dcc.send_data_frame(indicator_properties.drop(columns=['maxYear', 'minYear']).to_csv, f"indicator_definition.csv")
+    return dcc.send_data_frame(indicator_properties.drop(columns=['maxYear', 'minYear', 'display_name']).to_csv, f"indicator_definition.csv")
