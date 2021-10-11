@@ -89,7 +89,7 @@ def scenario_building_box():
     layout = html.Div(
         [
             html.H5(
-                "Built a Scenario",
+                "Build a Scenario",
                 className="subtitle padded",
             ),
             html.Br([]),
