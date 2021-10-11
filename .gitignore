@@ -6,3 +6,4 @@ venv/
 .vscode/settings.json
 
 .mapbox_token
+.ipynb_checkpoints
