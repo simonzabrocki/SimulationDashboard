@@ -16,7 +16,6 @@ def Header(app, active_tab='Global Overview'):
         className="row")
 
     return html.Div([
-        # html.Div([],className='mainheader-bg'),
         html.Div([
             top_header,
             html.Br([]),
@@ -114,7 +113,6 @@ def get_menu(active_tab):
                 name,
                 href=link,
                 className="tab",
-                # style={'color': '#FFFFFF', 'font-weight': 'bold'}
                 style={'color': '#FFFFFF', 'font-weight': 'bold'}
 
             )
@@ -142,7 +140,6 @@ def page_menu(active_tab):
 def simtool_menu(active_tab):
     name_link_list = [
         {'label': 'Simulation', 'value': '/SimulationDashBoard/simulation'},
-        #{'label': 'Spatial Analysis', 'value': '/SimulationDashBoard/spatial'},
     ]
     div_list = get_menu_div_list(name_link_list, active_tab, className='tab')
 
@@ -168,11 +165,8 @@ def evidence_lib_menu(active_tab):
         {'label': 'Data', 'value': '/SimulationDashBoard/data'},
         {'label': 'Codes', 'value': '/SimulationDashBoard/codes'},
         {'label': 'Downloads', 'value': '/SimulationDashBoard/downloads'},
-
-
     ]
     div_list = get_menu_div_list(name_link_list, active_tab,  className='tab')
-    # return html.Div(div_list, className="thirdtabmain")
     return html.Div(div_list, className="row all-tabs")
 
 
