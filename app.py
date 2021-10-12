@@ -12,6 +12,6 @@ app.title = 'GreenGrowthIndex'
 
 server = app.server
 
-INDEX_YEAR = 2019
+INDEX_YEAR = 2020
 
 data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data = load_all_data(max_year=INDEX_YEAR)
