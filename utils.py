@@ -65,26 +65,6 @@ def get_header(app):
     return header
 
 
-def get_page_title(active_tab):
-    pass
-
-
-def get_menu_old(active_tab):
-
-    name_link_list = [
-        {'label': 'Green Growth Index',
-            'value': '/SimulationDashBoard/global_overview'},
-        {'label': 'Simulation Tool', 'value': '/SimulationDashBoard/simulation'},
-        {'label': 'Evidence Library', 'value': '/SimulationDashBoard/models'},
-    ]
-
-    div_list = get_menu_div_list(name_link_list, active_tab=active_tab, active_style={
-                                 'text-decoration': 'none', 'color': '#2db29b'}, className="tab")
-
-    menu = html.Div(div_list, className="row all-tabs")
-    return menu
-
-
 def get_menu(active_tab):
 
     tab_menu = {
@@ -93,7 +73,7 @@ def get_menu(active_tab):
         'Country Profile': "Green Growth Index",
         'Country Comparison': "Green Growth Index",
         'Data': "Evidence Library",
-        'Models': "Evidence Library",
+        #'Models': "Evidence Library",
         'Codes': "Evidence Library",
         'Simulation': "Simulation Tool",
         'Downloads': "Evidence Library",
@@ -101,8 +81,8 @@ def get_menu(active_tab):
 
     tabs_links = {
         'Green Growth Index': '/SimulationDashBoard/global_overview',
-        'Simulation Tool': '/SimulationDashBoard/simulation',
-        'Evidence Library': '/SimulationDashBoard/models',
+        #'Simulation Tool': '/SimulationDashBoard/simulation',
+        'Evidence Library': '/SimulationDashBoard/data',
     }
 
     menu_list = []
@@ -161,7 +141,7 @@ def gg_index_menu(active_tab):
 
 def evidence_lib_menu(active_tab):
     name_link_list = [
-        {'label': 'Models', 'value': '/SimulationDashBoard/models'},
+        # {'label': 'Models', 'value': '/SimulationDashBoard/models'},
         {'label': 'Data', 'value': '/SimulationDashBoard/data'},
         {'label': 'Codes', 'value': '/SimulationDashBoard/codes'},
         {'label': 'Downloads', 'value': '/SimulationDashBoard/downloads'},

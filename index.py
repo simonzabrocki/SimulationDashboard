@@ -8,9 +8,9 @@ from pages import (
     country_profile,
     regional_outlook,
     data_viz,
-    model_overview,
+    #model_overview,
     country_comparator,
-    simulation,
+    #simulation,
     #spatial,
     open_code,
     downloads
@@ -34,10 +34,10 @@ def display_page(pathname):
         return country_profile.layout
     elif pathname == "/SimulationDashBoard/country-comparator":
         return country_comparator.layout
-    elif pathname == "/SimulationDashBoard/models":
-        return model_overview.layout
-    elif pathname == "/SimulationDashBoard/simulation":
-        return simulation.layout
+    # elif pathname == "/SimulationDashBoard/models":
+    #     return model_overview.layout
+    # elif pathname == "/SimulationDashBoard/simulation":
+    #     return simulation.layout
     # elif pathname == "/SimulationDashBoard/spatial":
     #     return spatial.layout
     elif pathname == "/SimulationDashBoard/data":
