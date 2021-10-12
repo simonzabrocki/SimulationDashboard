@@ -32,7 +32,7 @@ def download_box(title, description, id):
                     className="product",
                 ),
         ],
-        className="three columns",
+        className="four columns",
         )
 
     
@@ -49,7 +49,7 @@ layout = html.Div(
                     download_box('Index', 'All index results.','data'),
                     download_box('Indicators', 'All raw Indicators.','ind'),
                     download_box('Definitions', 'All indicators definitions.','def'),
-                    download_box('Models', 'All models specifications.','model'),
+                    # download_box('Models', 'All models specifications.','model'),
                     ],className="row")
                 
                 ],
@@ -61,15 +61,15 @@ layout = html.Div(
 )
 
 
-@app.callback(
-    Output("model-download", "data"),
-    [
-        Input("model-download-btn", "n_clicks"),
-    ],
-    prevent_initial_call=True,
-)
-def downdload_table(n_clicks):
-    return dcc.send_data_frame(all_model_dictionary['GGGM_model'].summary_df.to_csv, f"GGI_models_summary.csv")
+# @app.callback(
+#     Output("model-download", "data"),
+#     [
+#         Input("model-download-btn", "n_clicks"),
+#     ],
+#     prevent_initial_call=True,
+# )
+# def downdload_table(n_clicks):
+#     return dcc.send_data_frame(all_model_dictionary['GGGM_model'].summary_df.to_csv, f"GGI_models_summary.csv")
 
 
 @app.callback(
