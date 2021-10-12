@@ -74,22 +74,21 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
-def get_missing_values_stat(data, indicator_properties, max_year=2019, min_year=2005):
+def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=2005):
     data = data[(data.Year >= min_year) & (data.Year <= max_year)]
     data = pd.merge(data, indicator_properties, on='Indicator').astype({'Year': int})
 
     
     total_points = (indicator_properties.groupby('Category').Indicator.count() * (max_year - min_year + 1))
     
-    df =  data.groupby(['ISO', 'Category']).apply(lambda x: x['Imputed'].sum()).divide(total_points) * 100
+    df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
     
     ISOs = data.ISO.unique()
     Categorys = indicator_properties.Category.unique()
     full_index = pd.MultiIndex.from_product([ISOs, Categorys],
                                names=['ISO', 'Category'])
     
-    return (100 - df.reindex(full_index, fill_value=100)).to_frame(name='Data availability (%)')
-
+    return df.reindex(full_index, fill_value=0).to_frame(name='Data availability (%)')
 
 
 def load_all_data(max_year=2019):
