@@ -1,0 +1,13 @@
+{
+    "ELECGHG_model": {
+        "description": "TODO",
+        "display_name": "Energy supply model",
+        "model": "SUPPLY_model",
+        "model_group": "Energy",
+        "indicator": "GE1",
+        "status": "🚧",
+        "source": [ "TODO"
+                ]
+                
+    }
+}
