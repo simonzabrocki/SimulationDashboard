@@ -9,6 +9,7 @@ from app import app, data, missing_data, ISO_options, indicator_properties, INDE
 
 import numpy as np
 import pandas as pd
+import os
 
 
 def compute_group(data):
@@ -71,11 +72,11 @@ def HTML_text(ISO):
                             html.Button(f'Download {Country}\'s data', id='btn-country-data', n_clicks=0,
                                 style={'font-size': 10,
                                         'color': '#ffffff',}),
-                            dcc.Download(id="download-country-data"),
-                            html.Button(f'Download {Country}\'s report', id='btn-html-report', n_clicks=0,
-                                style={'font-size': 10,
-                                        'color': '#ffffff',}),
-                            dcc.Download(id="download-html-report"),
+                            # dcc.Download(id="download-country-data"),
+                            # html.Button(f'Download {Country}\'s report', id='btn-html-report', n_clicks=0,
+                            #     style={'font-size': 10,
+                            #             'color': '#ffffff',}),
+                            # dcc.Download(id="download-html-report"),
 
                         ],
                         className="product",
@@ -700,6 +701,7 @@ def downdload_table(ISO, n_clicks):
 def downdload_table(ISO, n_clicks):
     if is_btn_clicked('btn-html-report'):
         df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
+        os.system(f"python jupyter_ISO_report.py report.ipynb --iso {ISO}")
 
         return  dcc.send_file("./outputs/reports/report.html")
 
