@@ -13,27 +13,46 @@ GAS_nodes = {
         'name': 'Gas capacity factor',
         'unit':'%'
     },
-    'GASSUPPLY':{
+    'GASHOURS':{
         'type': 'input',
-        'name': 'Gas supply',
-        'unit':'GW'
+        'name': 'Gas generation time',
+        'unit': 'hours'
     },
-    'GASGENERATION':{
+    'GASEFFICIENCY':{
         'type': 'input',
-        'name': 'Fuel required',
-        'unit': 'TWh'
+        'name': 'Gas conversion efficiency',
+        'unit':'1'
+    },
+    'GASFUEL':{
+        'type': 'variable',
+        'name': 'Fuel required for gas generation',
+        'unit': 'TWh',
+        'computation': lambda GASCAPACITY, GASCAPFACTOR, GASHOURS, GASEFFICIENCY, **kwargs: GASCAPACITY  * GASCAPFACTOR * GASHOURS / GASEFFICIENCY
+    },
+    'GASEMFACTORi':{
+        'type': 'input',
+        'name': 'Gas emission factors',
+        'unit': 'Mt CO2eq / TWh'
     },
     'GASEMISSIONSi':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'C02, CH4, NO2 emissions',
-        'unit': 'Mt CO2eq'
+        'unit': 'Mt CO2eq',
+        'computation': lambda GASEMFACTORi, GASFUEL, **kwargs: GASEMFACTORi * GASFUEL
+    }, 
+    'GASLANDREQ':{
+        'type': 'input',
+        'name': 'land requirement per GW of gas plant',
+        'unit': 'ha / GW'
     },
     'GASLAND':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Gas land requirement',
-        'unit': 'ha'
+        'unit': 'ha',
+        'computation': lambda GASLANDREQ, GASFUEL, **kwargs: GASLANDREQ * GASFUEL
     }
 }
+
 
 COAL_nodes = {
     'COALCAPACITY':{
@@ -41,15 +60,44 @@ COAL_nodes = {
         'name': 'Coal cumulative capacity',
         'unit':'GW',
     },
-    'COALEMISSIONSi':{
+    'COALGENERATION':{
         'type': 'input',
+        'name': 'Coal generation',
+        'unit': 'TWh'
+    },
+    'COALEFF':{
+        'type': 'input',
+        'name': 'Coal thermal conversion efficiency',
+        'unit': '1'
+        
+    },
+    'COALFUEL':{
+        'type': 'variable',
+        'name': 'Fuel required for coal generation',
+        'unit': 'TWh',
+        'computation': lambda COALEFF, COALGENERATION, **kwargs: COALEFF * COALGENERATION
+    },
+    'COALEMISSIONSi':{
+        'type': 'variable',
         'name': 'C02, CH4, NO2 emissions',
-        'unit': 'Mt CO2eq'
+        'unit': 'Mt CO2eq',
+        'computation': lambda COALFUEL, COALEMFACTORi, **kwargs: COALFUEL * COALEMFACTORi
+    },
+    'COALLANDREQ':{
+        'type': 'input',
+        'name': 'land requirement per GW of coal plant',
+        'unit': 'ha / GW'
+    },
+    'COALEMFACTORi':{
+        'type': 'input',
+        'name': 'Gas emission factors',
+        'unit': 'Mt CO2eq / TWh'
     },
     'COALLAND':{
-        'type': 'input',
-        'name': 'Solar PV land requirement',
-        'unit': 'ha'
+        'type': 'variable',
+        'name': 'Coal plant land requirement',
+        'unit': 'ha',
+        'computation': lambda COALCAPACITY, COALLANDREQ, **kwargs: COALCAPACITY * COALLANDREQ
     }
 }
 
@@ -64,23 +112,31 @@ SOLAR_nodes = {
         'name': 'Solar capacity factor',
         'unit':'%'
     },
-    'SOLARSUPPLY':{
+    'SOLARHOURS':{
         'type': 'input',
-        'name': 'Solar supply',
-        'unit':'GW'
+        'name': 'Solar generation time',
+        'unit':'hours'
     },
     'SOLARGENERATION':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Solar generation',
-        'unit': 'TWh'   
+        'unit': 'TWh',
+        'computation': lambda SOLARHOURS, SOLARCAPFACTOR, SOLARCAPACITY, **kwargs: SOLARHOURS * SOLARCAPFACTOR * SOLARCAPACITY
+    },
+    'SOLARLANDREQ':{
+        'type': 'input',
+        'name': 'land requirement per GW of solar plant',
+        'unit': 'ha / GW'
     },
     'SOLARLAND':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Solar PV land requirement',
-        'unit': 'ha'
+        'unit': 'ha',
+        'computation': lambda SOLARGENERATION, SOLARLANDREQ, **kwargs: SOLARGENERATION * SOLARLANDREQ
     }
 }
 
+GraphModel(SOLAR_nodes).draw()
 SUPPLY_nodes = concatenate_graph_specs([SOLAR_nodes, COAL_nodes, GAS_nodes])
 
 SUPPLY_model = GraphModel(SUPPLY_nodes)
