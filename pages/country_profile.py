@@ -686,3 +686,22 @@ def downdload_table(ISO, n_clicks):
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise dash.exceptions.PreventUpdate
+
+
+
+@app.callback(
+    dash.dependencies.Output("download-html-report", "data"),
+    [
+        dash.dependencies.Input('ISO_select', 'value'),
+        dash.dependencies.Input("btn-html-report", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(ISO, n_clicks):
+    if is_btn_clicked('btn-html-report'):
+        df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
+
+        return  dcc.send_file("./outputs/reports/report.html")
+
+    else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+        raise dash.exceptions.PreventUpdate
