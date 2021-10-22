@@ -1,10 +1,10 @@
 {
-    "SOLARIRR_model": {
+    "DEMAND_model": {
         "description": "TODO",
-        "display_name": "Solar irrigation model",
-        "model": "SOLARIRR_model",
+        "display_name": "Energy demand model",
+        "model": "DEMAND_model",
         "model_group": "Energy",
-        "indicator": "GE3",
+        "indicator": "GE1",
         "status": "🚧",
         "source": [ "TODO"
                 ]

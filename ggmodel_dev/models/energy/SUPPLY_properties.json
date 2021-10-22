@@ -1,5 +1,5 @@
 {
-    "ELECGHG_model": {
+    "SUPPLY_model": {
         "description": "TODO",
         "display_name": "Energy supply model",
         "model": "SUPPLY_model",
