@@ -53,7 +53,6 @@ GAS_nodes = {
     }
 }
 
-
 COAL_nodes = {
     'COALCAPACITY':{
         'type': 'input',
@@ -61,15 +60,20 @@ COAL_nodes = {
         'unit':'GW',
     },
     'COALGENERATION':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Coal generation',
-        'unit': 'TWh'
+        'unit': 'TWh',
+        'computation': lambda COALCAPTGENERATION, COALUTILGENERATION, OWNUSEFRAC, **kwargs: COALCAPTGENERATION + COALUTILGENERATION * (1 - OWNUSEFRAC)
+    },
+    'OWNUSEFRAC':{
+        'type': 'input',
+        'name': 'Fraction of energy for own use',
+        'unit': '1',
     },
     'COALEFF':{
         'type': 'input',
         'name': 'Coal thermal conversion efficiency',
         'unit': '1'
-        
     },
     'COALFUEL':{
         'type': 'variable',
@@ -98,7 +102,34 @@ COAL_nodes = {
         'name': 'Coal plant land requirement',
         'unit': 'ha',
         'computation': lambda COALCAPACITY, COALLANDREQ, **kwargs: COALCAPACITY * COALLANDREQ
-    }
+    },
+    'COALUTILCAPFACTOR':{
+        'type': 'input',
+        'name': 'Coal plant capacity factor utility',
+        'unit': '1',
+    },
+    'COALCAPTCAPFACTOR':{
+        'type': 'input',
+        'name': 'Coal plant capacity factor captive',
+        'unit': '1',
+    },
+    'COALHOURS':{
+        'type': 'input',
+        'name': 'Coal generation time',
+        'unit': 'hours'
+    },
+    'COALUTILGENERATION':{
+        'type': 'variable',
+        'name': 'Coal generation for utilities',
+        'unit': 'TWh',
+        'computation': lambda COALHOURS, COALUTILCAPFACTOR, COALCAPACITY, **kwargs: COALHOURS * COALUTILCAPFACTOR * COALCAPACITY
+    },
+    'COALCAPTGENERATION':{
+        'type': 'variable',
+        'name': 'Coal generation for captive',
+        'unit': 'TWh',
+        'computation': lambda COALHOURS, COALCAPTCAPFACTOR, COALCAPACITY, **kwargs: COALHOURS * COALCAPTCAPFACTOR * COALCAPACITY
+    },
 }
 
 SOLAR_nodes = {
