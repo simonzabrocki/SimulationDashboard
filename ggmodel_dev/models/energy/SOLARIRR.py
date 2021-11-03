@@ -6,7 +6,7 @@ g = 9.81
 
 SOLARIRR_nodes = {
    'IWR': {'type': 'input',
-                     'name': ' Irrigation Water Requirement',
+                     'name': 'Irrigation Water Requirement',
                      'unit': '1e9 m3/year',
                      },
     'SOLARPUMPNRJ':{
