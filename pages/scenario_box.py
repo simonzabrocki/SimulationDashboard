@@ -48,7 +48,36 @@ def water_scenario_box(scenario_id='_one'):
                 },
                 included=False,
             ),
-        ],
+            html.Br([]),
+            html.P('Irrigation technologies share',
+                   style={'font-size': 17}),
+            # dcc.Slider(
+            #     step=None,
+            #     value=1,
+            #     min=1,
+            #     max=1.01,
+            #     marks={
+            #         1: {'label': '0%', 'style': {'color': 'white'}},
+            #         1.005: {'label': '0.5%', 'style': {'color': 'white'}},
+            #         1.01: {'label': '+1%', 'style': {'color': 'white'}},
+            #     },
+            #     included=False,
+            # ),
+            # dcc.RangeSlider(
+            #     id=f'IRRTECH{scenario_id}',
+            #     min=0,
+            #     max=100,
+            #     value=[30, 50],
+            #     allowCross=False,
+            #     #tooltip={"placement": "bottom", "always_visible": True}
+            # ),
+            html.P('Sprinkler',style={'font-size': 12}),
+            dcc.Input(id=f'IRRTECH_sprinkler{scenario_id}', type='number', placeholder="Sprinkler", min=0, max=100, step=1, value=10),
+            html.P('Surface',style={'font-size': 12}),
+            dcc.Input(id=f'IRRTECH_surface{scenario_id}', type='number', placeholder="Surface", min=0, max=100, step=1, value=80),
+            html.P('Drip',style={'font-size': 12}),
+            dcc.Input(id=f'IRRTECH_drip{scenario_id}', type='number', placeholder="Drip", min=0, max=100, step=1, value=10)
+    ],
         className='row')
 
     return layout
@@ -330,3 +359,4 @@ def RECYCLE_scenario_box(scenario_id='_one'):
         className='row')
 
     return layout
+

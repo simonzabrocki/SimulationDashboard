@@ -24,13 +24,26 @@ PROJECTION_DICT = {
  }
 
 
-def run_scenario(data_dict, WP_rate=1.0, WRR_rate=1.00):
+def IRRTECH_projection(x, IRRTECH_sprinkler, IRRTECH_surface, IRRTECH_drip):
+    series = reindex_series_itemized(x)
+
+    series.loc[:, 2050, 'Sprinkler'] = IRRTECH_sprinkler / 100
+    series.loc[:, 2050, 'Surface'] = IRRTECH_surface / 100
+    series.loc[:, 2050, 'Drip'] = IRRTECH_drip / 100
+    
+    series = series.groupby(['Item']).apply(lambda x: x.interpolate()).groupby(['Item']).bfill()
+    
+    return series 
+
+def run_scenario(data_dict, WP_rate=1.0, WRR_rate=1.00, IRRTECH_sprinkler=10, IRRTECH_surface=80, IRRTECH_drip=10):
     
     data_dict = data_dict.copy()
-
+    
+    
     scenario_projection_dict = {
         'WP': lambda x: apply_annual_rate_projection(x, WP_rate),
         'WRR': lambda x: apply_annual_rate_projection(x, WRR_rate),
+        'IRRTECHi': lambda x: IRRTECH_projection(x, IRRTECH_sprinkler, IRRTECH_surface, IRRTECH_drip),
     }
     
     data_dict = run_projection(scenario_projection_dict, data_dict)

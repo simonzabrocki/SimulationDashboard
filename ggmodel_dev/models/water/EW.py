@@ -17,6 +17,51 @@ ha_to_m2 = 1e4  # * 1e3
 mm_to_m = 1e-2  # 1e-3 TO CHECK
 mmyear_to_m3year = 1e-2  # from mm/year to m3/year as 1mm = 10m3/ha \n",
 
+# IWW_nodes = {'Kc': {'type': 'parameter', 'unit': '1', 'name': 'Crop Factor'},
+#              'ICA': {'type': 'input', 'unit': '1000 ha', 'name': 'Cropland area actually irrigated'},
+#              'CI': {'type': 'variable',
+#                     'unit': '1',
+#                     'name': 'Cropping Intensity',
+#                     'computation': lambda ICA, AIR, **kwargs: ICA / AIR
+#                     },
+#              'ETo': {'type': 'input', 'unit': 'mm/year', 'name': 'Evapotranspiration'},
+#              'ETc': {'type': 'variable',
+#                      'name': 'Potential Crop Evaporation Vector',
+#                      'unit': 'mm/year',
+#                      'computation': lambda Kc, CI, ETo, **kwargs: (Kc * CI * ETo).groupby(level=['ISO']).sum()
+#                      },
+#              'ETa': {'type': 'input',
+#                      'unit': 'mm/year',
+#                      'name': 'Actual Evapotranspiration'},
+#              'ICU': {'type': 'variable',
+#                      'name': 'Irrigation Consumptive Use',
+#                      'unit': 'mm/year',
+#                      # bug to fix
+#                      'computation': lambda ETc, ETa, **kwargs: abs(ETc - ETa)
+#                      },
+#              'AIR': {'type': 'parameter',
+#                      'unit': '1000 ha',
+#                      'name': 'Agriculture area actually irrigated'},
+#              'Arice': {'type': 'parameter',
+#                        'unit': '1000 ha',
+#                        'name': 'Area of Rice Paddy Irrigation'},
+#              'WRR': {'type': 'parameter', 'name': 'Water Requirement Ratio', 'unit': '1'},
+#              'IWR': {'type': 'variable',
+#                      'name': 'Irrigation Water Requirement',
+#                      'unit': '1e9 m3/year',
+#                      'computation': lambda ICU, AIR, Arice, **kwargs: 1e-9 * ha_to_m2 * mmyear_to_m3year * ((ICU * AIR) + Arice * height_rice)
+#                      },
+#              'IWW': {'type': 'variable',
+#                      'name': ' Irrigation Water Withdrawal',
+#                      'unit': '1e9 m3/year',
+#                      'computation': lambda IWR, WRR, **kwargs: IWR / WRR * 1e2
+#                      },
+#              'AWU': {'type': 'variable', 'unit': '1e9 m3/year',
+#                      'name': 'Agricultural Water Withdrawal',
+#                      'computation': lambda IWW, **kwargs: IWW
+#                      },
+#              }
+
 IWW_nodes = {'Kc': {'type': 'parameter', 'unit': '1', 'name': 'Crop Factor'},
              'ICA': {'type': 'input', 'unit': '1000 ha', 'name': 'Cropland area actually irrigated'},
              'CI': {'type': 'variable',
@@ -46,16 +91,40 @@ IWW_nodes = {'Kc': {'type': 'parameter', 'unit': '1', 'name': 'Crop Factor'},
                        'unit': '1000 ha',
                        'name': 'Area of Rice Paddy Irrigation'},
              'WRR': {'type': 'parameter', 'name': 'Water Requirement Ratio', 'unit': '1'},
-             'IWR': {'type': 'variable',
-                     'name': ' Irrigation Water Requirement',
-                     'unit': '1e9 m3/year',
-                     'computation': lambda ICU, AIR, Arice, **kwargs: 1e-9 * ha_to_m2 * mmyear_to_m3year * ((ICU * AIR) + Arice * height_rice)
-                     },
              'IWW': {'type': 'variable',
                      'name': ' Irrigation Water Withdrawal',
                      'unit': '1e9 m3/year',
-                     'computation': lambda IWR, WRR, **kwargs: IWR / WRR * 1e2
+                     'computation': lambda IWRi, Arice, IRRTECHEFFi, **kwargs: (IWRi / IRRTECHEFFi).groupby(['ISO', 'Year']).sum()  + Arice * height_rice 
                      },
+             'IRRTECHi':{
+                 'type': 'input',
+                 'name': 'Irrigation technology proportion',
+                 'unit': '1'
+             },
+             'IRRTECHEFFi':{
+                 'type': 'parameter',
+                 'name': 'Irrigation efficiency by irrigation technology',
+                 'unit': '1'
+             },
+             'AIRi':{
+                 'type': 'variable',
+                 'name': 'Irrigated area per irrigation technology type',
+                 'unit': '1000 ha',
+                 'computation': lambda IRRTECHi, AIR, **kwargs: IRRTECHi * AIR
+             },
+             'IWRi':{
+                 'type': 'variable',
+                 'name': 'Irrigation Water Requirement per irrigation',
+                 'unit': '1e9 m3/year',
+                 'computation': lambda AIRi, ICU, **kwargs: 1e-9 * ha_to_m2 * mmyear_to_m3year * (ICU * AIRi).dropna()
+                 
+             },
+            'IWR':{
+                 'type': 'variable',
+                 'name': 'Irrigation Water Requirement',
+                 'unit': '1e9 m3/year',
+                 'computation': lambda IWRi, **kwargs: IWRi.groupby(['ISO', 'Year']).sum() 
+             },
              'AWU': {'type': 'variable', 'unit': '1e9 m3/year',
                      'name': 'Agricultural Water Withdrawal',
                      'computation': lambda IWW, **kwargs: IWW

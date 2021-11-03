@@ -26,9 +26,13 @@ def format_var_results(scenarios_results, var):
 
 def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
 
-    data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items()}
+    ISO_data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items() if key not in ['IRRTECHEFFi']}
+    ISO_data_dict['IRRTECHEFFi'] = data_dict['IRRTECHEFFi'].reset_index().set_index(['Item'])['0'] # To do properly elswhere
 
-    scenarios_results = EW_scenario.run_all_scenarios(data_dict, args_dict_1, args_dict_2)
+
+    print(ISO_data_dict['IRRTECHEFFi'])
+
+    scenarios_results = EW_scenario.run_all_scenarios(ISO_data_dict, args_dict_1, args_dict_2)
 
     df_1 = format_var_results(scenarios_results, 'EW1')
     df_2 = format_var_results(scenarios_results, 'EW2')
