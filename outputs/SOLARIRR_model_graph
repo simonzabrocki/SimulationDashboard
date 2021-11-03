@@ -1,6 +1,6 @@
 digraph {
 	graph [splines=ortho]
-	IWR [label=IWR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label=" Irrigation Water Requirement 
+	IWR [label=IWR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Irrigation Water Requirement 
  (IWR) 
  1e9 m3/year" peripheries=1 shape=rectangle style=filled]
 	SOLARPUMPNRJ [label=SOLARPUMPNRJ color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Energy required for solar pumping 

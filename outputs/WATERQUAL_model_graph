@@ -1,126 +1,96 @@
 digraph {
 	graph [splines=ortho]
-	OPENDEF [label=OPENDEF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fraction of open defection 
- (OPENDEF) 
- %" peripheries=1 shape=rectangle style=filled]
-	Pop [label=Pop color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population 
- (Pop) 
- capita" peripheries=1 shape=rectangle style=filled]
-	URBRUPOPi [label=URBRUPOPi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population fraction per area 
- (URBRUPOPi) 
- 1" peripheries=1 shape=rectangle style=filled]
-	OPENDEFPOPi [label=OPENDEFPOPi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population under open defecation 
- (OPENDEFPOPi) 
- capita" peripheries=1 shape=rectangle style=filled]
-	OPENDEFPOPi_comp [label=OPENDEFPOPi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="OPENDEF * URBRUPOPi * Pop" peripheries=1 shape=rectangle style=""]
-	SEWREMEFFi [label=SEWREMEFFi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Removal efficiency in sewage system per pollutant 
- (SEWREMEFFi) 
- 1" peripheries=1 shape=rectangle style=filled]
-	WASTEWATTREATDISi [label=WASTEWATTREATDISi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Waste water treatment distribution 
- (WASTEWATTREATDISi) 
- 1" peripheries=1 shape=rectangle style=filled]
-	WASTEWATTREATEFF [label=WASTEWATTREATEFF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Pollutant removal efficiency of waste water treatment 
- (WASTEWATTREATEFF) 
- 1" peripheries=1 shape=rectangle style=filled]
-	WASTEWATTREATEFF_comp [label=WASTEWATTREATEFF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(WASTEWATTREATDISi * SEWREMEFFi).sum()" peripheries=1 shape=rectangle style=""]
-	CONSEWSYS [label=CONSEWSYS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Connection to sewage system 
- (CONSEWSYS) 
- %" peripheries=1 shape=rectangle style=filled]
-	SEWSYSPOPi [label=SEWSYSPOPi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population connected to sewage system 
- (SEWSYSPOPi) 
- capita" peripheries=1 shape=rectangle style=filled]
-	SEWSYSPOPi_comp [label=SEWSYSPOPi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="Pop * URBRUPOPi * CONSEWSYS" peripheries=1 shape=rectangle style=""]
-	GDPCPPP [label=GDPCPPP color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gross domestic product per capita purchasing power parity 
- (GDPCPPP) 
+	PROTINTAKE [label=PROTINTAKE color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="National protein consumption 
+ (PROTINTAKE) 
+ g/capita/day" peripheries=1 shape=rectangle style=filled]
+	GDPC_PPP [label=GDPC_PPP color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gross domestic product per capita purchasing power parity 
+ (GDPC_PPP) 
  $/capita" peripheries=1 shape=rectangle style=filled]
-	NPROTINTAKE [label=NPROTINTAKE color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="National protein consumption 
- (NPROTINTAKE) 
+	PROTINTAKE_min [label=PROTINTAKE_min color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Minimum protein consumption 
+ (PROTINTAKE_min) 
  g/capita/day" peripheries=1 shape=rectangle style=filled]
-	NPROTINTAKE_comp [label=NPROTINTAKE_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NPROTCONTENT.min() + (NPROTCONTENT.max() - NPROTCONTENT.max()) * (GDPCPP / GDPCPP.max()) ** (1/3) # TO CLARIFY !" peripheries=1 shape=rectangle style=""]
-	NPROTCONTENT [label=NPROTCONTENT color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="National protein consumption 
- (NPROTCONTENT) 
+	PROTINTAKE_min_comp [label=PROTINTAKE_min_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PROTINTAKE.groupby(['Year']).max()" peripheries=1 shape=rectangle style=""]
+	PROTINTAKE_max [label=PROTINTAKE_max color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Maximum protein consumption 
+ (PROTINTAKE_max) 
  g/capita/day" peripheries=1 shape=rectangle style=filled]
+	PROTINTAKE_max_comp [label=PROTINTAKE_max_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PROTINTAKE.groupby(['Year']).min()" peripheries=1 shape=rectangle style=""]
+	GDPC_PPP_max [label=GDPC_PPP_max color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Maximum gross domestic product per capita purchasing power parity 
+ (GDPC_PPP_max) 
+ $/capita" peripheries=1 shape=rectangle style=filled]
+	GDPC_PPP_max_comp [label=GDPC_PPP_max_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GDPC_PPP.groupby(['Year']).max()" peripheries=1 shape=rectangle style=""]
 	NHUMEMI [label=NHUMEMI color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Human nitrogen emissions 
  (NHUMEMI) 
  kg/capita" peripheries=1 shape=rectangle style=filled]
-	NHUMEMI_comp [label=NHUMEMI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="0.356 * NPROTINTAKE" peripheries=1 shape=rectangle style=""]
+	NHUMEMI_comp [label=NHUMEMI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="0.365 * 0.16 * (PROTINTAKE_min + (PROTINTAKE_max - PROTINTAKE_min) * (GDPC_PPP / GDPC_PPP_max) ** (0.3))" peripheries=1 shape=rectangle style=""]
 	PHUMANEMI [label=PHUMANEMI color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Human phosphorous emissions 
  (PHUMANEMI) 
  kg/capita" peripheries=1 shape=rectangle style=filled]
 	PHUMANEMI_comp [label=PHUMANEMI_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="1/6 * NHUMEMI" peripheries=1 shape=rectangle style=""]
-	PCONSEW [label=PCONSEW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution from connected sewage network 
- (PCONSEW) 
- kg" peripheries=1 shape=rectangle style=filled]
-	PCONSEW_comp [label=PCONSEW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(1 - WASTEWATTREATEFF) * PHUMANEMI * SEWSYSPOPi" peripheries=1 shape=rectangle style=""]
-	NCONSEW [label=NCONSEW color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution from connected sewage network 
- (NCONSEW) 
- kg" peripheries=1 shape=rectangle style=filled]
-	NCONSEW_comp [label=NCONSEW_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="WASTEWATTREATEFF *  NHUMEMI * SEWSYSPOPi" peripheries=1 shape=rectangle style=""]
-	NOPENDEFF [label=NOPENDEFF color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution from open defecation 
- (NOPENDEFF) 
- kg" peripheries=1 shape=rectangle style=filled]
-	NOPENDEFF_comp [label=NOPENDEFF_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NHUMEMI *  OPENDEFPOPi" peripheries=1 shape=rectangle style=""]
-	POPENDEFF [label=POPENDEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution from open defecation 
- (POPENDEFF) 
- kg" peripheries=1 shape=rectangle style=filled]
-	PRIVER [label=PRIVER color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution to river system 
- (PRIVER) 
- kg" peripheries=1 shape=rectangle style=filled]
-	PRIVER_comp [label=PRIVER_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PCONSEW + POPENDEFF" peripheries=1 shape=rectangle style=""]
-	NRIVER [label=NRIVER color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution to river system 
- (NRIVER) 
- kg" peripheries=1 shape=rectangle style=filled]
-	NRIVER_comp [label=NRIVER_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NOPENDEFF + NCONSEW" peripheries=1 shape=rectangle style=""]
-	BASINAREAi [label=BASINAREAi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Sub basin area per basin 
- (BASINAREAi) 
- km2" peripheries=1 shape=rectangle style=filled]
-	PLOADi [label=PLOADi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Phosphorous pollution per basin area 
- (PLOADi) 
- kg/km2" peripheries=1 shape=rectangle style=filled]
-	PLOADi_comp [label=PLOADi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="PRIVER / BASINAREAi" peripheries=1 shape=rectangle style=""]
-	NLOADi [label=NLOADi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Nitrogen pollution per basin area 
- (NLOADi) 
- kg/km2" peripheries=1 shape=rectangle style=filled]
-	NLOADi_comp [label=NLOADi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="NRIVER / BASINAREAi" peripheries=1 shape=rectangle style=""]
-	OPENDEF -> OPENDEFPOPi_comp [color="#A9A9A9"]
-	Pop -> OPENDEFPOPi_comp [color="#A9A9A9"]
-	Pop -> SEWSYSPOPi_comp [color="#A9A9A9"]
-	URBRUPOPi -> OPENDEFPOPi_comp [color="#A9A9A9"]
-	URBRUPOPi -> SEWSYSPOPi_comp [color="#A9A9A9"]
-	OPENDEFPOPi -> NOPENDEFF_comp [color="#A9A9A9"]
-	OPENDEFPOPi_comp -> OPENDEFPOPi [color="#A9A9A9"]
-	SEWREMEFFi -> WASTEWATTREATEFF_comp [color="#A9A9A9"]
-	WASTEWATTREATDISi -> WASTEWATTREATEFF_comp [color="#A9A9A9"]
-	WASTEWATTREATEFF -> PCONSEW_comp [color="#A9A9A9"]
-	WASTEWATTREATEFF -> NCONSEW_comp [color="#A9A9A9"]
-	WASTEWATTREATEFF_comp -> WASTEWATTREATEFF [color="#A9A9A9"]
-	CONSEWSYS -> SEWSYSPOPi_comp [color="#A9A9A9"]
-	SEWSYSPOPi -> PCONSEW_comp [color="#A9A9A9"]
-	SEWSYSPOPi -> NCONSEW_comp [color="#A9A9A9"]
-	SEWSYSPOPi_comp -> SEWSYSPOPi [color="#A9A9A9"]
-	GDPCPPP -> NPROTINTAKE_comp [color="#A9A9A9"]
-	NPROTINTAKE -> NHUMEMI_comp [color="#A9A9A9"]
-	NPROTINTAKE_comp -> NPROTINTAKE [color="#A9A9A9"]
-	NPROTCONTENT -> NPROTINTAKE_comp [color="#A9A9A9"]
+	CRYPTOEXCR [label=CRYPTOEXCR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Crypto emissions 
+ (CRYPTOEXCR) 
+ oocyst" peripheries=1 shape=rectangle style=filled]
+	POP_grid_san [label=POP_grid_san color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Population per sanitation type per grid 
+ (POP_grid_san) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	POP_grid_con [label=POP_grid_con color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population connected to sewage per sanitation type per grid 
+ (POP_grid_con) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	POP_grid_con_comp [label=POP_grid_con_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="POP_grid_san.loc[:, :, :, :,  ['Sewer connections'], :]" peripheries=1 shape=rectangle style=""]
+	POP_grid_noncon [label=POP_grid_noncon color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Population not connected to sewage per sanitation type per grid 
+ (POP_grid_noncon) 
+ capita" peripheries=1 shape=rectangle style=filled]
+	POP_grid_noncon_comp [label=POP_grid_noncon_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="POP_grid_san.loc[:, :, :, :,  ['Open defecation', 'Unimproved'], :]" peripheries=1 shape=rectangle style=""]
+	WATERPOLEMi [label=WATERPOLEMi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Water pollutant emissions per pollutant type 
+ (WATERPOLEMi) 
+ kg or oocyst" peripheries=1 shape=rectangle style=filled]
+	WATERPOLEMi_comp [label=WATERPOLEMi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="pd.concat([CRYPTOEXCR, PHUMANEMI, NHUMEMI], keys=['cryptosporidium', 'phosphorus', 'nitrogen'], names=['pollutant'])" peripheries=1 shape=rectangle style=""]
+	WATERTREATEFFi [label=WATERTREATEFFi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Water treatment efficiency 
+ (WATERTREATEFFi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	POLLUTEFFi [label=POLLUTEFFi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Pollutant removal efficiency 
+ (POLLUTEFFi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	WASTEWATTREATEFFi [label=WASTEWATTREATEFFi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Pollutant removal efficiency of waste water treatment by pollutant 
+ (WASTEWATTREATEFFi) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	WASTEWATTREATEFFi_comp [label=WASTEWATTREATEFFi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(WATERTREATEFFi * POLLUTEFFi).groupby(['ISO', 'pollutant']).sum()" peripheries=1 shape=rectangle style=""]
+	WATPOL_con [label=WATPOL_con color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Pollution from connected sewage 
+ (WATPOL_con) 
+ kg or oocyst" peripheries=1 shape=rectangle style=filled]
+	WATPOL_con_comp [label=WATPOL_con_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="((1 - WASTEWATTREATEFFi) * WATERPOLEMi * POP_grid_con).dropna()" peripheries=1 shape=rectangle style=""]
+	WATPOL_noncon [label=WATPOL_noncon color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Pollution from non connected sewage 
+ (WATPOL_noncon) 
+ kg or oocyst" peripheries=1 shape=rectangle style=filled]
+	WATPOL_noncon_comp [label=WATPOL_noncon_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="(WATERPOLEMi * POP_grid_noncon).dropna()" peripheries=1 shape=rectangle style=""]
+	PROTINTAKE -> PROTINTAKE_min_comp [color="#A9A9A9"]
+	PROTINTAKE -> PROTINTAKE_max_comp [color="#A9A9A9"]
+	GDPC_PPP -> GDPC_PPP_max_comp [color="#A9A9A9"]
+	GDPC_PPP -> NHUMEMI_comp [color="#A9A9A9"]
+	PROTINTAKE_min -> NHUMEMI_comp [color="#A9A9A9"]
+	PROTINTAKE_min_comp -> PROTINTAKE_min [color="#A9A9A9"]
+	PROTINTAKE_max -> NHUMEMI_comp [color="#A9A9A9"]
+	PROTINTAKE_max_comp -> PROTINTAKE_max [color="#A9A9A9"]
+	GDPC_PPP_max -> NHUMEMI_comp [color="#A9A9A9"]
+	GDPC_PPP_max_comp -> GDPC_PPP_max [color="#A9A9A9"]
 	NHUMEMI -> PHUMANEMI_comp [color="#A9A9A9"]
-	NHUMEMI -> NCONSEW_comp [color="#A9A9A9"]
-	NHUMEMI -> NOPENDEFF_comp [color="#A9A9A9"]
+	NHUMEMI -> WATERPOLEMi_comp [color="#A9A9A9"]
 	NHUMEMI_comp -> NHUMEMI [color="#A9A9A9"]
-	PHUMANEMI -> PCONSEW_comp [color="#A9A9A9"]
+	PHUMANEMI -> WATERPOLEMi_comp [color="#A9A9A9"]
 	PHUMANEMI_comp -> PHUMANEMI [color="#A9A9A9"]
-	PCONSEW -> PRIVER_comp [color="#A9A9A9"]
-	PCONSEW_comp -> PCONSEW [color="#A9A9A9"]
-	NCONSEW -> NRIVER_comp [color="#A9A9A9"]
-	NCONSEW_comp -> NCONSEW [color="#A9A9A9"]
-	NOPENDEFF -> NRIVER_comp [color="#A9A9A9"]
-	NOPENDEFF_comp -> NOPENDEFF [color="#A9A9A9"]
-	POPENDEFF -> PRIVER_comp [color="#A9A9A9"]
-	PRIVER -> PLOADi_comp [color="#A9A9A9"]
-	PRIVER_comp -> PRIVER [color="#A9A9A9"]
-	NRIVER -> NLOADi_comp [color="#A9A9A9"]
-	NRIVER_comp -> NRIVER [color="#A9A9A9"]
-	BASINAREAi -> PLOADi_comp [color="#A9A9A9"]
-	BASINAREAi -> NLOADi_comp [color="#A9A9A9"]
-	PLOADi_comp -> PLOADi [color="#A9A9A9"]
-	NLOADi_comp -> NLOADi [color="#A9A9A9"]
+	CRYPTOEXCR -> WATERPOLEMi_comp [color="#A9A9A9"]
+	POP_grid_san -> POP_grid_con_comp [color="#A9A9A9"]
+	POP_grid_san -> POP_grid_noncon_comp [color="#A9A9A9"]
+	POP_grid_con -> WATPOL_con_comp [color="#A9A9A9"]
+	POP_grid_con_comp -> POP_grid_con [color="#A9A9A9"]
+	POP_grid_noncon -> WATPOL_noncon_comp [color="#A9A9A9"]
+	POP_grid_noncon_comp -> POP_grid_noncon [color="#A9A9A9"]
+	WATERPOLEMi -> WATPOL_con_comp [color="#A9A9A9"]
+	WATERPOLEMi -> WATPOL_noncon_comp [color="#A9A9A9"]
+	WATERPOLEMi_comp -> WATERPOLEMi [color="#A9A9A9"]
+	WATERTREATEFFi -> WASTEWATTREATEFFi_comp [color="#A9A9A9"]
+	POLLUTEFFi -> WASTEWATTREATEFFi_comp [color="#A9A9A9"]
+	WASTEWATTREATEFFi -> WATPOL_con_comp [color="#A9A9A9"]
+	WASTEWATTREATEFFi_comp -> WASTEWATTREATEFFi [color="#A9A9A9"]
+	WATPOL_con_comp -> WATPOL_con [color="#A9A9A9"]
+	WATPOL_noncon_comp -> WATPOL_noncon [color="#A9A9A9"]
 }

@@ -1,0 +1,140 @@
+digraph {
+	graph [splines=ortho]
+	SOLARCAPACITY [label=SOLARCAPACITY color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Solar cumulative capacity 
+ (SOLARCAPACITY) 
+ GW" peripheries=1 shape=rectangle style=filled]
+	SOLARCAPFACTOR [label=SOLARCAPFACTOR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Solar capacity factor 
+ (SOLARCAPFACTOR) 
+ %" peripheries=1 shape=rectangle style=filled]
+	SOLARHOURS [label=SOLARHOURS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Solar generation time 
+ (SOLARHOURS) 
+ hours" peripheries=1 shape=rectangle style=filled]
+	SOLARGENERATION [label=SOLARGENERATION color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar generation 
+ (SOLARGENERATION) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	SOLARGENERATION_comp [label=SOLARGENERATION_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARHOURS * SOLARCAPFACTOR * SOLARCAPACITY" peripheries=1 shape=rectangle style=""]
+	SOLARLANDREQ [label=SOLARLANDREQ color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="land requirement per GW of solar plant 
+ (SOLARLANDREQ) 
+ ha / GW" peripheries=1 shape=rectangle style=filled]
+	SOLARLAND [label=SOLARLAND color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Solar PV land requirement 
+ (SOLARLAND) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	SOLARLAND_comp [label=SOLARLAND_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="SOLARGENERATION * SOLARLANDREQ" peripheries=1 shape=rectangle style=""]
+	COALCAPACITY [label=COALCAPACITY color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Coal cumulative capacity 
+ (COALCAPACITY) 
+ GW" peripheries=1 shape=rectangle style=filled]
+	COALGENERATION [label=COALGENERATION color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Coal generation 
+ (COALGENERATION) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	COALGENERATION_comp [label=COALGENERATION_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALCAPTGENERATION + COALUTILGENERATION * (1 - OWNUSEFRAC)" peripheries=1 shape=rectangle style=""]
+	OWNUSEFRAC [label=OWNUSEFRAC color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Fraction of energy for own use 
+ (OWNUSEFRAC) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	COALEFF [label=COALEFF color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Coal thermal conversion efficiency 
+ (COALEFF) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	COALFUEL [label=COALFUEL color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Fuel required for coal generation 
+ (COALFUEL) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	COALFUEL_comp [label=COALFUEL_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALEFF * COALGENERATION" peripheries=1 shape=rectangle style=""]
+	COALEMISSIONSi [label=COALEMISSIONSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="C02, CH4, NO2 emissions 
+ (COALEMISSIONSi) 
+ Mt CO2eq" peripheries=1 shape=rectangle style=filled]
+	COALEMISSIONSi_comp [label=COALEMISSIONSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALFUEL * COALEMFACTORi" peripheries=1 shape=rectangle style=""]
+	COALLANDREQ [label=COALLANDREQ color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="land requirement per GW of coal plant 
+ (COALLANDREQ) 
+ ha / GW" peripheries=1 shape=rectangle style=filled]
+	COALEMFACTORi [label=COALEMFACTORi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas emission factors 
+ (COALEMFACTORi) 
+ Mt CO2eq / TWh" peripheries=1 shape=rectangle style=filled]
+	COALLAND [label=COALLAND color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Coal plant land requirement 
+ (COALLAND) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	COALLAND_comp [label=COALLAND_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALCAPACITY * COALLANDREQ" peripheries=1 shape=rectangle style=""]
+	COALUTILCAPFACTOR [label=COALUTILCAPFACTOR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Coal plant capacity factor utility 
+ (COALUTILCAPFACTOR) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	COALCAPTCAPFACTOR [label=COALCAPTCAPFACTOR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Coal plant capacity factor captive 
+ (COALCAPTCAPFACTOR) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	COALHOURS [label=COALHOURS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Coal generation time 
+ (COALHOURS) 
+ hours" peripheries=1 shape=rectangle style=filled]
+	COALUTILGENERATION [label=COALUTILGENERATION color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Coal generation for utilities 
+ (COALUTILGENERATION) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	COALUTILGENERATION_comp [label=COALUTILGENERATION_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALHOURS * COALUTILCAPFACTOR * COALCAPACITY" peripheries=1 shape=rectangle style=""]
+	COALCAPTGENERATION [label=COALCAPTGENERATION color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Coal generation for captive 
+ (COALCAPTGENERATION) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	COALCAPTGENERATION_comp [label=COALCAPTGENERATION_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="COALHOURS * COALCAPTCAPFACTOR * COALCAPACITY" peripheries=1 shape=rectangle style=""]
+	GASCAPACITY [label=GASCAPACITY color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas cumulative capacity 
+ (GASCAPACITY) 
+ GW" peripheries=1 shape=rectangle style=filled]
+	GASCAPFACTOR [label=GASCAPFACTOR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas capacity factor 
+ (GASCAPFACTOR) 
+ %" peripheries=1 shape=rectangle style=filled]
+	GASHOURS [label=GASHOURS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas generation time 
+ (GASHOURS) 
+ hours" peripheries=1 shape=rectangle style=filled]
+	GASEFFICIENCY [label=GASEFFICIENCY color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas conversion efficiency 
+ (GASEFFICIENCY) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	GASFUEL [label=GASFUEL color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Fuel required for gas generation 
+ (GASFUEL) 
+ TWh" peripheries=1 shape=rectangle style=filled]
+	GASFUEL_comp [label=GASFUEL_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GASCAPACITY  * GASCAPFACTOR * GASHOURS / GASEFFICIENCY" peripheries=1 shape=rectangle style=""]
+	GASEMFACTORi [label=GASEMFACTORi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Gas emission factors 
+ (GASEMFACTORi) 
+ Mt CO2eq / TWh" peripheries=1 shape=rectangle style=filled]
+	GASEMISSIONSi [label=GASEMISSIONSi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="C02, CH4, NO2 emissions 
+ (GASEMISSIONSi) 
+ Mt CO2eq" peripheries=1 shape=rectangle style=filled]
+	GASEMISSIONSi_comp [label=GASEMISSIONSi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GASEMFACTORi * GASFUEL" peripheries=1 shape=rectangle style=""]
+	GASLANDREQ [label=GASLANDREQ color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="land requirement per GW of gas plant 
+ (GASLANDREQ) 
+ ha / GW" peripheries=1 shape=rectangle style=filled]
+	GASLAND [label=GASLAND color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Gas land requirement 
+ (GASLAND) 
+ ha" peripheries=1 shape=rectangle style=filled]
+	GASLAND_comp [label=GASLAND_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="GASLANDREQ * GASFUEL" peripheries=1 shape=rectangle style=""]
+	SOLARCAPACITY -> SOLARGENERATION_comp [color="#A9A9A9"]
+	SOLARCAPFACTOR -> SOLARGENERATION_comp [color="#A9A9A9"]
+	SOLARHOURS -> SOLARGENERATION_comp [color="#A9A9A9"]
+	SOLARGENERATION -> SOLARLAND_comp [color="#A9A9A9"]
+	SOLARGENERATION_comp -> SOLARGENERATION [color="#A9A9A9"]
+	SOLARLANDREQ -> SOLARLAND_comp [color="#A9A9A9"]
+	SOLARLAND_comp -> SOLARLAND [color="#A9A9A9"]
+	COALCAPACITY -> COALLAND_comp [color="#A9A9A9"]
+	COALCAPACITY -> COALUTILGENERATION_comp [color="#A9A9A9"]
+	COALCAPACITY -> COALCAPTGENERATION_comp [color="#A9A9A9"]
+	COALGENERATION -> COALFUEL_comp [color="#A9A9A9"]
+	COALGENERATION_comp -> COALGENERATION [color="#A9A9A9"]
+	OWNUSEFRAC -> COALGENERATION_comp [color="#A9A9A9"]
+	COALEFF -> COALFUEL_comp [color="#A9A9A9"]
+	COALFUEL -> COALEMISSIONSi_comp [color="#A9A9A9"]
+	COALFUEL_comp -> COALFUEL [color="#A9A9A9"]
+	COALEMISSIONSi_comp -> COALEMISSIONSi [color="#A9A9A9"]
+	COALLANDREQ -> COALLAND_comp [color="#A9A9A9"]
+	COALEMFACTORi -> COALEMISSIONSi_comp [color="#A9A9A9"]
+	COALLAND_comp -> COALLAND [color="#A9A9A9"]
+	COALUTILCAPFACTOR -> COALUTILGENERATION_comp [color="#A9A9A9"]
+	COALCAPTCAPFACTOR -> COALCAPTGENERATION_comp [color="#A9A9A9"]
+	COALHOURS -> COALUTILGENERATION_comp [color="#A9A9A9"]
+	COALHOURS -> COALCAPTGENERATION_comp [color="#A9A9A9"]
+	COALUTILGENERATION -> COALGENERATION_comp [color="#A9A9A9"]
+	COALUTILGENERATION_comp -> COALUTILGENERATION [color="#A9A9A9"]
+	COALCAPTGENERATION -> COALGENERATION_comp [color="#A9A9A9"]
+	COALCAPTGENERATION_comp -> COALCAPTGENERATION [color="#A9A9A9"]
+	GASCAPACITY -> GASFUEL_comp [color="#A9A9A9"]
+	GASCAPFACTOR -> GASFUEL_comp [color="#A9A9A9"]
+	GASHOURS -> GASFUEL_comp [color="#A9A9A9"]
+	GASEFFICIENCY -> GASFUEL_comp [color="#A9A9A9"]
+	GASFUEL -> GASEMISSIONSi_comp [color="#A9A9A9"]
+	GASFUEL -> GASLAND_comp [color="#A9A9A9"]
+	GASFUEL_comp -> GASFUEL [color="#A9A9A9"]
+	GASEMFACTORi -> GASEMISSIONSi_comp [color="#A9A9A9"]
+	GASEMISSIONSi_comp -> GASEMISSIONSi [color="#A9A9A9"]
+	GASLANDREQ -> GASLAND_comp [color="#A9A9A9"]
+	GASLAND_comp -> GASLAND [color="#A9A9A9"]
+}

@@ -1,0 +1,30 @@
+digraph {
+	graph [splines=ortho]
+	NTRACTORS [label=NTRACTORS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Number of tractors 
+ (NTRACTORS) 
+ 1" peripheries=1 shape=rectangle style=filled]
+	FUELTRACTORS [label=FUELTRACTORS color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Diesel demand for 1 tractor 
+ (FUELTRACTORS) 
+ litres / hour" peripheries=1 shape=rectangle style=filled]
+	USETRACTOR [label=USETRACTOR color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Number of hours of use of a tractor 
+ (USETRACTOR) 
+ hour" peripheries=1 shape=rectangle style=filled]
+	FUELTRACTOR [label=FUELTRACTOR color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="Diesel required for tractors 
+ (FUELTRACTOR) 
+ bcm" peripheries=1 shape=rectangle style=filled]
+	FUELTRACTOR_comp [label=FUELTRACTOR_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="USETRACTOR * FUELTRACTORS * NTRACTORS" peripheries=1 shape=rectangle style=""]
+	TRACTOREMFACTORi [label=TRACTOREMFACTORi color="#eeeeee" fillcolor="#e76f51" fontcolor="#eeeeee" fontname=roboto label="Tractor emissions factors 
+ (TRACTOREMFACTORi) 
+ Mt CO2eq / bcm" peripheries=1 shape=rectangle style=filled]
+	EMISSIONTRACTORi [label=EMISSIONTRACTORi color="#eeeeee" fillcolor="#f4a261" fontcolor="#eeeeee" fontname=roboto label="C02, CH4, NO2 emissions 
+ (EMISSIONTRACTORi) 
+ Mt CO2eq" peripheries=1 shape=rectangle style=filled]
+	EMISSIONTRACTORi_comp [label=EMISSIONTRACTORi_comp color="#A9A9A9" fillcolor="#e76f51" fontcolor="#000000" fontname=roboto label="FUELTRACTOR * TRACTOREMFACTORi" peripheries=1 shape=rectangle style=""]
+	NTRACTORS -> FUELTRACTOR_comp [color="#A9A9A9"]
+	FUELTRACTORS -> FUELTRACTOR_comp [color="#A9A9A9"]
+	USETRACTOR -> FUELTRACTOR_comp [color="#A9A9A9"]
+	FUELTRACTOR -> EMISSIONTRACTORi_comp [color="#A9A9A9"]
+	FUELTRACTOR_comp -> FUELTRACTOR [color="#A9A9A9"]
+	TRACTOREMFACTORi -> EMISSIONTRACTORi_comp [color="#A9A9A9"]
+	EMISSIONTRACTORi_comp -> EMISSIONTRACTORi [color="#A9A9A9"]
+}
