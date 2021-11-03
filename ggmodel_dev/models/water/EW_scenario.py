@@ -42,7 +42,7 @@ def run_scenario(data_dict, WP_rate=1.0, WRR_rate=1.00, IRRTECH_sprinkler=10, IR
     
     scenario_projection_dict = {
         'WP': lambda x: apply_annual_rate_projection(x, WP_rate),
-        'WRR': lambda x: apply_annual_rate_projection(x, WRR_rate),
+        #'WRR': lambda x: apply_annual_rate_projection(x, WRR_rate),
         'IRRTECHi': lambda x: IRRTECH_projection(x, IRRTECH_sprinkler, IRRTECH_surface, IRRTECH_drip),
     }
     
