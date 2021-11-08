@@ -57,8 +57,13 @@ def run_all_scenarios(data_dict, args_dict_1, args_dict_2):
     scenarios_results = {}
 
     data_dict = run_projection(PROJECTION_DICT, data_dict)
-
-    scenarios_results['BAU'] = run_scenario(data_dict)
+    # to be cleanup !
+    irrtech = (data_dict['IRRTECHi'] * 100).round(1)
+    sprinkler = irrtech.loc[:, 2017, 'Sprinkler'].values[0]
+    surface = irrtech.loc[:, 2017, 'Surface'].values[0]
+    drip =  irrtech.loc[:, 2017, 'Drip'].values[0]
+    ###
+    scenarios_results['BAU'] = run_scenario(data_dict, IRRTECH_sprinkler=sprinkler, IRRTECH_surface=surface, IRRTECH_drip=drip)
     scenarios_results['scenario_one'] = run_scenario(data_dict, **args_dict_1)
     scenarios_results['scenario_two'] = run_scenario(data_dict, **args_dict_2)
 
