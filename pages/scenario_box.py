@@ -52,11 +52,11 @@ def water_scenario_box(scenario_id='_one'):
             html.P('Irrigation technologies share',
                    style={'font-size': 17}),
             html.P('Sprinkler',style={'font-size': 12}),
-            dcc.Input(id=f'IRRTECH_sprinkler{scenario_id}', type='number', placeholder="Sprinkler", min=0, max=100, step=1, value=10),
+            dcc.Input(id=f'IRRTECH_sprinkler{scenario_id}', type='number', placeholder="Sprinkler", min=0, max=100, step=0.1, value=10),
             html.P('Surface',style={'font-size': 12}),
-            dcc.Input(id=f'IRRTECH_surface{scenario_id}', type='number', placeholder="Surface", min=0, max=100, step=1, value=80),
+            dcc.Input(id=f'IRRTECH_surface{scenario_id}', type='number', placeholder="Surface", min=0, max=100, step=0.1, value=80),
             html.P('Drip',style={'font-size': 12}),
-            dcc.Input(id=f'IRRTECH_drip{scenario_id}', type='number', placeholder="Drip", min=0, max=100, step=1, value=10)
+            dcc.Input(id=f'IRRTECH_drip{scenario_id}', type='number', placeholder="Drip", min=0, max=100, step=0.1, value=10)
     ],
         className='row')
 

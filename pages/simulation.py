@@ -332,3 +332,26 @@ def downdload_table(box_1, box_2, ISO, model, n_clicks):
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise PreventUpdate
 
+
+
+# might be helpful to generalize this for any variable
+@app.callback(
+    Output("IRRTECH_sprinkler_one", "value"),
+    Output("IRRTECH_surface_one", "value"),
+    Output("IRRTECH_drip_one", "value"),
+    Output("IRRTECH_sprinkler_two", "value"),
+    Output("IRRTECH_surface_two", "value"),
+    Output("IRRTECH_drip_two", "value"),
+    [
+        Input('ISO_run_results', 'value'),
+        Input('dropdown-simulation-model', 'value'),
+    ],
+)
+def update_EW_display(ISO, model):
+    if model == 'EW_models':
+        data = (scenario_data_dictionnary['EW_models']['IRRTECHi'] * 100).round(1)
+        sprinkler = data.loc[ISO, 2017, 'Sprinkler']
+        surface = data.loc[ISO, 2017, 'Surface']
+        drip =  data.loc[ISO, 2017, 'Drip']
+        return sprinkler, surface, drip, sprinkler, surface, drip
+
