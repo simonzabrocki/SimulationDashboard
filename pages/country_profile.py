@@ -72,7 +72,7 @@ def HTML_text(ISO):
                             html.Button(f'Download {Country}\'s data', id='btn-country-data', n_clicks=0,
                                 style={'font-size': 10,
                                         'color': '#ffffff',}),
-                            # dcc.Download(id="download-country-data"),
+                            dcc.Download(id="download-country-data"),
                             # html.Button(f'Download {Country}\'s report', id='btn-html-report', n_clicks=0,
                             #     style={'font-size': 10,
                             #             'color': '#ffffff',}),
