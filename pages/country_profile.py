@@ -365,6 +365,8 @@ def time_series_Index(ISO):
     df = pd.concat([df, group_df])
 
     df = df.round(2)
+
+    df = df.query("Year > 2009")
     continent = df.Continent.values[0]
 
     if df[df.ISO == ISO].shape[0] == 0:
