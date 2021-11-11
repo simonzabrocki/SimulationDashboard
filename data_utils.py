@@ -80,7 +80,6 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
 
     
     total_points = (indicator_properties.groupby('Category').Indicator.count() * (max_year - min_year + 1))
-    print(total_points)
     
     df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
     
