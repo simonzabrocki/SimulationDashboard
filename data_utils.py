@@ -95,6 +95,10 @@ def load_all_data(max_year=2019):
 
     indicator_data, indicator_properties, dimension_properties = load_indicator_data()
 
+    indicator_data = indicator_data.query("Indicator not in ['GJ2', 'GT2', 'GV2', 'GN1']").replace("GN2", 'GN1')
+    indicator_properties = indicator_properties.query("Indicator not in ['GJ2', 'GT2', 'GV2', 'GN1']").replace("GN2", 'GN1')
+    data = data.query("Variable not in ['GJ2', 'GT2', 'GV2', 'GN1']").replace("GN2", 'GN1')
+
     data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(
     ), left_on='Variable', right_on='Category', how='left')
 
