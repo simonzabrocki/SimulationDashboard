@@ -112,6 +112,24 @@ def Table(data):
     return table
 
 
+# To put elsewhere
+def get_text_metrics(data):
+    index_2020 = data.query("Aggregation == 'Index' and Year == 2020")
+
+    n_ISO_continent = index_2020.groupby('Continent').apply(lambda x: x.ISO.unique().shape[0])
+    n_ISO = n_ISO_continent.sum()
+    n_high_score = index_2020.query('Value > 60 and Value < 80').shape[0]
+    n_low_score = index_2020.query('Value > 20 and Value < 40').shape[0]
+    
+    n_very_low_score = index_2020.query('Value < 20').shape[0]
+    
+    top_country = index_2020.sort_values(by="Value", ascending=False).head(1)
+    return n_ISO, n_ISO_continent, n_high_score, n_low_score, n_very_low_score, top_country
+
+
+n_ISO, n_ISO_continent, n_high_score, n_low_score, n_very_low, top_country = get_text_metrics(data)
+
+
 layout = html.Div(
     [
         html.Div([
@@ -129,7 +147,7 @@ layout = html.Div(
                                 html.P("Green Growth Index measures country performance in achieving sustainability targets including Sustainable Development Goals, Paris Climate Agreement, and Aichi Biodiversity Targets for four green growth dimensions: efficient and sustainable resource use, natural capital protection, green economic opportunities and social inclusion.",
                                        style={"color": "#ffffff", 'font-size': '15px'},),
                                 html.Br([]),
-                                html.P("In 2019, there are 117 countries with scores for the Green Growth Index, with 24 countries in Africa, 20 countries in the Americas, 33 countries in Asia, 38 countries in Europe, and only two in Oceania. The scores of almost half of the countries are in the middle range, between 40 and 60, covering about 77 million m2 of the global land area. There are 32 countries that reached a high score between 60 and 80, many of them are in Europe. Those 30 countries with low scores, between 20 and 40, are mainly from Africa and Asia. While there are no countries with very low scores of below 20, none has also received a very high score of over 80 in 2019. Sweden, located in Northern Europe, has the highest Green Growth Index with a score of 78.72, which is still further away from reaching the sustainability target of 100.",
+                                html.P(f"In {INDEX_YEAR}, there are {n_ISO} countries with scores for the Green Growth Index, with {n_ISO_continent.loc['Africa']} countries in Africa, {n_ISO_continent.loc['Americas']} countries in the Americas, {n_ISO_continent.loc['Asia']} countries in Asia, {n_ISO_continent.loc['Europe']} countries in Europe, and only {n_ISO_continent.loc['Oceania']} in Oceania. The scores of almost half of the countries are in the middle range, between 40 and 60, covering about 77 million m2 of the global land area. There are {n_high_score} countries that reached a high score between 60 and 80, many of them are in Europe. Those {n_low_score} countries with low scores, between 20 and 40, are mainly from Africa and Asia. There are no countries with very low scores of below 20. {top_country['Country'].iloc[0]}, located in {top_country['UNregion'].iloc[0]}, has the highest Green Growth Index with a score of {top_country['Value'].iloc[0]}, which is still further away from reaching the sustainability target of 100.",
                                        style={"color": "#ffffff", 'font-size': '15px'}),
                             ],
                             className="product",
