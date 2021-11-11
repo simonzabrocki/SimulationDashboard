@@ -36,7 +36,43 @@ AGRI_nodes = {
     }
 }
 
-DEMANDE_nodes = concatenate_graph_specs([AGRI_nodes])
+
+RESIDENTIAL_nodes = {
+    'NHOUSEHOLD':{
+        'type': 'input',
+        'name': 'Number of household by rural/urban',
+        'unit':'households',
+    },
+    'HOURUSAGE':{
+        'type': 'input',
+        'name': 'Weighted hours of usage',
+        'unit': 'hours',
+    },
+    'HOUSEHOLDUSAGEi':{
+        'type': 'input',
+        'name': 'Percentage of households using appliances by appliances and rural/urban',
+        'unit': '%'
+        
+    },
+    'APPEFFICENCYi':{
+        'type': 'input',
+        'name': 'Weighted average efficiency by appliance by appliance',
+        'unit': '%'
+    },
+    'APPDEMANDi':{
+        'type': 'input',
+        'name': 'Energy demand by appliance',
+        'unit': 'TWh'
+    },
+    'APPCONSUMPi':{
+        'type': 'input',
+        'name': 'Average comsumption by appliance',
+        'unit': 'W'
+    }
+}
+
+
+DEMANDE_nodes = concatenate_graph_specs([AGRI_nodes, RESIDENTIAL_nodes])
 
 DEMAND_model = GraphModel(DEMANDE_nodes)
 
