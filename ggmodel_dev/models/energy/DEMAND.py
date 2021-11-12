@@ -52,7 +52,11 @@ RESIDENTIAL_nodes = {
         'type': 'input',
         'name': 'Percentage of households using appliances by appliances and rural/urban',
         'unit': '%'
-        
+    },
+    'NAPPLIANCE':{
+        'type': 'input',
+        'name': 'Number of appliancces by appliance', 
+        'unit': 'count'
     },
     'APPEFFICENCYi':{
         'type': 'input',
@@ -60,9 +64,10 @@ RESIDENTIAL_nodes = {
         'unit': '%'
     },
     'APPDEMANDi':{
-        'type': 'input',
+        'type': 'variable',
         'name': 'Energy demand by appliance',
-        'unit': 'TWh'
+        'unit': 'TWh',
+        'computation': lambda HOURUSAGE, APPCONSUMPi, NAPPLIANCE, **kwargs: HOURUSAGE * APPCONSUMPi * NAPPLIANCE
     },
     'APPCONSUMPi':{
         'type': 'input',
