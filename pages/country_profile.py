@@ -529,6 +529,34 @@ def Indicator_lolipop(ISO):
     return fig
 
 
+def heatmap_plot(ISO):
+    REF_1 = 'AVG_' + "_".join(data[data.ISO == ISO][["IncomeLevel"]
+                                                    ].drop_duplicates().values[0].tolist())
+    REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
+                                                    ].drop_duplicates().values[0].tolist())
+
+    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
+              (data.Aggregation == 'Category') & (data.Year == INDEX_YEAR)].fillna(0)
+
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (
+        group_data.Aggregation == 'Category') & (group_data.Year == INDEX_YEAR)].fillna(0)
+
+    df = pd.concat([df, group_df, df[['Variable']].assign(ISO=' ', Value=np.nan)])
+
+    df = df.round(2)
+    
+    df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2]]
+    
+    fig = px.imshow(df,
+          zmin=0, zmax=100,
+          color_continuous_scale=[(0, "#f14326"),
+                                  (0.25, "#fc8d59"),
+                                  (0.5, "#ffffbf"),
+                                  (1, "#14ac9c")],
+    )
+    return fig
+
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Country Profile')]),
