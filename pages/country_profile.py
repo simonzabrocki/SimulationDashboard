@@ -546,14 +546,21 @@ def heatmap_plot(ISO):
     df = df.round(2)
     
     df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2]]
-    
-    fig = px.imshow(df,
+    cats = ['AB', 'GB', 'SE', 'SP',
+            'EQ', 'GE', 'BE', 'CV',
+            'EE', 'EW', 'SL', 'ME',
+            'GV', 'GT', 'GJ', 'GN']
+
+    fig = px.imshow(df[cats],
           zmin=0, zmax=100,
           color_continuous_scale=[(0, "#f14326"),
                                   (0.25, "#fc8d59"),
                                   (0.5, "#ffffbf"),
                                   (1, "#14ac9c")],
     )
+
+    fig.update_yaxes(showgrid=False)
+    fig.update_xaxes(showgrid=False)
     return fig
 
 
@@ -619,6 +626,16 @@ layout = html.Div(
                                                   config=dcc_config('categories')),
                                     ],
                                     className="six columns",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H6([f"{INDEX_YEAR} Heatmap"],
+                                                className="subtitle padded"),
+                                        dcc.Graph(id='heatmap_ISO',
+                                                  config=dcc_config('indicators')),
+
+                                    ],
+                                    className="twelve columns",
                                 ),
                                 html.Div(
                                     [
@@ -689,6 +706,15 @@ def update_ts_ind(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_loliplot(ISO):
     return dcc_config(f'dimensions_{ISO}'), loliplot(ISO)
+
+
+
+@app.callback(
+    dash.dependencies.Output('heatmap_ISO', 'config'),
+    dash.dependencies.Output('heatmap_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    return dcc_config(f'heatmap_{ISO}'), heatmap_plot(ISO)
 
 
 @app.callback(
