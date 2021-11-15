@@ -270,12 +270,14 @@ def region_table(data, Continent='Africa'):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([Continent]))].pivot(
         index=['Country', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
+    table_df['Rank'] = table_df.Index.rank(ascending=False)
 
     header_name = {'Index': 'Index',
                    'ESRU': 'Efficient and sustainable resource use',
                    'NCP': 'Natural capital protection',
                    'SI': 'Social inclusion',
-                   'GEO': 'Green economic opportunities'
+                   'GEO': 'Green economic opportunities',
+                   'Rank': 'Rank'
                    }
 
     table = dash_table.DataTable(id='continent-table',
@@ -302,7 +304,7 @@ def region_table(data, Continent='Africa'):
                                              'border': '0px solid rgb(0, 0, 0, 0.1)',
                                              'opacity': '0.7',
                                              },
-                                 style_data_conditional=conditional_color_col('Index') + conditional_color_col('ESRU') + conditional_color_col('NCP') + conditional_color_col('SI') + conditional_color_col('GEO'),
+                                style_data_conditional=conditional_color_col('Index') + conditional_color_col('ESRU') + conditional_color_col('NCP') + conditional_color_col('SI') + conditional_color_col('GEO'),
                                 )
     return table
 
@@ -398,5 +400,7 @@ def update(continent):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([continent]))].pivot(
     index=['Country', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
+    table_df['Rank'] = table_df.Index.rank(ascending=False)
+
 
     return table_df.to_dict('records')
