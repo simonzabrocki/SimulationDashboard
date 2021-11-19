@@ -249,7 +249,7 @@ layout = html.Div(
 
         html.Div(
             [
-                html.Div([html.Div([dcc.Dropdown(id="ISO_select_A", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='FRA')],
+                html.Div([html.Div([dcc.Dropdown(id="ISO_select_A", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='LCA')],
                                    style={'width': '100%',
                                           'display': 'inline-block',
                                           'align-items': 'center',
@@ -262,7 +262,7 @@ layout = html.Div(
 
                           ], className='pretty_container six columns'),
 
-                html.Div([html.Div([dcc.Dropdown(id="ISO_select_B", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='DEU')],
+                html.Div([html.Div([dcc.Dropdown(id="ISO_select_B", options=[{'label': country, 'value': iso} for iso, country in ISO_options], value='VCT')],
                                    style={'width': '100%',
                                           'display': 'inline-block',
                                           'align-items': 'center',

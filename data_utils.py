@@ -100,7 +100,7 @@ def load_all_data(max_year=2019):
     data = data.query("Variable not in ['GJ2', 'GT2', 'GV2', 'GN2']")
 
     data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(
-    ), left_on='Variable', right_on='Category', how='left')
+    ), left_on='Variable', right_on='Category', how='left').query("Year >= 2010")
 
 
     missing_data = get_missing_values_stat(indicator_data, indicator_properties)

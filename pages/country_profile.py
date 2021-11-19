@@ -537,7 +537,7 @@ layout = html.Div(
                         html.Div([dcc.Dropdown(id="ISO_select",
                                                options=[{'label': country, 'value': iso}
                                                         for iso, country in ISO_options],
-                                               value='FRA')],
+                                               value='LCA')],
                                  style={'width': '100%',
                                         'display': 'inline-block',
                                         'align-items': 'center',

@@ -34,6 +34,8 @@ def Map(data):
                             range_color=[0, 100],
                             animation_frame="Year",
                             height=800,
+                            center={'lat': 13.9, 'lon': -70},
+                            scope='world'
                             )
 
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},

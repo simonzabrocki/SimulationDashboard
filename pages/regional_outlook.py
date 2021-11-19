@@ -70,7 +70,7 @@ def dimension_trend(data):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2005, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[2010, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
