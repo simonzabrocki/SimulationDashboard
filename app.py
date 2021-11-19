@@ -8,7 +8,7 @@ app = dash.Dash(
 
 )
 
-app.title = 'GreenGrowthIndex'
+app.title = 'GreenBlueIndex'
 
 server = app.server
 
