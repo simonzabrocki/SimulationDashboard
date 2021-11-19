@@ -7,6 +7,7 @@ from app import app, data, INDEX_YEAR
 
 
 def Index_trend(data):
+
     df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
     df = df.round(2)
 
@@ -24,7 +25,9 @@ def Index_trend(data):
     fig.update_xaxes(range=[2009, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
-    dots = px.scatter(df[df.Year == INDEX_YEAR],
+    custom_dict = {'Africa': 0, 'Americas': 1, 'Asia': 2, 'Oceania': 3, "Europe": 4} 
+
+    dots = px.scatter(df.query("Year == @INDEX_YEAR").sort_values(by=['Continent'], key=lambda x: x.map(custom_dict)),#[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       color='Continent',
