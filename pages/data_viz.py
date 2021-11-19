@@ -143,7 +143,7 @@ layout = html.Div(
                                     "Countries",
                                     className="subtitle padded",
                                 ),
-                                html.Div([dcc.Dropdown(id="ISO_select", value=['DEU', 'FRA'], multi=True)],
+                                html.Div([dcc.Dropdown(id="ISO_select", value=['VCT', 'LCA'], multi=True)],
                                          style={'width': '100%',
                                                 'display': 'inline-block',
                                                 'align-items': 'right',
