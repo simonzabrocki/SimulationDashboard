@@ -68,10 +68,10 @@ def get_header(app):
 def get_menu(active_tab):
 
     tab_menu = {
-        'Global Overview': "Green Growth Index",
-        'Regional Outlook': "Green Growth Index",
-        'Country Profile': "Green Growth Index",
-        'Country Comparison': "Green Growth Index",
+        'Global Overview': "Green Blue Growth Index",
+        'Regional Outlook': "Green Blue Growth Index",
+        'Country Profile': "Green Blue Growth Index",
+        'Country Comparison': "Green Blue Growth Index",
         'Data': "Evidence Library",
         #'Models': "Evidence Library",
         'Codes': "Evidence Library",
@@ -80,7 +80,7 @@ def get_menu(active_tab):
     }
 
     tabs_links = {
-        'Green Growth Index': '/SimulationDashBoard/global_overview',
+        'Green Blue Growth Index': '/SimulationDashBoard/global_overview',
         #'Simulation Tool': '/SimulationDashBoard/simulation',
         'Evidence Library': '/SimulationDashBoard/data',
     }
@@ -150,7 +150,7 @@ def evidence_lib_menu(active_tab):
     return html.Div(div_list, className="row all-tabs")
 
 
-def get_menu_div_list(name_link_list, active_tab, className='thirdtabs', active_style={'background-color': '#0bb89c', 'color': 'white'}):
+def get_menu_div_list(name_link_list, active_tab, className='thirdtabs', active_style={'background-color': '#86BBD8', 'color': 'white'}):
     div_list = []
 
     for name_link in name_link_list:

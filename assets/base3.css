@@ -160,6 +160,9 @@
 :root .fa-flip-vertical {
   filter: none;
 }
+:root {
+  --maincolor: #86BBD8;
+}
 .fa-stack {
   position: relative;
   display: inline-block;
