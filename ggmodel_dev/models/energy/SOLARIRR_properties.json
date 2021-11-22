@@ -1,12 +1,12 @@
 {
     "SOLARIRR_model": {
-        "description": "TODO",
+        "description": "The solar PV capacity required for irrigation is estimated in two steps. First using the irrigation water requirement and ground water depth, the power required for pumping is computed. Then, using solar irradiance and panel efficiency the required solar capacity is estimated. The surface area used by the panels is also calculated",
         "display_name": "Solar irrigation model",
         "model": "SOLARIRR_model",
         "model_group": "Energy",
         "indicator": "GE3",
         "status": "🚧",
-        "source": [ "TODO"
+        "source": [ "Leah C. Kelley, Eric Gilbertson, Anwar Sheikh, Steven D. Eppinger, Steven Dubowsky in \"On the feasibility of solar-powered irrigation\""
                 ]
                 
     }
