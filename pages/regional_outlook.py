@@ -271,13 +271,14 @@ def region_table(data, Continent='Africa'):
         index=['Country', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
     table_df['Rank'] = table_df.Index.rank(ascending=False)
-
+    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    
     header_name = {'Index': 'Index',
+                   'Rank': 'Rank',
                    'ESRU': 'Efficient and sustainable resource use',
                    'NCP': 'Natural capital protection',
                    'SI': 'Social inclusion',
                    'GEO': 'Green economic opportunities',
-                   'Rank': 'Rank'
                    }
 
     table = dash_table.DataTable(id='continent-table',
