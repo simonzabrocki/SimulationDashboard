@@ -1,12 +1,12 @@
 {
     "DEMAND_model": {
-        "description": "TODO",
+        "description": "The model is adapted form the India Energy Security Scenarios",
         "display_name": "Energy demand model",
         "model": "DEMAND_model",
         "model_group": "Energy",
         "indicator": "GE1",
         "status": "🚧",
-        "source": [ "TODO"
+        "source": [ "http://iess2047.gov.in/"
                 ]
                 
     }
