@@ -44,12 +44,13 @@ Go to https://devcenter.heroku.com/articles/git for more details
 # Roadmap
 
 Code: 
-- Fetch simulation data and model from database
-- Improves modularity by using a sub repo for ggmodel_dev.
-
+- Fetch simulation data and model from external database
+- Improve modularity by using a sub repo for ggmodel_dev.
+- Improve simulation page to add new models more easily
 
 Features:
 - Improve country comparator
+- Improve downloadable pdf report
 - Add data explorer for simulation models (like the one for the index)
 
 # Contact
