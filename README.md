@@ -49,7 +49,7 @@ Features:
 - Improve country comparator
 - Add data explorer for simulation models (like the one for the index)
 
-# Authors
+# Contact
 ---------------
-S. Zabrocki
+S. Zabrocki - simon.zabrocki@gggi.org
 
