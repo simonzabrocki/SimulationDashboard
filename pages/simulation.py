@@ -372,7 +372,7 @@ import pandas as pd
 def get_availibility_table(ISO, data_dict, summary_df):
     table = pd.DataFrame.from_dict({k: ISO in s for k,s in data_dict.items() if 'ISO' in s.index.names}, orient='index').rename(columns={0: 'Available'})
     table = table.merge(summary_df, left_index=True, right_index=True).query('type in ["parameter", "input"]')[['Available', 'name']].reset_index().rename(columns={'name': 'Name', 'Available': 'Availability', 'index': 'Variable'})
-    return table
+    return table.sort_values(by='Name')
 
 
 @app.callback(
