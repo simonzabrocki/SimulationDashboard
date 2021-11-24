@@ -17,9 +17,12 @@ $ python index.py
 # Deployement
 -------------------
 The app can be deployed on Heroku via:
+
 ```
 $ git push heroku main
 ```
+
+Go to https://devcenter.heroku.com/articles/git for more details
 
 
 # Project Structrue 
