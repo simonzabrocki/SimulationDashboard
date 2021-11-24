@@ -2,6 +2,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from app import app, ISO_options
 from dash.dependencies import Input, Output
+import dash_table
 from utils import Header, is_btn_clicked
 from dash.exceptions import PreventUpdate
 from ggmodel_dev.utils import get_data_dict_from_folder, get_data_dict_from_folder_parquet, results_to_excel
@@ -21,6 +22,9 @@ from pages.scenario_function import (run_all_scenarios_VEHC,
                                      run_all_scenarios_ELEC,
                                      run_all_scenarios_RECYCLE,
                                      )
+
+
+from pages.scenario_function import model_summary_dictionnary
 
 
 scenario_properties = {
@@ -118,7 +122,6 @@ def scenario_building_box():
                      ),
             html.Br([]),
             html.Br([]),
-            html.Br([]),
             html.Div(
                 [
                     html.Button('Run', id='btn-run', n_clicks=0,
@@ -134,19 +137,26 @@ def scenario_building_box():
                         color='#14ac9c',
                         type="dot",
                     ),
-                    html.Button('Download (beta)', id='btn-download', n_clicks=0,
-                                style={'font-size': 15,
-                                       'font-weight': 'normal',
-                                       'color': '#ffffff',
-                                       'background': '#D3D3D3',
-                                       'border': '#D3D3D3',
-                                       }),
-                    dcc.Download(id="download-xls"),
                     dcc.Loading(
                         children=html.Div(id='loading-download'),
                         color='#14ac9c',
                         type="dot",
                     ),
+                    html.Button('Download (beta)', id='btn-download', n_clicks=0,
+                                style={'font-size': 15,
+                                       'font-weight': 'normal',
+                                       'color': '#ffffff',
+                                       'background': '#14ac9c',
+                                       'border': '#14ac9c',
+                                       }),
+                    dcc.Download(id="download-xls"),
+                    html.Br([]),
+                    html.H5("Required data", className="subtitle padded"),
+                    html.Br([]),
+                    dash_table.DataTable(id='sim-data-table',
+                                 columns=[{"name": i, "id": i}
+                                          for i in ['Variable','Name', 'Availability']],
+                                 )
 
                 ],
                 className='row'
@@ -204,6 +214,7 @@ def get_sim_tab():
                 ],
             )
 
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Simulation')]),
@@ -224,8 +235,6 @@ layout = html.Div(
     ],
     className="page",
 )
-
-
 
 
 @app.callback(
@@ -354,4 +363,57 @@ def update_EW_display(ISO, model):
         surface = data.loc[ISO, 2017, 'Surface']
         drip =  data.loc[ISO, 2017, 'Drip']
         return sprinkler, surface, drip, sprinkler, surface, drip
+
+
+
+
+import pandas as pd
+
+def get_availibility_table(ISO, data_dict, summary_df):
+    table = pd.DataFrame.from_dict({k: ISO in s for k,s in data_dict.items() if 'ISO' in s.index.names}, orient='index').rename(columns={0: 'Available'})
+    table = table.merge(summary_df, left_index=True, right_index=True).query('type in ["parameter", "input"]')[['Available', 'name']].reset_index().rename(columns={'name': 'Name', 'Available': 'Availability', 'index': 'Variable'})
+    return table
+
+
+@app.callback(
+    Output("sim-data-table", "data"),
+    Output('btn-run', 'style'),
+    Output('btn-download', 'style'),
+
+    [
+        Input('ISO_run_results', 'value'),
+        Input('dropdown-simulation-model', 'value'),
+    ],
+)
+def update_availibility_tab(ISO, model):
+    summary_df = model_summary_dictionnary[model]
+    data = scenario_data_dictionnary[model]
+
+    table = get_availibility_table(ISO, data, summary_df)
+
+    available = table['Availability'].sum() == table.shape[0]
+
+
+    table = table.replace([True, False], ['✔️', '❌']).to_dict('records')
+
+
+    if available:
+        style={'font-size': 17,
+            'font-weight': 'normal',
+            'color': '#ffffff',
+            'background': '#14ac9c',
+            'border': '#14ac9c',
+            }
+    else:
+        style={'font-size': 17,
+            'font-weight': 'normal',
+            'color': '#ffffff',
+            'background': '#D3D3D3',
+            'border': '#D3D3D3',
+            }
+
+
+    return table, style, style
+
+
 

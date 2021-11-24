@@ -22,15 +22,23 @@ def format_var_results(scenarios_results, var):
     return df
 
 
-# WATER
+model_summary_dictionnary = {
+    'EW_models': EW_scenario.MODEL.summary_df,
+    'BE2_model': BE2_scenario.MODEL.summary_df,
+    'GE3_model': GE3_scenario.MODEL.summary_df,
+    'VEHC_model': VEHC_scenario.MODEL.summary_df,
+    'ELEC_model': ELEC_scenario.MODEL.summary_df,
+    'RECYCLE_model': RECYCLE_scenario.MODEL.summary_df,
+}
+
 
 def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
+    summary_df = EW_scenario.MODEL.summary_df
+
 
     ISO_data_dict = {key: value.loc[[ISO]] for key, value in data_dict.items() if key not in ['IRRTECHEFFi']}
     ISO_data_dict['IRRTECHEFFi'] = data_dict['IRRTECHEFFi'].reset_index().set_index(['Item'])['0'] # To do properly elswhere
 
-
-    print(ISO_data_dict['IRRTECHEFFi'])
 
     scenarios_results = EW_scenario.run_all_scenarios(ISO_data_dict, args_dict_1, args_dict_2)
 
@@ -38,7 +46,6 @@ def run_all_scenarios_EW(data_dict, ISO, args_dict_1, args_dict_2):
     df_2 = format_var_results(scenarios_results, 'EW2')
     df_3 = format_var_results(scenarios_results, 'GDPC')
 
-    summary_df = EW_scenario.MODEL.summary_df
 
     fig_1 = scenario_line_plot('EW1', df_1, ISO, summary_df)
     fig_2 = scenario_line_plot('EW2', df_2, ISO, summary_df)
