@@ -21,6 +21,23 @@ The app can be deployed on Heroku via:
 $ git push heroku main
 ```
 
+
+# Project Structrue 
+
+    ├── data           
+    │   
+    │   └── indicators        <- Green Growth index indicator data
+    │   └── sim               <- Simulation data
+    │
+    ├── assets                <- css and background
+    |
+    ├── ggmodel_dev           <- Graphmodel computation package
+    |
+    ├── outputs               <- Ressources downloadables in the interface
+    |
+    ├── pages                 <- Source code of individual pages
+
+
 # Roadmap
 
 Code: 
@@ -29,9 +46,7 @@ Code:
 
 
 Features:
-- Heatmap for index categories
 - Improve country comparator
-- Add map in simulation tool
 - Add data explorer for simulation models (like the one for the index)
 
 # Authors
