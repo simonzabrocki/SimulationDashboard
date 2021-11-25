@@ -11,6 +11,18 @@ def Index_trend(data):
     df = data[(data.Aggregation == 'Index')].groupby(['Year', 'Continent']).mean().reset_index()
     df = df.round(2)
 
+    custom_dict = {
+    'Caribbean': 0,
+    'Latin America': 3,
+    'Oceania, Australia and New Zealand': 6,
+    'Central and Southern Asia': 1,
+    'Eastern and South-Eastern Asia': 2,
+    'Northern Africa and Western Asia': 4,
+    'Sub-Saharan Africa': 5,
+    'Europe and Northern America': 7,
+
+}
+
     fig = px.line(df,
                   x='Year',
                   y='Value',
@@ -25,7 +37,7 @@ def Index_trend(data):
     fig.update_xaxes(range=[2009, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
-    custom_dict = {'Africa': 0, 'Americas': 1, 'Asia': 2, 'Oceania': 3, "Europe": 4} 
+
 
     dots = px.scatter(df.query("Year == @INDEX_YEAR").sort_values(by=['Continent'], key=lambda x: x.map(custom_dict)),#[df.Year == INDEX_YEAR],
                       x='Year',
@@ -106,9 +118,10 @@ def dimension_trend(data):
     fig.update_layout(margin={"r": 25, "t": 25, "l": 25, "b": 25},
                       hovermode="x",
                       legend=dict(yanchor="bottom",
-                                  y=0.01,
-                                  xanchor="right",
-                                  x=1
+                                orientation="h",
+                                y=-0.15,
+                                xanchor="right",
+                                x=1
                                   )
                       )
 
@@ -127,6 +140,7 @@ def category_lolipop(data):
                      x='Value',
                      color='Dimension',
                      facet_col='Continent',
+                     facet_col_wrap=4,
                      facet_col_spacing=0.05,
                      hover_name='Variable_name',
                      hover_data={'Value': True, 'Continent': False, 'Variable': False},
@@ -137,7 +151,7 @@ def category_lolipop(data):
                          "Efficient and Sustainable Resource Use": "#8fd1e7",
                          "Green Economic Opportunities": "#9dcc93",
                      },
-                     height=600,
+                     height=1200,
                      )
     fig.update_xaxes(showgrid=True, range=[0, 100], tickvals=[
                      20, 40, 60, 80], visible=True, title='')
@@ -151,12 +165,13 @@ def category_lolipop(data):
                   x='Value',
                   facet_col='Continent',
                   facet_col_spacing=0.05,
+                  facet_col_wrap=4,
                   hover_name='Variable_name',
                   hover_data={'Value': True, 'Continent': False},
                   labels={'Variable': '', 'Value': '', 'Continent': 'Region'},
                   orientation='h',
                   opacity=0.6,
-                  height=600,
+                  height=1200,
                   )
 
     bars.update_traces(marker_color='lightgrey',
