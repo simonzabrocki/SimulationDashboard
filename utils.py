@@ -30,11 +30,7 @@ def get_header(app):
             html.Div(
                 [   
                     html.Img(
-                            src=app.get_asset_url("GGGI_logo.png"),
-                            className="logo",
-                            ),
-                    html.Img(
-                            src=app.get_asset_url("OECS_logo.png"),
+                            src=app.get_asset_url("logo.png"),
                             className="logo",
                             ),
                 ],className="twelve columns",
