@@ -131,7 +131,7 @@ layout = html.Div(
                                                 'display': 'inline-block',
                                                 'align-items': 'center',
                                                 'justify-content': 'center',
-                                                'font-size': '15px'},
+                                                'font-size': '11px'},
                                          ),
                                 html.Div(id='source_text'),
                             ],
