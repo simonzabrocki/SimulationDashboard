@@ -13,6 +13,34 @@ def add_rank_to_data(data):
     return data
 
 
+def continent_grouping(data):
+    europe_america = ['Northern Europe', 'Southern Europe', 'Western Europe', 'Eastern Europe', 'Northern America']
+    latin_America = ['Central America', 'South America']
+    caribbean = ['Caribbean']
+    central_south_asia = ['Central Asia', 'Southern Asia']
+    east_asia = ['South-Eastern Asia', 'Eastern Asia']
+    northen_africa = ['Northern Africa', 'Western Asia']
+    sub_afr = ['Middle Africa', 'Western Africa', 'Southern Africa', 'Eastern Africa'] 
+    oceania = ['Melanesia', 'Micronesia', 'Polynesia', 'Australia and New Zealand']
+
+    names = [
+        (oceania, 'Oceania, Australia and New Zealand'),
+        (europe_america, 'Europe and Northern America'),
+        (latin_America, 'Latin America'),
+        (caribbean, 'Caribbean'),
+        (central_south_asia, 'Central and Southern Asia'),
+        (east_asia, 'Eastern and South-Eastern Asia'),
+        (northen_africa, 'Northern Africa and Western Asia'),
+        (sub_afr, 'Sub-Saharan Africa'),
+    ]
+
+    region = pd.concat([
+    pd.DataFrame(name[0]).assign(Continent=name[1]) for name in names
+    ]).rename(columns={0: 'UNregion'})
+
+    return data.drop(columns=['Continent']).merge(region, on='UNregion')
+
+
 def format_data(data):
     data = data.copy()
     variable_names = {
@@ -92,6 +120,8 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
 
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
+
+    data = continent_grouping(data)
 
     indicator_data, indicator_properties, dimension_properties = load_indicator_data()
 
