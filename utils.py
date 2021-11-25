@@ -33,31 +33,10 @@ def get_header(app):
                             src=app.get_asset_url("GGGI_logo.png"),
                             className="logo",
                             ),
-                    # html.Div([
-                        
-                    #     html.Ul([
-                    #         html.Li(
-                    #             [html.A("Home", href="https://greengrowthindex.gggi.org/",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Index and Simulation", href="localhost:8080",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Publications", href="https://greengrowthindex.gggi.org/?page_id=3126",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Authors", href="https://greengrowthindex.gggi.org/?page_id=3080",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Reviewers", href="https://greengrowthindex.gggi.org/?page_id=1975",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Partners", href="https://greengrowthindex.gggi.org/?page_id=2166",), ]),
-                    #         html.Li([html.Span(), ]),
-                    #         html.Li(
-                    #             [html.A("Contact Us", href="https://greengrowthindex.gggi.org/?page_id=2839",), ]),
-                    #     ]),
-                    # ], className="mainnav"),
+                    html.Img(
+                            src=app.get_asset_url("OECS_logo.png"),
+                            className="logo",
+                            ),
                 ],className="twelve columns",
             ),
         ],
