@@ -471,7 +471,7 @@ def missing_bar_plot(ISO):
 
 
 def Indicator_lolipop(ISO):
-    df = data[(data.Aggregation == 'Indicator_normed') & (data.Year == 2019) & (data.ISO == ISO)].drop(columns=['Category', 'Dimension']).merge(indicator_properties, left_on='Variable', right_on='Indicator')
+    df = data[(data.Aggregation == 'Indicator_normed') & (data.Year == INDEX_YEAR) & (data.ISO == ISO)].drop(columns=['Category', 'Dimension']).merge(indicator_properties, left_on='Variable', right_on='Indicator')
 
     df = df.round(2).sort_values(by=['Dimension', 'Variable'], ascending=False)
     fig = px.scatter(df,
