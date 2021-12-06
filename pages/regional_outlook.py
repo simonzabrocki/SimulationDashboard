@@ -67,7 +67,14 @@ def dimension_trend(data):
                               'Continent': False,
                               'Variable_name': False},
                   height=700,
-                  color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
+                  color_discrete_map={
+                           "Efficient and sustainable resource use": "#8fd1e7",
+                           "Natural capital protection": "#f7be49",
+                           "Green economic opportunities": "#9dcc93",
+                           "Social inclusion": "#d9b5c9",
+                       },
+                  category_orders={'Variable_name': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
+
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
@@ -88,7 +95,14 @@ def dimension_trend(data):
                                   'Continent': False,
                                   'Variable_name': False},
                       height=700,
-                      color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
+                      color_discrete_map={
+                           "Efficient and sustainable resource use": "#8fd1e7",
+                           "Natural capital protection": "#f7be49",
+                           "Green economic opportunities": "#9dcc93",
+                           "Social inclusion": "#d9b5c9",
+                       },
+                      category_orders={'Variable_name': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
+
                       )
 
     dots.update_layout(showlegend=False, hovermode=False)
@@ -136,6 +150,8 @@ def category_lolipop(data):
                          "Green Economic Opportunities": "#9dcc93",
                      },
                      height=600,
+                    category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+
                      )
     fig.update_xaxes(showgrid=True, range=[0, 100], tickvals=[
                      20, 40, 60, 80], visible=True, title='')
@@ -181,11 +197,11 @@ def Table(data):
     df = df.reset_index().pivot(index=['Continent'], columns='Variable', values='Value')
     df.columns.name = None
     df = df.round(2).reset_index()
-    df = df.rename(columns={'Continent': 'Region'})
+    df = df.rename(columns={'Continent': 'Region'})[['ESRU', 'NCP', 'GEO', 'SI']]
     header_name = {'ESRU': 'Efficient and sustainable resource use',
                    'NCP': 'Natural capital protection',
+                   'GEO': 'Green economic opportunities',
                    'SI': 'Social inclusion',
-                   'GEO': 'Green economic opportunities'
                    }
 
     tooltip = {key: {
@@ -266,10 +282,10 @@ def conditional_color_col(col):
 
 def region_table(data, Continent='Africa'):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([Continent]))].pivot(
-        index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+        index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'GEO', 'SI']]
     table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
     table_df['Rank'] = table_df.Index.rank(ascending=False)
-    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'GEO', 'SI',]]
     
     header_name = {'Index': 'Index',
                    'Rank': 'Rank',

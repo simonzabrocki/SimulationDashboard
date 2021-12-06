@@ -64,14 +64,14 @@ def Map(data):
 
 def Table(data):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
-        index=['Country', 'Continent', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+        index=['Country', 'Continent', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'GEO', 'SI']]
     table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
 
     header_name = {'Index': 'Index',
                    'ESRU': 'Efficient and sustainable resource use',
                    'NCP': 'Natural capital protection',
+                   'GEO': 'Green economic opportunities',
                    'SI': 'Social inclusion',
-                   'GEO': 'Green economic opportunities'
                    }
 
     table = dash_table.DataTable(id='index-table',

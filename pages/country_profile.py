@@ -252,7 +252,9 @@ def loliplot(ISO):
         'Variable': '',
         'ISO': '',
         'Continental_Rank': f'Rank in {continent}',
-    }
+    },
+    category_orders={'Variable': ['ESRU', 'NCP', 'GEO', 'SI', 'ISO']},
+
 
     )
 
