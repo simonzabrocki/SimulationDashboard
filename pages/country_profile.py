@@ -107,11 +107,12 @@ def circular_plot(ISO):
                        color='Dimension',
                        hover_data={'Variable_name': True, 'Variable': False},
                        color_discrete_map={
-                           "Social Inclusion": "#d9b5c9",
-                           "Natural Capital Protection": "#f7be49",
                            "Efficient and Sustainable Resource Use": "#8fd1e7",
+                           "Natural Capital Protection": "#f7be49",
                            "Green Economic Opportunities": "#9dcc93",
+                           "Social Inclusion": "#d9b5c9",
                        },
+                       category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},
                        height=600,
@@ -327,6 +328,7 @@ def loliplot_2(ISO):
                 'ISO': '',
                 'Continental_Rank': f'Rank in {continent}',
                 },
+        category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
 
     )
     fig.update_traces(opacity=0.7)
@@ -446,14 +448,15 @@ def missing_bar_plot(ISO):
 
     plot_df = pd.concat([plot_df, plot_df_bis])
     fig = px.bar(plot_df,
-             y='Category',
-             x='Data availability (%)',
-             color='Dimension',
-             barmode='stack',
-             orientation='h',
+            y='Category',
+            x='Data availability (%)',
+            color='Dimension',
+            barmode='stack',
+            orientation='h',
             text='Data availability (%)',
-             hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
+            hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
+            category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
             color_discrete_map={
                            "Social Inclusion": "#d9b5c9",
                            "Natural Capital Protection": "#f7be49",
@@ -500,6 +503,8 @@ def Indicator_lolipop(ISO):
                          "Efficient and Sustainable Resource Use": "#8fd1e7",
                          "Green Economic Opportunities": "#9dcc93",
                      },
+                    category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+
                      height=600,
                      )
     fig.update_xaxes(showgrid=True, range=[0, 110], tickvals=[
@@ -519,6 +524,7 @@ def Indicator_lolipop(ISO):
                   orientation='h',
                   opacity=0.6,
                   height=600,
+                  category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
                   )
 
     bars.update_traces(marker_color='lightgrey',
@@ -557,10 +563,11 @@ def heatmap_plot(ISO):
     df = df.round(2)
     
     df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2, REF_3]]
-    cats = ['AB', 'GB', 'SE', 'SP',
+    cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
-            'EE', 'EW', 'SL', 'ME',
-            'GV', 'GT', 'GJ', 'GN']
+            'GV', 'GT', 'GJ', 'GN',
+            'AB', 'GB', 'SE', 'SP',
+            ]
 
     fig = px.imshow(df[cats],
           zmin=0, zmax=100,
