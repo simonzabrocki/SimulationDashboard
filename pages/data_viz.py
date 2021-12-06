@@ -33,6 +33,9 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                                  'Corrected': True,
                                  },
                      height=400,
+                     category_orders={'ISO': ISO_list},
+                     color_discrete_sequence=px.colors.qualitative.G10,#["red", "green", "blue", "goldenrod", "magenta"],
+                     color_discrete_map={'Other': '#D3D3D3'},
                      )
     fig.update_layout(title=title, yaxis_title=xaxis_title)
     fig.update_traces(mode='lines+markers')
@@ -52,6 +55,8 @@ def box_plot(data, indicator_properties, ISO_list, Indicator):
     fig = px.box(df, x='Value', points="all", color='ISO',hover_data=['ISO', 'Country'],
                  animation_frame='Year',
                  category_orders={'ISO': ISO_list + ['Other']},
+                 color_discrete_sequence=px.colors.qualitative.G10,#["red", "green", "blue", "goldenrod", "magenta"],
+
                  color_discrete_map={'Other': '#D3D3D3'}).update_yaxes(matches=None, showticklabels=True)
 
     fig.update_layout(title=title, xaxis_title=xaxis_title)
