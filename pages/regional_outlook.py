@@ -1,6 +1,7 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
+import dash
 import dash_table
 from utils import Header
 from app import app, data, INDEX_YEAR
@@ -230,6 +231,84 @@ def dcc_config(file_name):
 cover = data[(data.Aggregation == 'Index') & (data.Year == INDEX_YEAR)].dropna(subset=['Value']).shape[0]
 
 
+def conditional_color_col(col):
+    return [
+            {
+                'if': {
+                    'filter_query': f'\u007b{col}\u007d > 60', # comparing columns to each other
+                    'column_id': f'{col}'
+                },
+                'backgroundColor': '#14ac9c'
+            },
+            {
+                'if': {
+                    'filter_query': f'\u007b{col}\u007d > 40 && \u007b{col}\u007d  < 60', # comparing columns to each other
+                    'column_id': f'{col}'
+                },
+                'backgroundColor': '#ffffbf'
+            },
+            {
+                'if': {
+                    'filter_query': f'\u007b{col}\u007d > 20 && \u007b{col}\u007d  < 40', # comparing columns to each other
+                    'column_id': f'{col}'
+                },
+                'backgroundColor': '#fc8d59'
+            },
+            {
+                'if': {
+                    'filter_query': f'\u007b{col}\u007d < 20 && \u007b{col}\u007d > 1', # comparing columns to each other
+                   'column_id': f'{col}'
+                },
+                'backgroundColor': '#f14326'
+            }
+        ]
+
+
+def region_table(data, Continent='Africa'):
+    table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([Continent]))].pivot(
+        index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
+    table_df['Rank'] = table_df.Index.rank(ascending=False)
+    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    
+    header_name = {'Index': 'Index',
+                   'Rank': 'Rank',
+                   'ESRU': 'Efficient and sustainable resource use',
+                   'NCP': 'Natural capital protection',
+                   'SI': 'Social inclusion',
+                   'GEO': 'Green economic opportunities',
+                   }
+
+    table = dash_table.DataTable(id='continent-table',
+                                 columns=[{"name": i, "id": i}
+                                          for i in table_df.columns],
+                                 data=table_df.to_dict('records'),
+                                 sort_action="native",
+                                 page_action="native",
+                                 page_current=0,
+                                 page_size=30,
+                                 style_as_list_view=True,
+                                 style_header={'backgroundColor': 'white',
+                                               'fontWeight': 'bold',
+                                               'text_align': 'left',
+                                               'font_size': '13px',
+                                               'border': '1px solid rgb(0, 0, 0, 0.1)',
+                                               },
+                                 tooltip_header=header_name,
+                                 tooltip_delay=0,
+                                 tooltip_duration=None,
+                                 style_cell={'font_family': 'roboto',
+                                             'font_size': '10px',
+                                             'text_align': 'left',
+                                             'border': '0px solid rgb(0, 0, 0, 0.1)',
+                                             'opacity': '0.7',
+                                             },
+                                style_data_conditional=conditional_color_col('Index') + conditional_color_col('ESRU') + conditional_color_col('NCP') + conditional_color_col('SI') + conditional_color_col('GEO'),
+                                )
+    return table
+
+continent_options = data.Continent.unique()
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Regional Outlook')]),
@@ -286,6 +365,16 @@ layout = html.Div(
                                         dcc.Graph(figure=category_lolipop(data),
                                                   config=dcc_config('Indicators_Regional_DotPlot'),
                                                   id=f"{INDEX_YEAR} Indicators by Region"),
+                                        html.H6(
+                                            f"Index table",
+                                            className="subtitle padded",
+                                        ),
+                                        dcc.Dropdown(id="continent_select",
+                                               options=[{'label': continent, 'value': continent}
+                                                        for continent in continent_options],
+                                               value='Africa'),
+                                        html.P(),
+                                        region_table(data),
                                     ],
                                     className="twelve columns",
                                 )
@@ -301,3 +390,16 @@ layout = html.Div(
     ],
     className="page",
 )
+
+@app.callback(
+    dash.dependencies.Output('continent-table', 'data'),
+    [dash.dependencies.Input('continent_select', 'value')],
+    suppress_callback_exceptions=True)
+def update(continent):
+    table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([continent]))].pivot(
+    index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
+    table_df['Rank'] = table_df.Index.rank(ascending=False)
+
+
+    return table_df.to_dict('records')
