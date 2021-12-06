@@ -565,14 +565,20 @@ def heatmap_plot(ISO):
     df = df.round(2)
     
     df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2, REF_3]]
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
-            'GV', 'GT', 'GJ', 'GN',
+    # Lol something better could be found for sure
+    df[' '] = np.nan
+    df['  '] = np.nan
+    df['   '] = np.nan
+    df['gap_4'] = np.nan
+    cats = ['EE', 'EW', 'SL', 'ME', ' ',
+            'EQ', 'GE', 'BE', 'CV', '  ',
+            'GV', 'GT', 'GJ', 'GN', '   ',
             'AB', 'GB', 'SE', 'SP',
             ]
 
     fig = px.imshow(df[cats],
           zmin=0, zmax=100,
+          #labels={'gap_1': '', 'gap_2': '', 'gap_3': ''},
           color_continuous_scale=[(0, "#f14326"),
                                   (0.25, "#fc8d59"),
                                   (0.5, "#ffffbf"),
@@ -581,7 +587,7 @@ def heatmap_plot(ISO):
 
     fig.update_yaxes(showgrid=False)
     fig.update_xaxes(showgrid=False)
-    return fig
+    return fig.update_traces({'hoverongaps': False})
 
 layout = html.Div(
     [
