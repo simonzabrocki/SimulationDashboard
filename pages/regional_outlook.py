@@ -115,7 +115,7 @@ def dimension_trend(data):
 def category_lolipop(data):
 
     df = data[(data.Aggregation == 'Category') & (data.Year == INDEX_YEAR)]
-    df = df.dropna().groupby(
+    df = df.dropna(subset=['Value']).groupby(
         ['Variable', 'Continent', 'Variable_name', 'Dimension']).mean().reset_index()
     df = df.round(2).sort_values(by='Dimension')
 

@@ -13,12 +13,11 @@ import pandas as pd
 
 def compute_group(data):
     '''To improve'''
-
     Income_region_group = data.groupby(
-        ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
+        ['Variable', 'Year', 'IncomeLevel', 'Sub-region', 'Aggregation']).mean().reset_index()
     Income_region_group['ISO'] = 'AVG' + '_' + \
         Income_region_group["IncomeLevel"] + \
-        '_' + Income_region_group["Region"]
+        '_' + Income_region_group["Sub-region"]
 
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
@@ -33,8 +32,12 @@ def compute_group(data):
     Region_group['Continental_Rank'] = np.nan
     Region_group['Income_Rank'] = np.nan
 
-    data = pd.concat([Income_region_group, Region_group, Income_group])
+    HDI_group = data.groupby(['Variable', 'Year', 'HDI','Aggregation']).mean().reset_index()
+    HDI_group['ISO'] = 'AVG' + '_' + HDI_group["HDI"]
+    HDI_group['Continental_Rank'] = np.nan
+    HDI_group['Income_Rank'] = np.nan
 
+    data = pd.concat([Income_region_group, Region_group, Income_group, HDI_group])
     return data
 
 
@@ -355,11 +358,13 @@ def time_series_Index(ISO):
                                                     ].drop_duplicates().values[0].tolist())
     REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                     ].drop_duplicates().values[0].tolist())
+    REF_3 = 'AVG_' + "_".join(data[data.ISO == ISO][["HDI"]
+                                                    ].drop_duplicates().values[0].tolist())
 
-    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
+    df = data[(data.ISO.isin([ISO, REF_1, REF_2, REF_3])) &
               (data.Aggregation == 'Index')].fillna(0)
 
-    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2, REF_3]) & (
         group_data.Aggregation == 'Index')].fillna(0)
 
     df = pd.concat([df, group_df])
@@ -405,6 +410,13 @@ def time_series_Index(ISO):
                              mode='lines',
                              line=dict(color='darkgrey', width=2, dash='dot'),
                              hoverinfo='skip'))
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF_3]['Year'],
+                             y=df[df.ISO == REF_3]['Value'],
+                             name=REF_3,
+                             mode='lines',
+                             line=dict(color='darkgrey', width=2, dash='dashdot'),
+                             hoverinfo='skip'))
+
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)
     fig.update_layout(legend=dict(

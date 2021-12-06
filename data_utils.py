@@ -50,9 +50,11 @@ def format_data(data):
 def load_index_data(max_year):
     data = (
         pd.read_csv('data/GGIs_2005_2020.csv')
-          .query(f"Year <=  {max_year}")
+          .query(f"Year <=  {max_year} and ISO not in ['FLK']")
+          .dropna(subset=['Region'])
           .replace('America', 'Americas')
           .round(2)
+          .rename(columns={'Region': 'Continent'})
     )
 
     data = format_data(data)

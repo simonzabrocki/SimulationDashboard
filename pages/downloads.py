@@ -80,7 +80,7 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def downdload_table(n_clicks):
-    return dcc.send_data_frame(data.drop(columns=['Continent', 'UNregion', 'IncomeLevel', 'Region', 'Country', 'Variable_name', 'Category', 'Dimension']).to_csv, f"GGIndex_data.csv")
+    return dcc.send_data_frame(data.drop(columns=['Continent', 'Sub-region', 'IncomeLevel', 'Country', 'Variable_name', 'Category', 'Dimension']).to_csv, f"GGIndex_data.csv")
 
 
 

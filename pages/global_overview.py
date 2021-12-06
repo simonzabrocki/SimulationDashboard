@@ -64,8 +64,8 @@ def Map(data):
 
 def Table(data):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension']))].pivot(
-        index=['Country', 'Continent', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
-    table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
+        index=['Country', 'Continent', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
 
     header_name = {'Index': 'Index',
                    'ESRU': 'Efficient and sustainable resource use',
@@ -147,7 +147,7 @@ layout = html.Div(
                                 html.P("Green Growth Index measures country performance in achieving sustainability targets including Sustainable Development Goals, Paris Climate Agreement, and Aichi Biodiversity Targets for four green growth dimensions: efficient and sustainable resource use, natural capital protection, green economic opportunities and social inclusion.",
                                        style={"color": "#ffffff", 'font-size': '15px'},),
                                 html.Br([]),
-                                html.P(f"In {INDEX_YEAR}, there are {n_ISO} countries with scores for the Green Growth Index, with {n_ISO_continent.loc['Africa']} countries in Africa, {n_ISO_continent.loc['Americas']} countries in the Americas, {n_ISO_continent.loc['Asia']} countries in Asia, {n_ISO_continent.loc['Europe']} countries in Europe, and only {n_ISO_continent.loc['Oceania']} in Oceania. The scores of almost half of the countries are in the middle range, between 40 and 60, covering about 77 million m2 of the global land area. There are {n_high_score} countries that reached a high score between 60 and 80, many of them are in Europe. Those {n_low_score} countries with low scores, between 20 and 40, are mainly from Africa and Asia. There are no countries with very low scores of below 20. {top_country['Country'].iloc[0]}, located in {top_country['UNregion'].iloc[0]}, has the highest Green Growth Index with a score of {top_country['Value'].iloc[0]}, which is still further away from reaching the sustainability target of 100.",
+                                html.P(f"In {INDEX_YEAR}, there are {n_ISO} countries with scores for the Green Growth Index, with {n_ISO_continent.loc['Africa']} countries in Africa, {n_ISO_continent.loc['Americas']} countries in the Americas, {n_ISO_continent.loc['Asia']} countries in Asia, {n_ISO_continent.loc['Europe']} countries in Europe, and only {n_ISO_continent.loc['Oceania']} in Oceania. The scores of almost half of the countries are in the middle range, between 40 and 60, covering about 77 million m2 of the global land area. There are {n_high_score} countries that reached a high score between 60 and 80, many of them are in Europe. Those {n_low_score} countries with low scores, between 20 and 40, are mainly from Africa and Asia. There are no countries with very low scores of below 20. {top_country['Country'].iloc[0]}, located in {top_country['Sub-region'].iloc[0]}, has the highest Green Growth Index with a score of {top_country['Value'].iloc[0]}, which is still further away from reaching the sustainability target of 100.",
                                        style={"color": "#ffffff", 'font-size': '15px'}),
                             ],
                             className="product",
