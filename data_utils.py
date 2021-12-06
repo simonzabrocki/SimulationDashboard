@@ -90,7 +90,7 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
     full_index = pd.MultiIndex.from_product([ISOs, Categorys],
                                names=['ISO', 'Category'])
     
-    return df.reindex(full_index, fill_value=100).to_frame(name='Data availability (%)')
+    return df.reindex(full_index, fill_value=0).to_frame(name='Data availability (%)')
 
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
