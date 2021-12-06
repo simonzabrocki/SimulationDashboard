@@ -589,6 +589,24 @@ def heatmap_plot(ISO):
     fig.update_xaxes(showgrid=False)
     return fig.update_traces({'hoverongaps': False})
 
+
+def cat_time_series(ISO):
+    plot_df = data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category']")
+    plot_df['CAT'] = plot_df['Variable'].str[:2].copy().values
+    plot_df['IND'] = data.Variable.str[2].fillna('CAT')
+    fig = px.line(plot_df, x='Year', y='Value', color='IND',
+                  facet_col='CAT', facet_col_wrap=3, height=2400,
+                 color_discrete_map={
+                           "CAT": "#808080",
+
+                       },).for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+
+    return fig
+
+
+
+
+
 layout = html.Div(
     [
         html.Div([Header(app, 'Country Profile')]),
@@ -657,7 +675,7 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Heatmap"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='heatmap_ISO',
-                                                  config=dcc_config('indicators')),
+                                                  config=dcc_config('heatmap')),
 
                                     ],
                                     className="twelve columns",
@@ -667,6 +685,16 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Indicators"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='indic_ISO',
+                                                  config=dcc_config('indicators')),
+
+                                    ],
+                                    className="twelve columns",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H6([f"Catorgy Time series (In development)"],
+                                                className="subtitle padded"),
+                                        dcc.Graph(id='cat_ts_ISO',
                                                   config=dcc_config('indicators')),
 
                                     ],
@@ -739,6 +767,15 @@ def update_loliplot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_loliplot(ISO):
     return dcc_config(f'heatmap_{ISO}'), heatmap_plot(ISO)
+
+
+
+@app.callback(
+    dash.dependencies.Output('cat_ts_ISO', 'config'),
+    dash.dependencies.Output('cat_ts_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    return dcc_config(f'cat_ts_{ISO}'), cat_time_series(ISO)
 
 
 @app.callback(
