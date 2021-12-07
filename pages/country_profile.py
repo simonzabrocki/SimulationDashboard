@@ -756,7 +756,7 @@ layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.H6([f"Catorgies time series"],
+                                        html.H6([f"Categories time series"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='cat_ts_ISO',
                                                   config=dcc_config('cat_ts')),
