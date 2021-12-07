@@ -590,18 +590,65 @@ def heatmap_plot(ISO):
     return fig.update_traces({'hoverongaps': False})
 
 
+def dim_time_series(ISO):
+
+    plot_df = (
+        data.query("ISO == @ISO and Aggregation in ['Dimension'] and Year >= 2010")
+    )
+
+
+    fig = px.line(plot_df, x='Year', y='Value', color='Variable_name',
+                  color_discrete_map={
+                         "Social inclusion": "#d9b5c9",
+                         "Natural capital protection": "#f7be49",
+                         "Efficient and sustainable resource use": "#8fd1e7",
+                         "Green economic opportunities": "#9dcc93",
+                     },
+                     labels={'Value': 'Score', 'Variable_name': 'Dimension'})
+    
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_traces(mode='lines+markers')
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
+    return fig
+
+
 def cat_time_series(ISO):
-    plot_df = data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category']")
+    cats = ['EE', 'EW', 'SL', 'ME',
+            'EQ', 'GE', 'BE', 'CV',
+            'AB', 'GB', 'SE', 'SP',
+            'GV', 'GT', 'GJ', 'GN']
+    
+    plot_df = (
+        data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category'] and Year >= 2010")
+            .set_index('Variable')
+    )
+    plot_df.loc[plot_df.Variable_name.isna(), 'Variable_name'] =  indicator_properties.set_index('Indicator')['Description']
+    plot_df = plot_df.reset_index()
+    
     plot_df['CAT'] = plot_df['Variable'].str[:2].copy().values
-    plot_df['IND'] = data.Variable.str[2].fillna('CAT')
+    plot_df['IND'] = plot_df.Variable.str[2].fillna('Category')
+
     fig = px.line(plot_df, x='Year', y='Value', color='IND',
                   facet_col='CAT', facet_col_wrap=3, height=2400,
-                 color_discrete_map={
-                           "CAT": "#808080",
+                  color_discrete_map={"Category": "#14ac9c", },
+                  color_discrete_sequence=px.colors.qualitative.Pastel2,
+                  hover_data={'Variable_name': True},
+                  labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
+                  category_orders={'CAT': cats}
 
-                       },).for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+                 )
+    
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_traces(mode='lines+markers')
 
     return fig
+
 
 
 
@@ -692,10 +739,20 @@ layout = html.Div(
                                 ),
                                 html.Div(
                                     [
-                                        html.H6([f"Catorgy Time series (In development)"],
+                                        html.H6([f"Dimension time series"],
+                                                className="subtitle padded"),
+                                        dcc.Graph(id='dim_ts_ISO',
+                                                  config=dcc_config('dim_ts')),
+
+                                    ],
+                                    className="twelve columns",
+                                ),
+                                html.Div(
+                                    [
+                                        html.H6([f"Catorgies time series"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='cat_ts_ISO',
-                                                  config=dcc_config('indicators')),
+                                                  config=dcc_config('cat_ts')),
 
                                     ],
                                     className="twelve columns",
@@ -776,6 +833,14 @@ def update_loliplot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_loliplot(ISO):
     return dcc_config(f'cat_ts_{ISO}'), cat_time_series(ISO)
+
+
+@app.callback(
+    dash.dependencies.Output('dim_ts_ISO', 'config'),
+    dash.dependencies.Output('dim_ts_ISO', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_loliplot(ISO):
+    return dcc_config(f'dim_ts_{ISO}'), dim_time_series(ISO)
 
 
 @app.callback(
