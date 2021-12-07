@@ -32,9 +32,31 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                                  'Corrected': True,
                                  },
                      height=400,
+                     category_orders={'ISO': ISO_list},
+                     color_discrete_sequence=px.colors.qualitative.G10,
+                     color_discrete_map={'Other': '#D3D3D3'},
                      )
     fig.update_layout(title=title, yaxis_title=xaxis_title)
     fig.update_traces(mode='lines+markers')
+    fig.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0})
+
+    return fig
+
+
+def box_plot(data, indicator_properties, ISO_list, Indicator):
+    indicator_properties = indicator_properties.set_index('Indicator')
+
+    df = data.query("Indicator == @Indicator").sort_values(by='Year')
+    title = indicator_properties.loc[Indicator]['Description']
+    xaxis_title = indicator_properties.loc[Indicator]['Unit']
+    df.loc[~df.ISO.isin(ISO_list), 'ISO'] = 'Other'
+    fig = px.box(df, x='Value', points="all", color='ISO',hover_data=['ISO', 'Country'],
+                 animation_frame='Year',
+                 category_orders={'ISO': ISO_list + ['Other']},
+                 color_discrete_sequence=px.colors.qualitative.G10,
+                 color_discrete_map={'Other': '#D3D3D3'}).update_yaxes(matches=None, showticklabels=True)
+
+    fig.update_layout(title=title, xaxis_title=xaxis_title)
     fig.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0})
 
     return fig
@@ -157,6 +179,12 @@ layout = html.Div(
                                 dcc.Graph(id='indicator_line_charts',
                                           config={'displayModeBar': False}
                                           ),
+                                 html.H6("Box plot",
+                                 className="subtitle padded",
+                                ),
+                                dcc.Graph(id='indicator_box_plot',
+                                          config={'displayModeBar': False}
+                                          ),
                             ],
                             className='pretty_container eight columns'),
                     ],
@@ -205,6 +233,14 @@ def update_indicator_source(Indicator):
      dash.dependencies.Input('ISO_select', 'value')])
 def update_indicator_line_charts(Indicator, ISO_list):
     return indicator_line_charts(indicator_data, indicator_properties, ISO_list, Indicator)
+
+
+@app.callback(
+    dash.dependencies.Output('indicator_box_plot', 'figure'),
+    [dash.dependencies.Input('indicator_select', 'value'),
+     dash.dependencies.Input('ISO_select', 'value')])
+def update_indicator_line_charts(Indicator, ISO_list):
+    return box_plot(indicator_data, indicator_properties, ISO_list, Indicator)
 
 
 @app.callback(
