@@ -635,18 +635,25 @@ def cat_time_series(ISO):
     plot_df['IND'] = plot_df.Variable.str[2].fillna('Category')
 
     fig = px.line(plot_df, x='Year', y='Value', color='IND',
-                  facet_col='CAT', facet_col_wrap=3, height=2400,
+                  facet_col='CAT', facet_col_wrap=4, height=800,
                   color_discrete_map={"Category": "#14ac9c", },
                   color_discrete_sequence=px.colors.qualitative.Pastel2,
                   hover_data={'Variable_name': True},
                   labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
-                  category_orders={'CAT': cats}
-
+                  category_orders={'CAT': cats},
+                  facet_col_spacing=0.02,
+                  facet_row_spacing=0.03,
                  )
     
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_traces(mode='lines+markers')
-
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
