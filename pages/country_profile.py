@@ -564,33 +564,39 @@ def dim_time_series(ISO):
 def cat_time_series(ISO):
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
-            'GV', 'GT', 'GJ', 'GN',
             'AB', 'GB', 'SE', 'SP',
-            ]
-
+            'GV', 'GT', 'GJ', 'GN']
+    
     plot_df = (
         data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category'] and Year >= 2010")
             .set_index('Variable')
     )
     plot_df.loc[plot_df.Variable_name.isna(), 'Variable_name'] =  indicator_properties.set_index('Indicator')['Description']
     plot_df = plot_df.reset_index()
-
+    
     plot_df['CAT'] = plot_df['Variable'].str[:2].copy().values
     plot_df['IND'] = plot_df.Variable.str[2].fillna('Category')
 
     fig = px.line(plot_df, x='Year', y='Value', color='IND',
-                  facet_col='CAT', facet_col_wrap=3, height=2400,
+                  facet_col='CAT', facet_col_wrap=4, height=800,
                   color_discrete_map={"Category": "#14ac9c", },
                   color_discrete_sequence=px.colors.qualitative.Pastel2,
                   hover_data={'Variable_name': True},
                   labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
-                  category_orders={'CAT': cats}
-
+                  category_orders={'CAT': cats},
+                  facet_col_spacing=0.02,
+                  facet_row_spacing=0.03,
                  )
-
+    
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_traces(mode='lines+markers')
-
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
