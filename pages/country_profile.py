@@ -112,6 +112,7 @@ def circular_plot(ISO):
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},
                        height=600,
+                       category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
                        )
 
     fig.update_traces(offset=-4 / 12)
@@ -248,8 +249,8 @@ def loliplot(ISO):
         'Variable': '',
         'ISO': '',
         'Continental_Rank': f'Rank in {continent}',
-    }
-
+    },
+    category_orders={'Variable': ['ESRU', 'NCP', 'GEO', 'SI', 'ISO']},
     )
 
     fig.add_trace(go.Scatter(x=df[df.ISO == REF]['Variable'],
@@ -324,6 +325,7 @@ def loliplot_2(ISO):
                 'ISO': '',
                 'Continental_Rank': f'Rank in {continent}',
                 },
+        category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
 
     )
     fig.update_traces(opacity=0.7)
@@ -442,6 +444,7 @@ def missing_bar_plot(ISO):
             text='Data availability (%)',
              hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
+            category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
             color_discrete_map={
                            "Social Inclusion": "#d9b5c9",
                            "Natural Capital Protection": "#f7be49",
@@ -489,6 +492,7 @@ def Indicator_lolipop(ISO):
                          "Green Economic Opportunities": "#9dcc93",
                      },
                      height=600,
+                     category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
                      )
     fig.update_xaxes(showgrid=True, range=[0, 110], tickvals=[
                      20, 40, 60, 80, 100], visible=True, title='')
@@ -507,6 +511,7 @@ def Indicator_lolipop(ISO):
                   orientation='h',
                   opacity=0.6,
                   height=600,
+                  category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
                   )
 
     bars.update_traces(marker_color='lightgrey',
@@ -535,6 +540,8 @@ def dim_time_series(ISO):
 
 
     fig = px.line(plot_df, x='Year', y='Value', color='Variable_name',
+                 category_orders={'Variable_name': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
+
                   color_discrete_map={
                          "Social inclusion": "#d9b5c9",
                          "Natural capital protection": "#f7be49",
@@ -557,8 +564,9 @@ def dim_time_series(ISO):
 def cat_time_series(ISO):
     cats = ['EE', 'EW', 'SL', 'ME',
             'EQ', 'GE', 'BE', 'CV',
+            'GV', 'GT', 'GJ', 'GN',
             'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
+            ]
 
     plot_df = (
         data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category'] and Year >= 2010")
