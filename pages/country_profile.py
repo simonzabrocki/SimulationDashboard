@@ -43,6 +43,23 @@ def compute_group(data):
 
 group_data = compute_group(data)
 
+# Ugly to do smwhr else
+data = data.replace(['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion'], ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'])
+indicator_properties = indicator_properties.replace(['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion'], ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'])
+
+
+DIMENSION_ORDER = {'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']}
+DIMENSION_COLOR_MAP = {
+    "Social inclusion": "#d9b5c9",
+    "Natural capital protection": "#f7be49",
+    "Efficient and sustainable resource use": "#8fd1e7",
+    "Green economic opportunities": "#9dcc93",
+    "Missing": '#D3D3D3'
+    }
+CATEGORY_ORDER =  ['EE', 'EW', 'SL', 'ME',
+                   'EQ', 'GE', 'BE', 'CV',
+                   'AB', 'GB', 'SE', 'SP',
+                   'GV', 'GT', 'GJ', 'GN']
 
 def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
@@ -106,13 +123,8 @@ def circular_plot(ISO):
                        range_r=[-30, 100],
                        color='Dimension',
                        hover_data={'Variable_name': True, 'Variable': False},
-                       color_discrete_map={
-                           "Efficient and Sustainable Resource Use": "#8fd1e7",
-                           "Natural Capital Protection": "#f7be49",
-                           "Green Economic Opportunities": "#9dcc93",
-                           "Social Inclusion": "#d9b5c9",
-                       },
-                       category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+                       color_discrete_map=DIMENSION_COLOR_MAP,
+                       category_orders=DIMENSION_ORDER,
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},
                        height=600,
@@ -169,12 +181,7 @@ def polar(ISO):
     df = df.round(2)
     fig = go.Figure()
 
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
-            'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
-
-    df = df.set_index('Variable').T[cats].T.reset_index()
+    df = df.set_index('Variable').T[CATEGORY_ORDER].T.reset_index()
 
     fig = px.line_polar(df[df.ISO == ISO],
                         r="Value", theta="Variable", color="ISO", line_close=True,
@@ -281,10 +288,10 @@ def loliplot(ISO):
 
     # there must be a better way
     conversion = {
-        "ESRU": 'Efficient and Sustainable Resource Use',
-        "GEO": 'Green Economic Opportunities',
-        "NCP": 'Natural Capital Protection',
-        'SI': "Social Inclusion",
+        "ESRU": 'Efficient and sustainable resource use',
+        "GEO": 'Green economic opportunities',
+        "NCP": 'Natural capital protection',
+        'SI': "Social inclusion",
         REF: REF,
     }
 
@@ -314,10 +321,10 @@ def loliplot_2(ISO):
                  color='Dimension',
                  color_discrete_map={
         ISO: '#14ac9c',
-        "Efficient and Sustainable Resource Use": "#8fd1e7",
-        "Green Economic Opportunities": "#9dcc93",
-        "Natural Capital Protection": "#f7be49",
-        "Social Inclusion": "#d9b5c9",
+        "Efficient and sustainable resource use": "#8fd1e7",
+        "Green economic opportunities": "#9dcc93",
+        "Natural capital protection": "#f7be49",
+        "Social inclusion": "#d9b5c9",
     },
         hover_name='Variable_name',
         hover_data={'ISO': False,
@@ -330,7 +337,7 @@ def loliplot_2(ISO):
                 'ISO': '',
                 'Continental_Rank': f'Rank in {continent}',
                 },
-        category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+        category_orders=DIMENSION_ORDER,
 
     )
     fig.update_traces(opacity=0.7)
@@ -401,24 +408,26 @@ def time_series_Index(ISO):
                       )
     fig.update_traces(mode='lines+markers')
 
-    fig.add_trace(go.Scatter(x=df[df.ISO == REF_1]['Year'],
-                             y=df[df.ISO == REF_1]['Value'],
-                             name=REF_1,
-                             mode='lines',
-                             line=dict(color='darkgrey', width=2, dash='dash'),
-                             hoverinfo='skip'))
-
     fig.add_trace(go.Scatter(x=df[df.ISO == REF_2]['Year'],
                              y=df[df.ISO == REF_2]['Value'],
                              name=REF_2,
                              mode='lines',
-                             line=dict(color='darkgrey', width=2, dash='dot'),
+                             line=dict(color='#565656', width=2, dash='dot'),
                              hoverinfo='skip'))
+
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF_1]['Year'],
+                             y=df[df.ISO == REF_1]['Value'],
+                             name=REF_1,
+                             mode='lines',
+                             line=dict(color='#565656', width=2, dash='dash'),
+                             hoverinfo='skip'))
+
+
     fig.add_trace(go.Scatter(x=df[df.ISO == REF_3]['Year'],
                              y=df[df.ISO == REF_3]['Value'],
                              name=REF_3,
                              mode='lines',
-                             line=dict(color='darkgrey', width=2, dash='dashdot'),
+                             line=dict(color='#565656', width=2, dash='dashdot'),
                              hoverinfo='skip'))
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
@@ -434,12 +443,7 @@ def time_series_Index(ISO):
 
 
 
-def missing_bar_plot(ISO):
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
-            'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
-    
+def missing_bar_plot(ISO):   
 
     plot_df = (
         missing_data.loc[ISO].reset_index().merge(indicator_properties[['Category', "Dimension"]].drop_duplicates(), on='Category')
@@ -458,14 +462,8 @@ def missing_bar_plot(ISO):
             text='Data availability (%)',
             hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
-            category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
-            color_discrete_map={
-                           "Social Inclusion": "#d9b5c9",
-                           "Natural Capital Protection": "#f7be49",
-                           "Efficient and Sustainable Resource Use": "#8fd1e7",
-                           "Green Economic Opportunities": "#9dcc93",
-                           "Missing": '#D3D3D3'
-                       },
+            category_orders={'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'][::-1]},
+            color_discrete_map=DIMENSION_COLOR_MAP,
                 ).update_layout(height=1000,
                                 plot_bgcolor='rgba(0, 0, 0, 0)',
                                 legend=dict(
@@ -497,15 +495,10 @@ def Indicator_lolipop(ISO):
                      color='Dimension',
                      facet_col='Dimension',
                      facet_col_spacing=0.05,
-                     hover_data={'Value': True, 'Variable': False, "display_name": True},
+                     hover_data={'Value': True, 'Variable': False, "Description": True},
                      labels={'Variable': 'Indicator', 'Value': 'Score'},
-                     color_discrete_map={
-                         "Social Inclusion": "#d9b5c9",
-                         "Natural Capital Protection": "#f7be49",
-                         "Efficient and Sustainable Resource Use": "#8fd1e7",
-                         "Green Economic Opportunities": "#9dcc93",
-                     },
-                    category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+                     color_discrete_map=DIMENSION_COLOR_MAP,
+                    category_orders=DIMENSION_ORDER,
 
                      height=600,
                      )
@@ -521,14 +514,14 @@ def Indicator_lolipop(ISO):
                   x='Value',
                   facet_col='Dimension',
                   facet_col_spacing=0.05,
-                  hover_data={'Value': True},
+                  hover_data={'Value': False, 'Variable': False, 'Dimension': False},
                   labels={'Variable': 'Indicator', 'Value': ''},
                   orientation='h',
                   opacity=0.6,
                   height=600,
-                  category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+                  category_orders=DIMENSION_ORDER,
                   )
-
+    bars.update_layout(hovermode=False)
     bars.update_traces(marker_color='lightgrey',
                        width=0.1,
                        marker_line_width=0.1, opacity=0.8)
@@ -598,12 +591,7 @@ def dim_time_series(ISO):
 
 
     fig = px.line(plot_df, x='Year', y='Value', color='Variable_name',
-                  color_discrete_map={
-                         "Social inclusion": "#d9b5c9",
-                         "Natural capital protection": "#f7be49",
-                         "Efficient and sustainable resource use": "#8fd1e7",
-                         "Green economic opportunities": "#9dcc93",
-                     },
+                  color_discrete_map=DIMENSION_COLOR_MAP,
                      labels={'Value': 'Score', 'Variable_name': 'Dimension'})
     
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
@@ -619,11 +607,6 @@ def dim_time_series(ISO):
 
 
 def cat_time_series(ISO):
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
-            'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
-    
     plot_df = (
         data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category'] and Year >= 2010")
             .set_index('Variable')
@@ -640,7 +623,7 @@ def cat_time_series(ISO):
                   color_discrete_sequence=px.colors.qualitative.Pastel2,
                   hover_data={'Variable_name': True},
                   labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
-                  category_orders={'CAT': cats},
+                  category_orders={'CAT': CATEGORY_ORDER},
                   facet_col_spacing=0.02,
                   facet_row_spacing=0.03,
                  )

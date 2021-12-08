@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 import numpy as np
+import pandas as pd
 
 from utils import Header
 from app import app, indicator_data, indicator_properties, dimension_properties
@@ -34,7 +35,7 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
                                  },
                      height=400,
                      category_orders={'ISO': ISO_list},
-                     color_discrete_sequence=px.colors.qualitative.G10,#["red", "green", "blue", "goldenrod", "magenta"],
+                     color_discrete_sequence=px.colors.qualitative.G10,
                      color_discrete_map={'Other': '#D3D3D3'},
                      )
     fig.update_layout(title=title, yaxis_title=xaxis_title)
@@ -52,12 +53,17 @@ def box_plot(data, indicator_properties, ISO_list, Indicator):
     title = indicator_properties.loc[Indicator]['Description']
     xaxis_title = indicator_properties.loc[Indicator]['Unit']
     df.loc[~df.ISO.isin(ISO_list), 'ISO'] = 'Other'
+
+    
+
     fig = px.box(df, x='Value', points="all", color='ISO',hover_data=['ISO', 'Country'],
                  animation_frame='Year',
+                 boxmode='group',
                  category_orders={'ISO': ISO_list + ['Other']},
-                 color_discrete_sequence=px.colors.qualitative.G10,#["red", "green", "blue", "goldenrod", "magenta"],
+                 color_discrete_sequence=px.colors.qualitative.G10,
+                 color_discrete_map={'Other': '#565656'}).update_yaxes(matches=None, showticklabels=True)
 
-                 color_discrete_map={'Other': '#D3D3D3'}).update_yaxes(matches=None, showticklabels=True)
+
 
     fig.update_layout(title=title, xaxis_title=xaxis_title)
     fig.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0})
