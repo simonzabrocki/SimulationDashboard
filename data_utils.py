@@ -76,7 +76,7 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
-def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=2005):
+def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=2010):
     data = data[(data.Year >= min_year) & (data.Year <= max_year)]
     data = pd.merge(data, indicator_properties, on='Indicator').astype({'Year': int})
 
