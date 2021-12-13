@@ -83,8 +83,9 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
     
     total_points = (indicator_properties.groupby('Category').Indicator.count() * (max_year - min_year + 1))
     
-    df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
-    
+    #df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
+    df =  data.query("Imputed == False").groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
+
     ISOs = data.ISO.unique()
     Categorys = indicator_properties.Category.unique()
     full_index = pd.MultiIndex.from_product([ISOs, Categorys],
