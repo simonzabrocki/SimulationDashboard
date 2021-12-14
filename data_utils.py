@@ -71,6 +71,9 @@ def format_data(data):
     data['Variable_name'] = var_names
     data = data.reset_index()
 
+    data = continent_grouping(data)
+
+
     data = add_rank_to_data(data)
     return data
 
@@ -123,7 +126,6 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
 
-    data = continent_grouping(data)
 
     indicator_data, indicator_properties, dimension_properties = load_indicator_data()
 
