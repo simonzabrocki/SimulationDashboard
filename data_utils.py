@@ -132,10 +132,10 @@ def load_all_data(max_year=2019):
     # data = data.query("Variable not in ['GT2','GN2']")
 
     data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(
-    ), left_on='Variable', right_on='Category', how='left').query("Year >= 2010")
+    ), left_on='Variable', right_on='Category', how='left').query("Year >= 2015")
 
 
-    missing_data = get_missing_values_stat(indicator_data, indicator_properties)
+    missing_data = get_missing_values_stat(indicator_data, indicator_properties, max_year=2020, min_year=2015)
 
     ISO_options = get_ISO_options(data)
 

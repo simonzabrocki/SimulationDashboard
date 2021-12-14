@@ -3,7 +3,7 @@ import dash_html_components as html
 import plotly.express as px
 import dash_table
 from utils import Header
-from app import app, data, INDEX_YEAR
+from app import app, data, INDEX_YEAR, MIN_YEAR
 
 
 def Index_trend(data):
@@ -30,16 +30,17 @@ def Index_trend(data):
                   hover_data={'Value': True, 'Year': False, 'Continent': True},
                   labels={'Value': 'Score', 'Continent': 'Region'},
                   color_discrete_sequence=px.colors.qualitative.Set2,
+                  category_orders={'Continent': ['Caribbean', 'Latin America', 'Oceania, Australia and New Zealand', 'Central and Southern Asia', 'Eastern and South-Eastern Asia', 'Northern Africa and Western Asia', 'Sub-Saharan Africa', 'Europe and Northern America']},
                   height=500)
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
-    fig.update_xaxes(range=[2009, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[MIN_YEAR - 1, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
 
 
-    dots = px.scatter(df.query("Year == @INDEX_YEAR").sort_values(by=['Continent'], key=lambda x: x.map(custom_dict)),#[df.Year == INDEX_YEAR],
+    dots = px.scatter(df.query("Year == @INDEX_YEAR"),#.sort_values(by=['Continent'], key=lambda x: x.map(custom_dict)),#[df.Year == INDEX_YEAR],
                       x='Year',
                       y='Value',
                       color='Continent',
@@ -50,6 +51,8 @@ def Index_trend(data):
                                 },
                       labels={'Value': 'Score', 'Continent': 'Region'},
                       color_discrete_sequence=px.colors.qualitative.Set2,
+                  category_orders={'Continent': ['Caribbean', 'Latin America', 'Oceania, Australia and New Zealand', 'Central and Southern Asia', 'Eastern and South-Eastern Asia', 'Northern Africa and Western Asia', 'Sub-Saharan Africa', 'Europe and Northern America']},
+
                       )
 
     for plot in dots.data:
@@ -85,7 +88,7 @@ def dimension_trend(data):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2010, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[MIN_YEAR - 1, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
@@ -262,10 +265,17 @@ layout = html.Div(
                                 html.H5(f"Highlights"),
                                 html.Br([]),
                                 html.P(
-                                    "Average scores for the Green Growth Index are provided for countries within five geographic regions – Africa, the Americas, Asia, Europe, and Oceania. Although the trends differ across regions for the four green growth dimensions, green economic opportunities is consistently below targets and largely stable across time, except in Europe where the trend is rising slightly and greater than other regions. Another positive trend to note is that across all regions, social inclusion scores have risen systematically over the past 15 years. This is especially true in areas with many developing countries like Asia and Africa.",
+                                    "Average scores for the Green-Blue Growth Index are provided for countries in different subregions, excluding landlocked countries. The scores are provided for the four dimensions including efficient and sustainable resource use (ESRU), natural capital protection (NCP), green economic opportunities (GEO) and social inclusion (SI). Each dimension consists of four indicator categories as follows:",
                                     style={"color": "#ffffff", 'font-size': '15px'},
                                     className="row",
                                 ),
+                                html.Ol([
+                                    html.Li('ESRU dimension - Efficient and sustainable energy (EE), Efficient and sustainable water use (EW), Material use efficiency (ME), Sustainable land use (SL)',  style={"color": "#ffffff", 'font-size': '15px'}),
+                                    html.Li('NCP dimension: Biodiversity and ecosystem protection (BE), Cultural and social value (CV), Environmental quality (EQ), GHG emissions reduction (GE)',  style={"color": "#ffffff", 'font-size': '15px'}),
+                                    html.Li('GEO dimension: Green employment (GJ), Green innovation (GN), Green trade (GT), Green investment (GV)',  style={"color": "#ffffff", 'font-size': '15px'}),
+                                    html.Li('SI dimension: Access to basic services and resources (AB) Gender balance (GB), Social equity (SE), Social protection (SP)',  style={"color": "#ffffff", 'font-size': '15px'},)
+                                ],),
+                                html.P('The Green-Blue Growth Index is developed through collaboration between GGGI and OECS Commission.')
                             ],
                             className="product",
                         )
