@@ -60,10 +60,10 @@ def HTML_text(ISO):
                     html.Div(
                         [
                             html.H5(
-                                f"{Country}'s Green Growth Index is {Index}"),
+                                f"{Country}'s Green-Blue Growth Index is {Index}"),
                             html.Br([]),
                             html.P(
-                                f"{Country} is a {Status} country located in {Continent}. Its Green Growth index is {Index}.",
+                                f"{Country} is a {Status} country located in {Continent}. Its Green-Blue Growth index is {Index}.",
                                 style={"color": "#ffffff",
                                        'font-size': '15px'},
                                 className="row",
@@ -626,7 +626,7 @@ layout = html.Div(
                         dcc.Graph(id='circular_plot',
                                   config=dcc_config('distance_to_target')),
                         html.H6(
-                            f"Data availability {INDEX_YEAR}-{MIN_YEAR}",
+                            f"Data availability {MIN_YEAR}-{INDEX_YEAR}",
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='missing_data_plot',

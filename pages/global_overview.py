@@ -161,13 +161,13 @@ layout = html.Div(
                     [
 
                         html.H6(
-                            f"{MIN_YEAR}-{INDEX_YEAR} Green Growth Index Map",
+                            f"{MIN_YEAR}-{INDEX_YEAR} Green-Blue Growth Index Map",
                             className="subtitle padded",
                         ),
                         dcc.Graph(figure=Map(data), id='world_map',
                                   config=map_dcc_config('GGI_world_map')),
                         html.H6(
-                            f"{INDEX_YEAR} Green Growth Index Table",
+                            f"{INDEX_YEAR} Green-Blue Growth Index Table",
                             className="subtitle padded",
                         ),
                         Table(data),
