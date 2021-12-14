@@ -35,7 +35,7 @@ def Index_trend(data):
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
-    fig.update_xaxes(range=[MIN_YEAR - 1, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[MIN_YEAR - 0.5, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
 
@@ -88,7 +88,7 @@ def dimension_trend(data):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[MIN_YEAR - 1, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[MIN_YEAR - 0.5, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],

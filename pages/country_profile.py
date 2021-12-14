@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header, dcc_config, is_btn_clicked
-from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
+from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR, MIN_YEAR
 
 import numpy as np
 import pandas as pd
@@ -626,7 +626,7 @@ layout = html.Div(
                         dcc.Graph(id='circular_plot',
                                   config=dcc_config('distance_to_target')),
                         html.H6(
-                            "Data availability",
+                            f"Data availability {INDEX_YEAR}-{MIN_YEAR}",
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='missing_data_plot',

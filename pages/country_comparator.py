@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.express as px
 
 from utils import Header
-from app import app, data, ISO_options, INDEX_YEAR
+from app import app, data, ISO_options, INDEX_YEAR, MIN_YEAR
 
 
 def HTML_text(ISO, className):
@@ -193,7 +193,7 @@ def dimension_trend(ISO_A, ISO_B):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2005, 2021])
+    fig.update_xaxes(range=[MIN_YEAR - 0.5, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],

@@ -34,7 +34,7 @@ def Map(data):
                             range_color=[0, 100],
                             animation_frame="Year",
                             height=800,
-                            center={'lat': 13.9, 'lon': -70},
+                            #center={'lat': 13.9, 'lon': -70},
                             scope='world'
                             )
 
