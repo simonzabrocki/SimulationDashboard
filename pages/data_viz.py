@@ -47,14 +47,23 @@ def box_plot(data, indicator_properties, ISO_list, Indicator):
     indicator_properties = indicator_properties.set_index('Indicator')
 
     df = data.query("Indicator == @Indicator").sort_values(by='Year')
+    
+    years = df.query('ISO in @ISO_list').pivot(index='ISO', columns='Year', values='Indicator').dropna(axis=1).columns
+    df = df.query("Year in @years")
     title = indicator_properties.loc[Indicator]['Description']
     xaxis_title = indicator_properties.loc[Indicator]['Unit']
     df.loc[~df.ISO.isin(ISO_list), 'ISO'] = 'Other'
+
+    
+
     fig = px.box(df, x='Value', points="all", color='ISO',hover_data=['ISO', 'Country'],
                  animation_frame='Year',
+                 boxmode='group',
                  category_orders={'ISO': ISO_list + ['Other']},
                  color_discrete_sequence=px.colors.qualitative.G10,
-                 color_discrete_map={'Other': '#D3D3D3'}).update_yaxes(matches=None, showticklabels=True)
+                 color_discrete_map={'Other': '#565656'}).update_yaxes(matches=None, showticklabels=True)
+
+
 
     fig.update_layout(title=title, xaxis_title=xaxis_title)
     fig.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0})
