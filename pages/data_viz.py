@@ -3,7 +3,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 
-from utils import Header
+
+from utils import Header, dcc_config, is_btn_clicked
 from app import app, indicator_data, indicator_properties, dimension_properties
 
 
@@ -126,6 +127,20 @@ def HTML_text(Indicator):
                             ),
                         ],
                         className="product",
+                    ),
+                    html.H6(
+                        "Download",
+                        className="subtitle padded",
+                    ),
+                    html.Div(
+                        [
+
+                            html.Button(f'Download {Indicator}', id='btn-ind-data', n_clicks=0,
+                                style={'font-size': 10,
+                                        'color': '#ffffff', 'border': '1px solid #FFFFFF'}),
+                            dcc.Download(id="download-ind-data"),
+                        ],
+                        className="product",
                     )
                     ],
                     className="row",
@@ -165,6 +180,7 @@ layout = html.Div(
                                                 'font-size': '11px'},
                                          ),
                                 html.Div(id='source_text'),
+                               
                             ],
                             className='pretty_container four columns'
                         ),
@@ -260,3 +276,22 @@ def update_ISO_select(Indicator):
     new_ISO_options = df[['ISO', 'Country']].drop_duplicates().values
     options = [{'label': country, 'value': iso} for iso, country in new_ISO_options]
     return options
+
+
+
+@app.callback(
+    dash.dependencies.Output("download-ind-data", "data"),
+    [
+        dash.dependencies.Input('indicator_select', 'value'),
+        dash.dependencies.Input("btn-ind-data", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(indicator, n_clicks):
+    if is_btn_clicked('btn-ind-data'):
+        df  = indicator_data.query("Indicator == @indicator")#data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
+
+        return dcc.send_data_frame(df.set_index(["ISO", "Year"]).to_csv, f"{indicator}_data.csv")
+
+    else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+        raise dash.exceptions.PreventUpdate
