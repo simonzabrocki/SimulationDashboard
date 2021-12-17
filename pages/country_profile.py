@@ -452,6 +452,12 @@ def missing_bar_plot(ISO):
     plot_df_bis = plot_df.copy().assign(Dimension='Missing')
     plot_df_bis['Data availability (%)'] = (100 - plot_df_bis['Data availability (%)']).round(2)
 
+    cat =  ['EE', 'EW', 'ME', 'SL', 
+            'BE', 'CV', 'EQ', 'GE',
+            'GJ', 'GN', 'GT', 'GV',
+            'AB', 'GB', 'SE', 'SP',
+            ]
+
     plot_df = pd.concat([plot_df, plot_df_bis])
     fig = px.bar(plot_df,
             y='Category',
@@ -462,7 +468,7 @@ def missing_bar_plot(ISO):
             text='Data availability (%)',
             hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
-            category_orders={'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'][::-1]},
+            category_orders={ 'Category': cat, 'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
             color_discrete_map=DIMENSION_COLOR_MAP,
                 ).update_layout(height=1000,
                                 plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -472,6 +478,7 @@ def missing_bar_plot(ISO):
         xanchor="center",
         x=0,
         title=''
+        #'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'][::-1],
         
     ),
     ).update_traces(texttemplate='%{text:.2s}%', textposition='inside', textfont=dict(
