@@ -111,3 +111,25 @@ def load_all_data(max_year=2019):
     ISO_options = get_ISO_options(data)
 
     return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data
+
+
+
+# def export_ISO_plots():
+#     path = 'outputs/plots/'
+#     for ISO in available_ISOs:
+#         print(ISO)
+        
+#         directory = f'{path}/{ISO}'
+#         if not os.path.exists(directory):
+#             os.makedirs(directory)
+            
+#         ts = time_series_Index(ISO)
+#         nans = missing_bar_plot(ISO)
+#         ind = Indicator_lolipop(ISO)
+#         cir = circular_plot(ISO)
+        
+#         ts.write_image(f"{directory}/timeseries.png", width=1200, height=600)
+#         nans.write_image(f"{directory}/missingvalues.png", height=1200, width=600)
+#         ind.write_image(f"{directory}/indicators.png", width=1500, height=600)
+#         cir.write_image(f"{directory}/circular.png", height=600, width=600)
+        
