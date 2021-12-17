@@ -22,7 +22,7 @@ def Index_trend(data):
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
-    fig.update_xaxes(range=[2010, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[2010, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
@@ -78,7 +78,7 @@ def dimension_trend(data):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2010, INDEX_YEAR + 2])
+    fig.update_xaxes(range=[2010, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
@@ -134,6 +134,13 @@ def category_lolipop(data):
         ['Variable', 'Continent', 'Variable_name', 'Dimension']).mean().reset_index()
     df = df.round(2).sort_values(by='Dimension')
 
+
+    cat =  ['EE', 'EW', 'ME', 'SL', 
+        'BE', 'CV', 'EQ', 'GE',
+        'GJ', 'GN', 'GT', 'GV',
+        'AB', 'GB', 'SE', 'SP',
+        ]
+
     fig = px.scatter(df,
                      y='Variable',
                      x='Value',
@@ -150,7 +157,7 @@ def category_lolipop(data):
                          "Green Economic Opportunities": "#9dcc93",
                      },
                      height=600,
-                    category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+                    category_orders={"Variable": cat,'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
 
                      )
     fig.update_xaxes(showgrid=True, range=[0, 100], tickvals=[
