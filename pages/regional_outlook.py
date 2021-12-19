@@ -77,7 +77,9 @@ def dimension_trend(data):
 
                   )
 
-    fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
+    #fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
+    fig.update_yaxes(showgrid=True, showticklabels=True, range=[1, 100])
+
     fig.update_xaxes(range=[2010, INDEX_YEAR + 0.5])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
