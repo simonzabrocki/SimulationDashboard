@@ -639,7 +639,7 @@ def cat_time_series(ISO):
     fig.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
-        y=1.02,
+        y=1.05,
         xanchor="right",
         x=1
     ))
@@ -647,10 +647,17 @@ def cat_time_series(ISO):
 
 
 
-
 def availibility_ts(ISO):
+    # TO CLEAN UP !!!!
+    
+    
+    Indicator = indicator_data.Indicator.unique()
+    Year = range(2010, 2020)
+    full_index = pd.MultiIndex.from_product([Indicator, Year], names=['Indicator', 'Year'])
 
-    plot_df = indicator_data.query(f"ISO == '{ISO}' and Year >= 2010").merge(indicator_properties[['Indicator', 'Description']], on='Indicator')
+    plot_df = indicator_data.query(f"ISO == '{ISO}' and Year >= 2010").set_index(['Indicator', 'Year']).reindex(full_index, fill_value=True).reset_index()
+    plot_df = plot_df.merge(indicator_properties[['Indicator', 'Description']], on='Indicator')
+    
     plot_df['Category'] = plot_df['Indicator'].str[0:2]
     plot_df['Available'] = (1 - plot_df['Imputed']).astype('bool')
 
@@ -677,7 +684,7 @@ def availibility_ts(ISO):
 
     fig = fig.update_xaxes(showgrid=False, gridwidth=1, dtick=1,gridcolor='grey', showticklabels=True).update_yaxes(title='', matches=None,showgrid=True, gridwidth=1, gridcolor='grey')
 
-    fig = fig.update_traces(marker=dict(size=20, line=dict(width=0))).update_layout(plot_bgcolor='rgba(0,0,0,0)')
+    fig = fig.update_traces(marker=dict(size=20, line=dict(width=0, color='DarkSlateGrey'))).update_layout(plot_bgcolor='rgba(0,0,0,0)')
 
 
     def annotation(a):
@@ -685,7 +692,13 @@ def availibility_ts(ISO):
         a.update(text=f'({cat}) {cat_description[cat]}')
 
     fig.for_each_annotation(lambda a: annotation(a))
-
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.05,
+        xanchor="right",
+        x=1
+    ))
     return fig
 
 
