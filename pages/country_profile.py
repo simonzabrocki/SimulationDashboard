@@ -909,12 +909,12 @@ def update_polar(ISO):
     return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
 
 
-@app.callback(
-    dash.dependencies.Output('missing_ts_data_plot', 'config'),
-    dash.dependencies.Output('missing_ts_data_plot', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_polar(ISO):
-    return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
+# @app.callback(
+#     dash.dependencies.Output('missing_ts_data_plot', 'config'),
+#     dash.dependencies.Output('missing_ts_data_plot', 'figure'),
+#     [dash.dependencies.Input('ISO_select', 'value')])
+# def update_polar(ISO):
+#     return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
 
 
 @app.callback(
