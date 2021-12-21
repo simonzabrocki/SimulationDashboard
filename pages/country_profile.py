@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header, dcc_config, is_btn_clicked
-from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR
+from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR, indicator_data
 
 import numpy as np
 import pandas as pd
@@ -478,7 +478,6 @@ def missing_bar_plot(ISO):
         xanchor="center",
         x=0,
         title=''
-        #'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'][::-1],
         
     ),
     ).update_traces(texttemplate='%{text:.2s}%', textposition='inside', textfont=dict(
@@ -649,6 +648,45 @@ def cat_time_series(ISO):
 
 
 
+def availibility_ts(ISO):
+
+    plot_df = indicator_data.query(f"ISO == '{ISO}' and Year >= 2010").merge(indicator_properties[['Indicator', 'Description']], on='Indicator')
+    plot_df['Category'] = plot_df['Indicator'].str[0:2]
+    plot_df['Available'] = (1 - plot_df['Imputed']).astype('bool')
+
+
+    cat =  ['EE', 'EW', 'ME', 'SL', 
+            'BE', 'CV', 'EQ', 'GE',
+            'GJ', 'GN', 'GT', 'GV',
+            'AB', 'GB', 'SE', 'SP',
+            ]
+
+    cat_description = data.query("Aggregation in ['Category']")[['Variable', 'Variable_name']].drop_duplicates().set_index('Variable').to_dict()['Variable_name']
+
+    fig = px.scatter(plot_df, x='Year', y='Indicator', symbol='Available', color='Available',
+               symbol_map={True: 'circle', False: 'x'},
+               color_discrete_map={True: 'green', False: 'red'},
+               height=3000,
+               hover_data={'Description': True},
+              facet_col='Category',
+              facet_row_spacing=0.02,
+             facet_col_wrap=1,
+             category_orders={ 'Category': cat})
+
+
+
+    fig = fig.update_xaxes(showgrid=False, gridwidth=1, dtick=1,gridcolor='grey', showticklabels=True).update_yaxes(title='', matches=None,showgrid=True, gridwidth=1, gridcolor='grey')
+
+    fig = fig.update_traces(marker=dict(size=20, line=dict(width=0))).update_layout(plot_bgcolor='rgba(0,0,0,0)')
+
+
+    def annotation(a):
+        cat = a.text.split("=")[-1]
+        a.update(text=f'({cat}) {cat_description[cat]}')
+
+    fig.for_each_annotation(lambda a: annotation(a))
+
+    return fig
 
 
 layout = html.Div(
@@ -680,22 +718,30 @@ layout = html.Div(
                             "Data availability",
                             className="subtitle padded",
                         ),
+                        html.Div([
+                            html.P("75 % of all possible values are available.", id='index_confidence_2', style={"color": "#ffffff", 'font-size': '18px'},),
+                        ],
+                        className='product'),
                         dcc.Graph(id='missing_data_plot',
                                   config=dcc_config('data_availability')),
+                        dcc.Graph(id='missing_ts_data_plot',
+                                  config=dcc_config('yearly_data_availability')),
+
                     ],
                     className='pretty_container four columns'),
                 html.Div(
                     [
 
                         html.H6(
-                            "Index trend (Confidence 🟢 🟠*)",
+                            "Index trend (Confidence level 🟢)",
                             className="subtitle padded",
                             id='index_confidence_1'
                         ),
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
-                        html.P("*75 % of all possible values are available", id='index_confidence_2'),
+                        html.P("Note: 🟢 High, 🟡 Moderate, 🟠 Low confidence based on data availability"),
+
                         html.Div(
                             [
                                 html.Div(
@@ -851,15 +897,39 @@ def update_polar(ISO):
 
 
 @app.callback(
+    dash.dependencies.Output('missing_ts_data_plot', 'config'),
+    dash.dependencies.Output('missing_ts_data_plot', 'figure'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_polar(ISO):
+    return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
+
+
+@app.callback(
     dash.dependencies.Output('index_confidence_1', 'children'),
     dash.dependencies.Output('index_confidence_2', 'children'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_confidence(ISO):
-    available = index_confidence.loc[ISO]['Confidence']
-    conf =  '🟢' if  available > 70 else '🟠'
+    # to clean up
 
-    title = f'Index trend (confidence {conf}*)'
-    remark = f'*{round(available, 1)} % of all possible values are available '
+    available = index_confidence.loc[ISO]['Confidence']
+
+    if available >= 70:
+        conf =  '🟢'
+    if  available <= 65:
+        conf = '🟠'
+    if 70 > available >=65: 
+        conf = '🟡'
+
+    remark = f'{round(available, 1)} % of all possible values are available.'
+
+    data_plot = data[(data.ISO.isin([ISO]))]
+
+    if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
+        title = f'Index trend (Confidence level {conf})'
+    else:
+        title = f'Index trend'
+
+
     return title, remark
 
 
