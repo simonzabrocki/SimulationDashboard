@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header, dcc_config, is_btn_clicked
-from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR, indicator_data
+from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR, MIN_YEAR, indicator_data
 
 import numpy as np
 import pandas as pd
@@ -722,13 +722,13 @@ layout = html.Div(
                                  ),
                         html.Div(id='Description'),
                         html.H6(
-                            "Distances to Targets",
+                            f"{INDEX_YEAR} Distances to Targets",
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='circular_plot',
                                   config=dcc_config('distance_to_target')),
                         html.H6(
-                            "Data availability",
+                            f"Data availability {MIN_YEAR}-{INDEX_YEAR}",
                             className="subtitle padded",
                         ),
                         html.Div([
@@ -737,8 +737,8 @@ layout = html.Div(
                         className='product'),
                         dcc.Graph(id='missing_data_plot',
                                   config=dcc_config('data_availability')),
-                        dcc.Graph(id='missing_ts_data_plot',
-                                  config=dcc_config('yearly_data_availability')),
+                        # dcc.Graph(id='missing_ts_data_plot',
+                        #           config=dcc_config('yearly_data_availability')),
 
                     ],
                     className='pretty_container four columns'),
@@ -933,7 +933,7 @@ def update_confidence(ISO):
     if 70 > available >=65: 
         conf = '🟡'
 
-    remark = f'{round(available, 1)} % of all possible values are available.'
+    remark = f'About {round(available, 1)} % of all possible values are available for the period {MIN_YEAR}-{INDEX_YEAR}.'
 
     data_plot = data[(data.ISO.isin([ISO]))]
 
