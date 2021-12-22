@@ -18,6 +18,10 @@ def indicator_line_charts(data, indicator_properties, ISO_list, Indicator):
     indicator_properties = indicator_properties.set_index('Indicator')
 
     df = data[(data.ISO.isin(ISO_list)) & (data.Indicator == Indicator)]
+
+    if df.shape[0] == 0: # To put somewhere else
+        return {}
+
     title = indicator_properties.loc[Indicator]['Description']
     xaxis_title = indicator_properties.loc[Indicator]['Unit']
     fig = px.scatter(df,
@@ -55,7 +59,8 @@ def box_plot(data, indicator_properties, ISO_list, Indicator):
     xaxis_title = indicator_properties.loc[Indicator]['Unit']
     df.loc[~df.ISO.isin(ISO_list), 'ISO'] = 'Other'
 
-    
+    if df.shape[0] == 0: # to put elswhere
+        return {}
 
     fig = px.box(df, x='Value', points="all", color='ISO',hover_data=['ISO', 'Country'],
                  animation_frame='Year',
