@@ -753,7 +753,7 @@ layout = html.Div(
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
-                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability"),
+                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability."),
 
                         html.Div(
                             [
