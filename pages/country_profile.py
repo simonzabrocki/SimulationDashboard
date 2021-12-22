@@ -753,7 +753,7 @@ layout = html.Div(
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
-                        html.P("Note: 🟢 High, 🟡 Moderate, 🟠 Low confidence based on data availability"),
+                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability"),
 
                         html.Div(
                             [
@@ -927,11 +927,11 @@ def update_confidence(ISO):
     available = index_confidence.loc[ISO]['Confidence']
 
     if available >= 70:
-        conf =  '🟢'
+        conf =  '🟩'
     if  available <= 65:
-        conf = '🟠'
+        conf = '🟧'
     if 70 > available >=65: 
-        conf = '🟡'
+        conf = '🟨'
 
     remark = f'About {round(available, 1)} % of all possible values are available for the period {MIN_YEAR}-{INDEX_YEAR}.'
 
