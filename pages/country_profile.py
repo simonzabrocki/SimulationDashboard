@@ -585,6 +585,7 @@ def heatmap_plot(ISO):
                                   (0.25, "#fc8d59"),
                                   (0.5, "#ffffbf"),
                                   (1, GGI_GREEN)],
+          labels=dict(x="Category", y="", color="Score"),
     )
 
     fig.update_yaxes(showgrid=False)
