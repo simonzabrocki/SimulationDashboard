@@ -10,6 +10,9 @@ from app import app, data, missing_data, ISO_options, indicator_properties, inde
 import numpy as np
 import pandas as pd
 
+import dash_daq as daq
+
+GGI_GREEN = '#14ac9c'
 
 def compute_group(data):
     '''To improve'''
@@ -185,7 +188,7 @@ def polar(ISO):
 
     fig = px.line_polar(df[df.ISO == ISO],
                         r="Value", theta="Variable", color="ISO", line_close=True,
-                        color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
+                        color_discrete_map={ISO: GGI_GREEN, REF: 'darkgrey'},
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False,
                                     'Continental_Rank': True,
@@ -241,7 +244,7 @@ def loliplot(ISO):
                      x="Variable",
                      color='Variable',
                      color_discrete_map={
-                         ISO: '#14ac9c',
+                         ISO: GGI_GREEN,
                          "SI": "#d9b5c9",
                          "NCP": "#f7be49",
                          "ESRU": "#8fd1e7",
@@ -320,7 +323,7 @@ def loliplot_2(ISO):
                  x="Variable",
                  color='Dimension',
                  color_discrete_map={
-        ISO: '#14ac9c',
+        ISO: GGI_GREEN,
         "Efficient and sustainable resource use": "#8fd1e7",
         "Green economic opportunities": "#9dcc93",
         "Natural capital protection": "#f7be49",
@@ -394,7 +397,7 @@ def time_series_Index(ISO):
                       x='Year',
                       y='Value',
                       color='ISO',
-                      color_discrete_map={ISO: '#14ac9c'},
+                      color_discrete_map={ISO: GGI_GREEN},
                       height=500,
                       hover_data={'ISO': False, 'Year': False,
                                   'Continental_Rank': True,
@@ -581,7 +584,7 @@ def heatmap_plot(ISO):
           color_continuous_scale=[(0, "#f14326"),
                                   (0.25, "#fc8d59"),
                                   (0.5, "#ffffbf"),
-                                  (1, "#14ac9c")],
+                                  (1, GGI_GREEN)],
     )
 
     fig.update_yaxes(showgrid=False)
@@ -625,7 +628,7 @@ def cat_time_series(ISO):
 
     fig = px.line(plot_df, x='Year', y='Value', color='IND',
                   facet_col='CAT', facet_col_wrap=4, height=800,
-                  color_discrete_map={"Category": "#14ac9c", },
+                  color_discrete_map={"Category": GGI_GREEN, },
                   color_discrete_sequence=px.colors.qualitative.Pastel2,
                   hover_data={'Variable_name': True},
                   labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
@@ -733,13 +736,19 @@ layout = html.Div(
                         ),
                         html.Div([
                             html.P("75 % of all possible values are available.", id='index_confidence_2', style={"color": "#ffffff", 'font-size': '18px'},),
+
                         ],
                         className='product'),
+
                         dcc.Graph(id='missing_data_plot',
                                   config=dcc_config('data_availability')),
-                        # dcc.Graph(id='missing_ts_data_plot',
-                        #           config=dcc_config('yearly_data_availability')),
-
+                        html.Div([
+                            html.Br([]),
+                            daq.BooleanSwitch(label="Full Availability display", on=False, color=GGI_GREEN, id='availability_switch'),
+                            html.Br([]),
+                            dcc.Graph(id='missing_ts_data_plot', config=dcc_config('yearly_data_availability')),
+                        ]),
+                        
                     ],
                     className='pretty_container four columns'),
                 html.Div(
@@ -909,12 +918,26 @@ def update_polar(ISO):
     return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
 
 
-# @app.callback(
-#     dash.dependencies.Output('missing_ts_data_plot', 'config'),
-#     dash.dependencies.Output('missing_ts_data_plot', 'figure'),
-#     [dash.dependencies.Input('ISO_select', 'value')])
-# def update_polar(ISO):
-#     return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
+@app.callback(
+    dash.dependencies.Output('missing_ts_data_plot', 'style'),
+    [
+        dash.dependencies.Input('availability_switch', 'on')
+    ])
+def update_polar(switch):
+    if switch:
+        return {'display': 'block'}
+    else: 
+        return {'display' : 'None'}
+
+
+@app.callback(
+    dash.dependencies.Output('missing_ts_data_plot', 'config'),
+    dash.dependencies.Output('missing_ts_data_plot', 'figure'),
+    [
+        dash.dependencies.Input('ISO_select', 'value'),
+    ])
+def update_polar(ISO):
+    return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
 
 
 @app.callback(
