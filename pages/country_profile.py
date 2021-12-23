@@ -744,7 +744,7 @@ layout = html.Div(
                                   config=dcc_config('data_availability')),
                         html.Div([
                             html.Br([]),
-                            daq.BooleanSwitch(label="Full Availability display", on=False, color=GGI_GREEN, id='availability_switch'),
+                            daq.BooleanSwitch(label="Availability by indicator", on=False, color=GGI_GREEN, id='availability_switch'),
                             html.Br([]),
                             dcc.Graph(id='missing_ts_data_plot', config=dcc_config('yearly_data_availability')),
                         ]),
