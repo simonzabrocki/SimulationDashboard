@@ -563,7 +563,7 @@ def heatmap_plot(ISO):
 
     df = df.round(2)
     
-    df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2, REF_3]]
+    df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, REF_1, REF_2, REF_3]]
     # Lol something better could be found for sure
     df[' '] = np.nan
     df['  '] = np.nan
