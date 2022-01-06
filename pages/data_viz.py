@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.express as px
 
 
-from utils import Header, dcc_config, is_btn_clicked
+from utils import Header, Footer, dcc_config, is_btn_clicked
 from app import app, indicator_data, indicator_properties, dimension_properties
 
 
@@ -223,6 +223,8 @@ layout = html.Div(
             ],
             className="row",
         ),
+        Footer(),
+
     ],
     className="page",
 )
