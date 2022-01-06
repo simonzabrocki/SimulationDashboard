@@ -421,11 +421,11 @@ def time_series_Index(ISO):
 
 
 def missing_bar_plot(ISO):
-    cats = ['EE', 'EW', 'SL', 'ME',
-            'EQ', 'GE', 'BE', 'CV',
+    cat =  ['EE', 'EW', 'ME', 'SL', 
+            'BE', 'CV', 'EQ', 'GE',
+            'GJ', 'GN', 'GT', 'GV',
             'AB', 'GB', 'SE', 'SP',
-            'GV', 'GT', 'GJ', 'GN']
-    
+            ]
 
     plot_df = (
         missing_data.loc[ISO].reset_index().merge(indicator_properties[['Category', "Dimension"]].drop_duplicates(), on='Category')
@@ -444,7 +444,7 @@ def missing_bar_plot(ISO):
             text='Data availability (%)',
              hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
-            category_orders={'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
+            category_orders={'Category': cat,'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
             color_discrete_map={
                            "Social Inclusion": "#d9b5c9",
                            "Natural Capital Protection": "#f7be49",
