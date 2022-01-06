@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header, dcc_config, is_btn_clicked
-from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR, MIN_YEAR
+from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR, MIN_YEAR, index_confidence
 
 import numpy as np
 import pandas as pd
@@ -629,6 +629,11 @@ layout = html.Div(
                             f"Data availability {MIN_YEAR}-{INDEX_YEAR}",
                             className="subtitle padded",
                         ),
+                        html.Div([
+                            html.P("75 % of all possible values are available.", id='index_confidence_2', style={"color": "#ffffff", 'font-size': '18px'},),
+
+                        ],
+                        className='product'),
                         dcc.Graph(id='missing_data_plot',
                                   config=dcc_config('data_availability')),
                     ],
@@ -637,12 +642,14 @@ layout = html.Div(
                     [
 
                         html.H6(
-                            "Index trend",
+                            "Index trend (Confidence level 🟢)",
                             className="subtitle padded",
+                            id='index_confidence_1'
                         ),
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
+                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability."),
                         html.Div(
                             [
                                 html.Div(
@@ -794,3 +801,31 @@ def downdload_table(ISO, n_clicks):
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise dash.exceptions.PreventUpdate
+
+@app.callback(
+    dash.dependencies.Output('index_confidence_1', 'children'),
+    dash.dependencies.Output('index_confidence_2', 'children'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_confidence(ISO):
+    # to clean up
+
+    available = index_confidence.loc[ISO]['Confidence']
+
+    if available >= 70:
+        conf =  '🟩'
+    if  available <= 65:
+        conf = '🟧'
+    if 70 > available >=65: 
+        conf = '🟨'
+
+    remark = f'About {round(available, 1)} % of all possible values are available for the period {MIN_YEAR}-{INDEX_YEAR}.'
+
+    data_plot = data[(data.ISO.isin([ISO]))]
+
+    if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
+        title = f'Index trend (Confidence level {conf})'
+    else:
+        title = f'Index trend'
+
+
+    return title, remark

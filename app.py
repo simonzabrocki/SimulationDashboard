@@ -15,4 +15,4 @@ server = app.server
 INDEX_YEAR = 2020
 MIN_YEAR = 2015
 
-data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data = load_all_data(max_year=INDEX_YEAR)
+data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data, index_confidence = load_all_data(max_year=INDEX_YEAR)
