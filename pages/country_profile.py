@@ -642,14 +642,14 @@ layout = html.Div(
                     [
 
                         html.H6(
-                            "Index trend (Confidence level 🟢)",
+                            children=["Index trend (Confidence level ", html.Span('🟢', style={"font-size": '10px'}), ")"],
                             className="subtitle padded",
-                            id='index_confidence_1'
+                            id='index_confidence_1',
                         ),
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
-                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability."),
+                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability.", style={"font-size": '10px'}),
                         html.Div(
                             [
                                 html.Div(
@@ -824,7 +824,10 @@ def update_confidence(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
 
     if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
-        title = f'Index trend (Confidence level {conf})'
+
+        title = ["Index trend (Confidence level ", html.Span(f'{conf}', style={"font-size": '8px'}), ")"]
+
+#        #title = f'Index trend (Confidence level {conf})'
     else:
         title = f'Index trend'
 
