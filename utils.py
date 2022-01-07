@@ -47,10 +47,10 @@ def get_header(app):
 def get_menu(active_tab):
 
     tab_menu = {
-        'Global Overview': "Green Blue Growth Index",
-        'Regional Outlook': "Green Blue Growth Index",
-        'Country Profile': "Green Blue Growth Index",
-        'Country Comparison': "Green Blue Growth Index",
+        'Global Overview': "Green-Blue Growth Index",
+        'Regional Outlook': "Green-Blue Growth Index",
+        'Country Profile': "Green-Blue Growth Index",
+        'Country Comparison': "Green-Blue Growth Index",
         'Data': "Evidence Library",
         #'Models': "Evidence Library",
         'Codes': "Evidence Library",
@@ -59,7 +59,7 @@ def get_menu(active_tab):
     }
 
     tabs_links = {
-        'Green Blue Growth Index': '/SimulationDashBoard/global_overview',
+        'Green-Blue Growth Index': '/SimulationDashBoard/global_overview',
         #'Simulation Tool': '/SimulationDashBoard/simulation',
         'Evidence Library': '/SimulationDashBoard/data',
     }
