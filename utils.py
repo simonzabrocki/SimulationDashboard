@@ -22,6 +22,10 @@ def Header(app, active_tab='Global Overview'):
             menu,
             ], className='mainheader'),
         page_title])
+def Footer():
+    return html.Footer('© Global Green Growth Institute 2022. All Rights Reserved.')
+
+
 
 
 def get_header(app):
