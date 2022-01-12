@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
 
-from utils import Header
+from utils import Header, Footer
 from app import app
 
 
@@ -51,6 +51,7 @@ layout = html.Div(
                 ],
             className="pretty_container twelve columns"
         ),
+        Footer(),
 
     ],
     className="page",

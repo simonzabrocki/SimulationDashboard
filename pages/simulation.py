@@ -3,7 +3,7 @@ import dash_core_components as dcc
 from app import app, ISO_options
 from dash.dependencies import Input, Output
 import dash_table
-from utils import Header, is_btn_clicked
+from utils import Header, is_btn_clicked, Footer
 from dash.exceptions import PreventUpdate
 from ggmodel_dev.utils import get_data_dict_from_folder, get_data_dict_from_folder_parquet, results_to_excel
 
@@ -232,6 +232,7 @@ layout = html.Div(
             ],
             className='row'
         ),
+        Footer(),
     ],
     className="page",
 )
