@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
 
-from utils import Header, dcc_config, is_btn_clicked
+from utils import Header, Footer, dcc_config, is_btn_clicked
 from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR, MIN_YEAR, indicator_data
 
 import numpy as np
@@ -834,6 +834,7 @@ layout = html.Div(
 
             className="row",
         ),
+        Footer(),
     ],
     className="page",
 )

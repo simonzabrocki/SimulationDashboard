@@ -3,7 +3,7 @@ import dash_html_components as html
 import plotly.express as px
 import dash
 import dash_table
-from utils import Header
+from utils import Header, Footer
 from app import app, data, INDEX_YEAR
 
 
@@ -412,7 +412,9 @@ layout = html.Div(
             ],
             className="row",
         ),
+        Footer(),
     ],
+    
     className="page",
 )
 
