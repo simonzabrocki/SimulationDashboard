@@ -110,21 +110,46 @@ def get_menu(active_tab):
 
     menu_list = []
 
-    for name, link in tabs_links.items():
-        if name == tab_menu[active_tab]:
-            tab = dcc.Link(
-                name,
-                href=link,
-                className="tab",
-                style={'color': '#FFFFFF', 'font-weight': 'bold'}
+    for name, link in tabs_links.items(): # find a way to refactor the inside of the loop
 
-            )
-        else:
-            tab = dcc.Link(
-                name,
-                href=link,
-                className="tab",
-            )
+        if name != 'Green Growth Index':
+            if name == tab_menu[active_tab]:
+                tab = dcc.Link(
+                    name,
+                    href=link,
+                    className="tab",
+                    style={'color': '#FFFFFF', 'font-weight': 'bold'}
+                )
+
+            else:
+                tab = dcc.Link(
+                    name,
+                    href=link,
+                    className="tab",
+                )
+
+
+        if name == 'Green Growth Index': # Ugly, Horrible, to refactor
+            if name == tab_menu[active_tab]:
+                tab = html.Div([
+                    html.Div('Green Growth Index',className='dropbtn', style={'color': '#FFFFFF', 'font-weight': 'bold'}),
+                    html.Div([dcc.Link('2020 Index',href='/SimulationDashBoard/global_overview'),
+                            html.A('2021 Index', href='https://ggindex2021.herokuapp.com/SimulationDashBoard/global_overview',  target="_blank"),
+                            html.A('Green-Blue Index', href='https://greenblueindex.herokuapp.com/SimulationDashBoard/global_overview', target="_blank")
+                            ], className='dropdown-content')
+                    ]
+                    , className='dropdown')
+            else:
+                tab = html.Div([
+                    html.Div('Green Growth Index',className='dropbtn'),
+                    html.Div([dcc.Link('2020 Index',href='/SimulationDashBoard/global_overview'),
+                            html.A('2021 Index', href='https://ggindex2021.herokuapp.com/SimulationDashBoard/global_overview', target="_blank"),
+                            html.A('Green-Blue Index', href='https://greenblueindex.herokuapp.com/SimulationDashBoard/global_overview',  target="_blank")
+                            ], className='dropdown-content')
+                    ]
+                    , className='dropdown')
+
+        
         menu_list.append(tab)
 
     menu = html.Div(menu_list, className="row all-tabs")
