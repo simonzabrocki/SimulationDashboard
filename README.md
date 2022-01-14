@@ -82,11 +82,14 @@ Main color
 
 The colors of dimensions are defined in the table below. These color must be used only for this purpose.  
 
+|  | Color code |
+| --- | --- |
 | Main Color | #14ac9c |
 | ESRU       | #8fd1e7 |
 | NCP        | #f7be49 |
 | GEO        | #9dcc93 |
 | SI         | #d9b5c9 |
+
 
 The order of dimensions in legend and bar plot is  1. ESRU, 2. NCP, 3.GEO, 4. SI for dimensions.
 
