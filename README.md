@@ -40,6 +40,65 @@ Go to https://devcenter.heroku.com/articles/git for more details
     |
     ├── pages                 <- Source code of individual pages
 
+## Green Growth Index
+
+For the most part, all pages in the SimulationDashboard are self contained. Each page has its dedicated python script. Common elements and functions are defined in utils.py or data_utils.py at the root of the project. Callbacks, graphs and html elements are defined with the page python file.
+
+Due to its complexity, the simulation tool tab is defined using multiple python files.
+
+### Global overview
+
+Global overview displays the world map of the Index values. A sortable table allows to look for individual scores for index and dimensions. 
+
+### Regional Outlook
+
+Regional outlook page displays index results by regions (or continent)
+
+### Country profile
+
+Country profile displays statistics on the Index results for a single country.
+
+### Country Comparison
+
+Country Comparison allows comparing results for two countries at a time.
+
+## Simulation Tool
+
+## Evidence Library
+
+### Models
+
+Models allows exploring all models available in ggmodel.
+
+### Data
+
+Main color 
+
+### Codes
+
+### Downloads
+
+## Guidelines for plots and graphs
+
+The colors of dimensions are defined in the table below. These color must be used only for this purpose.  
+
+|  | Color code |
+| --- | --- |
+| Main Color | #14ac9c |
+| ESRU       | #8fd1e7 |
+| NCP        | #f7be49 |
+| GEO        | #9dcc93 |
+| SI         | #d9b5c9 |
+
+
+The order of dimensions in legend and bar plot is  1. ESRU, 2. NCP, 3.GEO, 4. SI for dimensions.
+
+For categories the order is the following: 
+1. ESRU: EE, EW, SL, ME
+2. NCP: EQ, GE, BE, CV
+3. GEO: GV, GT, GJ, GN
+4. SI: AB, GB, SE, SP
+
 
 # Roadmap
 
