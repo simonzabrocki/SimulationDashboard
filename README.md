@@ -55,5 +55,6 @@ Features:
 
 # Contact
 ---------------
-S. Zabrocki - simon.zabrocki@gggi.org
+S. Zabrocki - simon.zabrocki@gggi.org  <br />
+I. Nzimenyera - innocentnzime42@gmail.com
 
