@@ -8,7 +8,7 @@ import pandas as pd
 import dash
 from app import app
 from dash.dependencies import Input, Output
-from utils import Header
+from utils import Header, Footer
 from ggmodel_dev.models.utils import all_model_dictionary, all_model_properties_df
 from utils import is_btn_clicked
 
@@ -361,6 +361,7 @@ layout = html.Div(
             ],
             className="row",
         ),
+        Footer(),
     ],
     className="page",
 )
