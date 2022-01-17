@@ -112,6 +112,10 @@ Features:
 - Improve downloadable pdf report
 - Add data explorer for simulation models (like the one for the index)
 
+# Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
 # Contact
 ---------------
 S. Zabrocki - simon.zabrocki@gggi.org  <br />
