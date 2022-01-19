@@ -25,7 +25,7 @@ $ git clone https://github.com/simonzabrocki/SimulationDashboard.git
 $ python index.py
 ```
 
-## Deployement
+## Deployment
 -------------------
 The app can be deployed on Heroku via:
 
@@ -52,6 +52,11 @@ Go to https://devcenter.heroku.com/articles/git for more details
     ├── pages                 <- Source code of individual pages
 
 ### Green Growth Index
+
+From green growth index menu, we can access:
+            - 2020 index
+            - 2021 index
+            - Green-Blue Growth index 
 
 For the most part, all pages in the SimulationDashboard are self contained. Each page has its dedicated python script. Common elements and functions are defined in utils.py or data_utils.py at the root of the project. Callbacks, graphs and html elements are defined with the page python file.
 
@@ -127,19 +132,6 @@ For categories the order is the following:
 4. SI: AB, GB, SE, SP
 
 
-## Roadmap
-
-Code: 
-- Fetch simulation data and model from external database
-- Improve modularity by using a sub repo for ggmodel_dev.
-- Improve simulation page to add new models more easily
-
-Features:
-- Improve country comparator
-- Improve downloadable pdf report
-- Add data explorer for simulation models (like the one for the index)
-
-
 
 # 2. blueindex: Green-blue growth index
 
@@ -156,7 +148,7 @@ $  git clone -b blueindex --single-branch https://github.com/simonzabrocki/Simul
 $ python index.py
 ```
 
-## Deployement
+## Deployment
 -------------------
 The app can be deployed on Heroku via:
 
@@ -168,7 +160,7 @@ Go to https://devcenter.heroku.com/articles/git for more details
 
 ## Project Structure
 
-The project structure is for the same as for 1.Main: gggi-simtool except the simulation tool.
+The project structure is for the same as for 1.Main: gggi-simtool except the simulation tool menu.
 
 
 # 3. index2021: 2021 index for latest data
@@ -187,7 +179,7 @@ $  git clone -b index2021 --single-branch https://github.com/simonzabrocki/Simul
 $ python index.py
 ```
 
-## Deployement
+## Deployment
 -------------------
 The app can be deployed on Heroku via:
 
@@ -199,7 +191,20 @@ Go to https://devcenter.heroku.com/articles/git for more details
 
 ## Project Structure
 
-The project structure is for the same as for 1.Main: gggi-simtool except the simulation tool.
+The project structure is for the same as for 1.Main: gggi-simtool except the simulation tool menu.
+
+
+# Roadmap
+
+Code: 
+- Fetch simulation data and model from external database
+- Improve modularity by using a sub repo for ggmodel_dev.
+- Improve simulation page to add new models more easily
+
+Features:
+- Improve country comparator
+- Improve downloadable pdf report
+- Add data explorer for simulation models (like the one for the index)
 
 
 # Contributing
