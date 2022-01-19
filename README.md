@@ -8,7 +8,7 @@ This documentation provides information on three branches for three version of i
 2. blueindex branch: Green-blue growth index
 3. index2021 branch: 2021 index for latest data
 
-# 1. Main branch: 2020 index & gggi-similation tools
+# 1. 2020 index & gggi-similation tools
 
 ## Simulation Dashboard
 Simulation Dashboard is a web application for index vizualisation and policy simulation. It is deployed at https://gggi-simtool-demo.herokuapp.com/
@@ -132,7 +132,7 @@ For categories the order is the following:
 
 
 
-# 2. blueindex branch: Green-blue growth index
+# 2. Green-blue growth index
 
 Green-blue growth index is a web application for index vizualisation and evidence library for OECS countries.(Note: Landlocked countries are not included in the Index.). It is deployed at https://greenblueindex.herokuapp.com/
 
@@ -159,10 +159,10 @@ Go to https://devcenter.heroku.com/articles/git for more details
 
 ## Project Structure
 
-The project structure is for the same as for 1.Main branch :2020 index & gggi-similation tools except the simulation tool menu.
+The project structure is for the same as for 2020 index & gggi-similation tools except the simulation tool menu.
 
 
-# 3. index2021 branch: 2021 index for latest data
+# 3.  2021 index for latest data
 
 2021 Green Growth Index is a web application for index vizualisation and evidence library for all countries. 
 It is deployed at https://ggindex2021.herokuapp.com/
@@ -190,7 +190,7 @@ Go to https://devcenter.heroku.com/articles/git for more details
 
 ## Project Structure
 
-The project structure is for the same as for  1.Main branch :2020 index & gggi-similation tools except the simulation tool menu.
+The project structure is for the same as for 2020 index & gggi-similation tools except the simulation tool menu.
 
 
 # Roadmap
