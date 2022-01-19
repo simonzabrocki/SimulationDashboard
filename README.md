@@ -54,9 +54,9 @@ Go to https://devcenter.heroku.com/articles/git for more details
 ### Green Growth Index
 
 From green growth index menu, we can access:
-            - 2020 index
-            - 2021 index
-            - Green-Blue Growth index 
+- 2020 index
+- 2021 index
+- Green-Blue Growth index 
 
 For the most part, all pages in the SimulationDashboard are self contained. Each page has its dedicated python script. Common elements and functions are defined in utils.py or data_utils.py at the root of the project. Callbacks, graphs and html elements are defined with the page python file.
 
