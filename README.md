@@ -132,15 +132,15 @@ Because the index and simulation tool is fine tuned for each use case, the app i
 
 ### main
 
-The main branch contain the core application. All graphs, callbacks and features should be provided on this branch. From this version, the other two versions should be accessible.
+The main branch contains the core application. All graphs, callbacks and features should be provided on this branch. From this version, the other two versions should be accessible.
 
 ### blueindex
 
-blueindex is simply a copy of the main branch with some theme adaptation (colors and texts) and custom data. The simulation tool is removed from this page
+blueindex is a copy of the main branch with some theme adaptation (colors and texts) and custom data. The simulation tool is removed from this page.
 
 ### index2021
 
-index2021 is simply a copy of the main branch with updated data for the index. The simulation tool is removed from this page. 
+index2021 is a copy of the main branch with updated data for the index. The simulation tool is removed from this page. 
  
 
 # Roadmap
