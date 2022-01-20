@@ -138,10 +138,13 @@ The main branch contains the core application. All graphs, callbacks and feature
 
 blueindex is a copy of the main branch with some theme adaptation (colors and texts) and custom data. The simulation tool is removed from this page.
 
+It is deployed at https://greenblueindex.herokuapp.com/
+
 ### index2021
 
-index2021 is a copy of the main branch with updated data for the index. The simulation tool is removed from this page. 
- 
+index2021 is a copy of the main branch with updated data for the index. The simulation tool is removed from this page.
+
+It is deployed at https://ggindex2021.herokuapp.com/
 
 # Roadmap
 
