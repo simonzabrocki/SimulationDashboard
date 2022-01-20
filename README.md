@@ -1,16 +1,6 @@
 ![alt text](http://greengrowthindex.gggi.org/wp-content/uploads/2019/09/LOGO_GGGI_GREEN_350x131px_002trans_Prancheta-1.png)
 
-
-# Exisiting version
-
-This documentation provides information on three branches for three version of indices and gggi-similation tools:
-1. Main branch : 2020 index & gggi-similation tools
-2. blueindex branch: Green-blue growth index
-3. index2021 branch: 2021 index for latest data
-
-# 1. 2020 index & gggi-similation tools
-
-## Simulation Dashboard
+# Simulation Dashboard
 Simulation Dashboard is a web application for index vizualisation and policy simulation. It is deployed at https://gggi-simtool-demo.herokuapp.com/
 
 ## Purpose
@@ -131,67 +121,26 @@ For categories the order is the following:
 4. SI: AB, GB, SE, SP
 
 
+## Versions
 
-# 2. Green-blue growth index
+Because the index and simulation tool is fine tuned for each use case, the app is split into three versions each with its own branch:
 
-Green-blue growth index is a web application for index vizualisation and evidence library for OECS countries.(Note: Landlocked countries are not included in the Index.). It is deployed at https://greenblueindex.herokuapp.com/
+1. Main: Includes 2020 green growth index and simulation tool
+2. blueindex: Includes green-blue growth index only
+3. index2021: Includes 2021 index green growth index only
 
-## Purpose
-The goal of this application is to display the index results. The app is divided into Two components. The first is the green-blue growth index which includes scores and vizualistations for OECS countries. The second is the evidence librabry which includes all the data,codes and downloads used in the analysis. 
+### main
 
-## Installation
--------------------
-```
-$  git clone -b blueindex --single-branch https://github.com/simonzabrocki/SimulationDashboard.git
+The main branch contain the core application. All graphs, callbacks and features should be provided on this branch. From this version, the other two versions should be accessible.
 
-$ python index.py
-```
+### blueindex
 
-## Deployment
--------------------
-The app can be deployed on Heroku via:
+blueindex is simply a copy of the main branch with some theme adaptation (colors and texts) and custom data. The simulation tool is removed from this page
 
-```
-$ git push heroku blueindex:main
-```
+### index2021
 
-Go to https://devcenter.heroku.com/articles/git for more details
-
-## Project Structure
-
-The project structure is for the same as for 2020 index & gggi-similation tools except the simulation tool menu.
-
-
-# 3.  2021 index for latest data
-
-2021 Green Growth Index is a web application for index vizualisation and evidence library for all countries. 
-It is deployed at https://ggindex2021.herokuapp.com/
-
-## Purpose
-The goal of this application is to display the global index results. The app is divided into Two components. The first is the green growth index which includes scores and vizualistations for global countries. The second is the evidence librabry which includes all the data,codes and downloads used in the analysis. 
-
-## Installation
--------------------
-```
-$  git clone -b index2021 --single-branch https://github.com/simonzabrocki/SimulationDashboard.git
-
-$ python index.py
-```
-
-## Deployment
--------------------
-The app can be deployed on Heroku via:
-
-```
-$ git push heroku git push heroku index2021:main
-```
-
-Go to https://devcenter.heroku.com/articles/git for more details
-
-## Project Structure
-
-The project structure is for the same as for 2020 index & gggi-similation tools except the simulation tool menu.
-
+index2021 is simply a copy of the main branch with updated data for the index. The simulation tool is removed from this page. 
+ 
 
 # Roadmap
 
@@ -212,6 +161,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 # Contact
 ---------------
-S. Zabrocki - simon.zabrocki@gggi.org  <br />
+S. Zabrocki - simon.zabrocki@gggi.org
+
 I. Nzimenyera - innocentnzime42@gmail.com
 
