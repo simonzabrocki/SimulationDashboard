@@ -42,7 +42,7 @@ Go to https://devcenter.heroku.com/articles/git for more details
 
 ### Green Growth Index
 
-From green growth index menu, we can access:
+From green growth index menu, we can access the three version of the index. (see version paragraph for details)
 - 2020 index
 - 2021 index
 - Green-Blue Growth index 
@@ -81,18 +81,19 @@ Models allows exploring all models available in ggmodel.
 
 #### Data
 
-Data shows the description of an indicator for particular country(ies) or trends between countries. 
+This tab is a data explorer. From there you can select individual indicators, understand their definitions and visualize the values for particular countries.
 
 #### Codes
 
-Code has 3 sections: 
+All codes should be clearly available from the app. For this purpose this page links to the three relevant github repositories:
+
 - Green Growth Index: A python program to download, process and perform all the step to compute the green growth index.
 - Graph Models: A python framework to compute and visualize GGGI models using computational graphs.
 - Interface: A Dash web application to vizualize the index and simulate green growth policies
 
 #### Downloads
 
-Downloads has four sections:
+Data and results are freely available to download in this section. The results for the index and simulation tool are split into 4 categories:
 
 - Index: All index results.
 - Indicators: All raw Indicators.
@@ -101,7 +102,7 @@ Downloads has four sections:
 
 ### Guidelines for plots and graphs
 
-The colors of dimensions are defined in the table below. These color must be used only for this purpose.  
+The colors of dimensions are defined in the table below. These colors must be used only for this purpose.  
 
 |  | Color code |
 | --- | --- |
@@ -153,7 +154,6 @@ Features:
 - Improve country comparator
 - Improve downloadable pdf report
 - Add data explorer for simulation models (like the one for the index)
-
 
 # Contributing
 
