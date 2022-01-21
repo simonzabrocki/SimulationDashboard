@@ -5,7 +5,7 @@ import plotly.express as px
 import numpy as np
 import pandas as pd
 
-from utils import Header
+from utils import Header, Footer 
 from app import app, indicator_data, indicator_properties, dimension_properties
 
 
@@ -203,6 +203,7 @@ layout = html.Div(
             ],
             className="row",
         ),
+        Footer(),
     ],
     className="page",
 )
