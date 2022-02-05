@@ -4,23 +4,22 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.express as px
 
-from utils import Header, Footer, dcc_config, is_btn_clicked
-from app import app, data, missing_data, ISO_options, indicator_properties, index_confidence, INDEX_YEAR, MIN_YEAR, indicator_data
+from utils import Header, dcc_config, is_btn_clicked, Footer
+from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
 
 import numpy as np
 import pandas as pd
+import os
 
-import dash_daq as daq
-
-GGI_GREEN = '#14ac9c'
 
 def compute_group(data):
     '''To improve'''
+
     Income_region_group = data.groupby(
-        ['Variable', 'Year', 'IncomeLevel', 'Sub-region', 'Aggregation']).mean().reset_index()
+        ['Variable', 'Year', 'IncomeLevel', 'Region', 'Aggregation']).mean().reset_index()
     Income_region_group['ISO'] = 'AVG' + '_' + \
         Income_region_group["IncomeLevel"] + \
-        '_' + Income_region_group["Sub-region"]
+        '_' + Income_region_group["Region"]
 
     Income_group = data.groupby(['Variable', 'Year', 'IncomeLevel',
                                  'Aggregation']).mean().reset_index()
@@ -35,34 +34,13 @@ def compute_group(data):
     Region_group['Continental_Rank'] = np.nan
     Region_group['Income_Rank'] = np.nan
 
-    HDI_group = data.groupby(['Variable', 'Year', 'HDI','Aggregation']).mean().reset_index()
-    HDI_group['ISO'] = 'AVG' + '_' + HDI_group["HDI"]
-    HDI_group['Continental_Rank'] = np.nan
-    HDI_group['Income_Rank'] = np.nan
+    data = pd.concat([Income_region_group, Region_group, Income_group])
 
-    data = pd.concat([Income_region_group, Region_group, Income_group, HDI_group])
     return data
 
 
 group_data = compute_group(data)
 
-# Ugly to do smwhr else
-data = data.replace(['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion'], ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'])
-indicator_properties = indicator_properties.replace(['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion'], ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion'])
-
-
-DIMENSION_ORDER = {'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']}
-DIMENSION_COLOR_MAP = {
-    "Social inclusion": "#d9b5c9",
-    "Natural capital protection": "#f7be49",
-    "Efficient and sustainable resource use": "#8fd1e7",
-    "Green economic opportunities": "#9dcc93",
-    "Missing": '#D3D3D3'
-    }
-CATEGORY_ORDER =  ['EE', 'EW', 'SL', 'ME',
-                   'EQ', 'GE', 'BE', 'CV',
-                   'AB', 'GB', 'SE', 'SP',
-                   'GV', 'GT', 'GJ', 'GN']
 
 def HTML_text(ISO):
     data_plot = data[(data.ISO.isin([ISO]))]
@@ -95,6 +73,10 @@ def HTML_text(ISO):
                                 style={'font-size': 10,
                                         'color': '#ffffff',}),
                             dcc.Download(id="download-country-data"),
+                            # html.Button(f'Download {Country}\'s report', id='btn-html-report', n_clicks=0,
+                            #     style={'font-size': 10,
+                            #             'color': '#ffffff',}),
+                            # dcc.Download(id="download-html-report"),
 
                         ],
                         className="product",
@@ -126,8 +108,12 @@ def circular_plot(ISO):
                        range_r=[-30, 100],
                        color='Dimension',
                        hover_data={'Variable_name': True, 'Variable': False},
-                       color_discrete_map=DIMENSION_COLOR_MAP,
-                       category_orders=DIMENSION_ORDER,
+                       color_discrete_map={
+                           "Social Inclusion": "#d9b5c9",
+                           "Natural Capital Protection": "#f7be49",
+                           "Efficient and Sustainable Resource Use": "#8fd1e7",
+                           "Green Economic Opportunities": "#9dcc93",
+                       },
                        labels={'Year': 'Year', 'Value': 'Score',
                                'Category': 'Dimension', 'Variable_name': 'Category'},
                        height=600,
@@ -184,11 +170,16 @@ def polar(ISO):
     df = df.round(2)
     fig = go.Figure()
 
-    df = df.set_index('Variable').T[CATEGORY_ORDER].T.reset_index()
+    cats = ['EE', 'EW', 'SL', 'ME',
+            'EQ', 'GE', 'BE', 'CV',
+            'AB', 'GB', 'SE', 'SP',
+            'GV', 'GT', 'GJ', 'GN']
+
+    df = df.set_index('Variable').T[cats].T.reset_index()
 
     fig = px.line_polar(df[df.ISO == ISO],
                         r="Value", theta="Variable", color="ISO", line_close=True,
-                        color_discrete_map={ISO: GGI_GREEN, REF: 'darkgrey'},
+                        color_discrete_map={ISO: '#14ac9c', REF: 'darkgrey'},
                         hover_name='Variable_name',
                         hover_data={'ISO': False, 'Variable': False,
                                     'Continental_Rank': True,
@@ -244,7 +235,7 @@ def loliplot(ISO):
                      x="Variable",
                      color='Variable',
                      color_discrete_map={
-                         ISO: GGI_GREEN,
+                         ISO: '#14ac9c',
                          "SI": "#d9b5c9",
                          "NCP": "#f7be49",
                          "ESRU": "#8fd1e7",
@@ -262,9 +253,7 @@ def loliplot(ISO):
         'Variable': '',
         'ISO': '',
         'Continental_Rank': f'Rank in {continent}',
-    },
-    category_orders={'Variable': ['ESRU', 'NCP', 'GEO', 'SI', 'ISO']},
-
+    }
 
     )
 
@@ -291,10 +280,10 @@ def loliplot(ISO):
 
     # there must be a better way
     conversion = {
-        "ESRU": 'Efficient and sustainable resource use',
-        "GEO": 'Green economic opportunities',
-        "NCP": 'Natural capital protection',
-        'SI': "Social inclusion",
+        "ESRU": 'Efficient and Sustainable Resource Use',
+        "GEO": 'Green Economic Opportunities',
+        "NCP": 'Natural Capital Protection',
+        'SI': "Social Inclusion",
         REF: REF,
     }
 
@@ -323,11 +312,11 @@ def loliplot_2(ISO):
                  x="Variable",
                  color='Dimension',
                  color_discrete_map={
-        ISO: GGI_GREEN,
-        "Efficient and sustainable resource use": "#8fd1e7",
-        "Green economic opportunities": "#9dcc93",
-        "Natural capital protection": "#f7be49",
-        "Social inclusion": "#d9b5c9",
+        ISO: '#14ac9c',
+        "Efficient and Sustainable Resource Use": "#8fd1e7",
+        "Green Economic Opportunities": "#9dcc93",
+        "Natural Capital Protection": "#f7be49",
+        "Social Inclusion": "#d9b5c9",
     },
         hover_name='Variable_name',
         hover_data={'ISO': False,
@@ -340,7 +329,6 @@ def loliplot_2(ISO):
                 'ISO': '',
                 'Continental_Rank': f'Rank in {continent}',
                 },
-        category_orders=DIMENSION_ORDER,
 
     )
     fig.update_traces(opacity=0.7)
@@ -372,20 +360,16 @@ def time_series_Index(ISO):
                                                     ].drop_duplicates().values[0].tolist())
     REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                     ].drop_duplicates().values[0].tolist())
-    REF_3 = 'AVG_' + "_".join(data[data.ISO == ISO][["HDI"]
-                                                    ].drop_duplicates().values[0].tolist())
 
-    df = data[(data.ISO.isin([ISO, REF_1, REF_2, REF_3])) &
+    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
               (data.Aggregation == 'Index')].fillna(0)
 
-    group_df = group_data[group_data.ISO.isin([REF_1, REF_2, REF_3]) & (
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (
         group_data.Aggregation == 'Index')].fillna(0)
 
     df = pd.concat([df, group_df])
 
     df = df.round(2)
-
-    df = df.query("Year > 2009")
     continent = df.Continent.values[0]
 
     if df[df.ISO == ISO].shape[0] == 0:
@@ -397,7 +381,7 @@ def time_series_Index(ISO):
                       x='Year',
                       y='Value',
                       color='ISO',
-                      color_discrete_map={ISO: GGI_GREEN},
+                      color_discrete_map={ISO: '#14ac9c'},
                       height=500,
                       hover_data={'ISO': False, 'Year': False,
                                   'Continental_Rank': True,
@@ -411,28 +395,19 @@ def time_series_Index(ISO):
                       )
     fig.update_traces(mode='lines+markers')
 
-    fig.add_trace(go.Scatter(x=df[df.ISO == REF_2]['Year'],
-                             y=df[df.ISO == REF_2]['Value'],
-                             name=REF_2,
-                             mode='lines',
-                             line=dict(color='#565656', width=2, dash='dot'),
-                             hoverinfo='skip'))
-
     fig.add_trace(go.Scatter(x=df[df.ISO == REF_1]['Year'],
                              y=df[df.ISO == REF_1]['Value'],
                              name=REF_1,
                              mode='lines',
-                             line=dict(color='#565656', width=2, dash='dash'),
+                             line=dict(color='darkgrey', width=2, dash='dash'),
                              hoverinfo='skip'))
 
-
-    fig.add_trace(go.Scatter(x=df[df.ISO == REF_3]['Year'],
-                             y=df[df.ISO == REF_3]['Value'],
-                             name=REF_3,
+    fig.add_trace(go.Scatter(x=df[df.ISO == REF_2]['Year'],
+                             y=df[df.ISO == REF_2]['Value'],
+                             name=REF_2,
                              mode='lines',
-                             line=dict(color='#565656', width=2, dash='dashdot'),
+                             line=dict(color='darkgrey', width=2, dash='dot'),
                              hoverinfo='skip'))
-
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True, fixedrange=True)
     fig.update_layout(legend=dict(
@@ -446,7 +421,12 @@ def time_series_Index(ISO):
 
 
 
-def missing_bar_plot(ISO):   
+def missing_bar_plot(ISO):
+    cats = ['EE', 'EW', 'SL', 'ME',
+            'EQ', 'GE', 'BE', 'CV',
+            'AB', 'GB', 'SE', 'SP',
+            'GV', 'GT', 'GJ', 'GN']
+    
 
     plot_df = (
         missing_data.loc[ISO].reset_index().merge(indicator_properties[['Category', "Dimension"]].drop_duplicates(), on='Category')
@@ -455,24 +435,23 @@ def missing_bar_plot(ISO):
     plot_df_bis = plot_df.copy().assign(Dimension='Missing')
     plot_df_bis['Data availability (%)'] = (100 - plot_df_bis['Data availability (%)']).round(2)
 
-    cat =  ['EE', 'EW', 'ME', 'SL', 
-            'BE', 'CV', 'EQ', 'GE',
-            'GJ', 'GN', 'GT', 'GV',
-            'AB', 'GB', 'SE', 'SP',
-            ]
-
     plot_df = pd.concat([plot_df, plot_df_bis])
     fig = px.bar(plot_df,
-            y='Category',
-            x='Data availability (%)',
-            color='Dimension',
-            barmode='stack',
-            orientation='h',
+             y='Category',
+             x='Data availability (%)',
+             color='Dimension',
+             barmode='stack',
+             orientation='h',
             text='Data availability (%)',
-            hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
+             hover_data={'Variable_name': True, 'Dimension': False, 'Data availability (%)': False},
             labels={'Variable_name': 'Category'},
-            category_orders={ 'Category': cat, 'Dimension': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
-            color_discrete_map=DIMENSION_COLOR_MAP,
+            color_discrete_map={
+                           "Social Inclusion": "#d9b5c9",
+                           "Natural Capital Protection": "#f7be49",
+                           "Efficient and Sustainable Resource Use": "#8fd1e7",
+                           "Green Economic Opportunities": "#9dcc93",
+                           "Missing": '#D3D3D3'
+                       },
                 ).update_layout(height=1000,
                                 plot_bgcolor='rgba(0, 0, 0, 0)',
                                 legend=dict(
@@ -495,7 +474,7 @@ def missing_bar_plot(ISO):
 
 
 def Indicator_lolipop(ISO):
-    df = data[(data.Aggregation == 'Indicator_normed') & (data.Year == INDEX_YEAR) & (data.ISO == ISO)].drop(columns=['Category', 'Dimension']).merge(indicator_properties, left_on='Variable', right_on='Indicator')
+    df = data[(data.Aggregation == 'Indicator_normed') & (data.Year == 2019) & (data.ISO == ISO)].drop(columns=['Category', 'Dimension']).merge(indicator_properties, left_on='Variable', right_on='Indicator')
 
     df = df.round(2).sort_values(by=['Dimension', 'Variable'], ascending=False)
     fig = px.scatter(df,
@@ -504,11 +483,14 @@ def Indicator_lolipop(ISO):
                      color='Dimension',
                      facet_col='Dimension',
                      facet_col_spacing=0.05,
-                     hover_data={'Value': True, 'Variable': False, "Description": True},
+                     hover_data={'Value': True, 'Variable': False, "display_name": True},
                      labels={'Variable': 'Indicator', 'Value': 'Score'},
-                     color_discrete_map=DIMENSION_COLOR_MAP,
-                    category_orders=DIMENSION_ORDER,
-
+                     color_discrete_map={
+                         "Social Inclusion": "#d9b5c9",
+                         "Natural Capital Protection": "#f7be49",
+                         "Efficient and Sustainable Resource Use": "#8fd1e7",
+                         "Green Economic Opportunities": "#9dcc93",
+                     },
                      height=600,
                      )
     fig.update_xaxes(showgrid=True, range=[0, 110], tickvals=[
@@ -523,14 +505,13 @@ def Indicator_lolipop(ISO):
                   x='Value',
                   facet_col='Dimension',
                   facet_col_spacing=0.05,
-                  hover_data={'Value': False, 'Variable': False, 'Dimension': False},
+                  hover_data={'Value': True},
                   labels={'Variable': 'Indicator', 'Value': ''},
                   orientation='h',
                   opacity=0.6,
                   height=600,
-                  category_orders=DIMENSION_ORDER,
                   )
-    bars.update_layout(hovermode=False)
+
     bars.update_traces(marker_color='lightgrey',
                        width=0.1,
                        marker_line_width=0.1, opacity=0.8)
@@ -553,163 +534,40 @@ def heatmap_plot(ISO):
                                                     ].drop_duplicates().values[0].tolist())
     REF_2 = 'AVG_' + "_".join(data[data.ISO == ISO][["Continent"]
                                                     ].drop_duplicates().values[0].tolist())
-    REF_3 = 'AVG_' + "_".join(data[data.ISO == ISO][["HDI"]
-                                                    ].drop_duplicates().values[0].tolist())
 
-    df = data[(data.ISO.isin([ISO, REF_1, REF_2, REF_3])) &
+    df = data[(data.ISO.isin([ISO, REF_1, REF_2])) &
               (data.Aggregation == 'Category') & (data.Year == INDEX_YEAR)].fillna(0)
 
-    group_df = group_data[group_data.ISO.isin([REF_1, REF_2, REF_3]) & (
+    group_df = group_data[group_data.ISO.isin([REF_1, REF_2]) & (
         group_data.Aggregation == 'Category') & (group_data.Year == INDEX_YEAR)].fillna(0)
 
     df = pd.concat([df, group_df, df[['Variable']].assign(ISO=' ', Value=np.nan)])
 
     df = df.round(2)
     
-    df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, REF_1, REF_2, REF_3]]
-    # Lol something better could be found for sure
-    df[' '] = np.nan
-    df['  '] = np.nan
-    df['   '] = np.nan
-    df['gap_4'] = np.nan
-    cats = ['EE', 'EW', 'SL', 'ME', ' ',
-            'EQ', 'GE', 'BE', 'CV', '  ',
-            'GV', 'GT', 'GJ', 'GN', '   ',
-            'AB', 'GB', 'SE', 'SP',
-            ]
+    df = df.pivot(index=['ISO'], columns=['Variable'], values='Value').loc[[ISO, ' ',REF_1, REF_2]]
+    cats = ['AB', 'GB', 'SE', 'SP',
+            'EQ', 'GE', 'BE', 'CV',
+            'EE', 'EW', 'SL', 'ME',
+            'GV', 'GT', 'GJ', 'GN']
 
     fig = px.imshow(df[cats],
           zmin=0, zmax=100,
-          #labels={'gap_1': '', 'gap_2': '', 'gap_3': ''},
           color_continuous_scale=[(0, "#f14326"),
                                   (0.25, "#fc8d59"),
                                   (0.5, "#ffffbf"),
-                                  (1, GGI_GREEN)],
-          labels=dict(x="Category", y="", color="Score"),
+                                  (1, "#14ac9c")],
     )
 
     fig.update_yaxes(showgrid=False)
     fig.update_xaxes(showgrid=False)
-    return fig.update_traces({'hoverongaps': False})
-
-
-def dim_time_series(ISO):
-
-    plot_df = (
-        data.query("ISO == @ISO and Aggregation in ['Dimension'] and Year >= 2010")
-    )
-
-
-    fig = px.line(plot_df, x='Year', y='Value', color='Variable_name',
-                  color_discrete_map=DIMENSION_COLOR_MAP,
-                     labels={'Value': 'Score', 'Variable_name': 'Dimension'})
-    
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_traces(mode='lines+markers')
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ))
-    return fig
-
-
-def cat_time_series(ISO):
-    plot_df = (
-        data.query("ISO == @ISO and Aggregation in ['Indicator_normed', 'Category'] and Year >= 2010")
-            .set_index('Variable')
-    )
-    plot_df.loc[plot_df.Variable_name.isna(), 'Variable_name'] =  indicator_properties.set_index('Indicator')['Description']
-    plot_df = plot_df.reset_index()
-    
-    plot_df['CAT'] = plot_df['Variable'].str[:2].copy().values
-    plot_df['IND'] = plot_df.Variable.str[2].fillna('Category')
-
-    fig = px.line(plot_df, x='Year', y='Value', color='IND',
-                  facet_col='CAT', facet_col_wrap=4, height=800,
-                  color_discrete_map={"Category": GGI_GREEN, },
-                  color_discrete_sequence=px.colors.qualitative.Pastel2,
-                  hover_data={'Variable_name': True},
-                  labels={"Value": 'Score', 'IND': 'Indicator Number', 'CAT': 'Category', 'Variable_name': 'Description'},
-                  category_orders={'CAT': CATEGORY_ORDER},
-                  facet_col_spacing=0.02,
-                  facet_row_spacing=0.03,
-                 )
-    
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_traces(mode='lines+markers')
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.05,
-        xanchor="right",
-        x=1
-    ))
-    return fig
-
-
-
-def availibility_ts(ISO):
-    # TO CLEAN UP !!!!
-    
-    
-    Indicator = indicator_data.Indicator.unique()
-    Year = range(2010, 2020)
-    full_index = pd.MultiIndex.from_product([Indicator, Year], names=['Indicator', 'Year'])
-
-    plot_df = indicator_data.query(f"ISO == '{ISO}' and Year >= 2010").set_index(['Indicator', 'Year']).reindex(full_index, fill_value=True).reset_index()
-    plot_df = plot_df.merge(indicator_properties[['Indicator', 'Description']], on='Indicator')
-    
-    plot_df['Category'] = plot_df['Indicator'].str[0:2]
-    plot_df['Available'] = (1 - plot_df['Imputed']).astype('bool')
-
-
-    cat =  ['EE', 'EW', 'ME', 'SL', 
-            'BE', 'CV', 'EQ', 'GE',
-            'GJ', 'GN', 'GT', 'GV',
-            'AB', 'GB', 'SE', 'SP',
-            ]
-
-    cat_description = data.query("Aggregation in ['Category']")[['Variable', 'Variable_name']].drop_duplicates().set_index('Variable').to_dict()['Variable_name']
-
-    fig = px.scatter(plot_df, x='Year', y='Indicator', symbol='Available', color='Available',
-               symbol_map={True: 'circle', False: 'x'},
-               color_discrete_map={True: 'green', False: 'red'},
-               height=3000,
-               hover_data={'Description': True},
-              facet_col='Category',
-              facet_row_spacing=0.02,
-             facet_col_wrap=1,
-             category_orders={ 'Category': cat})
-
-
-
-    fig = fig.update_xaxes(showgrid=False, gridwidth=1, dtick=1,gridcolor='grey', showticklabels=True).update_yaxes(title='', matches=None,showgrid=True, gridwidth=1, gridcolor='grey')
-
-    fig = fig.update_traces(marker=dict(size=20, line=dict(width=0, color='DarkSlateGrey'))).update_layout(plot_bgcolor='rgba(0,0,0,0)')
-
-
-    def annotation(a):
-        cat = a.text.split("=")[-1]
-        a.update(text=f'({cat}) {cat_description[cat]}')
-
-    fig.for_each_annotation(lambda a: annotation(a))
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.05,
-        xanchor="right",
-        x=1
-    ))
     return fig
 
 
 layout = html.Div(
     [
         html.Div([Header(app, 'Country Profile')]),
-        # page 1)=$*
+        # page 1
         html.Div(
             [
                 html.Div(
@@ -726,45 +584,29 @@ layout = html.Div(
                                  ),
                         html.Div(id='Description'),
                         html.H6(
-                            f"{INDEX_YEAR} Distances to Targets",
+                            "Distances to Targets",
                             className="subtitle padded",
                         ),
                         dcc.Graph(id='circular_plot',
                                   config=dcc_config('distance_to_target')),
                         html.H6(
-                            f"Data availability {MIN_YEAR}-{INDEX_YEAR}",
+                            "Data availability",
                             className="subtitle padded",
                         ),
-                        html.Div([
-                            html.P("75 % of all possible values are available.", id='index_confidence_2', style={"color": "#ffffff", 'font-size': '18px'},),
-
-                        ],
-                        className='product'),
-
                         dcc.Graph(id='missing_data_plot',
                                   config=dcc_config('data_availability')),
-                        html.Div([
-                            html.Br([]),
-                            daq.BooleanSwitch(label="Availability by indicator", on=False, color=GGI_GREEN, id='availability_switch'),
-                            html.Br([]),
-                            dcc.Graph(id='missing_ts_data_plot', config=dcc_config('yearly_data_availability')),
-                        ]),
-                        
                     ],
                     className='pretty_container four columns'),
                 html.Div(
                     [
 
                         html.H6(
-                            "Index trend (Confidence level 🟢)",
+                            "Index trend",
                             className="subtitle padded",
-                            id='index_confidence_1'
                         ),
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
-                        html.P("Note: 🟩 High, 🟨 Moderate, 🟧 Low confidence based on data availability."),
-
                         html.Div(
                             [
                                 html.Div(
@@ -790,7 +632,7 @@ layout = html.Div(
                                         html.H6([f"{INDEX_YEAR} Heatmap"],
                                                 className="subtitle padded"),
                                         dcc.Graph(id='heatmap_ISO',
-                                                  config=dcc_config('heatmap')),
+                                                  config=dcc_config('indicators')),
 
                                     ],
                                     className="twelve columns",
@@ -801,26 +643,6 @@ layout = html.Div(
                                                 className="subtitle padded"),
                                         dcc.Graph(id='indic_ISO',
                                                   config=dcc_config('indicators')),
-
-                                    ],
-                                    className="twelve columns",
-                                ),
-                                html.Div(
-                                    [
-                                        html.H6([f"Dimension time series"],
-                                                className="subtitle padded"),
-                                        dcc.Graph(id='dim_ts_ISO',
-                                                  config=dcc_config('dim_ts')),
-
-                                    ],
-                                    className="twelve columns",
-                                ),
-                                html.Div(
-                                    [
-                                        html.H6([f"Categories time series"],
-                                                className="subtitle padded"),
-                                        dcc.Graph(id='cat_ts_ISO',
-                                                  config=dcc_config('cat_ts')),
 
                                     ],
                                     className="twelve columns",
@@ -887,6 +709,7 @@ def update_loliplot(ISO):
     return dcc_config(f'dimensions_{ISO}'), loliplot(ISO)
 
 
+
 @app.callback(
     dash.dependencies.Output('heatmap_ISO', 'config'),
     dash.dependencies.Output('heatmap_ISO', 'figure'),
@@ -895,80 +718,12 @@ def update_loliplot(ISO):
     return dcc_config(f'heatmap_{ISO}'), heatmap_plot(ISO)
 
 
-
-@app.callback(
-    dash.dependencies.Output('cat_ts_ISO', 'config'),
-    dash.dependencies.Output('cat_ts_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_loliplot(ISO):
-    return dcc_config(f'cat_ts_{ISO}'), cat_time_series(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('dim_ts_ISO', 'config'),
-    dash.dependencies.Output('dim_ts_ISO', 'figure'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_loliplot(ISO):
-    return dcc_config(f'dim_ts_{ISO}'), dim_time_series(ISO)
-
-
 @app.callback(
     dash.dependencies.Output('Perf_ISO', 'config'),
     dash.dependencies.Output('Perf_ISO', 'figure'),
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
     return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('missing_ts_data_plot', 'style'),
-    [
-        dash.dependencies.Input('availability_switch', 'on')
-    ])
-def update_polar(switch):
-    if switch:
-        return {'display': 'block'}
-    else: 
-        return {'display' : 'None'}
-
-
-@app.callback(
-    dash.dependencies.Output('missing_ts_data_plot', 'config'),
-    dash.dependencies.Output('missing_ts_data_plot', 'figure'),
-    [
-        dash.dependencies.Input('ISO_select', 'value'),
-    ])
-def update_polar(ISO):
-    return dcc_config(f'yearly_availibility_{ISO}'), availibility_ts(ISO)
-
-
-@app.callback(
-    dash.dependencies.Output('index_confidence_1', 'children'),
-    dash.dependencies.Output('index_confidence_2', 'children'),
-    [dash.dependencies.Input('ISO_select', 'value')])
-def update_confidence(ISO):
-    # to clean up
-
-    available = index_confidence.loc[ISO]['Confidence']
-
-    if available >= 70:
-        conf =  '🟩'
-    if  available <= 65:
-        conf = '🟧'
-    if 70 > available >=65: 
-        conf = '🟨'
-
-    remark = f'About {round(available, 1)} % of all possible values are available for the period {MIN_YEAR}-{INDEX_YEAR}.'
-
-    data_plot = data[(data.ISO.isin([ISO]))]
-
-    if data_plot[data_plot.Aggregation == 'Index'].shape[0] > 0:
-        title = f'Index trend (Confidence level {conf})'
-    else:
-        title = f'Index trend'
-
-
-    return title, remark
 
 
 @app.callback(
@@ -984,6 +739,26 @@ def downdload_table(ISO, n_clicks):
         df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
 
         return dcc.send_data_frame(df.set_index("ISO").to_csv, f"{ISO}_data.csv")
+
+    else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
+        raise dash.exceptions.PreventUpdate
+
+
+
+@app.callback(
+    dash.dependencies.Output("download-html-report", "data"),
+    [
+        dash.dependencies.Input('ISO_select', 'value'),
+        dash.dependencies.Input("btn-html-report", "n_clicks"),
+    ],
+    prevent_initial_call=True,
+)
+def downdload_table(ISO, n_clicks):
+    if is_btn_clicked('btn-html-report'):
+        df  = data.query("ISO == @ISO")[['ISO', 'Variable', 'Aggregation', 'Year', 'Value']]
+        os.system(f"python jupyter_ISO_report.py report.ipynb --iso {ISO}")
+
+        return  dcc.send_file("./outputs/reports/report.html")
 
     else:  # https://community.plotly.com/t/how-to-leave-callback-output-unchanged/7276/8
         raise dash.exceptions.PreventUpdate
