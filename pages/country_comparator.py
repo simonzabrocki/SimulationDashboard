@@ -193,7 +193,7 @@ def dimension_trend(ISO_A, ISO_B):
                   )
 
     fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_xaxes(range=[2010, 2021])
+    fig.update_xaxes(range=[2005, 2020])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
