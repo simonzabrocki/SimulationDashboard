@@ -90,6 +90,30 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
     
     return df.reindex(full_index, fill_value=0).to_frame(name='Data availability (%)')
 
+def get_NaN_per_indicator(data, indicator_properties, max_year=2019, min_year=2005):
+    # TO MERGE WITH THE PERVIOUS ONE 
+
+    ISOs = data.ISO.unique()
+    indicators = data.Indicator.unique()
+    full_index = pd.MultiIndex.from_product([ISOs, indicators], names=['ISO', 'Indicator'])
+
+    data = data.query("Year >= @min_year and Year <= @max_year")
+
+    points_per_ind = max_year - min_year + 1
+
+    non_imputed =  data.query("Imputed == False").groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
+    imputed = data.query("Imputed == True").groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
+    n_points = data.groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
+
+
+    df = pd.concat([non_imputed, imputed, n_points], axis=1).rename(columns={0: 'non_imputed', 1: 'imputed', 2: 'total'})
+
+    ISOs = data.ISO.unique()
+    Indicator = indicator_properties.Indicator.unique()
+    full_index = pd.MultiIndex.from_product([ISOs, Indicator], names=['ISO', 'Indicator'])
+
+    return df.reindex(full_index).assign(possible=points_per_ind).fillna(0).reset_index().set_index(['ISO', 'Indicator'])
+
 
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
@@ -101,7 +125,10 @@ def load_all_data(max_year=2019):
 
 
     missing_data = get_missing_values_stat(indicator_data, indicator_properties)
+    
+    NaNs_indicator = get_NaN_per_indicator(indicator_data, indicator_properties)
+    confidence = (NaNs_indicator.groupby('ISO').non_imputed.sum() / NaNs_indicator.groupby('ISO').possible.sum() * 100).to_frame(name='Confidence')
 
     ISO_options = get_ISO_options(data)
 
-    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data
+    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data,confidence

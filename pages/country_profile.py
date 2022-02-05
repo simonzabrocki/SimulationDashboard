@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 from utils import Header, dcc_config, is_btn_clicked, Footer
-from app import app, data, missing_data, ISO_options, indicator_properties, INDEX_YEAR
+from app import app, data, missing_data, ISO_options, indicator_properties,index_confidence,INDEX_YEAR
 
 import numpy as np
 import pandas as pd
@@ -601,12 +601,14 @@ layout = html.Div(
                     [
 
                         html.H6(
-                            "Index trend",
+                            "Index trend(Confidence 🟢 🟠*)",
                             className="subtitle padded",
+                            id='index_confidence_1'
                         ),
                         dcc.Graph(id='index_time_series',
                                   config=dcc_config('index_trend'),
                                   ),
+                        html.P("*75 % of all possible values are available", id='index_confidence_2'),
                         html.Div(
                             [
                                 html.Div(
@@ -724,7 +726,17 @@ def update_loliplot(ISO):
     [dash.dependencies.Input('ISO_select', 'value')])
 def update_polar(ISO):
     return dcc_config(f'categories_{ISO}'), loliplot_2(ISO)
+@app.callback(
+    dash.dependencies.Output('index_confidence_1', 'children'),
+    dash.dependencies.Output('index_confidence_2', 'children'),
+    [dash.dependencies.Input('ISO_select', 'value')])
+def update_confidence(ISO):
+    available = index_confidence.loc[ISO]['Confidence']
+    conf =  '🟢' if  available > 70 else '🟠'
 
+    title = f'Index trend (confidence {conf}*)'
+    remark = f'*{round(available, 1)} % of all possible values are available '
+    return title, remark
 
 @app.callback(
     dash.dependencies.Output("download-country-data", "data"),
