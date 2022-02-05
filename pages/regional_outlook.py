@@ -1,10 +1,11 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
-import dash
 import dash_table
 from utils import Header, Footer
 from app import app, data, INDEX_YEAR
+import dash
+
 
 
 def Index_trend(data):
@@ -22,7 +23,7 @@ def Index_trend(data):
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_yaxes(visible=True)
-    fig.update_xaxes(range=[2010, INDEX_YEAR + 0.5])
+    fig.update_xaxes(range=[2005, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}", opacity=0.7)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
@@ -67,20 +68,11 @@ def dimension_trend(data):
                               'Continent': False,
                               'Variable_name': False},
                   height=700,
-                  color_discrete_map={
-                           "Efficient and sustainable resource use": "#8fd1e7",
-                           "Natural capital protection": "#f7be49",
-                           "Green economic opportunities": "#9dcc93",
-                           "Social inclusion": "#d9b5c9",
-                       },
-                  category_orders={'Variable_name': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
-
+                  color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
                   )
 
-    #fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
-    fig.update_yaxes(showgrid=True, showticklabels=True, range=[1, 100])
-
-    fig.update_xaxes(range=[2010, INDEX_YEAR + 0.5])
+    fig.update_yaxes(matches=None, showgrid=True, showticklabels=True)
+    fig.update_xaxes(range=[2005, INDEX_YEAR + 2])
     fig.update_traces(mode='lines', hovertemplate="%{y}",)
 
     dots = px.scatter(df[df.Year == INDEX_YEAR],
@@ -97,14 +89,7 @@ def dimension_trend(data):
                                   'Continent': False,
                                   'Variable_name': False},
                       height=700,
-                      color_discrete_map={
-                           "Efficient and sustainable resource use": "#8fd1e7",
-                           "Natural capital protection": "#f7be49",
-                           "Green economic opportunities": "#9dcc93",
-                           "Social inclusion": "#d9b5c9",
-                       },
-                      category_orders={'Variable_name': ['Efficient and sustainable resource use', 'Natural capital protection', 'Green economic opportunities', 'Social inclusion']},
-
+                      color_discrete_sequence=["#8fd1e7", "#9dcc93", "#f7be49", "#d9b5c9"],
                       )
 
     dots.update_layout(showlegend=False, hovermode=False)
@@ -132,16 +117,9 @@ def dimension_trend(data):
 def category_lolipop(data):
 
     df = data[(data.Aggregation == 'Category') & (data.Year == INDEX_YEAR)]
-    df = df.dropna(subset=['Value']).groupby(
+    df = df.dropna().groupby(
         ['Variable', 'Continent', 'Variable_name', 'Dimension']).mean().reset_index()
     df = df.round(2).sort_values(by='Dimension')
-
-
-    cat =  ['EE', 'EW', 'ME', 'SL', 
-        'BE', 'CV', 'EQ', 'GE',
-        'GJ', 'GN', 'GT', 'GV',
-        'AB', 'GB', 'SE', 'SP',
-        ]
 
     fig = px.scatter(df,
                      y='Variable',
@@ -159,8 +137,6 @@ def category_lolipop(data):
                          "Green Economic Opportunities": "#9dcc93",
                      },
                      height=600,
-                    category_orders={"Variable": cat,'Dimension': ['Efficient and Sustainable Resource Use', 'Natural Capital Protection', 'Green Economic Opportunities', 'Social Inclusion']},
-
                      )
     fig.update_xaxes(showgrid=True, range=[0, 100], tickvals=[
                      20, 40, 60, 80], visible=True, title='')
@@ -206,11 +182,11 @@ def Table(data):
     df = df.reset_index().pivot(index=['Continent'], columns='Variable', values='Value')
     df.columns.name = None
     df = df.round(2).reset_index()
-    df = df.rename(columns={'Continent': 'Region'})[['ESRU', 'NCP', 'GEO', 'SI']]
+    df = df.rename(columns={'Continent': 'Region'})
     header_name = {'ESRU': 'Efficient and sustainable resource use',
                    'NCP': 'Natural capital protection',
-                   'GEO': 'Green economic opportunities',
                    'SI': 'Social inclusion',
+                   'GEO': 'Green economic opportunities'
                    }
 
     tooltip = {key: {
@@ -256,6 +232,7 @@ def dcc_config(file_name):
 cover = data[(data.Aggregation == 'Index') & (data.Year == INDEX_YEAR)].dropna(subset=['Value']).shape[0]
 
 
+
 def conditional_color_col(col):
     return [
             {
@@ -291,10 +268,10 @@ def conditional_color_col(col):
 
 def region_table(data, Continent='Africa'):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([Continent]))].pivot(
-        index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'GEO', 'SI']]
-    table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
+        index=['Country', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
     table_df['Rank'] = table_df.Index.rank(ascending=False)
-    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'GEO', 'SI',]]
+    table_df = table_df[['Country', 'Subregion', 'Rank', 'Index', 'ESRU', 'NCP', 'SI', 'GEO']]
     
     header_name = {'Index': 'Index',
                    'Rank': 'Rank',
@@ -414,7 +391,6 @@ layout = html.Div(
         ),
         Footer(),
     ],
-    
     className="page",
 )
 
@@ -424,8 +400,8 @@ layout = html.Div(
     suppress_callback_exceptions=True)
 def update(continent):
     table_df = data[(data.Year == INDEX_YEAR) & (data.Aggregation.isin(['Index', 'Dimension'])) & (data.Continent.isin([continent]))].pivot(
-    index=['Country', 'Sub-region'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
-    table_df = table_df.reset_index().rename(columns={"Sub-region": 'Subregion'})
+    index=['Country', 'UNregion'], columns='Variable', values='Value')[['Index', 'ESRU', 'NCP', 'SI', 'GEO']]
+    table_df = table_df.reset_index().rename(columns={"UNregion": 'Subregion'})
     table_df['Rank'] = table_df.Index.rank(ascending=False)
 
 
