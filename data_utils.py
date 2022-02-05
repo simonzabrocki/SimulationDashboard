@@ -49,12 +49,10 @@ def format_data(data):
 
 def load_index_data(max_year):
     data = (
-        pd.read_csv('data/GGIs_2010_2020.csv')
-          .query(f"Year <=  {max_year} and ISO not in ['FLK']")
-          .dropna(subset=['Region'])
+        pd.read_csv('data/GGIs_2005_2020.csv')
+          .query(f"Year <=  {max_year}")
           .replace('America', 'Americas')
           .round(2)
-          .rename(columns={'Region': 'Continent'})
     )
 
     data = format_data(data)
@@ -76,16 +74,15 @@ def get_ISO_options(data):
     return data[['ISO', 'Country']].drop_duplicates().values
 
 
-def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=2010):
+def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=2005):
     data = data[(data.Year >= min_year) & (data.Year <= max_year)]
     data = pd.merge(data, indicator_properties, on='Indicator').astype({'Year': int})
 
     
     total_points = (indicator_properties.groupby('Category').Indicator.count() * (max_year - min_year + 1))
     
-    #df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
-    df =  data.query("Imputed == False").groupby(['ISO', 'Category']).apply(lambda x: x.shape[0]).divide(total_points) * 100
-
+    df =  data.groupby(['ISO', 'Category']).apply(lambda x: x.dropna(subset=['Value']).shape[0]).divide(total_points) * 100
+    
     ISOs = data.ISO.unique()
     Categorys = indicator_properties.Category.unique()
     full_index = pd.MultiIndex.from_product([ISOs, Categorys],
@@ -94,70 +91,17 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
     return df.reindex(full_index, fill_value=0).to_frame(name='Data availability (%)')
 
 
-def get_NaN_per_indicator(data, indicator_properties, max_year=2020, min_year=2010):
-    # TO MERGE WITH THE PERVIOUS ONE 
-    
-    ISOs = data.ISO.unique()
-    indicators = data.Indicator.unique()
-    full_index = pd.MultiIndex.from_product([ISOs, indicators], names=['ISO', 'Indicator'])
-    
-    data = data.query("Year >= @min_year and Year <= @max_year")
-    
-    points_per_ind = max_year - min_year + 1
-
-    non_imputed =  data.query("Imputed == False").groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
-    imputed = data.query("Imputed == True").groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
-    n_points = data.groupby(['ISO', 'Indicator']).apply(lambda x: x.shape[0])
-
-    
-    df = pd.concat([non_imputed, imputed, n_points], axis=1).rename(columns={0: 'non_imputed', 1: 'imputed', 2: 'total'})
-
-    ISOs = data.ISO.unique()
-    Indicator = indicator_properties.Indicator.unique()
-    full_index = pd.MultiIndex.from_product([ISOs, Indicator], names=['ISO', 'Indicator'])
-    
-    return df.reindex(full_index).assign(possible=points_per_ind).fillna(0).reset_index().set_index(['ISO', 'Indicator'])
-
-
 def load_all_data(max_year=2019):
     data = load_index_data(max_year)
 
     indicator_data, indicator_properties, dimension_properties = load_indicator_data()
-
-    indicator_data = indicator_data.query("Indicator not in ['GJ2', 'GT2', 'GV2', 'GN2']")
-    indicator_properties = indicator_properties.query("Indicator not in ['GJ2', 'GT2', 'GV2', 'GN2']")
-    data = data.query("Variable not in ['GJ2', 'GT2', 'GV2', 'GN2']")
 
     data = pd.merge(data, indicator_properties[['Category', 'Dimension']].drop_duplicates(
     ), left_on='Variable', right_on='Category', how='left')
 
 
     missing_data = get_missing_values_stat(indicator_data, indicator_properties)
-    NaNs_indicator = get_NaN_per_indicator(indicator_data, indicator_properties)
-    confidence = (NaNs_indicator.groupby('ISO').non_imputed.sum() / NaNs_indicator.groupby('ISO').possible.sum() * 100).to_frame(name='Confidence')
 
     ISO_options = get_ISO_options(data)
 
-    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data, confidence
-
-
-
-# def export_ISO_plots():
-#     path = 'outputs/plots/'
-#     for ISO in available_ISOs:
-#         print(ISO)
-
-#         directory = f'{path}/{ISO}'
-#         if not os.path.exists(directory):
-#             os.makedirs(directory)
-
-#         ts = time_series_Index(ISO)
-#         nans = missing_bar_plot(ISO)
-#         ind = Indicator_lolipop(ISO)
-#         cir = circular_plot(ISO)
-
-#         ts.write_image(f"{directory}/timeseries.png", width=1200, height=600)
-#         nans.write_image(f"{directory}/missingvalues.png", height=1200, width=600)
-#         ind.write_image(f"{directory}/indicators.png", width=1500, height=600)
-#         cir.write_image(f"{directory}/circular.png", height=600, width=600)
-
+    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data
