@@ -90,7 +90,7 @@ def get_missing_values_stat(data, indicator_properties, max_year=2020, min_year=
     
     return df.reindex(full_index, fill_value=0).to_frame(name='Data availability (%)')
 
-def get_NaN_per_indicator(data, indicator_properties, max_year=2019, min_year=2005):
+'''def get_NaN_per_indicator(data, indicator_properties, max_year=2019, min_year=2005):
     # TO MERGE WITH THE PERVIOUS ONE 
 
     ISOs = data.ISO.unique()
@@ -112,7 +112,7 @@ def get_NaN_per_indicator(data, indicator_properties, max_year=2019, min_year=20
     Indicator = indicator_properties.Indicator.unique()
     full_index = pd.MultiIndex.from_product([ISOs, Indicator], names=['ISO', 'Indicator'])
 
-    return df.reindex(full_index).assign(possible=points_per_ind).fillna(0).reset_index().set_index(['ISO', 'Indicator'])
+    return df.reindex(full_index).assign(possible=points_per_ind).fillna(0).reset_index().set_index(['ISO', 'Indicator'])'''
 
 
 def load_all_data(max_year=2019):
@@ -126,9 +126,9 @@ def load_all_data(max_year=2019):
 
     missing_data = get_missing_values_stat(indicator_data, indicator_properties)
     
-    NaNs_indicator = get_NaN_per_indicator(indicator_data, indicator_properties)
-    confidence = (NaNs_indicator.groupby('ISO').non_imputed.sum() / NaNs_indicator.groupby('ISO').possible.sum() * 100).to_frame(name='Confidence')
+    '''NaNs_indicator = get_NaN_per_indicator(indicator_data, indicator_properties)
+    confidence = (NaNs_indicator.groupby('ISO').non_imputed.sum() / NaNs_indicator.groupby('ISO').possible.sum() * 100).to_frame(name='Confidence')'''
 
     ISO_options = get_ISO_options(data)
 
-    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data,confidence
+    return data, indicator_data, indicator_properties, dimension_properties, ISO_options, missing_data #,confidence
